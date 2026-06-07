@@ -5,11 +5,5 @@
       "src": "**",
       "use": "@vercel/static"
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/public/workorder/index.html"
-    }
   ]
 }

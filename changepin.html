@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Change Transaction Password</title>
+  <style>
+    :root {
+      --brand: #4ECDC4;
+      --brand-dark: #44A08D;
+      --deep-teal: #2C7A7B;
+      --ink: #1A202C;
+      --muted: #718096;
+      --muted-light: #A0AEC0;
+      --line: #E2E8F0;
+      --surface: #F7FAFC;
+      --teal-soft: #E6FFFA;
+      --danger: #E53E3E;
+      --success: #48BB78;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #F7FAFC;
+      color: var(--ink);
+      font-family: -apple-system, "PingFang SC", "Helvetica Neue", Roboto, "Noto Sans CJK SC", sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .phone {
+      position: relative;
+      width: min(100vw, 430px);
+      min-height: 100vh;
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 0 16px calc(24px + env(safe-area-inset-bottom));
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      margin: 0 -16px 20px;
+      padding: 0 56px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .back {
+      position: absolute;
+      left: 8px;
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .back::before {
+      width: 12px;
+      height: 12px;
+      content: "";
+      border-bottom: 2px solid currentColor;
+      border-left: 2px solid currentColor;
+      border-radius: 2px;
+      transform: rotate(45deg);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .copy {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0;
+    }
+
+    .email-block {
+      margin: 0 0 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
+    .info-dot {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--deep-teal);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .email {
+      margin-left: 32px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+
+    .helper {
+      margin: 0 0 20px;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--teal-soft);
+      color: var(--deep-teal);
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .primary {
+      width: 100%;
+      height: 40px;
+      border: 0;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0;
+      cursor: pointer;
+      transition: background 160ms ease, transform 160ms ease, opacity 160ms ease;
+    }
+
+    .primary:active {
+      opacity: 0.8;
+      transform: scale(0.96);
+    }
+
+    .primary:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field-label {
+      color: var(--brand);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
+    .password-wrap {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 0 12px;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .password-wrap.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    .password-wrap input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .password-wrap input::placeholder {
+      color: var(--muted-light);
+    }
+
+    .toggle {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--brand);
+      cursor: pointer;
+    }
+
+    .toggle svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .error-text {
+      display: none;
+      min-height: 20px;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .error-text.show {
+      display: block;
+    }
+
+    .password-rule {
+      color: var(--muted-light);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 22px;
+      left: 50%;
+      z-index: 6;
+      width: min(calc(100vw - 36px), 390px);
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -14px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(26, 32, 44, 0.38);
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: min(100vw, 430px);
+      min-height: 50vh;
+      border-radius: 16px 16px 0 0;
+      background: #fff;
+      padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
+      box-shadow: var(--shadow);
+      transform: translateY(100%);
+      animation: slideUp 220ms ease forwards;
+    }
+
+    @keyframes slideUp {
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sheet-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+      letter-spacing: 0;
+    }
+
+    .close {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .sheet-copy {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .code-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .code-box {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      outline: 0;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .code-box:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.14);
+    }
+
+    .code-row.error .code-box {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    .pin-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .pin-box {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      outline: 0;
+      background: #fff;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      -webkit-text-security: disc;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .pin-box:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.14);
+    }
+
+    .pin-row.error .pin-box {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    .verify-status {
+      min-height: 22px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .verify-status.error {
+      color: var(--danger);
+    }
+
+    .verify-status.success {
+      color: var(--success);
+    }
+
+    .resend {
+      width: 100%;
+      height: 40px;
+      border: 0;
+      border-radius: 9999px;
+      background: var(--teal-soft);
+      color: var(--brand-dark);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .resend:disabled {
+      background: var(--surface);
+      color: var(--muted-light);
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 360px) {
+      .screen {
+        padding-inline: 16px;
+      }
+
+      h1 {
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      .copy {
+        font-size: 13px;
+        line-height: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-live="polite">
+    <section class="screen active" id="emailScreen">
+      <header class="topbar">
+        <button class="back" type="button" aria-label="Go back"></button>
+        <h1>Change Transaction Password</h1>
+      </header>
+
+      <p class="copy">Set a transaction password to protect withdrawals, asset security, and sensitive transactions.</p>
+
+      <div class="email-block">
+        <div class="label-row">
+          <span class="info-dot">!</span>
+          <span>Current email</span>
+        </div>
+        <div class="email" id="maskedEmail">joh*****th@example.com</div>
+      </div>
+
+      <p class="helper">To secure your account, we need to verify your email before setting your transaction password.</p>
+
+      <button class="primary" id="sendBtn" type="button">Send Email Verification</button>
+      <div class="spacer"></div>
+    </section>
+
+    <section class="screen" id="pinScreen">
+      <header class="topbar">
+        <button class="back" id="pinBack" type="button" aria-label="Go back"></button>
+        <h1>New Transaction PIN</h1>
+      </header>
+
+      <p class="copy">Enter and confirm a 6-digit transaction password.</p>
+
+      <form class="form" id="pinForm" novalidate>
+        <div class="field-group">
+          <label class="field-label">Enter the new PIN</label>
+          <div class="pin-row" id="newPinRow">
+            <input class="pin-box new-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="New PIN digit 1">
+            <input class="pin-box new-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="New PIN digit 2">
+            <input class="pin-box new-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="New PIN digit 3">
+            <input class="pin-box new-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="New PIN digit 4">
+            <input class="pin-box new-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="New PIN digit 5">
+            <input class="pin-box new-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="New PIN digit 6">
+          </div>
+          <div class="error-text" id="newPinError"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Confirm PIN</label>
+          <div class="pin-row" id="confirmPinRow">
+            <input class="pin-box confirm-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Confirm PIN digit 1">
+            <input class="pin-box confirm-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Confirm PIN digit 2">
+            <input class="pin-box confirm-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Confirm PIN digit 3">
+            <input class="pin-box confirm-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Confirm PIN digit 4">
+            <input class="pin-box confirm-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Confirm PIN digit 5">
+            <input class="pin-box confirm-pin" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Confirm PIN digit 6">
+          </div>
+          <div class="error-text" id="confirmPinError"></div>
+        </div>
+
+        <div class="spacer"></div>
+        <button class="primary" id="confirmBtn" type="submit" disabled>Confirm</button>
+      </form>
+    </section>
+  </main>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <section class="sheet">
+      <div class="sheet-head">
+        <h2 class="sheet-title" id="sheetTitle">Enter Verification Code</h2>
+        <button class="close" id="closeSheet" type="button" aria-label="Close verification">×</button>
+      </div>
+      <p class="sheet-copy">This verification code is sent to <strong id="sheetEmail">joh*****th@example.com</strong>.</p>
+
+      <div class="code-row" id="codeRow">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="1" aria-label="Verification digit 1">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Verification digit 2">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Verification digit 3">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Verification digit 4">
+      </div>
+      <div class="verify-status" id="verifyStatus">Enter the 4-digit code from your email.</div>
+      <button class="resend" id="resendBtn" type="button" disabled>Resend code in 60s</button>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const accountEmail = "johnsmith@example.com";
+    const validDemoCode = "1234";
+
+    const emailScreen = document.getElementById("emailScreen");
+    const pinScreen = document.getElementById("pinScreen");
+    const maskedEmail = document.getElementById("maskedEmail");
+    const sheetEmail = document.getElementById("sheetEmail");
+    const sendBtn = document.getElementById("sendBtn");
+    const overlay = document.getElementById("overlay");
+    const closeSheet = document.getElementById("closeSheet");
+    const codeRow = document.getElementById("codeRow");
+    const codeBoxes = Array.from(document.querySelectorAll(".code-box"));
+    const verifyStatus = document.getElementById("verifyStatus");
+    const resendBtn = document.getElementById("resendBtn");
+    const pinBack = document.getElementById("pinBack");
+    const pinForm = document.getElementById("pinForm");
+    const newPinRow = document.getElementById("newPinRow");
+    const confirmPinRow = document.getElementById("confirmPinRow");
+    const newPinBoxes = Array.from(document.querySelectorAll(".new-pin"));
+    const confirmPinBoxes = Array.from(document.querySelectorAll(".confirm-pin"));
+    const newPinError = document.getElementById("newPinError");
+    const confirmPinError = document.getElementById("confirmPinError");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const toast = document.getElementById("toast");
+
+    let resendTimer = null;
+    let resendSeconds = 60;
+    let isVerifying = false;
+
+    function maskEmail(email) {
+      const [local, domain] = email.split("@");
+      if (!local || !domain) return email;
+      if (local.length <= 3) return `${local[0]}*****@${domain}`;
+      const prefix = local.slice(0, 3);
+      const suffix = local.length >= 5 ? local.slice(-2) : local.slice(-1);
+      return `${prefix}*****${suffix}@${domain}`;
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function setScreen(screen) {
+      emailScreen.classList.toggle("active", screen === "email");
+      pinScreen.classList.toggle("active", screen === "pin");
+    }
+
+    function clearCode() {
+      codeBoxes.forEach((box) => {
+        box.value = "";
+        box.disabled = false;
+      });
+      codeRow.classList.remove("error");
+      verifyStatus.className = "verify-status";
+      verifyStatus.textContent = "Enter the 4-digit code from your email.";
+    }
+
+    function startCountdown() {
+      window.clearInterval(resendTimer);
+      resendSeconds = 60;
+      resendBtn.disabled = true;
+      resendBtn.textContent = `Resend code in ${resendSeconds}s`;
+      resendTimer = window.setInterval(() => {
+        resendSeconds -= 1;
+        if (resendSeconds <= 0) {
+          window.clearInterval(resendTimer);
+          resendBtn.disabled = false;
+          resendBtn.textContent = "Resend Code";
+          return;
+        }
+        resendBtn.textContent = `Resend code in ${resendSeconds}s`;
+      }, 1000);
+    }
+
+    function openVerificationSheet() {
+      clearCode();
+      startCountdown();
+      overlay.classList.add("open");
+      window.setTimeout(() => codeBoxes[0].focus(), 120);
+    }
+
+    function closeVerificationSheet() {
+      overlay.classList.remove("open");
+      clearCode();
+      window.clearInterval(resendTimer);
+      resendBtn.disabled = true;
+      resendBtn.textContent = "Resend code in 60s";
+    }
+
+    function verifyCode() {
+      if (isVerifying) return;
+      const code = codeBoxes.map((box) => box.value).join("");
+      if (code.length !== 4) return;
+
+      isVerifying = true;
+      codeBoxes.forEach((box) => (box.disabled = true));
+      codeRow.classList.remove("error");
+      verifyStatus.className = "verify-status";
+      verifyStatus.textContent = "Verifying...";
+
+      window.setTimeout(() => {
+        isVerifying = false;
+        if (code === validDemoCode) {
+          verifyStatus.className = "verify-status success";
+          verifyStatus.textContent = "Verified.";
+          window.setTimeout(() => {
+            closeVerificationSheet();
+            setScreen("pin");
+            newPinBoxes[0].focus();
+          }, 450);
+          return;
+        }
+
+        codeBoxes.forEach((box) => {
+          box.disabled = false;
+          box.value = "";
+        });
+        codeRow.classList.add("error");
+        verifyStatus.className = "verify-status error";
+        verifyStatus.textContent = "The verification code is incorrect or expired.";
+        codeBoxes[0].focus();
+      }, 650);
+    }
+
+    function setFieldError(row, errorNode, message) {
+      const hasError = Boolean(message);
+      row.classList.toggle("error", hasError);
+      errorNode.textContent = message || "";
+      errorNode.classList.toggle("show", hasError);
+    }
+
+    function pinValue(boxes) {
+      return boxes.map((box) => box.value).join("");
+    }
+
+    function validatePins(showErrors = false) {
+      const pin = pinValue(newPinBoxes);
+      const confirm = pinValue(confirmPinBoxes);
+      let newPinMessage = "";
+      let confirmMessage = "";
+
+      if (showErrors && pin.length !== 6) newPinMessage = "Enter a 6-digit PIN.";
+      if (confirm.length > 0 && confirm.length === 6 && pin !== confirm) confirmMessage = "PINs do not match.";
+      if (showErrors && confirm.length !== 6) confirmMessage = "Confirm your 6-digit PIN.";
+
+      setFieldError(newPinRow, newPinError, newPinMessage);
+      setFieldError(confirmPinRow, confirmPinError, confirmMessage);
+
+      const valid = pin.length === 6 && confirm.length === 6 && pin === confirm;
+      confirmBtn.disabled = !valid;
+      return valid;
+    }
+
+    function clearPins() {
+      [...newPinBoxes, ...confirmPinBoxes].forEach((box) => {
+        box.value = "";
+        box.disabled = false;
+      });
+      validatePins(false);
+    }
+
+    function bindPinBoxes(boxes, nextBoxes = []) {
+      boxes.forEach((box, index) => {
+        box.addEventListener("input", (event) => {
+          const digit = event.target.value.replace(/\D/g, "").slice(-1);
+          event.target.value = digit;
+          newPinRow.classList.remove("error");
+          confirmPinRow.classList.remove("error");
+          newPinError.classList.remove("show");
+          confirmPinError.classList.remove("show");
+
+          if (digit && index < boxes.length - 1) {
+            boxes[index + 1].focus();
+          } else if (digit && index === boxes.length - 1 && nextBoxes.length) {
+            nextBoxes[0].focus();
+          }
+          validatePins(false);
+        });
+
+        box.addEventListener("keydown", (event) => {
+          if (event.key === "Backspace" && !box.value && index > 0) boxes[index - 1].focus();
+        });
+
+        box.addEventListener("paste", (event) => {
+          event.preventDefault();
+          const pasted = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, boxes.length);
+          pasted.split("").forEach((digit, digitIndex) => {
+            boxes[digitIndex].value = digit;
+          });
+          boxes[Math.min(pasted.length, boxes.length - 1)].focus();
+          validatePins(false);
+        });
+      });
+    }
+
+    maskedEmail.textContent = maskEmail(accountEmail);
+    sheetEmail.textContent = maskEmail(accountEmail);
+    sendBtn.disabled = !isValidEmail(accountEmail);
+
+    sendBtn.addEventListener("click", () => {
+      if (!isValidEmail(accountEmail)) return;
+      sendBtn.textContent = "Sending...";
+      sendBtn.disabled = true;
+      window.setTimeout(() => {
+        sendBtn.textContent = "Send Email Verification";
+        sendBtn.disabled = false;
+        openVerificationSheet();
+      }, 450);
+    });
+
+    closeSheet.addEventListener("click", closeVerificationSheet);
+
+    resendBtn.addEventListener("click", () => {
+      clearCode();
+      startCountdown();
+      showToast("Verification code sent again.");
+      codeBoxes[0].focus();
+    });
+
+    codeBoxes.forEach((box, index) => {
+      box.addEventListener("input", (event) => {
+        const digit = event.target.value.replace(/\D/g, "").slice(-1);
+        event.target.value = digit;
+        codeRow.classList.remove("error");
+        verifyStatus.className = "verify-status";
+        verifyStatus.textContent = "Enter the 4-digit code from your email.";
+
+        if (digit && index < codeBoxes.length - 1) {
+          codeBoxes[index + 1].focus();
+        }
+        verifyCode();
+      });
+
+      box.addEventListener("keydown", (event) => {
+        if (event.key === "Backspace" && !box.value && index > 0) {
+          codeBoxes[index - 1].focus();
+        }
+      });
+
+      box.addEventListener("paste", (event) => {
+        event.preventDefault();
+        const pasted = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, 4);
+        pasted.split("").forEach((digit, digitIndex) => {
+          codeBoxes[digitIndex].value = digit;
+        });
+        const nextIndex = Math.min(pasted.length, 3);
+        codeBoxes[nextIndex].focus();
+        verifyCode();
+      });
+    });
+
+    pinBack.addEventListener("click", () => {
+      setScreen("email");
+      clearPins();
+    });
+
+    bindPinBoxes(newPinBoxes, confirmPinBoxes);
+    bindPinBoxes(confirmPinBoxes);
+
+    pinForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!validatePins(true)) return;
+
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "Confirming...";
+      [...newPinBoxes, ...confirmPinBoxes].forEach((box) => (box.disabled = true));
+      window.setTimeout(() => {
+        confirmBtn.textContent = "Confirm";
+        clearPins();
+        setScreen("email");
+        showToast("Transaction password changed successfully.");
+      }, 850);
+    });
+  </script>
+</body>
+</html>

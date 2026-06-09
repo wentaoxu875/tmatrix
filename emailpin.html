@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Change Email ID</title>
+  <style>
+    :root {
+      --brand: #4ECDC4;
+      --brand-dark: #44A08D;
+      --deep-teal: #2C7A7B;
+      --ink: #1A202C;
+      --muted: #718096;
+      --muted-light: #A0AEC0;
+      --line: #E2E8F0;
+      --surface: #F7FAFC;
+      --teal-soft: #E6FFFA;
+      --danger: #E53E3E;
+      --success: #48BB78;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: -apple-system, "PingFang SC", "Helvetica Neue", Roboto, "Noto Sans CJK SC", sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .phone {
+      position: relative;
+      width: min(100vw, 430px);
+      min-height: 100vh;
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 0 16px calc(24px + env(safe-area-inset-bottom));
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      margin: 0 -16px 20px;
+      padding: 0 56px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .back {
+      position: absolute;
+      left: 8px;
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .back::before {
+      width: 12px;
+      height: 12px;
+      content: "";
+      border-bottom: 2px solid currentColor;
+      border-left: 2px solid currentColor;
+      border-radius: 2px;
+      transform: rotate(45deg);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+      text-align: center;
+    }
+
+    .copy {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+
+    .card {
+      margin: 0 0 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
+    .info-dot {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--deep-teal);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .masked-email {
+      margin-left: 32px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .helper {
+      margin: 0 0 20px;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--teal-soft);
+      color: var(--deep-teal);
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field-label {
+      color: var(--brand);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 0 12px;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .input-wrap.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    .input-wrap.verified {
+      border-color: var(--success);
+      box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.12);
+    }
+
+    .input-wrap input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .input-wrap input::placeholder {
+      color: var(--muted-light);
+    }
+
+    .toggle {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--brand);
+      cursor: pointer;
+    }
+
+    .toggle svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .error-text,
+    .hint-text {
+      min-height: 18px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .error-text {
+      display: none;
+      color: var(--danger);
+    }
+
+    .error-text.show {
+      display: block;
+    }
+
+    .hint-text {
+      color: var(--muted-light);
+    }
+
+    .success-text {
+      display: none;
+      color: var(--success);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .success-text.show {
+      display: block;
+    }
+
+    .primary {
+      width: 100%;
+      height: 40px;
+      border: 0;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 100ms ease, opacity 100ms ease;
+    }
+
+    .primary:active {
+      opacity: 0.8;
+      transform: scale(0.96);
+    }
+
+    .primary:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+    }
+
+    .secondary {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--brand);
+      border-radius: 9999px;
+      background: transparent;
+      color: var(--brand);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(26, 32, 44, 0.38);
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: min(100vw, 430px);
+      min-height: 50vh;
+      border-radius: 16px 16px 0 0;
+      background: #fff;
+      padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+      transform: translateY(100%);
+      animation: slideUp 220ms ease forwards;
+    }
+
+    @keyframes slideUp {
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sheet-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+    }
+
+    .close {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .sheet-copy {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .sent-line {
+      margin: 0 0 20px;
+      color: var(--deep-teal);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .code-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .code-box {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      outline: 0;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .code-box:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.14);
+    }
+
+    .code-row.error .code-box {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    .verify-status {
+      min-height: 22px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .verify-status.error {
+      color: var(--danger);
+    }
+
+    .verify-status.success {
+      color: var(--success);
+    }
+
+    .resend {
+      width: 100%;
+      height: 40px;
+      border: 0;
+      border-radius: 9999px;
+      background: var(--teal-soft);
+      color: var(--brand-dark);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .resend:disabled {
+      background: var(--surface);
+      color: var(--muted-light);
+      cursor: not-allowed;
+    }
+
+    .toast {
+      position: fixed;
+      top: 22px;
+      left: 50%;
+      z-index: 6;
+      width: min(calc(100vw - 32px), 398px);
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -14px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-live="polite">
+    <section class="screen" id="pinScreen">
+      <header class="topbar">
+        <button class="back" id="pinBack" type="button" aria-label="Go back"></button>
+        <h1>Change Your Email ID</h1>
+      </header>
+
+      <p class="copy">For account fund security, enter your transaction PIN to confirm this email change.</p>
+
+      <form class="form" id="pinForm" novalidate>
+        <div class="field-group">
+          <label class="field-label" for="transactionPin">Transaction PIN</label>
+          <div class="input-wrap" id="pinWrap">
+            <input id="transactionPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="Enter transaction PIN">
+            <button class="toggle" type="button" data-target="transactionPin" aria-label="Show transaction PIN">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <div class="hint-text">Use your 6-digit transaction PIN to continue.</div>
+          <div class="error-text" id="pinError"></div>
+        </div>
+        <div class="spacer"></div>
+        <button class="primary" id="pinContinueBtn" type="submit" disabled>Change Email</button>
+      </form>
+    </section>
+
+    <section class="screen active" id="emailScreen">
+      <header class="topbar">
+        <button class="back" id="emailBack" type="button" aria-label="Go back"></button>
+        <h1>Change Your Email ID</h1>
+      </header>
+
+      <p class="copy">Enter and verify your new email address to update the email ID linked to your Tbay account.</p>
+
+      <div class="card">
+        <div class="label-row">
+          <span class="info-dot">!</span>
+          <span>Current email</span>
+        </div>
+        <div class="masked-email" id="maskedCurrentEmail">joh*****th@example.com</div>
+      </div>
+
+      <form class="form" id="emailForm" novalidate>
+        <div class="field-group">
+          <label class="field-label" for="newEmail">Enter your new email address</label>
+          <div class="input-wrap" id="emailWrap">
+            <input id="newEmail" type="email" autocomplete="email" placeholder="Enter your new email address">
+          </div>
+          <div class="error-text" id="emailError"></div>
+          <div class="success-text" id="emailSuccess">New email verified.</div>
+        </div>
+
+        <button class="primary" id="sendCodeBtn" type="button" disabled>Send Verification Code</button>
+        <button class="primary" id="changeEmailBtn" type="submit" hidden>Change Email</button>
+      </form>
+
+      <div class="spacer"></div>
+    </section>
+  </main>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <section class="sheet">
+      <div class="sheet-head">
+        <h2 class="sheet-title" id="sheetTitle">Enter Verification Code</h2>
+        <button class="close" id="closeSheet" type="button" aria-label="Close verification">×</button>
+      </div>
+      <p class="sheet-copy">This verification code is sent to <strong id="sheetEmail">new*****il@example.com</strong>.</p>
+      <p class="sent-line" hidden>Verification code sent to <span id="sentEmail">newemail@example.com</span>.</p>
+
+      <div class="code-row" id="codeRow">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="1" aria-label="Verification digit 1">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Verification digit 2">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Verification digit 3">
+        <input class="code-box" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Verification digit 4">
+      </div>
+      <div class="verify-status" id="verifyStatus">Enter the 4-digit code from your email.</div>
+      <button class="resend" id="resendBtn" type="button" disabled>Resend code in 60s</button>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let currentEmail = "johnsmith@example.com";
+    const validDemoPin = "123456";
+    const validDemoCode = "1234";
+
+    const pinScreen = document.getElementById("pinScreen");
+    const emailScreen = document.getElementById("emailScreen");
+    const pinForm = document.getElementById("pinForm");
+    const transactionPin = document.getElementById("transactionPin");
+    const pinWrap = document.getElementById("pinWrap");
+    const pinError = document.getElementById("pinError");
+    const pinContinueBtn = document.getElementById("pinContinueBtn");
+    const pinBack = document.getElementById("pinBack");
+    const emailBack = document.getElementById("emailBack");
+    const maskedCurrentEmail = document.getElementById("maskedCurrentEmail");
+    const emailForm = document.getElementById("emailForm");
+    const newEmail = document.getElementById("newEmail");
+    const emailWrap = document.getElementById("emailWrap");
+    const emailError = document.getElementById("emailError");
+    const emailSuccess = document.getElementById("emailSuccess");
+    const sendCodeBtn = document.getElementById("sendCodeBtn");
+    const changeEmailBtn = document.getElementById("changeEmailBtn");
+    const overlay = document.getElementById("overlay");
+    const closeSheet = document.getElementById("closeSheet");
+    const sheetEmail = document.getElementById("sheetEmail");
+    const sentEmail = document.getElementById("sentEmail");
+    const codeRow = document.getElementById("codeRow");
+    const codeBoxes = Array.from(document.querySelectorAll(".code-box"));
+    const verifyStatus = document.getElementById("verifyStatus");
+    const resendBtn = document.getElementById("resendBtn");
+    const toast = document.getElementById("toast");
+
+    let resendTimer = null;
+    let resendSeconds = 60;
+    let isVerifying = false;
+    let emailVerified = false;
+    let pendingEmail = "";
+
+    function maskEmail(email) {
+      const [local, domain] = email.split("@");
+      if (!local || !domain) return email;
+      if (local.length <= 3) return `${local[0]}*****@${domain}`;
+      const prefix = local.slice(0, 3);
+      const suffix = local.length >= 5 ? local.slice(-2) : local.slice(-1);
+      return `${prefix}*****${suffix}@${domain}`;
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function setScreen(screen) {
+      pinScreen.classList.toggle("active", screen === "pin");
+      emailScreen.classList.toggle("active", screen === "email");
+    }
+
+    function setError(wrap, node, message) {
+      const hasError = Boolean(message);
+      wrap.classList.toggle("error", hasError);
+      node.textContent = message || "";
+      node.classList.toggle("show", hasError);
+    }
+
+    function resetVerificationState() {
+      emailVerified = false;
+      emailWrap.classList.remove("verified");
+      emailSuccess.classList.remove("show");
+      changeEmailBtn.hidden = true;
+      sendCodeBtn.hidden = false;
+      validateEmail(false);
+    }
+
+    function validateEmail(showError) {
+      const value = newEmail.value.trim();
+      let message = "";
+      if (value && !isValidEmail(value)) message = "Enter a valid email address.";
+      if (showError && !value) message = "Enter your new email address.";
+      if (value && value.toLowerCase() === currentEmail.toLowerCase()) message = "Enter a different email address.";
+      setError(emailWrap, emailError, message);
+      sendCodeBtn.disabled = !value || Boolean(message) || emailVerified;
+      return Boolean(value) && !message;
+    }
+
+    function clearCode() {
+      codeBoxes.forEach((box) => {
+        box.value = "";
+        box.disabled = false;
+      });
+      codeRow.classList.remove("error");
+      verifyStatus.className = "verify-status";
+      verifyStatus.textContent = "Enter the 4-digit code from your email.";
+    }
+
+    function startCountdown() {
+      window.clearInterval(resendTimer);
+      resendSeconds = 60;
+      resendBtn.disabled = true;
+      resendBtn.textContent = `Resend code in ${resendSeconds}s`;
+      resendTimer = window.setInterval(() => {
+        resendSeconds -= 1;
+        if (resendSeconds <= 0) {
+          window.clearInterval(resendTimer);
+          resendBtn.disabled = false;
+          resendBtn.textContent = "Resend Code";
+          return;
+        }
+        resendBtn.textContent = `Resend code in ${resendSeconds}s`;
+      }, 1000);
+    }
+
+    function openVerificationSheet() {
+      const value = newEmail.value.trim();
+      sheetEmail.textContent = maskEmail(value);
+      sentEmail.textContent = value;
+      clearCode();
+      startCountdown();
+      overlay.classList.add("open");
+      window.setTimeout(() => codeBoxes[0].focus(), 120);
+    }
+
+    function closeVerificationSheet() {
+      overlay.classList.remove("open");
+      clearCode();
+      window.clearInterval(resendTimer);
+      resendBtn.disabled = true;
+      resendBtn.textContent = "Resend code in 60s";
+    }
+
+    function verifyCode() {
+      if (isVerifying) return;
+      const code = codeBoxes.map((box) => box.value).join("");
+      if (code.length !== 4) return;
+
+      isVerifying = true;
+      codeBoxes.forEach((box) => (box.disabled = true));
+      codeRow.classList.remove("error");
+      verifyStatus.className = "verify-status";
+      verifyStatus.textContent = "Verifying...";
+
+      window.setTimeout(() => {
+        isVerifying = false;
+        if (code === validDemoCode) {
+          verifyStatus.className = "verify-status success";
+          verifyStatus.textContent = "Verified.";
+          window.setTimeout(() => {
+            closeVerificationSheet();
+            emailVerified = true;
+            pendingEmail = newEmail.value.trim();
+            emailWrap.classList.add("verified");
+            emailSuccess.classList.add("show");
+            sendCodeBtn.hidden = true;
+            changeEmailBtn.hidden = true;
+            transactionPin.value = "";
+            pinContinueBtn.disabled = true;
+            setError(pinWrap, pinError, "");
+            setScreen("pin");
+            transactionPin.focus();
+          }, 450);
+          return;
+        }
+
+        codeBoxes.forEach((box) => {
+          box.disabled = false;
+          box.value = "";
+        });
+        codeRow.classList.add("error");
+        verifyStatus.className = "verify-status error";
+        verifyStatus.textContent = "The verification code is incorrect or expired.";
+        codeBoxes[0].focus();
+      }, 650);
+    }
+
+    maskedCurrentEmail.textContent = maskEmail(currentEmail);
+
+    transactionPin.addEventListener("input", () => {
+      transactionPin.value = transactionPin.value.replace(/\D/g, "").slice(0, 6);
+      setError(pinWrap, pinError, "");
+      pinContinueBtn.disabled = transactionPin.value.length !== 6;
+    });
+
+    pinForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (transactionPin.value.length !== 6) {
+        setError(pinWrap, pinError, "Enter your 6-digit transaction PIN.");
+        return;
+      }
+      if (transactionPin.value !== validDemoPin) {
+        setError(pinWrap, pinError, "The transaction PIN is incorrect.");
+        return;
+      }
+      pinContinueBtn.disabled = true;
+      pinContinueBtn.textContent = "Changing...";
+      window.setTimeout(() => {
+        const updatedEmail = pendingEmail;
+        pinContinueBtn.textContent = "Change Email";
+        currentEmail = updatedEmail;
+        maskedCurrentEmail.textContent = maskEmail(currentEmail);
+        pendingEmail = "";
+        emailVerified = false;
+        newEmail.value = "";
+        transactionPin.value = "";
+        emailWrap.classList.remove("verified");
+        emailSuccess.classList.remove("show");
+        sendCodeBtn.hidden = false;
+        sendCodeBtn.disabled = true;
+        changeEmailBtn.hidden = true;
+        pinContinueBtn.disabled = true;
+        setScreen("email");
+        showToast(`Email changed to ${updatedEmail}.`);
+      }, 850);
+    });
+
+    pinBack.addEventListener("click", () => {
+      resetVerificationState();
+      setScreen("email");
+      transactionPin.value = "";
+      pinContinueBtn.disabled = true;
+      setError(pinWrap, pinError, "");
+    });
+
+    emailBack.addEventListener("click", () => showToast("Back to Security settings."));
+
+    newEmail.addEventListener("input", () => {
+      if (emailVerified) resetVerificationState();
+      validateEmail(false);
+    });
+
+    newEmail.addEventListener("blur", () => validateEmail(false));
+
+    sendCodeBtn.addEventListener("click", () => {
+      if (!validateEmail(true)) return;
+      sendCodeBtn.textContent = "Sending...";
+      sendCodeBtn.disabled = true;
+      window.setTimeout(() => {
+        sendCodeBtn.textContent = "Send Verification Code";
+        sendCodeBtn.disabled = false;
+        openVerificationSheet();
+      }, 450);
+    });
+
+    closeSheet.addEventListener("click", closeVerificationSheet);
+
+    resendBtn.addEventListener("click", () => {
+      clearCode();
+      startCountdown();
+      showToast("Verification code sent again.");
+      codeBoxes[0].focus();
+    });
+
+    codeBoxes.forEach((box, index) => {
+      box.addEventListener("input", (event) => {
+        const digit = event.target.value.replace(/\D/g, "").slice(-1);
+        event.target.value = digit;
+        codeRow.classList.remove("error");
+        verifyStatus.className = "verify-status";
+        verifyStatus.textContent = "Enter the 4-digit code from your email.";
+
+        if (digit && index < codeBoxes.length - 1) codeBoxes[index + 1].focus();
+        verifyCode();
+      });
+
+      box.addEventListener("keydown", (event) => {
+        if (event.key === "Backspace" && !box.value && index > 0) codeBoxes[index - 1].focus();
+      });
+
+      box.addEventListener("paste", (event) => {
+        event.preventDefault();
+        const pasted = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, 4);
+        pasted.split("").forEach((digit, digitIndex) => {
+          codeBoxes[digitIndex].value = digit;
+        });
+        codeBoxes[Math.min(pasted.length, 3)].focus();
+        verifyCode();
+      });
+    });
+
+    document.querySelectorAll(".toggle").forEach((button) => {
+      button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.target);
+        const hidden = input.type === "password";
+        input.type = hidden ? "text" : "password";
+        button.setAttribute("aria-label", `${hidden ? "Hide" : "Show"} transaction PIN`);
+      });
+    });
+
+    emailForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (emailVerified) setScreen("pin");
+    });
+  </script>
+</body>
+</html>

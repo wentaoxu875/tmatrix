@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90-Day Growth Incentive System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45, 90, 135, 0.4);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="p-4 pb-24">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <button class="text-white text-2xl font-bold" onclick="goBack()">&larr;</button>
+        <h1 class="text-white text-lg font-semibold">90-Day Growth Incentive System</h1>
+        <div class="w-10"></div>
+    </div>
+
+    <!-- Build Your Streak Card -->
+    <div class="card">
+        <div class="flex items-start gap-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-gray-800 mb-1">Build Your Streak</h2>
+                <p class="text-gray-500 text-sm">Build consistent habits and earn rewards by signing in daily. Complete tasks or use Re-sign Cards to maintain your streak.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Rewards Card -->
+    <div class="card">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                </svg>
+            </div>
+            <h3 class="font-bold text-gray-800">Activity Rewards</h3>
+        </div>
+
+        <!-- Daily Sign-in Reward -->
+        <div class="flex items-center gap-3 mb-3 px-2">
+            <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-medium text-gray-800">Daily Sign-in Reward</h4>
+                <p class="text-gray-500 text-xs">Earn a base reward of at least ₦200 for every daily sign-in.</p>
+            </div>
+        </div>
+
+        <!-- Milestone Rewards -->
+        <div class="flex items-center gap-3 px-2">
+            <div class="w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657L13.414 22.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-medium text-gray-800">Milestone Rewards</h4>
+                <p class="text-gray-500 text-xs">On some key dates (eg: 14/28/32/...), completing transactions can earn exclusive rewards total ₦3600.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Participation Condition Card -->
+    <div class="card">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="font-bold text-gray-800">at least ₦60,000</h3>
+        </div>
+        <p class="text-gray-500 text-sm mb-3">Trading Volume Required at least ₦60,000</p>
+        
+        <div class="progress-bar mb-2">
+            <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        
+        <div class="flex justify-between text-xs">
+            <span class="text-gray-500">Current Accumulated Volume: ₦0</span>
+            <span class="text-green-500 font-medium">0% Completed</span>
+        </div>
+    </div>
+
+    <!-- Sign Up Button -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
+        <button class="btn-primary w-full" id="signupBtn" onclick="handleSignup()">
+            Sign up now
+            <span>&rarr;</span>
+        </button>
+    </div>
+
+    <script>
+        let currentVolume = 0;
+        const requiredVolume = 60000;
+
+        function goBack() {
+            alert('Go back clicked');
+        }
+
+        function handleSignup() {
+            if (currentVolume < requiredVolume) {
+                alert('Need to complete ≥₦60,000 transaction to sign up');
+            } else {
+                alert('Sign-up successful!');
+            }
+        }
+
+        function updateProgress(volume) {
+            currentVolume = volume;
+            const percentage = Math.min((volume / requiredVolume) * 100, 100);
+            document.querySelector('.progress-fill').style.width = percentage + '%';
+            document.querySelector('.progress-bar + div span:first-child').textContent = 
+                'Current Accumulated Volume: ₦' + volume.toLocaleString();
+            document.querySelector('.progress-bar + div span:last-child').textContent = 
+                Math.round(percentage) + '% Completed';
+            
+            const btn = document.getElementById('signupBtn');
+            if (currentVolume >= requiredVolume) {
+                btn.disabled = false;
+            }
+        }
+
+        setTimeout(() => {
+            updateProgress(30000);
+        }, 1000);
+    </script>
+</body>
+</html>

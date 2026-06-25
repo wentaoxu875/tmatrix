@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>订单详情服务反馈用户端原型</title>
+  <style>
+    :root {
+      --tbay-primary: #00cccc;
+      --tbay-primary-action: #00bfbf;
+      --tbay-text-primary: #011314;
+      --tbay-text-strong: #000001;
+      --tbay-text-secondary: #4b5e7b;
+      --tbay-text-muted: #959eb0;
+      --tbay-bg-page: #ffffff;
+      --tbay-bg-soft: #f5f6fa;
+      --tbay-bg-section: #f8f8f9;
+      --tbay-border: #ededee;
+      --tbay-success: #00c25f;
+      --tbay-warning: #ff7a28;
+      --tbay-error: #f24646;
+      --tbay-gold: #e6bb67;
+      --tbay-radius-sm: 4px;
+      --tbay-radius-md: 6px;
+      --tbay-radius-lg: 8px;
+      --tbay-shadow-card: 0 5px 15px rgba(0, 0, 0, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #eef2f6;
+      color: var(--tbay-text-primary);
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(260px, 360px) minmax(375px, 390px);
+      gap: 24px;
+      align-items: start;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .prototype-panel {
+      background: #fff;
+      border-radius: var(--tbay-radius-lg);
+      box-shadow: var(--tbay-shadow-card);
+      padding: 20px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .prototype-panel h1 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .prototype-panel p {
+      margin: 0 0 18px;
+      color: var(--tbay-text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .control-group {
+      margin-top: 18px;
+    }
+
+    .control-title {
+      margin-bottom: 8px;
+      color: var(--tbay-text-strong);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 4px;
+      border-radius: var(--tbay-radius-lg);
+      background: var(--tbay-bg-soft);
+    }
+
+    .segmented button {
+      min-height: 36px;
+      border: 0;
+      border-radius: var(--tbay-radius-md);
+      background: transparent;
+      color: var(--tbay-text-secondary);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .segmented button.active {
+      background: var(--tbay-primary-action);
+      color: #fff;
+    }
+
+    .flow-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .flow-list button {
+      min-height: 40px;
+      border: 1px solid var(--tbay-border);
+      border-radius: var(--tbay-radius-lg);
+      background: #fff;
+      color: var(--tbay-text-primary);
+      cursor: pointer;
+      text-align: left;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .flow-list button.active {
+      border-color: var(--tbay-primary-action);
+      background: #effafa;
+      color: #007f7f;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: var(--tbay-radius-lg);
+      background: var(--tbay-bg-soft);
+      color: var(--tbay-text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .phone {
+      width: 390px;
+      min-height: 844px;
+      overflow: hidden;
+      border: 1px solid #d8dde6;
+      background: var(--tbay-bg-section);
+      box-shadow: 0 18px 40px rgba(12, 27, 54, .15);
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      min-height: 844px;
+      background:
+        linear-gradient(180deg, rgba(0, 204, 204, .14) 0, rgba(255, 255, 255, .8) 122px, var(--tbay-bg-section) 230px),
+        var(--tbay-bg-section);
+      padding-bottom: 104px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .top-nav {
+      height: 50px;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      padding: 0 8px;
+      background: transparent;
+    }
+
+    .back-button {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      background: transparent;
+      color: var(--tbay-text-strong);
+      cursor: pointer;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .title {
+      text-align: center;
+      color: var(--tbay-text-strong);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .nav-link {
+      border: 0;
+      background: transparent;
+      color: var(--tbay-primary-action);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: right;
+      padding: 0;
+    }
+
+    .order-status {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      padding: 8px 20px 12px;
+    }
+
+    .status-icon {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--tbay-warning);
+      color: #fff;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .status-label {
+      color: var(--tbay-warning);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 0 12px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--tbay-radius-lg);
+      box-shadow: none;
+      padding: 20px;
+    }
+
+    .product-row {
+      display: grid;
+      grid-template-columns: 54px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 0 0 8px;
+    }
+
+    .product-logo {
+      width: 54px;
+      height: 36px;
+      border-radius: var(--tbay-radius-md);
+      background: #030303;
+      color: #16ca22;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .product-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .product-price {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .meta {
+      color: #8a94a8;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .copy {
+      display: inline-grid;
+      place-items: center;
+      width: 13px;
+      height: 13px;
+      margin-left: 4px;
+      border: 1px solid var(--tbay-primary-action);
+      border-radius: 3px;
+      color: var(--tbay-primary-action);
+      font-size: 9px;
+      vertical-align: text-top;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 16px;
+      margin-top: 14px;
+    }
+
+    .field-label {
+      color: var(--tbay-text-secondary);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .field-value {
+      margin-top: 3px;
+      color: var(--tbay-text-strong);
+      font-size: 13px;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .bottom-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 88px;
+      display: grid;
+      grid-template-columns: 1fr 136px;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 22px 22px;
+      background: linear-gradient(180deg, rgba(248, 248, 249, .3), #f8f8f9 24%);
+    }
+
+    .help-pill {
+      height: 58px;
+      border-radius: 30px;
+      background: #fff;
+      box-shadow: var(--tbay-shadow-card);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .help-pill strong {
+      display: block;
+      color: var(--tbay-text-strong);
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .help-pill span {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--tbay-primary-action);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .primary-button {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 26px;
+      background: var(--tbay-primary-action);
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .primary-button:disabled {
+      background: #b9c3cf;
+      cursor: not-allowed;
+    }
+
+    .form-content {
+      padding: 8px 20px 112px;
+    }
+
+    .reward-banner {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px;
+      border-radius: var(--tbay-radius-lg);
+      background: #fff8ef;
+      color: #704019;
+      border: 1px solid rgba(255, 122, 40, .24);
+    }
+
+    .reward-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--tbay-warning);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .reward-banner strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .reward-banner span {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .section-card {
+      margin-top: 14px;
+      background: #fff;
+      border-radius: var(--tbay-radius-lg);
+      padding: 18px 16px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      color: var(--tbay-text-strong);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .stars {
+      display: grid;
+      grid-template-columns: repeat(5, 42px);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .star {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: var(--tbay-radius-lg);
+      background: var(--tbay-bg-soft);
+      color: #c4cad6;
+      cursor: pointer;
+      font-size: 27px;
+      line-height: 1;
+    }
+
+    .star.selected {
+      color: var(--tbay-warning);
+      background: #fff8ef;
+    }
+
+    .textarea {
+      width: 100%;
+      min-height: 144px;
+      resize: none;
+      border: 1px solid transparent;
+      border-radius: var(--tbay-radius-lg);
+      background: var(--tbay-bg-soft);
+      color: var(--tbay-text-primary);
+      outline: none;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .textarea:focus {
+      border-color: var(--tbay-primary-action);
+      background: #fff;
+    }
+
+    .textarea.error {
+      border-color: var(--tbay-error);
+      background: #fff;
+    }
+
+    .helper-text {
+      min-height: 18px;
+      margin-top: 8px;
+      color: var(--tbay-text-muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .helper-text.error {
+      color: var(--tbay-error);
+    }
+
+    .fixed-cta {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 16px 20px 24px;
+      background: #fff;
+      box-shadow: 0 -1px 4px rgba(237, 237, 238, .8);
+    }
+
+    .status-hero {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      padding: 16px 20px 18px;
+    }
+
+    .feedback-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--tbay-radius-lg);
+      background: var(--tbay-warning);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .status-title {
+      color: var(--tbay-warning);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .status-subtitle {
+      color: var(--tbay-text-muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .detail-card-title {
+      margin-bottom: 16px;
+      color: var(--tbay-primary-action);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .detail-line {
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--tbay-border);
+    }
+
+    .detail-line:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .records-list {
+      padding: 18px 12px;
+    }
+
+    .record-card {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      border: 0;
+      border-radius: var(--tbay-radius-lg);
+      background: #fff;
+      cursor: pointer;
+      padding: 16px 14px;
+      text-align: left;
+    }
+
+    .record-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--tbay-warning);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .record-title {
+      color: var(--tbay-text-primary);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .record-time {
+      margin-top: 6px;
+      color: var(--tbay-text-muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .rating-view {
+      color: var(--tbay-warning);
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .tag {
+      display: inline-block;
+      min-width: 64px;
+      text-align: center;
+      border-radius: 12px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .tag.pending {
+      background: #fff1e8;
+      color: var(--tbay-warning);
+    }
+
+    .tag.success {
+      background: #e9fff3;
+      color: var(--tbay-success);
+    }
+
+    .tag.muted {
+      background: var(--tbay-bg-soft);
+      color: var(--tbay-text-secondary);
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 116px;
+      transform: translateX(-50%);
+      display: none;
+      max-width: 300px;
+      border-radius: 22px;
+      background: rgba(0, 0, 0, .76);
+      color: #fff;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.4;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    @media (max-width: 820px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        padding: 0;
+      }
+
+      .prototype-panel {
+        position: static;
+        border-radius: 0;
+      }
+
+      .phone {
+        width: 100%;
+        max-width: 390px;
+        margin: 0 auto 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="workspace">
+    <aside class="prototype-panel">
+      <h1>订单详情服务反馈原型</h1>
+      <p>基于 Tbay H5 设计规范：移动端单列、青绿色主按钮、8px 卡片、固定底部 CTA。点击手机画布内按钮可走完整流程。</p>
+
+      <div class="control-group">
+        <div class="control-title">奖励规则</div>
+        <div class="segmented" aria-label="奖励规则切换">
+          <button class="active" type="button" data-reward="on">有奖励</button>
+          <button type="button" data-reward="off">无奖励</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="control-title">页面状态</div>
+        <div class="flow-list">
+          <button class="active" type="button" data-screen="order">1. 订单详情入口</button>
+          <button type="button" data-screen="form">2. 提交评价</button>
+          <button type="button" data-screen="records">3. 反馈记录</button>
+          <button type="button" data-screen="detail">4. 评价详情</button>
+        </div>
+      </div>
+
+      <div class="note">
+        原型规则：同一订单同一场景只允许评价一次；评价提交后进入 Pending 详情页；奖励是否展示由“订单详情场景”奖励规则决定。
+      </div>
+    </aside>
+
+    <section class="phone" aria-label="移动端原型画布">
+      <div id="screen-order" class="screen active">
+        <div class="top-nav">
+          <button class="back-button" type="button" aria-label="Back">‹</button>
+          <div class="title">Order Details</div>
+          <div></div>
+        </div>
+
+        <div class="order-status">
+          <div class="status-icon">L</div>
+          <div class="status-label">In Trade</div>
+        </div>
+
+        <div class="content">
+          <div class="card">
+            <div class="product-row">
+              <div class="product-logo">Razer</div>
+              <div class="product-title">Razer Gift Card</div>
+              <div class="product-price">10 USD</div>
+            </div>
+            <div class="meta">Order Date &amp; Time: Jun 24, 2026 - 3:31:51 PM</div>
+            <div class="meta" style="margin-top: 14px;">Order ID GO20260624153150870471047 <span class="copy">□</span></div>
+
+            <div class="detail-grid">
+              <div>
+                <div class="field-label">Settle Amount</div>
+                <div class="field-value">15.28675 Points ≈ 10915.96 NGN</div>
+              </div>
+              <div>
+                <div class="field-label">Order Amount</div>
+                <div class="field-value">15.28675 Points</div>
+              </div>
+              <div>
+                <div class="field-label">Category</div>
+                <div class="field-value">E-Code</div>
+              </div>
+              <div>
+                <div class="field-label">Member Premium+0.2%</div>
+                <div class="field-value">0.03051247 Points</div>
+              </div>
+              <div>
+                <div class="field-label">Original Price</div>
+                <div class="field-value">15.25623753 Points</div>
+              </div>
+              <div>
+                <div class="field-label">Rate</div>
+                <div class="field-value">152.8675%</div>
+              </div>
+              <div>
+                <div class="field-label">Bonus Coupon+0</div>
+                <div class="field-value">0 Points</div>
+              </div>
+              <div>
+                <div class="field-label">Consume Coins</div>
+                <div class="field-value">0 Points</div>
+              </div>
+              <div>
+                <div class="field-label">Attachment:</div>
+                <div class="field-value">-</div>
+              </div>
+              <div>
+                <div class="field-label">code:</div>
+                <div class="field-value">349ueoij4383808080</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="help-pill">
+            <div>
+              <strong>Encountered problems?</strong>
+              <span>Contact Us</span>
+            </div>
+          </div>
+          <button class="primary-button" type="button" id="leaveFeedback">Leave Feedback</button>
+        </div>
+      </div>
+
+      <div id="screen-form" class="screen">
+        <div class="top-nav">
+          <button class="back-button" type="button" data-go="order" aria-label="Back">‹</button>
+          <div class="title">Leave Feedback</div>
+          <button class="nav-link" type="button" data-go="records">Records</button>
+        </div>
+
+        <div class="form-content">
+          <div id="rewardBanner" class="reward-banner">
+            <div class="reward-icon">$</div>
+            <div>
+              <strong>Share your experience and get a reward</strong>
+              <span>Reward is issued after platform verification. Daily reward limit applies.</span>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h2 class="section-title">Rate your experience</h2>
+            <div class="stars" aria-label="5 star rating">
+              <button class="star" type="button" data-star="1">★</button>
+              <button class="star" type="button" data-star="2">★</button>
+              <button class="star" type="button" data-star="3">★</button>
+              <button class="star" type="button" data-star="4">★</button>
+              <button class="star" type="button" data-star="5">★</button>
+            </div>
+            <div id="ratingHint" class="helper-text">Select 1 to 5 stars.</div>
+          </div>
+
+          <div class="section-card">
+            <h2 class="section-title">Tell us more</h2>
+            <textarea id="feedbackText" class="textarea" maxlength="500" placeholder="Describe your experience with this order."></textarea>
+            <div id="textHint" class="helper-text">Required, up to 500 characters.</div>
+          </div>
+        </div>
+
+        <div class="fixed-cta">
+          <button id="submitFeedback" class="primary-button" type="button" disabled>Submit Feedback</button>
+        </div>
+      </div>
+
+      <div id="screen-records" class="screen">
+        <div class="top-nav">
+          <button class="back-button" type="button" data-go="form" aria-label="Back">‹</button>
+          <div class="title">Records</div>
+          <div></div>
+        </div>
+
+        <div class="records-list">
+          <button class="record-card" type="button" data-go="detail">
+            <div class="record-icon">F</div>
+            <div>
+              <div class="record-title">Rate Our Service</div>
+              <div class="record-time">Jun 24, 2026 - 3:45:18 PM</div>
+            </div>
+            <span class="tag pending">Pending</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="screen-detail" class="screen">
+        <div class="top-nav">
+          <button class="back-button" type="button" data-go="order" aria-label="Back">‹</button>
+          <div class="title">Feedback detail</div>
+          <div></div>
+        </div>
+
+        <div class="status-hero">
+          <div class="feedback-icon">F</div>
+          <div id="detailStatusTitle" class="status-title">Pending</div>
+          <div id="detailStatusSubtitle" class="status-subtitle">To be processed by the platform</div>
+        </div>
+
+        <div class="content">
+          <div class="card">
+            <div class="detail-card-title">Feedback detail</div>
+            <div class="detail-line">
+              <div class="field-label">Feedback type</div>
+              <div class="field-value">Rate Our Service</div>
+            </div>
+            <div class="detail-line">
+              <div class="field-label">Rating</div>
+              <div id="detailRating" class="field-value rating-view">★★★★★</div>
+            </div>
+            <div class="detail-line">
+              <div class="field-label">Order ID</div>
+              <div class="field-value">GO20260624153150870471047</div>
+            </div>
+            <div class="detail-line">
+              <div class="field-label">Feedback Content</div>
+              <div id="detailText" class="field-value">The trade process was clear and I could check the order status easily.</div>
+            </div>
+            <div class="detail-line">
+              <div class="field-label">Feedback time</div>
+              <div class="field-value">Jun 24, 2026 - 3:45:18 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="toast" class="toast"></div>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      reward: true,
+      screen: 'order',
+      rating: 0,
+      text: '',
+      submitted: false
+    };
+
+    const screens = {
+      order: document.getElementById('screen-order'),
+      form: document.getElementById('screen-form'),
+      records: document.getElementById('screen-records'),
+      detail: document.getElementById('screen-detail')
+    };
+
+    const rewardBanner = document.getElementById('rewardBanner');
+    const stars = Array.from(document.querySelectorAll('.star'));
+    const textarea = document.getElementById('feedbackText');
+    const submit = document.getElementById('submitFeedback');
+    const ratingHint = document.getElementById('ratingHint');
+    const textHint = document.getElementById('textHint');
+    const toast = document.getElementById('toast');
+    const ratingLabels = {
+      1: 'Seriously dissatisfied',
+      2: 'Dissatisfied',
+      3: 'Neutral',
+      4: 'Satisfied',
+      5: 'Very satisfied'
+    };
+
+    function setScreen(name) {
+      state.screen = name;
+      Object.entries(screens).forEach(([key, el]) => el.classList.toggle('active', key === name));
+      document.querySelectorAll('[data-screen]').forEach(button => {
+        button.classList.toggle('active', button.dataset.screen === name);
+      });
+      if (name === 'detail') updateDetail();
+    }
+
+    function setReward(value) {
+      state.reward = value;
+      document.querySelectorAll('[data-reward]').forEach(button => {
+        button.classList.toggle('active', (button.dataset.reward === 'on') === value);
+      });
+      rewardBanner.style.display = value ? 'grid' : 'none';
+      updateDetail();
+    }
+
+    function validateForm(showErrors = false) {
+      const text = textarea.value.trim();
+      const valid = state.rating > 0 && text.length > 0;
+      submit.disabled = !valid;
+      ratingHint.textContent = state.rating ? ratingLabels[state.rating] : 'Select 1 to 5 stars.';
+      ratingHint.classList.toggle('error', showErrors && !state.rating);
+      textHint.textContent = text.length ? `${text.length}/500` : 'Required, up to 500 characters.';
+      textHint.classList.toggle('error', showErrors && !text.length);
+      textarea.classList.toggle('error', showErrors && !text.length);
+      return valid;
+    }
+
+    function updateStars(value) {
+      state.rating = value;
+      stars.forEach(star => {
+        star.classList.toggle('selected', Number(star.dataset.star) <= value);
+      });
+      validateForm();
+    }
+
+    function updateDetail() {
+      const detailRating = document.getElementById('detailRating');
+      const detailText = document.getElementById('detailText');
+      const title = document.getElementById('detailStatusTitle');
+      const subtitle = document.getElementById('detailStatusSubtitle');
+      const rating = state.rating || 5;
+      detailRating.textContent = '★★★★★'.slice(0, rating) + '☆☆☆☆☆'.slice(0, 5 - rating);
+      detailText.textContent = state.text || 'The trade process was clear and I could check the order status easily.';
+
+      if (!state.submitted) {
+        title.textContent = 'Pending';
+        subtitle.textContent = 'To be processed by the platform';
+        return;
+      }
+
+      title.textContent = 'Pending';
+      subtitle.textContent = state.reward ? 'Reward will be issued after verification' : 'Feedback submitted successfully';
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+
+    document.querySelectorAll('[data-screen]').forEach(button => {
+      button.addEventListener('click', () => setScreen(button.dataset.screen));
+    });
+
+    document.querySelectorAll('[data-reward]').forEach(button => {
+      button.addEventListener('click', () => setReward(button.dataset.reward === 'on'));
+    });
+
+    document.querySelectorAll('[data-go]').forEach(button => {
+      button.addEventListener('click', () => setScreen(button.dataset.go));
+    });
+
+    document.getElementById('leaveFeedback').addEventListener('click', () => {
+      if (state.submitted) {
+        setScreen('detail');
+        return;
+      }
+      setScreen('form');
+    });
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => updateStars(Number(star.dataset.star)));
+    });
+
+    textarea.addEventListener('input', () => {
+      state.text = textarea.value.trim();
+      validateForm();
+    });
+
+    submit.addEventListener('click', () => {
+      if (!validateForm(true)) {
+        showToast('Please select a rating and enter feedback content.');
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = 'Submitting...';
+      window.setTimeout(() => {
+        state.submitted = true;
+        submit.textContent = 'Submit Feedback';
+        document.getElementById('leaveFeedback').textContent = 'View Feedback';
+        setScreen('detail');
+      }, 500);
+    });
+
+    setReward(true);
+    updateStars(0);
+  </script>
+</body>
+</html>

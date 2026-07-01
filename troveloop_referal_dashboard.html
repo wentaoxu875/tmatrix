@@ -695,10 +695,10 @@
           <button type="button" data-metric="Registration rate">注册率</button>
           <button type="button" data-metric="Valid referrals">有效推荐</button>
           <button type="button" data-metric="Invalid referrals">无效推荐</button>
-          <button type="button" data-metric="Txn Invalid Ref">无效有交易</button>
-          <button type="button" data-metric="No Txn Invalid Ref">无效无交易</button>
-          <button type="button" data-metric="Reward obtained">总奖励金额(Points)</button>
-          <button type="button" data-metric="Quality Rate">有效推荐率</button>
+          <button type="button" data-metric="Txn Invalid Referral">无效有交易用户</button>
+          <button type="button" data-metric="No Txn Invalid Referral">无效无交易用户</button>
+          <button type="button" data-metric="Rewards distributed">总奖励金额(Points)</button>
+          <button type="button" data-metric="Referral Quality Rate">有效推荐率</button>
           <button type="button" data-metric="CPA">单用户成本(Points)</button>
         </div>
 
@@ -782,10 +782,10 @@
           "Registration rate": "注册率",
           "Valid referrals": "有效推荐用户",
           "Invalid referrals": "无效推荐用户",
-          "Txn Invalid Ref": "无效有交易用户",
-          "No Txn Invalid Ref": "无效无交易用户",
-          "Reward obtained": "总奖励金额(Points)",
-          "Quality Rate": "有效推荐率",
+          "Txn Invalid Referral": "无效有交易用户",
+          "No Txn Invalid Referral": "无效无交易用户",
+          "Rewards distributed": "总奖励金额(Points)",
+          "Referral Quality Rate": "有效推荐率",
           "CPA": "单用户成本(Points)"
         },
         metricTabs: {
@@ -795,10 +795,10 @@
           "Registration rate": "注册率",
           "Valid referrals": "有效推荐",
           "Invalid referrals": "无效推荐",
-          "Txn Invalid Ref": "无效有交易",
-          "No Txn Invalid Ref": "无效无交易",
-          "Reward obtained": "总奖励金额(Points)",
-          "Quality Rate": "有效推荐率",
+          "Txn Invalid Referral": "无效有交易用户",
+          "No Txn Invalid Referral": "无效无交易用户",
+          "Rewards distributed": "总奖励金额(Points)",
+          "Referral Quality Rate": "有效推荐率",
           "CPA": "单用户成本(Points)"
         },
         columns: {
@@ -867,37 +867,37 @@
           "Registration rate": "Registration rate",
           "Valid referrals": "Valid referrals",
           "Invalid referrals": "Invalid referrals",
-          "Txn Invalid Ref": "Txn Invalid Ref",
-          "No Txn Invalid Ref": "No Txn Invalid Ref",
-          "Reward obtained": "Reward obtained (Points)",
-          "Quality Rate": "Quality Rate",
+          "Txn Invalid Referral": "Txn Invalid Referral",
+          "No Txn Invalid Referral": "No Txn Invalid Referral",
+          "Rewards distributed": "Rewards distributed",
+          "Referral Quality Rate": "Referral Quality Rate",
           "CPA": "CPA"
         },
         metricTabs: {
-          "Referral page visits": "Visits",
-          "Referral shares": "Shares",
+          "Referral page visits": "Referral page visits",
+          "Referral shares": "Referral shares",
           "Registrations": "Registrations",
-          "Registration rate": "Reg. rate",
-          "Valid referrals": "Valid",
-          "Invalid referrals": "Invalid",
-          "Txn Invalid Ref": "Txn invalid",
-          "No Txn Invalid Ref": "No txn invalid",
-          "Reward obtained": "Reward (Points)",
-          "Quality Rate": "Quality rate",
+          "Registration rate": "Registration rate",
+          "Valid referrals": "Valid referrals",
+          "Invalid referrals": "Invalid referrals",
+          "Txn Invalid Referral": "Txn Invalid Referral",
+          "No Txn Invalid Referral": "No Txn Invalid Referral",
+          "Rewards distributed": "Rewards distributed",
+          "Referral Quality Rate": "Referral Quality Rate",
           "CPA": "CPA"
         },
         columns: {
           date: "Date",
-          visits: "Visits",
-          shares: "Shares",
+          visits: "Referral page visits",
+          shares: "Referral shares",
           registrations: "Registrations",
-          regRate: "Reg. rate",
+          regRate: "Registration rate",
           valid: "Valid referrals",
           invalid: "Invalid referrals",
-          txnInvalid: "Txn invalid ref",
-          noTxnInvalid: "No txn invalid ref",
-          reward: "Reward obtained (Points)",
-          qualityRate: "Quality Rate",
+          txnInvalid: "Txn Invalid Referral",
+          noTxnInvalid: "No Txn Invalid Referral",
+          reward: "Rewards distributed",
+          qualityRate: "Referral Quality Rate",
           cpa: "CPA"
         },
         popoverLines: [
@@ -907,10 +907,10 @@
           "Registration rate: registrations / referral shares;",
           "Valid referrals: New valid referrals during the selected time;",
           "Invalid referrals: New invalid referrals during the selected time;",
-          "Txn Invalid Ref: Invalid referrals who have transactions;",
-          "No Txn Invalid Ref: Invalid referrals who have no transactions;",
-          "Reward obtained (Points): Total reward amount issued during the selected time;",
-          "Quality Rate: valid referrals / registrations;",
+          "Txn Invalid Referral: Invalid referrals who have transactions;",
+          "No Txn Invalid Referral: Invalid referrals who have no transactions;",
+          "Rewards distributed: Total reward amount issued during the selected time;",
+          "Referral Quality Rate: valid referrals / registrations;",
           "CPA: reward obtained / valid referrals;"
         ]
       }
@@ -972,14 +972,14 @@
       "Registration rate": "regRate",
       "Valid referrals": "valid",
       "Invalid referrals": "invalid",
-      "Txn Invalid Ref": "txnInvalid",
-      "No Txn Invalid Ref": "noTxnInvalid",
-      "Reward obtained": "reward",
-      "Quality Rate": "qualityRate",
+      "Txn Invalid Referral": "txnInvalid",
+      "No Txn Invalid Referral": "noTxnInvalid",
+      "Rewards distributed": "reward",
+      "Referral Quality Rate": "qualityRate",
       "CPA": "cpa"
     };
 
-    const rateMetrics = new Set(["Registration rate", "Quality Rate"]);
+    const rateMetrics = new Set(["Registration rate", "Referral Quality Rate"]);
 
     function currentRows() {
       const base = state.grain === "week" ? weeklyRows : state.grain === "month" ? monthlyRows : dailyRows;

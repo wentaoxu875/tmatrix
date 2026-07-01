@@ -125,6 +125,9 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      padding: 0 10px;
+      outline: none;
+      cursor: pointer;
     }
 
     .avatar {
@@ -599,54 +602,46 @@
         <span>- matrix</span>
       </div>
       <nav class="top-tabs" aria-label="顶部导航">
-        <div class="top-tab">系统管理</div>
-        <div class="top-tab">业务管理</div>
-        <div class="top-tab">营销管理</div>
-        <div class="top-tab active">数据统计</div>
+        <div class="top-tab" data-i18n="navSystem">系统管理</div>
+        <div class="top-tab" data-i18n="navBusiness">业务管理</div>
+        <div class="top-tab" data-i18n="navMarketing">营销管理</div>
+        <div class="top-tab active" data-i18n="navStats">数据统计</div>
       </nav>
       <div class="top-actions">
-        <div class="language">简体中文⌄</div>
+        <select class="language" id="languageSwitch" aria-label="Language">
+          <option value="zh" selected>简体中文</option>
+          <option value="en">English</option>
+        </select>
         <div class="user"><span class="avatar"></span><span>xiabing</span></div>
       </div>
     </header>
 
     <aside class="sidebar">
-      <div class="side-group-title">服务商统计</div>
-      <div class="side-item">服务质量</div>
-      <div class="side-group-title">基础数据</div>
-      <div class="side-item">新用户数据</div>
-      <div class="side-item">订单数据</div>
-      <div class="side-group-title">营销数据</div>
-      <div class="side-item">券发放数据</div>
-      <div class="side-item active">邀请裂变</div>
+      <div class="side-group-title" data-i18n="sideMerchantStats">服务商统计</div>
+      <div class="side-item" data-i18n="sideServiceQuality">服务质量</div>
+      <div class="side-group-title" data-i18n="sideBaseData">基础数据</div>
+      <div class="side-item" data-i18n="sideNewUsers">新用户数据</div>
+      <div class="side-item" data-i18n="sideOrders">订单数据</div>
+      <div class="side-group-title" data-i18n="sideMarketingData">营销数据</div>
+      <div class="side-item" data-i18n="sideCoupons">券发放数据</div>
+      <div class="side-item active" data-i18n="sideReferral">邀请裂变</div>
     </aside>
 
     <main class="content">
-      <div class="crumb">数据统计 / 营销数据 / 邀请裂变看板</div>
+      <div class="crumb" data-i18n="breadcrumb">数据统计 / 营销数据 / 邀请裂变看板</div>
       <section class="panel">
         <div class="title-row">
           <div class="title-left">
-            <h1>邀请裂变看板</h1>
-            <span class="hint" id="metricHelp">指标说明<span class="hint-dot">i</span></span>
+            <h1 data-i18n="pageTitle">邀请裂变看板</h1>
+            <span class="hint" id="metricHelp"><span id="metricHelpText">指标说明</span><span class="hint-dot">i</span></span>
             <div class="metric-popover" id="metricPopover">
-              <div class="metric-popover-title">指标说明</div>
-              <p>活动页访问量：统计时间内访问邀请裂变活动的 UV；</p>
-              <p>分享点击数：统计时间内点击分享按钮的用户数；</p>
-              <p>注册用户数：统计时间内带邀请码注册的用户数；</p>
-              <p>注册率：注册用户数/分享点击数；</p>
-              <p>交易用户数：统计时间内带邀请码用户的交易人数；</p>
-              <p>交易率：交易用户数/注册用户数；</p>
-              <p>有效推荐用户：统计时间内新增有效推荐用户数；</p>
-              <p>无效推荐用户：统计时间内新增无效推荐用户数；</p>
-              <p>总奖励金额：统计时间内发放奖励金额之和；</p>
-              <p>CPA：有效推荐用户/注册用户数；</p>
             </div>
           </div>
         </div>
 
         <div class="filters" aria-label="筛选条件">
           <div class="field">
-            <span class="label">站点：</span>
+            <span class="label" id="siteLabel">站点：</span>
             <select id="site">
               <option selected>Troveloop</option>
               <option>T-matrix</option>
@@ -654,16 +649,16 @@
             </select>
           </div>
           <div class="field">
-            <span class="label">来源：</span>
+            <span class="label" id="sourceLabel">来源：</span>
             <select id="source">
-              <option selected>全部</option>
-              <option>安卓</option>
-              <option>IOS</option>
-              <option>H5</option>
+              <option value="all" selected>全部</option>
+              <option value="android">安卓</option>
+              <option value="ios">IOS</option>
+              <option value="h5">H5</option>
             </select>
           </div>
           <div class="field">
-            <span class="label">时间：</span>
+            <span class="label" id="timeLabel">时间：</span>
             <div class="date-range">
               <input id="startDate" type="date" value="2026-06-25">
               <span class="date-sep">—</span>
@@ -688,7 +683,7 @@
           <button type="button" data-metric="Transacting referrals">交易用户</button>
           <button type="button" data-metric="Transacting rate">交易率</button>
           <button type="button" data-metric="Valid referrals">有效推荐</button>
-          <button type="button" data-metric="Reward obtained">奖励金额</button>
+          <button type="button" data-metric="Reward obtained">奖励金额(Points)</button>
           <button type="button" data-metric="CPA (Valid/Total)">CPA</button>
         </div>
 
@@ -703,17 +698,17 @@
           <table>
             <thead>
               <tr>
-                <th style="width: 190px;">日期</th>
-                <th>活动页访问量</th>
-                <th>分享点击数</th>
-                <th>注册用户数</th>
-                <th>注册率</th>
-                <th>交易用户数</th>
-                <th>交易率</th>
-                <th>有效推荐用户</th>
-                <th>无效推荐用户</th>
-                <th>总奖励金额</th>
-                <th>CPA</th>
+                <th style="width: 190px;" data-col="date">日期</th>
+                <th data-col="visits">活动页访问量</th>
+                <th data-col="shares">分享点击数</th>
+                <th data-col="registrations">注册用户数</th>
+                <th data-col="regRate">注册率</th>
+                <th data-col="transacting">交易用户数</th>
+                <th data-col="transRate">交易率</th>
+                <th data-col="valid">有效推荐用户</th>
+                <th data-col="invalid">无效推荐用户</th>
+                <th data-col="reward">奖励金额(Points)</th>
+                <th data-col="cpa">CPA</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -732,17 +727,167 @@
   <div class="toast" id="toast">已导出当前筛选结果</div>
 
   <script>
-    const metricNames = {
-      "Referral page visits": "活动页访问量",
-      "Referral shares": "分享点击数",
-      "Registrations": "注册用户数",
-      "Registration rate": "注册率",
-      "Transacting referrals": "交易用户数",
-      "Transacting rate": "交易率",
-      "Valid referrals": "有效推荐用户",
-      "Invalid referrals": "无效推荐用户",
-      "Reward obtained": "总奖励金额",
-      "CPA (Valid/Total)": "CPA（有效/总数）"
+    const i18n = {
+      zh: {
+        pageTitle: "邀请裂变看板",
+        docTitle: "Troveloop 邀请裂变看板",
+        navSystem: "系统管理",
+        navBusiness: "业务管理",
+        navMarketing: "营销管理",
+        navStats: "数据统计",
+        sideMerchantStats: "服务商统计",
+        sideServiceQuality: "服务质量",
+        sideBaseData: "基础数据",
+        sideNewUsers: "新用户数据",
+        sideOrders: "订单数据",
+        sideMarketingData: "营销数据",
+        sideCoupons: "券发放数据",
+        sideReferral: "邀请裂变",
+        breadcrumb: "数据统计 / 营销数据 / 邀请裂变看板",
+        metricHelp: "指标说明",
+        siteLabel: "站点：",
+        sourceLabel: "来源：",
+        timeLabel: "时间：",
+        search: "搜索",
+        reset: "重置",
+        export: "导出",
+        total: "总计",
+        rows: count => `共 ${count} 条`,
+        pageSize: "10 条/页⌄",
+        refreshed: "已按当前条件刷新数据",
+        resetDone: "已重置筛选条件",
+        exported: "已导出当前筛选结果",
+        sourceOptions: { all: "全部", android: "安卓", ios: "IOS", h5: "H5" },
+        grain: { day: "日", week: "周", month: "月" },
+        metricNames: {
+          "Referral page visits": "活动页访问量",
+          "Referral shares": "分享点击数",
+          "Registrations": "注册用户数",
+          "Registration rate": "注册率",
+          "Transacting referrals": "交易用户数",
+          "Transacting rate": "交易率",
+          "Valid referrals": "有效推荐用户",
+          "Invalid referrals": "无效推荐用户",
+          "Reward obtained": "奖励金额(Points)",
+          "CPA (Valid/Total)": "CPA（有效/总数）"
+        },
+        metricTabs: {
+          "Referral page visits": "访问量",
+          "Referral shares": "分享点击",
+          "Registrations": "注册用户",
+          "Registration rate": "注册率",
+          "Transacting referrals": "交易用户",
+          "Transacting rate": "交易率",
+          "Valid referrals": "有效推荐",
+          "Reward obtained": "奖励金额(Points)",
+          "CPA (Valid/Total)": "CPA"
+        },
+        columns: {
+          date: "日期",
+          visits: "活动页访问量",
+          shares: "分享点击数",
+          registrations: "注册用户数",
+          regRate: "注册率",
+          transacting: "交易用户数",
+          transRate: "交易率",
+          valid: "有效推荐用户",
+          invalid: "无效推荐用户",
+          reward: "奖励金额(Points)",
+          cpa: "CPA"
+        },
+        popoverLines: [
+          "活动页访问量：统计时间内访问邀请裂变活动的 UV；",
+          "分享点击数：统计时间内点击分享按钮的用户数；",
+          "注册用户数：统计时间内带邀请码注册的用户数；",
+          "注册率：注册用户数/分享点击数；",
+          "交易用户数：统计时间内带邀请码用户的交易人数；",
+          "交易率：交易用户数/注册用户数；",
+          "有效推荐用户：统计时间内新增有效推荐用户数；",
+          "无效推荐用户：统计时间内新增无效推荐用户数；",
+          "奖励金额(Points)：统计时间内发放奖励金额之和；",
+          "CPA：有效推荐用户/注册用户数；"
+        ]
+      },
+      en: {
+        pageTitle: "Referral Dashboard",
+        docTitle: "Troveloop Referral Dashboard",
+        navSystem: "System",
+        navBusiness: "Business",
+        navMarketing: "Marketing",
+        navStats: "Statistics",
+        sideMerchantStats: "Merchant Stats",
+        sideServiceQuality: "Service Quality",
+        sideBaseData: "Base Data",
+        sideNewUsers: "New Users",
+        sideOrders: "Order Data",
+        sideMarketingData: "Marketing Data",
+        sideCoupons: "Coupon Data",
+        sideReferral: "Referral",
+        breadcrumb: "Statistics / Marketing Data / Referral Dashboard",
+        metricHelp: "Metric Notes",
+        siteLabel: "Site:",
+        sourceLabel: "Source:",
+        timeLabel: "Time:",
+        search: "Search",
+        reset: "Reset",
+        export: "Export",
+        total: "Total",
+        rows: count => `${count} rows`,
+        pageSize: "10 / page⌄",
+        refreshed: "Data refreshed",
+        resetDone: "Filters reset",
+        exported: "Current results exported",
+        sourceOptions: { all: "All", android: "Android", ios: "iOS", h5: "H5" },
+        grain: { day: "Day", week: "Week", month: "Month" },
+        metricNames: {
+          "Referral page visits": "Referral page visits",
+          "Referral shares": "Referral shares",
+          "Registrations": "Registrations",
+          "Registration rate": "Registration rate",
+          "Transacting referrals": "Transacting referrals",
+          "Transacting rate": "Transacting rate",
+          "Valid referrals": "Valid referrals",
+          "Invalid referrals": "Invalid referrals",
+          "Reward obtained": "Reward obtained (Points)",
+          "CPA (Valid/Total)": "CPA (Valid/Total)"
+        },
+        metricTabs: {
+          "Referral page visits": "Visits",
+          "Referral shares": "Shares",
+          "Registrations": "Registrations",
+          "Registration rate": "Reg. rate",
+          "Transacting referrals": "Transacting",
+          "Transacting rate": "Txn. rate",
+          "Valid referrals": "Valid",
+          "Reward obtained": "Reward (Points)",
+          "CPA (Valid/Total)": "CPA"
+        },
+        columns: {
+          date: "Date",
+          visits: "Visits",
+          shares: "Shares",
+          registrations: "Registrations",
+          regRate: "Reg. rate",
+          transacting: "Transacting users",
+          transRate: "Txn. rate",
+          valid: "Valid referrals",
+          invalid: "Invalid referrals",
+          reward: "Reward obtained (Points)",
+          cpa: "CPA"
+        },
+        popoverLines: [
+          "Referral page visits: UVs visiting the referral campaign during the selected time;",
+          "Referral shares: Users who clicked the share button during the selected time;",
+          "Registrations: Users who registered with an invitation code during the selected time;",
+          "Registration rate: registrations / referral shares;",
+          "Transacting referrals: Referred users who transacted during the selected time;",
+          "Transacting rate: transacting referrals / registrations;",
+          "Valid referrals: New valid referrals during the selected time;",
+          "Invalid referrals: New invalid referrals during the selected time;",
+          "Reward obtained (Points): Total reward amount issued during the selected time;",
+          "CPA: valid referrals / registrations;"
+        ]
+      }
     };
 
     const dailyRows = [
@@ -775,8 +920,9 @@
     let state = {
       metric: "Referral page visits",
       grain: "day",
-      source: "全部",
-      site: "Troveloop"
+      source: "all",
+      site: "Troveloop",
+      lang: "zh"
     };
 
     const columns = [
@@ -807,10 +953,10 @@
 
     function currentRows() {
       const base = state.grain === "week" ? weeklyRows : state.grain === "month" ? monthlyRows : dailyRows;
-      const factorMap = { "全部": 1, "安卓": .42, "IOS": .36, "H5": .22 };
+      const factorMap = { all: 1, android: .42, ios: .36, h5: .22 };
       const factor = factorMap[state.source] || 1;
       return base.map(row => {
-        if (state.source === "全部") return { ...row };
+        if (state.source === "all") return { ...row };
         const next = { ...row };
         ["visits", "shares", "registrations", "transacting", "valid", "invalid", "reward"].forEach(key => {
           next[key] = Math.round(row[key] * factor);
@@ -824,8 +970,13 @@
 
     function formatValue(value, isRate, key) {
       if (isRate) return Number(value).toFixed(2) + "%";
-      if (key === "reward") return Number(value).toLocaleString("zh-CN", { maximumFractionDigits: 0 });
-      return Number(value).toLocaleString("zh-CN");
+      const locale = state.lang === "zh" ? "zh-CN" : "en-US";
+      if (key === "reward") return Number(value).toLocaleString(locale, { maximumFractionDigits: 0 });
+      return Number(value).toLocaleString(locale);
+    }
+
+    function displayDate(row) {
+      return row.total ? i18n[state.lang].total : row.date;
     }
 
     function renderTable(rows) {
@@ -835,9 +986,9 @@
           const className = isRate ? "rate" : key === "reward" ? "money" : "";
           return `<td class="${className}" title="${formatValue(row[key], isRate, key)}">${formatValue(row[key], isRate, key)}</td>`;
         }).join("");
-        return `<tr class="${row.total ? "total" : ""}"><td>${row.date}</td>${cells}</tr>`;
+        return `<tr class="${row.total ? "total" : ""}"><td>${displayDate(row)}</td>${cells}</tr>`;
       }).join("");
-      document.getElementById("totalRows").textContent = `共 ${rows.length - 1} 条`;
+      document.getElementById("totalRows").textContent = i18n[state.lang].rows(rows.length - 1);
     }
 
     function renderChart(rows) {
@@ -858,7 +1009,8 @@
       const grid = Array.from({ length: 6 }, (_, i) => {
         const gy = pad.top + i * innerH / 5;
         const label = niceMax - i * niceMax / 5;
-        const labelText = state.metric.includes("rate") || state.metric.includes("CPA") ? label.toFixed(0) + "%" : Math.round(label).toLocaleString("zh-CN");
+        const locale = state.lang === "zh" ? "zh-CN" : "en-US";
+        const labelText = state.metric.includes("rate") || state.metric.includes("CPA") ? label.toFixed(0) + "%" : Math.round(label).toLocaleString(locale);
         return `<line class="grid-line" x1="${pad.left}" y1="${gy}" x2="${width - pad.right}" y2="${gy}"></line>
           <text class="axis-text" x="${pad.left - 10}" y="${gy + 4}" text-anchor="end">${labelText}</text>`;
       }).join("");
@@ -871,11 +1023,12 @@
       const path = plotRows.map((row, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(row[key])}`).join(" ");
       const points = plotRows.map((row, index) => {
         const label = formatValue(row[key], state.metric.includes("rate") || state.metric.includes("CPA"), key);
-        return `<circle class="point" cx="${x(index)}" cy="${y(row[key])}" r="5"><title>${row.date}：${label}</title></circle>`;
+        const sep = state.lang === "zh" ? "：" : ": ";
+        return `<circle class="point" cx="${x(index)}" cy="${y(row[key])}" r="5"><title>${row.date}${sep}${label}</title></circle>`;
       }).join("");
 
       svg.innerHTML = `${grid}${xLabels}<path class="line-path" d="${path}"></path>${points}`;
-      document.getElementById("legend").textContent = metricNames[state.metric];
+      document.getElementById("legend").textContent = i18n[state.lang].metricNames[state.metric];
     }
 
     function renderAll() {
@@ -889,6 +1042,41 @@
       toast.textContent = text;
       toast.classList.add("show");
       window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function renderLanguage() {
+      const dict = i18n[state.lang];
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "en";
+      document.title = dict.docTitle;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        el.textContent = dict[el.dataset.i18n];
+      });
+      document.getElementById("metricHelpText").textContent = dict.metricHelp;
+      document.getElementById("siteLabel").textContent = dict.siteLabel;
+      document.getElementById("sourceLabel").textContent = dict.sourceLabel;
+      document.getElementById("timeLabel").textContent = dict.timeLabel;
+      document.getElementById("search").textContent = dict.search;
+      document.getElementById("reset").textContent = dict.reset;
+      document.getElementById("export").textContent = dict.export;
+      document.querySelectorAll("#source option").forEach(option => {
+        option.textContent = dict.sourceOptions[option.value];
+      });
+      document.querySelectorAll(".segmented button").forEach(button => {
+        button.textContent = dict.grain[button.dataset.grain];
+      });
+      document.querySelectorAll(".metric-tabs button").forEach(button => {
+        button.textContent = dict.metricTabs[button.dataset.metric];
+      });
+      document.querySelectorAll("th[data-col]").forEach(th => {
+        th.textContent = dict.columns[th.dataset.col];
+      });
+      document.querySelector(".page-size").textContent = dict.pageSize;
+      document.getElementById("toast").textContent = dict.exported;
+      document.getElementById("metricPopover").innerHTML = [
+        `<div class="metric-popover-title">${dict.metricHelp}</div>`,
+        ...dict.popoverLines.map(line => `<p>${line}</p>`)
+      ].join("");
+      renderAll();
     }
 
     document.querySelectorAll(".metric-tabs button").forEach(button => {
@@ -913,26 +1101,27 @@
       state.site = document.getElementById("site").value;
       state.source = document.getElementById("source").value;
       renderAll();
-      showToast("已按当前条件刷新数据");
+      showToast(i18n[state.lang].refreshed);
     });
 
     document.getElementById("reset").addEventListener("click", () => {
       document.getElementById("site").value = "Troveloop";
-      document.getElementById("source").value = "全部";
+      document.getElementById("source").value = "all";
       document.getElementById("startDate").value = "2026-06-25";
       document.getElementById("endDate").value = "2026-07-01";
-      state = { metric: state.metric, grain: "day", source: "全部", site: "Troveloop" };
+      state = { ...state, metric: state.metric, grain: "day", source: "all", site: "Troveloop" };
       document.querySelectorAll(".segmented button").forEach(item => item.classList.toggle("active", item.dataset.grain === "day"));
       renderAll();
-      showToast("已重置筛选条件");
+      showToast(i18n[state.lang].resetDone);
     });
 
     document.getElementById("export").addEventListener("click", () => {
       const rows = currentRows();
-      const header = ["日期", "活动页访问量", "分享点击数", "注册用户数", "注册率", "交易用户数", "交易率", "有效推荐用户", "无效推荐用户", "总奖励金额", "CPA"];
+      const col = i18n[state.lang].columns;
+      const header = [col.date, col.visits, col.shares, col.registrations, col.regRate, col.transacting, col.transRate, col.valid, col.invalid, col.reward, col.cpa];
       const csv = [header.join(",")].concat(rows.map(row => {
         return [
-          row.date,
+          displayDate(row),
           row.visits,
           row.shares,
           row.registrations,
@@ -949,10 +1138,15 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "Troveloop邀请裂变看板.csv";
+      link.download = state.lang === "zh" ? "Troveloop邀请裂变看板.csv" : "Troveloop Referral Dashboard.csv";
       link.click();
       URL.revokeObjectURL(url);
-      showToast("已导出当前筛选结果");
+      showToast(i18n[state.lang].exported);
+    });
+
+    document.getElementById("languageSwitch").addEventListener("change", event => {
+      state.lang = event.target.value;
+      renderLanguage();
     });
 
     document.getElementById("metricHelp").addEventListener("click", event => {
@@ -965,7 +1159,7 @@
       if (!popover.contains(event.target)) popover.classList.remove("show");
     });
 
-    renderAll();
+    renderLanguage();
   </script>
 </body>
 </html>

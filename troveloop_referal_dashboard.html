@@ -431,17 +431,35 @@
     .legend {
       display: inline-flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
       color: #3f4652;
       font-size: 13px;
     }
 
-    .legend::before {
-      content: "";
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: color .15s ease, opacity .15s ease;
+    }
+
+    .legend-item.off {
+      color: #a8b0bc;
+    }
+
+    .legend-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--blue);
+      display: inline-block;
+    }
+
+    .legend-item.off .legend-dot {
+      background: #c9ced8 !important;
     }
 
     .chart-wrap {
@@ -689,14 +707,10 @@
         </div>
 
         <div class="metric-tabs" aria-label="关键指标切换">
-          <button type="button" class="active" data-metric="Referral page visits">访问量</button>
+          <button type="button" class="active" data-chart="funnel">关键路径用户</button>
+          <button type="button" data-chart="referralQuality">推荐用户分布</button>
           <button type="button" data-metric="Referral shares">分享点击</button>
-          <button type="button" data-metric="Registrations">注册用户</button>
           <button type="button" data-metric="Registration rate">注册率</button>
-          <button type="button" data-metric="Valid referrals">有效推荐</button>
-          <button type="button" data-metric="Invalid referrals">无效推荐</button>
-          <button type="button" data-metric="Txn Invalid Referral">无效有交易用户</button>
-          <button type="button" data-metric="No Txn Invalid Referral">无效无交易用户</button>
           <button type="button" data-metric="Rewards distributed">总奖励金额(Points)</button>
           <button type="button" data-metric="Referral Quality Rate">有效推荐率</button>
           <button type="button" data-metric="CPA">单用户成本(Points)</button>
@@ -789,6 +803,8 @@
           "CPA": "单用户成本(Points)"
         },
         metricTabs: {
+          funnel: "关键路径用户",
+          referralQuality: "推荐用户分布",
           "Referral page visits": "访问量",
           "Referral shares": "分享点击",
           "Registrations": "注册用户",
@@ -874,14 +890,10 @@
           "CPA": "CPA"
         },
         metricTabs: {
-          "Referral page visits": "Referral page visits",
+          funnel: "Critical Path User",
+          referralQuality: "Recommended user distribution",
           "Referral shares": "Referral shares",
-          "Registrations": "Registrations",
           "Registration rate": "Registration rate",
-          "Valid referrals": "Valid referrals",
-          "Invalid referrals": "Invalid referrals",
-          "Txn Invalid Referral": "Txn Invalid Referral",
-          "No Txn Invalid Referral": "No Txn Invalid Referral",
           "Rewards distributed": "Rewards distributed",
           "Referral Quality Rate": "Referral Quality Rate",
           "CPA": "CPA"
@@ -911,7 +923,7 @@
           "No Txn Invalid Referral: Invalid referrals who have no transactions;",
           "Rewards distributed: Total reward amount issued during the selected time;",
           "Referral Quality Rate: valid referrals / registrations;",
-          "CPA: reward obtained / valid referrals;"
+          "CPA: Rewards distributed / valid referrals;"
         ]
       }
     };
@@ -944,7 +956,7 @@
     ];
 
     let state = {
-      metric: "Referral page visits",
+      chart: "funnel",
       grain: "day",
       source: "all",
       site: "Troveloop",
@@ -980,6 +992,15 @@
     };
 
     const rateMetrics = new Set(["Registration rate", "Referral Quality Rate"]);
+    const chartGroups = {
+      funnel: ["Referral page visits", "Registrations", "Valid referrals"],
+      referralQuality: ["Valid referrals", "Invalid referrals", "Txn Invalid Referral", "No Txn Invalid Referral"]
+    };
+    const visibleMetrics = {
+      funnel: [...chartGroups.funnel],
+      referralQuality: [...chartGroups.referralQuality]
+    };
+    const seriesColors = ["#247cff", "#18a058", "#f6b445", "#f25f5c"];
 
     function currentRows() {
       const base = state.grain === "week" ? weeklyRows : state.grain === "month" ? monthlyRows : dailyRows;
@@ -1023,9 +1044,12 @@
 
     function renderChart(rows) {
       const svg = document.getElementById("chart");
-      const key = metricKey[state.metric];
+      const allMetrics = chartGroups[state.chart] || [state.chart];
+      const metrics = chartGroups[state.chart]
+        ? allMetrics.filter(metric => visibleMetrics[state.chart].includes(metric))
+        : allMetrics;
       const plotRows = rows.filter(row => !row.total).slice().reverse();
-      const values = plotRows.map(row => row[key]);
+      const values = metrics.flatMap(metric => plotRows.map(row => row[metricKey[metric]]));
       const maxValue = Math.max(...values, 1);
       const niceMax = maxValue < 100 ? Math.ceil(maxValue / 10) * 10 || 10 : Math.ceil(maxValue / 1000) * 1000;
       const width = 1500;
@@ -1040,7 +1064,7 @@
         const gy = pad.top + i * innerH / 5;
         const label = niceMax - i * niceMax / 5;
         const locale = state.lang === "zh" ? "zh-CN" : "en-US";
-        const labelText = rateMetrics.has(state.metric) ? label.toFixed(0) + "%" : Math.round(label).toLocaleString(locale);
+        const labelText = metrics.every(metric => rateMetrics.has(metric)) ? label.toFixed(0) + "%" : Math.round(label).toLocaleString(locale);
         return `<line class="grid-line" x1="${pad.left}" y1="${gy}" x2="${width - pad.right}" y2="${gy}"></line>
           <text class="axis-text" x="${pad.left - 10}" y="${gy + 4}" text-anchor="end">${labelText}</text>`;
       }).join("");
@@ -1050,15 +1074,25 @@
         return `<text class="axis-text" x="${tx}" y="${height - 18}" text-anchor="middle">${row.date}</text>`;
       }).join("");
 
-      const path = plotRows.map((row, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(row[key])}`).join(" ");
-      const points = plotRows.map((row, index) => {
-        const label = formatValue(row[key], rateMetrics.has(state.metric), key);
-        const sep = state.lang === "zh" ? "：" : ": ";
-        return `<circle class="point" cx="${x(index)}" cy="${y(row[key])}" r="5"><title>${row.date}${sep}${label}</title></circle>`;
+      const series = metrics.map(metric => {
+        const key = metricKey[metric];
+        const seriesIndex = allMetrics.indexOf(metric);
+        const color = seriesColors[seriesIndex % seriesColors.length];
+        const path = plotRows.map((row, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(row[key])}`).join(" ");
+        const points = plotRows.map((row, index) => {
+          const label = formatValue(row[key], rateMetrics.has(metric), key);
+          const sep = state.lang === "zh" ? "：" : ": ";
+          return `<circle class="point" cx="${x(index)}" cy="${y(row[key])}" r="5" style="fill:${color}"><title>${i18n[state.lang].metricNames[metric]} ${row.date}${sep}${label}</title></circle>`;
+        }).join("");
+        return `<path class="line-path" d="${path}" style="stroke:${color}"></path>${points}`;
       }).join("");
 
-      svg.innerHTML = `${grid}${xLabels}<path class="line-path" d="${path}"></path>${points}`;
-      document.getElementById("legend").textContent = i18n[state.lang].metricNames[state.metric];
+      svg.innerHTML = `${grid}${xLabels}${series}`;
+      document.getElementById("legend").innerHTML = allMetrics.map((metric, index) => {
+        const color = seriesColors[index % seriesColors.length];
+        const isOff = chartGroups[state.chart] && !visibleMetrics[state.chart].includes(metric);
+        return `<span class="legend-item${isOff ? " off" : ""}" data-legend-metric="${metric}"><span class="legend-dot" style="background:${color}"></span>${i18n[state.lang].metricNames[metric]}</span>`;
+      }).join("");
     }
 
     function renderAll() {
@@ -1095,7 +1129,7 @@
         button.textContent = dict.grain[button.dataset.grain];
       });
       document.querySelectorAll(".metric-tabs button").forEach(button => {
-        button.textContent = dict.metricTabs[button.dataset.metric];
+        button.textContent = dict.metricTabs[button.dataset.chart || button.dataset.metric];
       });
       document.querySelectorAll("th[data-col]").forEach(th => {
         th.textContent = dict.columns[th.dataset.col];
@@ -1113,9 +1147,23 @@
       button.addEventListener("click", () => {
         document.querySelectorAll(".metric-tabs button").forEach(item => item.classList.remove("active"));
         button.classList.add("active");
-        state.metric = button.dataset.metric;
+        state.chart = button.dataset.chart || button.dataset.metric;
         renderAll();
       });
+    });
+
+    document.getElementById("legend").addEventListener("click", event => {
+      const item = event.target.closest(".legend-item");
+      if (!item || !chartGroups[state.chart]) return;
+      const metric = item.dataset.legendMetric;
+      const current = visibleMetrics[state.chart];
+      if (current.includes(metric)) {
+        if (current.length === 1) return;
+        visibleMetrics[state.chart] = current.filter(item => item !== metric);
+      } else {
+        visibleMetrics[state.chart] = [...current, metric];
+      }
+      renderAll();
     });
 
     document.querySelectorAll(".segmented button").forEach(button => {
@@ -1139,7 +1187,7 @@
       document.getElementById("source").value = "all";
       document.getElementById("startDate").value = "2026-06-25";
       document.getElementById("endDate").value = "2026-07-01";
-      state = { ...state, metric: state.metric, grain: "day", source: "all", site: "Troveloop" };
+      state = { ...state, chart: state.chart, grain: "day", source: "all", site: "Troveloop" };
       document.querySelectorAll(".segmented button").forEach(item => item.classList.toggle("active", item.dataset.grain === "day"));
       renderAll();
       showToast(i18n[state.lang].resetDone);

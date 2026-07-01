@@ -680,11 +680,13 @@
           <button type="button" data-metric="Referral shares">分享点击</button>
           <button type="button" data-metric="Registrations">注册用户</button>
           <button type="button" data-metric="Registration rate">注册率</button>
-          <button type="button" data-metric="Transacting referrals">交易用户</button>
-          <button type="button" data-metric="Transacting rate">交易率</button>
           <button type="button" data-metric="Valid referrals">有效推荐</button>
-          <button type="button" data-metric="Reward obtained">奖励金额(Points)</button>
-          <button type="button" data-metric="CPA (Valid/Total)">CPA</button>
+          <button type="button" data-metric="Invalid referrals">无效推荐</button>
+          <button type="button" data-metric="Txn Invalid Ref">无效有交易</button>
+          <button type="button" data-metric="No Txn Invalid Ref">无效无交易</button>
+          <button type="button" data-metric="Reward obtained">总奖励金额(Points)</button>
+          <button type="button" data-metric="Quality Rate">有效推荐率</button>
+          <button type="button" data-metric="CPA">单用户成本(Points)</button>
         </div>
 
         <div class="chart-head">
@@ -703,11 +705,12 @@
                 <th data-col="shares">分享点击数</th>
                 <th data-col="registrations">注册用户数</th>
                 <th data-col="regRate">注册率</th>
-                <th data-col="transacting">交易用户数</th>
-                <th data-col="transRate">交易率</th>
                 <th data-col="valid">有效推荐用户</th>
                 <th data-col="invalid">无效推荐用户</th>
-                <th data-col="reward">奖励金额(Points)</th>
+                <th data-col="txnInvalid">无效有交易用户</th>
+                <th data-col="noTxnInvalid">无效无交易用户</th>
+                <th data-col="reward">总奖励金额(Points)</th>
+                <th data-col="qualityRate">有效推荐率</th>
                 <th data-col="cpa">CPA</th>
               </tr>
             </thead>
@@ -764,23 +767,26 @@
           "Referral shares": "分享点击数",
           "Registrations": "注册用户数",
           "Registration rate": "注册率",
-          "Transacting referrals": "交易用户数",
-          "Transacting rate": "交易率",
           "Valid referrals": "有效推荐用户",
           "Invalid referrals": "无效推荐用户",
-          "Reward obtained": "奖励金额(Points)",
-          "CPA (Valid/Total)": "CPA（有效/总数）"
+          "Txn Invalid Ref": "无效有交易用户",
+          "No Txn Invalid Ref": "无效无交易用户",
+          "Reward obtained": "总奖励金额(Points)",
+          "Quality Rate": "有效推荐率",
+          "CPA": "单用户成本(Points)"
         },
         metricTabs: {
           "Referral page visits": "访问量",
           "Referral shares": "分享点击",
           "Registrations": "注册用户",
           "Registration rate": "注册率",
-          "Transacting referrals": "交易用户",
-          "Transacting rate": "交易率",
           "Valid referrals": "有效推荐",
-          "Reward obtained": "奖励金额(Points)",
-          "CPA (Valid/Total)": "CPA"
+          "Invalid referrals": "无效推荐",
+          "Txn Invalid Ref": "无效有交易",
+          "No Txn Invalid Ref": "无效无交易",
+          "Reward obtained": "总奖励金额(Points)",
+          "Quality Rate": "有效推荐率",
+          "CPA": "单用户成本(Points)"
         },
         columns: {
           date: "日期",
@@ -788,24 +794,26 @@
           shares: "分享点击数",
           registrations: "注册用户数",
           regRate: "注册率",
-          transacting: "交易用户数",
-          transRate: "交易率",
           valid: "有效推荐用户",
           invalid: "无效推荐用户",
-          reward: "奖励金额(Points)",
-          cpa: "CPA"
+          txnInvalid: "无效有交易用户",
+          noTxnInvalid: "无效无交易用户",
+          reward: "总奖励金额(Points)",
+          qualityRate: "有效推荐率",
+          cpa: "单用户成本(Points)"
         },
         popoverLines: [
           "活动页访问量：统计时间内访问邀请裂变活动的 UV；",
           "分享点击数：统计时间内点击分享按钮的用户数；",
           "注册用户数：统计时间内带邀请码注册的用户数；",
           "注册率：注册用户数/分享点击数；",
-          "交易用户数：统计时间内带邀请码用户的交易人数；",
-          "交易率：交易用户数/注册用户数；",
           "有效推荐用户：统计时间内新增有效推荐用户数；",
           "无效推荐用户：统计时间内新增无效推荐用户数；",
-          "奖励金额(Points)：统计时间内发放奖励金额之和；",
-          "CPA：有效推荐用户/注册用户数；"
+          "无效有交易用户：无效用户中有交易的用户数；",
+          "无效无交易用户：无效用户中无交易的用户数；",
+          "总奖励金额(Points)：统计时间内发放奖励金额之和；",
+          "有效推荐率：有效推荐用户/注册用户数；",
+          "单用户成本(Points)：总奖励金额(Points)/有效推荐用户数；"
         ]
       },
       en: {
@@ -844,23 +852,26 @@
           "Referral shares": "Referral shares",
           "Registrations": "Registrations",
           "Registration rate": "Registration rate",
-          "Transacting referrals": "Transacting referrals",
-          "Transacting rate": "Transacting rate",
           "Valid referrals": "Valid referrals",
           "Invalid referrals": "Invalid referrals",
+          "Txn Invalid Ref": "Txn Invalid Ref",
+          "No Txn Invalid Ref": "No Txn Invalid Ref",
           "Reward obtained": "Reward obtained (Points)",
-          "CPA (Valid/Total)": "CPA (Valid/Total)"
+          "Quality Rate": "Quality Rate",
+          "CPA": "CPA"
         },
         metricTabs: {
           "Referral page visits": "Visits",
           "Referral shares": "Shares",
           "Registrations": "Registrations",
           "Registration rate": "Reg. rate",
-          "Transacting referrals": "Transacting",
-          "Transacting rate": "Txn. rate",
           "Valid referrals": "Valid",
+          "Invalid referrals": "Invalid",
+          "Txn Invalid Ref": "Txn invalid",
+          "No Txn Invalid Ref": "No txn invalid",
           "Reward obtained": "Reward (Points)",
-          "CPA (Valid/Total)": "CPA"
+          "Quality Rate": "Quality rate",
+          "CPA": "CPA"
         },
         columns: {
           date: "Date",
@@ -868,11 +879,12 @@
           shares: "Shares",
           registrations: "Registrations",
           regRate: "Reg. rate",
-          transacting: "Transacting users",
-          transRate: "Txn. rate",
           valid: "Valid referrals",
           invalid: "Invalid referrals",
+          txnInvalid: "Txn invalid ref",
+          noTxnInvalid: "No txn invalid ref",
           reward: "Reward obtained (Points)",
+          qualityRate: "Quality Rate",
           cpa: "CPA"
         },
         popoverLines: [
@@ -880,41 +892,42 @@
           "Referral shares: Users who clicked the share button during the selected time;",
           "Registrations: Users who registered with an invitation code during the selected time;",
           "Registration rate: registrations / referral shares;",
-          "Transacting referrals: Referred users who transacted during the selected time;",
-          "Transacting rate: transacting referrals / registrations;",
           "Valid referrals: New valid referrals during the selected time;",
           "Invalid referrals: New invalid referrals during the selected time;",
+          "Txn Invalid Ref: Invalid referrals who have transactions;",
+          "No Txn Invalid Ref: Invalid referrals who have no transactions;",
           "Reward obtained (Points): Total reward amount issued during the selected time;",
-          "CPA: valid referrals / registrations;"
+          "Quality Rate: valid referrals / registrations;",
+          "CPA: reward obtained / valid referrals;"
         ]
       }
     };
 
     const dailyRows = [
-      { date: "总计", visits: 32840, shares: 8214, registrations: 2436, regRate: 29.66, transacting: 1128, transRate: 46.31, valid: 684, invalid: 142, reward: 58920, cpa: 28.08, total: true },
-      { date: "2026-07-01", visits: 5420, shares: 1368, registrations: 422, regRate: 30.85, transacting: 208, transRate: 49.29, valid: 124, invalid: 18, reward: 10480, cpa: 29.38 },
-      { date: "2026-06-30", visits: 4986, shares: 1280, registrations: 391, regRate: 30.55, transacting: 181, transRate: 46.29, valid: 108, invalid: 21, reward: 9120, cpa: 27.62 },
-      { date: "2026-06-29", visits: 5614, shares: 1452, registrations: 438, regRate: 30.17, transacting: 202, transRate: 46.12, valid: 119, invalid: 23, reward: 10160, cpa: 27.17 },
-      { date: "2026-06-28", visits: 4208, shares: 988, registrations: 274, regRate: 27.73, transacting: 119, transRate: 43.43, valid: 73, invalid: 19, reward: 6240, cpa: 26.64 },
-      { date: "2026-06-27", visits: 4840, shares: 1186, registrations: 336, regRate: 28.33, transacting: 151, transRate: 44.94, valid: 91, invalid: 22, reward: 7820, cpa: 27.08 },
-      { date: "2026-06-26", visits: 4022, shares: 940, registrations: 259, regRate: 27.55, transacting: 117, transRate: 45.17, valid: 71, invalid: 20, reward: 6040, cpa: 27.41 },
-      { date: "2026-06-25", visits: 3750, shares: 1000, registrations: 316, regRate: 31.60, transacting: 150, transRate: 47.47, valid: 98, invalid: 19, reward: 9060, cpa: 31.01 }
+      { date: "总计", visits: 32840, shares: 8214, registrations: 2436, regRate: 29.66, valid: 684, invalid: 142, txnInvalid: 56, noTxnInvalid: 86, reward: 58920, qualityRate: 28.08, cpa: 86.14, total: true },
+      { date: "2026-07-01", visits: 5420, shares: 1368, registrations: 422, regRate: 30.85, valid: 124, invalid: 18, txnInvalid: 8, noTxnInvalid: 10, reward: 10480, qualityRate: 29.38, cpa: 84.52 },
+      { date: "2026-06-30", visits: 4986, shares: 1280, registrations: 391, regRate: 30.55, valid: 108, invalid: 21, txnInvalid: 9, noTxnInvalid: 12, reward: 9120, qualityRate: 27.62, cpa: 84.44 },
+      { date: "2026-06-29", visits: 5614, shares: 1452, registrations: 438, regRate: 30.17, valid: 119, invalid: 23, txnInvalid: 10, noTxnInvalid: 13, reward: 10160, qualityRate: 27.17, cpa: 85.38 },
+      { date: "2026-06-28", visits: 4208, shares: 988, registrations: 274, regRate: 27.73, valid: 73, invalid: 19, txnInvalid: 7, noTxnInvalid: 12, reward: 6240, qualityRate: 26.64, cpa: 85.48 },
+      { date: "2026-06-27", visits: 4840, shares: 1186, registrations: 336, regRate: 28.33, valid: 91, invalid: 22, txnInvalid: 8, noTxnInvalid: 14, reward: 7820, qualityRate: 27.08, cpa: 85.93 },
+      { date: "2026-06-26", visits: 4022, shares: 940, registrations: 259, regRate: 27.55, valid: 71, invalid: 20, txnInvalid: 7, noTxnInvalid: 13, reward: 6040, qualityRate: 27.41, cpa: 85.07 },
+      { date: "2026-06-25", visits: 3750, shares: 1000, registrations: 316, regRate: 31.60, valid: 98, invalid: 19, txnInvalid: 7, noTxnInvalid: 12, reward: 9060, qualityRate: 31.01, cpa: 92.45 }
     ];
 
     const weeklyRows = [
-      { date: "总计", visits: 126920, shares: 30264, registrations: 8926, regRate: 29.49, transacting: 4082, transRate: 45.73, valid: 2468, invalid: 548, reward: 214260, cpa: 27.65, total: true },
-      { date: "2026-06-29 ~ 2026-07-06", visits: 32840, shares: 8214, registrations: 2436, regRate: 29.66, transacting: 1128, transRate: 46.31, valid: 684, invalid: 142, reward: 58920, cpa: 28.08 },
-      { date: "2026-06-22 ~ 2026-06-29", visits: 29760, shares: 6970, registrations: 2046, regRate: 29.35, transacting: 916, transRate: 44.77, valid: 551, invalid: 119, reward: 47680, cpa: 26.93 },
-      { date: "2026-06-15 ~ 2026-06-22", visits: 31540, shares: 7584, registrations: 2240, regRate: 29.54, transacting: 1028, transRate: 45.89, valid: 628, invalid: 137, reward: 53940, cpa: 28.04 },
-      { date: "2026-06-08 ~ 2026-06-15", visits: 32780, shares: 7496, registrations: 2204, regRate: 29.40, transacting: 1010, transRate: 45.83, valid: 605, invalid: 150, reward: 53720, cpa: 27.45 }
+      { date: "总计", visits: 126920, shares: 30264, registrations: 8926, regRate: 29.49, valid: 2468, invalid: 548, txnInvalid: 221, noTxnInvalid: 327, reward: 214260, qualityRate: 27.65, cpa: 86.82, total: true },
+      { date: "2026-06-29 ~ 2026-07-06", visits: 32840, shares: 8214, registrations: 2436, regRate: 29.66, valid: 684, invalid: 142, txnInvalid: 56, noTxnInvalid: 86, reward: 58920, qualityRate: 28.08, cpa: 86.14 },
+      { date: "2026-06-22 ~ 2026-06-29", visits: 29760, shares: 6970, registrations: 2046, regRate: 29.35, valid: 551, invalid: 119, txnInvalid: 48, noTxnInvalid: 71, reward: 47680, qualityRate: 26.93, cpa: 86.53 },
+      { date: "2026-06-15 ~ 2026-06-22", visits: 31540, shares: 7584, registrations: 2240, regRate: 29.54, valid: 628, invalid: 137, txnInvalid: 56, noTxnInvalid: 81, reward: 53940, qualityRate: 28.04, cpa: 85.89 },
+      { date: "2026-06-08 ~ 2026-06-15", visits: 32780, shares: 7496, registrations: 2204, regRate: 29.40, valid: 605, invalid: 150, txnInvalid: 61, noTxnInvalid: 89, reward: 53720, qualityRate: 27.45, cpa: 88.79 }
     ];
 
     const monthlyRows = [
-      { date: "总计", visits: 384500, shares: 90230, registrations: 26584, regRate: 29.46, transacting: 11978, transRate: 45.06, valid: 7042, invalid: 1584, reward: 612880, cpa: 26.49, total: true },
-      { date: "2026-07", visits: 5420, shares: 1368, registrations: 422, regRate: 30.85, transacting: 208, transRate: 49.29, valid: 124, invalid: 18, reward: 10480, cpa: 29.38 },
-      { date: "2026-06", visits: 142340, shares: 33620, registrations: 9938, regRate: 29.56, transacting: 4540, transRate: 45.68, valid: 2680, invalid: 596, reward: 232600, cpa: 26.97 },
-      { date: "2026-05", visits: 123870, shares: 29142, registrations: 8504, regRate: 29.18, transacting: 3788, transRate: 44.54, valid: 2210, invalid: 506, reward: 194200, cpa: 25.99 },
-      { date: "2026-04", visits: 112870, shares: 26100, registrations: 7720, regRate: 29.58, transacting: 3442, transRate: 44.59, valid: 2028, invalid: 464, reward: 175600, cpa: 26.27 }
+      { date: "总计", visits: 384500, shares: 90230, registrations: 26584, regRate: 29.46, valid: 7042, invalid: 1584, txnInvalid: 632, noTxnInvalid: 952, reward: 612880, qualityRate: 26.49, cpa: 87.03, total: true },
+      { date: "2026-07", visits: 5420, shares: 1368, registrations: 422, regRate: 30.85, valid: 124, invalid: 18, txnInvalid: 8, noTxnInvalid: 10, reward: 10480, qualityRate: 29.38, cpa: 84.52 },
+      { date: "2026-06", visits: 142340, shares: 33620, registrations: 9938, regRate: 29.56, valid: 2680, invalid: 596, txnInvalid: 238, noTxnInvalid: 358, reward: 232600, qualityRate: 26.97, cpa: 86.79 },
+      { date: "2026-05", visits: 123870, shares: 29142, registrations: 8504, regRate: 29.18, valid: 2210, invalid: 506, txnInvalid: 201, noTxnInvalid: 305, reward: 194200, qualityRate: 25.99, cpa: 87.87 },
+      { date: "2026-04", visits: 112870, shares: 26100, registrations: 7720, regRate: 29.58, valid: 2028, invalid: 464, txnInvalid: 185, noTxnInvalid: 279, reward: 175600, qualityRate: 26.27, cpa: 86.59 }
     ];
 
     let state = {
@@ -930,12 +943,13 @@
       ["shares", false],
       ["registrations", false],
       ["regRate", true],
-      ["transacting", false],
-      ["transRate", true],
       ["valid", false],
       ["invalid", false],
+      ["txnInvalid", false],
+      ["noTxnInvalid", false],
       ["reward", false],
-      ["cpa", true]
+      ["qualityRate", true],
+      ["cpa", false]
     ];
 
     const metricKey = {
@@ -943,13 +957,16 @@
       "Referral shares": "shares",
       "Registrations": "registrations",
       "Registration rate": "regRate",
-      "Transacting referrals": "transacting",
-      "Transacting rate": "transRate",
       "Valid referrals": "valid",
       "Invalid referrals": "invalid",
+      "Txn Invalid Ref": "txnInvalid",
+      "No Txn Invalid Ref": "noTxnInvalid",
       "Reward obtained": "reward",
-      "CPA (Valid/Total)": "cpa"
+      "Quality Rate": "qualityRate",
+      "CPA": "cpa"
     };
+
+    const rateMetrics = new Set(["Registration rate", "Quality Rate"]);
 
     function currentRows() {
       const base = state.grain === "week" ? weeklyRows : state.grain === "month" ? monthlyRows : dailyRows;
@@ -958,12 +975,12 @@
       return base.map(row => {
         if (state.source === "all") return { ...row };
         const next = { ...row };
-        ["visits", "shares", "registrations", "transacting", "valid", "invalid", "reward"].forEach(key => {
+        ["visits", "shares", "registrations", "valid", "invalid", "txnInvalid", "noTxnInvalid", "reward"].forEach(key => {
           next[key] = Math.round(row[key] * factor);
         });
         next.regRate = next.shares ? +(next.registrations / next.shares * 100).toFixed(2) : 0;
-        next.transRate = next.registrations ? +(next.transacting / next.registrations * 100).toFixed(2) : 0;
-        next.cpa = next.registrations ? +(next.valid / next.registrations * 100).toFixed(2) : 0;
+        next.qualityRate = next.registrations ? +(next.valid / next.registrations * 100).toFixed(2) : 0;
+        next.cpa = next.valid ? +(next.reward / next.valid).toFixed(2) : 0;
         return next;
       });
     }
@@ -1010,7 +1027,7 @@
         const gy = pad.top + i * innerH / 5;
         const label = niceMax - i * niceMax / 5;
         const locale = state.lang === "zh" ? "zh-CN" : "en-US";
-        const labelText = state.metric.includes("rate") || state.metric.includes("CPA") ? label.toFixed(0) + "%" : Math.round(label).toLocaleString(locale);
+        const labelText = rateMetrics.has(state.metric) ? label.toFixed(0) + "%" : Math.round(label).toLocaleString(locale);
         return `<line class="grid-line" x1="${pad.left}" y1="${gy}" x2="${width - pad.right}" y2="${gy}"></line>
           <text class="axis-text" x="${pad.left - 10}" y="${gy + 4}" text-anchor="end">${labelText}</text>`;
       }).join("");
@@ -1022,7 +1039,7 @@
 
       const path = plotRows.map((row, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(row[key])}`).join(" ");
       const points = plotRows.map((row, index) => {
-        const label = formatValue(row[key], state.metric.includes("rate") || state.metric.includes("CPA"), key);
+        const label = formatValue(row[key], rateMetrics.has(state.metric), key);
         const sep = state.lang === "zh" ? "：" : ": ";
         return `<circle class="point" cx="${x(index)}" cy="${y(row[key])}" r="5"><title>${row.date}${sep}${label}</title></circle>`;
       }).join("");
@@ -1118,7 +1135,7 @@
     document.getElementById("export").addEventListener("click", () => {
       const rows = currentRows();
       const col = i18n[state.lang].columns;
-      const header = [col.date, col.visits, col.shares, col.registrations, col.regRate, col.transacting, col.transRate, col.valid, col.invalid, col.reward, col.cpa];
+      const header = [col.date, col.visits, col.shares, col.registrations, col.regRate, col.valid, col.invalid, col.txnInvalid, col.noTxnInvalid, col.reward, col.qualityRate, col.cpa];
       const csv = [header.join(",")].concat(rows.map(row => {
         return [
           displayDate(row),
@@ -1126,12 +1143,13 @@
           row.shares,
           row.registrations,
           row.regRate + "%",
-          row.transacting,
-          row.transRate + "%",
           row.valid,
           row.invalid,
+          row.txnInvalid,
+          row.noTxnInvalid,
           row.reward,
-          row.cpa + "%"
+          row.qualityRate + "%",
+          row.cpa
         ].join(",");
       })).join("\n");
       const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });

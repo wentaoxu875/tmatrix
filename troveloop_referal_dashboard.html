@@ -709,7 +709,7 @@
         <div class="metric-tabs" aria-label="关键指标切换">
           <button type="button" class="active" data-chart="funnel">关键路径用户</button>
           <button type="button" data-chart="referralQuality">推荐用户分布</button>
-          <button type="button" data-metric="Referral shares">分享点击</button>
+          <button type="button" data-metric="Referral shares">分享用户</button>
           <button type="button" data-metric="Registration rate">注册率</button>
           <button type="button" data-metric="Rewards distributed">总奖励金额(Points)</button>
           <button type="button" data-metric="Referral Quality Rate">有效推荐率</button>
@@ -729,7 +729,7 @@
               <tr>
                 <th style="width: 190px;" data-col="date">日期</th>
                 <th data-col="visits">活动页访问量</th>
-                <th data-col="shares">分享点击数</th>
+                <th data-col="shares">分享用户数</th>
                 <th data-col="registrations">注册用户数</th>
                 <th data-col="regRate">注册率</th>
                 <th data-col="valid">有效推荐用户</th>
@@ -791,7 +791,7 @@
         grain: { day: "日", week: "周", month: "月" },
         metricNames: {
           "Referral page visits": "活动页访问量",
-          "Referral shares": "分享点击数",
+          "Referral shares": "分享用户数",
           "Registrations": "注册用户数",
           "Registration rate": "注册率",
           "Valid referrals": "有效推荐用户",
@@ -806,7 +806,7 @@
           funnel: "关键路径用户",
           referralQuality: "推荐用户分布",
           "Referral page visits": "访问量",
-          "Referral shares": "分享点击",
+          "Referral shares": "分享用户",
           "Registrations": "注册用户",
           "Registration rate": "注册率",
           "Valid referrals": "有效推荐",
@@ -820,7 +820,7 @@
         columns: {
           date: "日期",
           visits: "活动页访问量",
-          shares: "分享点击数",
+          shares: "分享用户数",
           registrations: "注册用户数",
           regRate: "注册率",
           valid: "有效推荐用户",
@@ -833,9 +833,9 @@
         },
         popoverLines: [
           "活动页访问量：统计时间内访问邀请裂变活动的 UV；",
-          "分享点击数：统计时间内点击分享按钮的用户数；",
+          "分享用户数：统计时间内点击分享按钮的用户数；",
           "注册用户数：统计时间内带邀请码注册的用户数；",
-          "注册率：注册用户数/分享点击数；",
+          "注册率：注册用户数/分享用户数；",
           "有效推荐用户：统计时间内新增有效推荐用户数；",
           "无效推荐用户：统计时间内新增无效推荐用户数；",
           "无效有交易用户：无效用户中有交易的用户数；",

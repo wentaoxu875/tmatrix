@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服务商工作台 - 系统设置客户管理原型</title>
+  <style>
+    :root {
+      --page: #f4f6f7;
+      --panel: #ffffff;
+      --header: #ffffff;
+      --text: #263c3f;
+      --muted: #6f8588;
+      --line: #edf1f1;
+      --soft: #eef9f9;
+      --brand: #ccefee;
+      --brand-strong: #12beb8;
+      --brand-dark: #32575b;
+      --danger: #d94c4c;
+      --warning: #ff8a1f;
+      --shadow: 0 1px 8px rgba(38, 60, 63, .05);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1180px;
+      color: var(--text);
+      background: var(--page);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px 0 6px;
+      background: var(--header);
+      box-shadow: var(--shadow);
+    }
+
+    .brand-area,
+    .user-area,
+    .workspace,
+    .lang {
+      display: flex;
+      align-items: center;
+    }
+
+    .workspace {
+      width: 278px;
+      gap: 12px;
+    }
+
+    .workspace-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: #e9f8f8;
+      color: #167b7a;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .workspace-name {
+      font-size: 18px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 9px solid #243b3e;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-item {
+      min-width: 104px;
+      height: 48px;
+      border: 0;
+      border-radius: 7px;
+      color: #20393c;
+      background: transparent;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .nav-item.active {
+      background: var(--brand);
+    }
+
+    .right-tools {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      background: #0fc0bd;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .account {
+      margin-left: 10px;
+      line-height: 1.3;
+    }
+
+    .account strong {
+      display: block;
+      font-size: 19px;
+      color: #233c40;
+    }
+
+    .account span {
+      display: block;
+      color: var(--warning);
+      font-weight: 700;
+    }
+
+    .operator {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .operator-icon {
+      font-size: 24px;
+      color: #222;
+    }
+
+    .lang {
+      min-width: 145px;
+      height: 44px;
+      justify-content: center;
+      gap: 18px;
+      border: 0;
+      border-radius: 7px;
+      background: #f4f6f7;
+      color: #20393c;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .lang:hover {
+      background: #eaf3f3;
+    }
+
+    .shell {
+      padding: 18px 6px 24px;
+    }
+
+    .content {
+      min-height: calc(100vh - 128px);
+      padding: 18px 20px 28px;
+      border-radius: 6px;
+      background: var(--panel);
+    }
+
+    .settings-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 48px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .settings-tab {
+      position: relative;
+      height: 48px;
+      min-width: 108px;
+      padding: 0 18px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .settings-tab.active {
+      color: var(--brand-dark);
+    }
+
+    .settings-tab.active::after {
+      content: "";
+      position: absolute;
+      right: 18px;
+      bottom: -1px;
+      left: 18px;
+      height: 3px;
+      border-radius: 2px 2px 0 0;
+      background: var(--brand-strong);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 58px;
+      gap: 20px;
+      margin-bottom: 14px;
+    }
+
+    .search-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .field-label {
+      color: #314b4e;
+      font-weight: 700;
+    }
+
+    .input {
+      width: 240px;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid #d9e5e5;
+      border-radius: 6px;
+      color: var(--text);
+      outline: none;
+      background: #fff;
+    }
+
+    .input:focus {
+      border-color: var(--brand-strong);
+      box-shadow: 0 0 0 3px rgba(18, 190, 184, .12);
+    }
+
+    .btn {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      color: #245054;
+      background: #d9f4f3;
+    }
+
+    .btn:hover {
+      background: #ccefee;
+    }
+
+    .btn.primary {
+      color: #fff;
+      background: var(--brand-strong);
+    }
+
+    .btn.primary:hover {
+      background: #0da9a4;
+    }
+
+    .btn.ghost {
+      color: var(--brand-dark);
+      border-color: #d9e5e5;
+      background: #fff;
+    }
+
+    .btn.danger {
+      color: var(--danger);
+      border-color: #f2d1d1;
+      background: #fff6f6;
+    }
+
+    .table-wrap {
+      overflow: hidden;
+      border-radius: 16px 16px 0 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    thead {
+      background: var(--soft);
+    }
+
+    th,
+    td {
+      height: 74px;
+      padding: 0 20px;
+      text-align: left;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      height: 62px;
+      color: #314b4e;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    th + th {
+      border-left: 1px solid #e4efef;
+    }
+
+    td {
+      color: #294245;
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #2b5458;
+      background: var(--brand);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .empty {
+      display: none;
+      height: 280px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .empty.visible {
+      display: flex;
+    }
+
+    .empty-icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #5d8588;
+      background: #eef9f9;
+      font-size: 26px;
+    }
+
+    .page-footer {
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 18px;
+      color: #b8c4c5;
+      font-size: 28px;
+    }
+
+    .page-number {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 2px solid #396469;
+      border-radius: 8px;
+      color: #24494e;
+      background: var(--brand);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .toast {
+      position: fixed;
+      top: 94px;
+      left: 50%;
+      z-index: 30;
+      min-width: 260px;
+      max-width: 520px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: #24494e;
+      background: #eafffb;
+      box-shadow: 0 8px 28px rgba(38, 60, 63, .16);
+      transform: translate(-50%, -16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+      font-weight: 700;
+    }
+
+    .toast.visible {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .toast.error {
+      color: #8c2c2c;
+      background: #fff3f3;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20, 38, 40, .38);
+    }
+
+    .modal-mask.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 480px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 18px 50px rgba(20, 38, 40, .24);
+    }
+
+    .modal-head {
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .close {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 6px;
+      color: #6f8588;
+      background: transparent;
+      font-size: 24px;
+    }
+
+    .close:hover {
+      background: #f1f6f6;
+    }
+
+    .modal-body {
+      padding: 24px 22px 18px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .help {
+      margin: 10px 0 0 104px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .error-text {
+      min-height: 22px;
+      margin: 10px 0 0 104px;
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 18px 22px 22px;
+    }
+
+    .confirm-box {
+      width: 420px;
+    }
+
+    .confirm-copy {
+      padding: 24px 22px 8px;
+      color: #314b4e;
+      line-height: 1.8;
+      font-weight: 700;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 1280px) {
+      .main-nav {
+        gap: 12px;
+      }
+
+      .nav-item {
+        min-width: 88px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-area">
+      <div class="workspace">
+        <div class="workspace-logo">☻</div>
+        <div class="workspace-name">Service_xb</div>
+        <span class="chevron" aria-hidden="true"></span>
+      </div>
+      <nav class="main-nav" aria-label="主导航" data-i18n-attr="aria-label:mainNavLabel">
+        <button class="nav-item" data-i18n="navWorkbench">工作台</button>
+        <button class="nav-item" data-i18n="navOrders">订单管理</button>
+        <button class="nav-item" data-i18n="navAds">广告管理</button>
+        <button class="nav-item" data-i18n="navStats">数据统计</button>
+        <button class="nav-item active" data-i18n="navSettings">系统设置</button>
+      </nav>
+    </div>
+
+    <div class="right-tools">
+      <div class="user-area">
+        <div class="avatar">👤</div>
+        <div class="account">
+          <strong>Tb_30</strong>
+          <span>153.6129 Points</span>
+        </div>
+      </div>
+      <div class="operator">
+        <span class="operator-icon">♙</span>
+        <span><span data-i18n="operator">操作人</span>: potato</span>
+      </div>
+      <button id="languageToggle" class="lang" type="button" aria-label="切换语言" data-i18n-attr="aria-label:languageToggleLabel">
+        <span id="languageText">简体中文</span>
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <main class="content">
+      <div class="settings-tabs" role="tablist" aria-label="系统设置" data-i18n-attr="aria-label:settingsTabsLabel">
+        <button class="settings-tab active" role="tab" aria-selected="true" data-tab="profile" data-i18n="tabProfile">个人信息</button>
+        <button class="settings-tab" role="tab" aria-selected="false" data-tab="customers" data-i18n="tabCustomers">客户管理</button>
+      </div>
+
+      <section id="profilePanel" class="panel active" aria-label="个人信息" data-i18n-attr="aria-label:tabProfile">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 11%;" data-i18n="site">站点</th>
+                <th style="width: 11%;" data-i18n="avatar">头像</th>
+                <th style="width: 22%;" data-i18n="nickname">昵称</th>
+                <th style="width: 44%;" data-i18n="tag">标签</th>
+                <th style="width: 12%;" data-i18n="action">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TroveLoop</td>
+                <td><span style="color:#0caaa5;font-weight:800;">♧<br><small>Tbay</small></span></td>
+                <td>aa</td>
+                <td><span class="pill">pretty</span></td>
+                <td><button class="btn" data-i18n="edit">编辑</button></td>
+              </tr>
+              <tr>
+                <td>TrustCard</td>
+                <td><span style="color:#0caaa5;font-weight:800;">♧<br><small>Tbay</small></span></td>
+                <td>TCardCC</td>
+                <td>-</td>
+                <td><button class="btn" data-i18n="edit">编辑</button></td>
+              </tr>
+              <tr>
+                <td>ToClover</td>
+                <td><span style="color:#0caaa5;font-weight:800;">♧<br><small>Tbay</small></span></td>
+                <td>Tbay_TC</td>
+                <td>-</td>
+                <td><button class="btn" data-i18n="edit">编辑</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="page-footer">
+          <span>‹</span>
+          <span class="page-number">1</span>
+          <span>›</span>
+        </div>
+      </section>
+
+      <section id="customersPanel" class="panel" aria-label="客户管理" data-i18n-attr="aria-label:tabCustomers">
+        <div class="toolbar">
+          <div class="search-group">
+            <span class="field-label"><span data-i18n="userNickname">用户昵称</span>:</span>
+            <input id="searchInput" class="input" type="text" placeholder="请输入用户昵称查询" data-i18n-attr="placeholder:searchPlaceholder">
+            <button id="searchBtn" class="btn" data-i18n="search">查询</button>
+            <button id="resetBtn" class="btn ghost" data-i18n="reset">重置</button>
+          </div>
+          <button id="openAddBtn" class="btn primary"><span aria-hidden="true">+ </span><span data-i18n="addCustomer">新增客户</span></button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 30%;" data-i18n="userId">用户ID</th>
+                <th style="width: 30%;" data-i18n="nickname">昵称</th>
+                <th style="width: 26%;" data-i18n="addedAt">添加时间</th>
+                <th style="width: 14%;" data-i18n="action">操作</th>
+              </tr>
+            </thead>
+            <tbody id="customerTbody"></tbody>
+          </table>
+          <div id="emptyState" class="empty">
+            <div class="empty-icon">⌕</div>
+            <div data-i18n="emptyTitle">暂无匹配客户</div>
+            <div class="note" data-i18n="emptyNote">可重置查询条件，或通过“新增客户”添加存在的用户</div>
+          </div>
+        </div>
+        <div class="page-footer">
+          <span>‹</span>
+          <span class="page-number">1</span>
+          <span>›</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <div id="addModal" class="modal-mask" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+      <div class="modal-head">
+        <span id="addTitle" data-i18n="addCustomer">新增客户</span>
+        <button id="closeAddBtn" class="close" aria-label="关闭" data-i18n-attr="aria-label:close">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="field-label" for="nicknameInput" data-i18n="userNickname">用户昵称</label>
+          <input id="nicknameInput" class="input" type="text" placeholder="请输入用户昵称" style="width:100%;" data-i18n-attr="placeholder:nicknamePlaceholder">
+        </div>
+        <div id="addError" class="error-text"></div>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelAddBtn" class="btn ghost" data-i18n="cancel">取消</button>
+        <button id="confirmAddBtn" class="btn primary" data-i18n="confirmAdd">确认添加</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal-mask" aria-hidden="true">
+    <div class="modal confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal-head">
+        <span id="confirmTitle" data-i18n="deleteCustomer">删除客户</span>
+        <button id="closeConfirmBtn" class="close" aria-label="关闭" data-i18n-attr="aria-label:close">×</button>
+      </div>
+      <div id="confirmCopy" class="confirm-copy"></div>
+      <div class="modal-actions">
+        <button id="cancelDeleteBtn" class="btn ghost" data-i18n="cancel">取消</button>
+        <button id="confirmDeleteBtn" class="btn danger" data-i18n="confirmDelete">确认删除</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const i18n = {
+      zh: {
+        pageTitle: "服务商工作台 - 系统设置客户管理原型",
+        languageName: "简体中文",
+        languageToggleLabel: "切换语言",
+        mainNavLabel: "主导航",
+        settingsTabsLabel: "系统设置",
+        navWorkbench: "工作台",
+        navOrders: "订单管理",
+        navAds: "广告管理",
+        navStats: "数据统计",
+        navSettings: "系统设置",
+        operator: "操作人",
+        tabProfile: "个人信息",
+        tabCustomers: "客户管理",
+        site: "站点",
+        avatar: "头像",
+        nickname: "昵称",
+        userNickname: "用户昵称",
+        tag: "标签",
+        action: "操作",
+        edit: "编辑",
+        searchPlaceholder: "请输入用户昵称查询",
+        search: "查询",
+        reset: "重置",
+        addCustomer: "新增客户",
+        userId: "用户ID",
+        addedAt: "添加时间",
+        emptyTitle: "暂无匹配客户",
+        emptyNote: "可重置查询条件，或通过“新增客户”添加存在的用户",
+        close: "关闭",
+        nicknamePlaceholder: "请输入用户昵称",
+        cancel: "取消",
+        confirmAdd: "确认添加",
+        deleteCustomer: "删除客户",
+        delete: "删除",
+        confirmDelete: "确认删除",
+        errorNicknameRequired: "请输入用户昵称",
+        errorUserNotFound: "未查询到该用户，请核对昵称后再添加",
+        toastUserNotFound: "添加失败：用户不存在",
+        errorUserExists: "该用户已在客户管理列表中",
+        toastUserExists: "添加失败：用户已存在于列表",
+        toastAddSuccess: "添加成功",
+        toastDeleteSuccess: "删除成功",
+        confirmDeleteCopy: nickname => `确认删除客户 <strong>${nickname}</strong> 吗？<br><span class="note">删除后该用户将不再出现在客户管理列表中。</span>`
+      },
+      en: {
+        pageTitle: "Service Workspace - Settings Customer Management Prototype",
+        languageName: "English",
+        languageToggleLabel: "Switch language",
+        mainNavLabel: "Main navigation",
+        settingsTabsLabel: "System Settings",
+        navWorkbench: "Workbench",
+        navOrders: "Orders",
+        navAds: "Ads",
+        navStats: "Analytics",
+        navSettings: "Settings",
+        operator: "Operator",
+        tabProfile: "Profile",
+        tabCustomers: "Customers",
+        site: "Site",
+        avatar: "Avatar",
+        nickname: "Nickname",
+        userNickname: "User Nickname",
+        tag: "Tag",
+        action: "Actions",
+        edit: "Edit",
+        searchPlaceholder: "Search by nickname",
+        search: "Search",
+        reset: "Reset",
+        addCustomer: "Add Customer",
+        userId: "User ID",
+        addedAt: "Added Time",
+        emptyTitle: "No matching customers",
+        emptyNote: "Reset filters or add an existing user from Add Customer.",
+        close: "Close",
+        nicknamePlaceholder: "Enter nickname",
+        cancel: "Cancel",
+        confirmAdd: "Add",
+        deleteCustomer: "Delete Customer",
+        delete: "Delete",
+        confirmDelete: "Delete",
+        errorNicknameRequired: "Please enter a nickname",
+        errorUserNotFound: "No user found. Check the nickname and try again.",
+        toastUserNotFound: "Failed to add: user does not exist",
+        errorUserExists: "This user is already in the customer list",
+        toastUserExists: "Failed to add: user is already in the list",
+        toastAddSuccess: "Added successfully",
+        toastDeleteSuccess: "Deleted successfully",
+        confirmDeleteCopy: nickname => `Delete customer <strong>${nickname}</strong>?<br><span class="note">After deletion, this user will no longer appear in the customer list.</span>`
+      }
+    };
+
+    const userDirectory = [
+      { id: "U10023881", nickname: "potato" },
+      { id: "U10023882", nickname: "aa" },
+      { id: "U10023883", nickname: "TCardCC" },
+      { id: "U10023884", nickname: "Tbay_TC" },
+      { id: "U10023885", nickname: "alex_lee" },
+      { id: "U10023886", nickname: "mary_tbay" },
+      { id: "U10023887", nickname: "service01" }
+    ];
+
+    let customers = [
+      { id: "U10023881", nickname: "potato", addedAt: "2026-07-06 10:24:16" },
+      { id: "U10023885", nickname: "alex_lee", addedAt: "2026-07-05 18:42:09" },
+      { id: "U10023886", nickname: "mary_tbay", addedAt: "2026-07-04 09:12:31" }
+    ];
+
+    let keyword = "";
+    let pendingDeleteId = "";
+    let currentLang = "zh";
+
+    const tabs = document.querySelectorAll(".settings-tab");
+    const profilePanel = document.getElementById("profilePanel");
+    const customersPanel = document.getElementById("customersPanel");
+    const customerTbody = document.getElementById("customerTbody");
+    const emptyState = document.getElementById("emptyState");
+    const searchInput = document.getElementById("searchInput");
+    const toast = document.getElementById("toast");
+    const addModal = document.getElementById("addModal");
+    const nicknameInput = document.getElementById("nicknameInput");
+    const addError = document.getElementById("addError");
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmCopy = document.getElementById("confirmCopy");
+    const languageToggle = document.getElementById("languageToggle");
+    const languageText = document.getElementById("languageText");
+
+    function t(key) {
+      return i18n[currentLang][key] || i18n.zh[key] || key;
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = t("pageTitle");
+      languageText.textContent = t("languageName");
+
+      document.querySelectorAll("[data-i18n]").forEach(node => {
+        node.textContent = t(node.dataset.i18n);
+      });
+
+      document.querySelectorAll("[data-i18n-attr]").forEach(node => {
+        node.dataset.i18nAttr.split(";").forEach(rule => {
+          const [attr, key] = rule.split(":");
+          if (attr && key) node.setAttribute(attr, t(key));
+        });
+      });
+
+      if (pendingDeleteId) {
+        const item = customers.find(customer => customer.id === pendingDeleteId);
+        if (item) confirmCopy.innerHTML = t("confirmDeleteCopy")(escapeHtml(item.nickname));
+      }
+
+      renderCustomers();
+    }
+
+    function switchTab(target) {
+      tabs.forEach(tab => {
+        const selected = tab.dataset.tab === target;
+        tab.classList.toggle("active", selected);
+        tab.setAttribute("aria-selected", selected ? "true" : "false");
+      });
+
+      profilePanel.classList.toggle("active", target === "profile");
+      customersPanel.classList.toggle("active", target === "customers");
+    }
+
+    function nowText() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      }[c]));
+    }
+
+    function getVisibleCustomers() {
+      const k = keyword.trim().toLowerCase();
+      if (!k) return customers;
+      return customers.filter(item => item.nickname.toLowerCase().includes(k));
+    }
+
+    function renderCustomers() {
+      const visible = getVisibleCustomers();
+      customerTbody.innerHTML = visible.map(item => `
+        <tr>
+          <td>${escapeHtml(item.id)}</td>
+          <td>${escapeHtml(item.nickname)}</td>
+          <td>${escapeHtml(item.addedAt)}</td>
+          <td><button class="btn danger" data-delete="${escapeHtml(item.id)}">${t("delete")}</button></td>
+        </tr>
+      `).join("");
+      emptyState.classList.toggle("visible", visible.length === 0);
+    }
+
+    function showToast(message, type = "success") {
+      toast.textContent = message;
+      toast.classList.toggle("error", type === "error");
+      toast.classList.add("visible");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("visible"), 2200);
+    }
+
+    function openAddModal() {
+      addError.textContent = "";
+      nicknameInput.value = "";
+      addModal.classList.add("open");
+      addModal.setAttribute("aria-hidden", "false");
+      setTimeout(() => nicknameInput.focus(), 0);
+    }
+
+    function closeAddModal() {
+      addModal.classList.remove("open");
+      addModal.setAttribute("aria-hidden", "true");
+    }
+
+    function addCustomer() {
+      const nickname = nicknameInput.value.trim();
+      addError.textContent = "";
+
+      if (!nickname) {
+        addError.textContent = t("errorNicknameRequired");
+        return;
+      }
+
+      const user = userDirectory.find(item => item.nickname.toLowerCase() === nickname.toLowerCase());
+      if (!user) {
+        addError.textContent = t("errorUserNotFound");
+        showToast(t("toastUserNotFound"), "error");
+        return;
+      }
+
+      const exists = customers.some(item => item.id === user.id);
+      if (exists) {
+        addError.textContent = t("errorUserExists");
+        showToast(t("toastUserExists"), "error");
+        return;
+      }
+
+      customers.unshift({ id: user.id, nickname: user.nickname, addedAt: nowText() });
+      keyword = "";
+      searchInput.value = "";
+      renderCustomers();
+      closeAddModal();
+      showToast(t("toastAddSuccess"));
+    }
+
+    function openDeleteModal(id) {
+      const item = customers.find(customer => customer.id === id);
+      if (!item) return;
+      pendingDeleteId = id;
+      confirmCopy.innerHTML = t("confirmDeleteCopy")(escapeHtml(item.nickname));
+      confirmModal.classList.add("open");
+      confirmModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDeleteModal() {
+      pendingDeleteId = "";
+      confirmModal.classList.remove("open");
+      confirmModal.setAttribute("aria-hidden", "true");
+    }
+
+    function deleteCustomer() {
+      customers = customers.filter(item => item.id !== pendingDeleteId);
+      renderCustomers();
+      closeDeleteModal();
+      showToast(t("toastDeleteSuccess"));
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => switchTab(tab.dataset.tab));
+    });
+
+    languageToggle.addEventListener("click", () => {
+      applyLanguage(currentLang === "zh" ? "en" : "zh");
+    });
+
+    document.getElementById("searchBtn").addEventListener("click", () => {
+      keyword = searchInput.value;
+      renderCustomers();
+    });
+
+    searchInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        keyword = searchInput.value;
+        renderCustomers();
+      }
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      keyword = "";
+      searchInput.value = "";
+      renderCustomers();
+    });
+
+    document.getElementById("openAddBtn").addEventListener("click", openAddModal);
+    document.getElementById("closeAddBtn").addEventListener("click", closeAddModal);
+    document.getElementById("cancelAddBtn").addEventListener("click", closeAddModal);
+    document.getElementById("confirmAddBtn").addEventListener("click", addCustomer);
+    nicknameInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") addCustomer();
+    });
+
+    customerTbody.addEventListener("click", event => {
+      const button = event.target.closest("[data-delete]");
+      if (button) openDeleteModal(button.dataset.delete);
+    });
+
+    document.getElementById("closeConfirmBtn").addEventListener("click", closeDeleteModal);
+    document.getElementById("cancelDeleteBtn").addEventListener("click", closeDeleteModal);
+    document.getElementById("confirmDeleteBtn").addEventListener("click", deleteCustomer);
+
+    addModal.addEventListener("click", event => {
+      if (event.target === addModal) closeAddModal();
+    });
+
+    confirmModal.addEventListener("click", event => {
+      if (event.target === confirmModal) closeDeleteModal();
+    });
+
+    applyLanguage(currentLang);
+  </script>
+</body>
+</html>

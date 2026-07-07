@@ -307,7 +307,7 @@
 
     .segmented {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 0;
       padding: 3px;
       background: #fff;
@@ -327,7 +327,7 @@
       color: #5d686b;
       font-family: inherit;
       font-size: 14px;
-      font-weight: 900;
+      font-weight: 600;
       text-align: center;
       cursor: pointer;
       outline: none;
@@ -563,13 +563,14 @@
               <label class="field-label">Rate type</label>
             </div>
             <div class="segmented" role="radiogroup" aria-label="Rate type">
-              <button class="segment active" type="button" role="radio" aria-checked="true" data-rate-type="normal">Normal Transaction</button>
-              <button class="segment" type="button" role="radio" aria-checked="false" data-rate-type="fast">Fast Transaction</button>
+              <button class="segment active" type="button" role="radio" aria-checked="true" data-rate-type="fast">Fast</button>
+              <button class="segment" type="button" role="radio" aria-checked="false" data-rate-type="normal">Normal</button>
+              <button class="segment" type="button" role="radio" aria-checked="false" data-rate-type="any">Any</button>
             </div>
           </section>
 
           <div class="trade-fields">
-            <div class="trade-panel active" data-panel="normal">
+            <div class="trade-panel" data-panel="normal">
               <section class="field">
                 <div class="field-head">
                   <label class="field-label">Card type</label>
@@ -614,7 +615,7 @@
               </section>
             </div>
 
-            <div class="trade-panel" data-panel="fast">
+            <div class="trade-panel active" data-panel="fast">
               <section class="field">
                 <div class="field-head">
                   <label class="field-label">Card type</label>
@@ -717,6 +718,7 @@
     }
 
     function switchRateType(type) {
+      const panelType = type === "any" ? "fast" : type;
       rateButtons.forEach((button) => {
         const active = button.dataset.rateType === type;
         button.classList.toggle("active", active);
@@ -724,10 +726,10 @@
       });
 
       tradePanels.forEach((panel) => {
-        panel.classList.toggle("active", panel.dataset.panel === type);
+        panel.classList.toggle("active", panel.dataset.panel === panelType);
       });
 
-      history.replaceState(null, "", type === "fast" ? "#fast" : "#normal");
+      history.replaceState(null, "", `#${type}`);
     }
 
     rateButtons.forEach((button) => {
@@ -825,6 +827,10 @@
 
     if (location.hash === "#fast") {
       switchRateType("fast");
+    } else if (location.hash === "#any") {
+      switchRateType("any");
+    } else if (location.hash === "#normal") {
+      switchRateType("normal");
     }
   </script>
 </body>

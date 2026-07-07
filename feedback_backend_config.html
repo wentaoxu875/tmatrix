@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tbay 评价反馈奖励配置原型</title>
+  <style>
+    :root {
+      --nav: #00182b;
+      --nav-active: #1f95ee;
+      --cyan: #13c6c4;
+      --blue: #1f95ee;
+      --text: #555b66;
+      --strong: #1f2933;
+      --muted: #8b93a1;
+      --line: #e5e7eb;
+      --bg: #f1f3f6;
+      --soft: #f8fafc;
+      --danger: #f24646;
+      --success: #18b876;
+      --warning: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1440px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .topbar {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      background: var(--nav);
+      color: #fff;
+    }
+
+    .brand {
+      width: 180px;
+      padding-left: 34px;
+      font-size: 42px;
+      font-style: italic;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .brand .t {
+      color: var(--cyan);
+    }
+
+    .brand .bay {
+      color: #fff;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+    }
+
+    .top-nav-item {
+      min-width: 92px;
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, .82);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 0 18px;
+    }
+
+    .top-nav-item.active {
+      background: var(--nav-active);
+      color: #fff;
+    }
+
+    .top-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding-right: 34px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .download {
+      height: 34px;
+      border: 0;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, .18);
+      color: #cbd5e1;
+      padding: 0 18px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .language-select {
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      outline: none;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .language-select option {
+      color: var(--strong);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      min-height: calc(100vh - 58px);
+    }
+
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 12px 0;
+    }
+
+    .menu-group {
+      margin-bottom: 6px;
+    }
+
+    .menu-parent {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      color: #525963;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .menu-parent .left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .menu-icon {
+      width: 15px;
+      height: 12px;
+      border: 2px solid currentColor;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .menu-icon::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: -6px;
+      height: 2px;
+      background: currentColor;
+    }
+
+    .submenu {
+      display: grid;
+      gap: 2px;
+    }
+
+    .submenu-item {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      padding-left: 38px;
+      border-right: 3px solid transparent;
+      color: #555b66;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .submenu-item.active {
+      background: #e7f7ff;
+      border-right-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .main {
+      padding: 20px 24px 36px;
+    }
+
+    .breadcrumb {
+      color: #7a818d;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: #fff;
+      min-height: 640px;
+      padding: 30px 24px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      color: var(--strong);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .table-radio {
+      display: grid;
+      place-items: center;
+    }
+
+    .table-radio input {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      table-layout: fixed;
+    }
+
+    .table th,
+    .table td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+      padding: 20px 18px;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .table th {
+      height: 52px;
+      color: var(--strong);
+      font-size: 15px;
+      font-weight: 800;
+      background: #fff;
+    }
+
+    .table td:last-child,
+    .table th:last-child {
+      border-right: 0;
+    }
+
+    .status-tag,
+    .reward-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 14px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status-tag.on {
+      background: #e8fff5;
+      color: var(--success);
+    }
+
+    .status-tag.off {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    .reward-tag {
+      background: #eef7ff;
+      color: var(--blue);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .link-button {
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .link-button.danger {
+      color: var(--danger);
+    }
+
+    .link-button.success {
+      color: var(--success);
+    }
+
+    .primary-button {
+      height: 36px;
+      min-width: 90px;
+      border: 0;
+      border-radius: 4px;
+      background: var(--cyan);
+      color: #fff;
+      cursor: pointer;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .secondary-button {
+      height: 36px;
+      min-width: 78px;
+      border: 1px solid #cfd6e2;
+      border-radius: 4px;
+      background: #fff;
+      color: #636b77;
+      cursor: pointer;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .form {
+      width: 720px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      color: var(--strong);
+      font-size: 15px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .required {
+      color: var(--danger);
+      margin-right: 4px;
+    }
+
+    .readonly {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .control {
+      width: 360px;
+      height: 38px;
+      border: 1px solid #cfd6e2;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      padding: 0 12px;
+      font-size: 15px;
+    }
+
+    .control:focus {
+      border-color: var(--blue);
+    }
+
+    .select {
+      appearance: none;
+      background:
+        linear-gradient(45deg, transparent 50%, #9aa4b2 50%) right 16px center / 6px 6px no-repeat,
+        linear-gradient(135deg, #9aa4b2 50%, transparent 50%) right 12px center / 6px 6px no-repeat,
+        #fff;
+      padding-right: 34px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 16px;
+      margin-left: 168px;
+      margin-top: 34px;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0, 0, 0, .45);
+      z-index: 20;
+    }
+
+    .modal-mask.show {
+      display: grid;
+    }
+
+    .modal {
+      width: 420px;
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, .2);
+    }
+
+    .modal-title {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      color: var(--strong);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .modal-body {
+      padding: 24px 22px 8px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      padding: 22px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="t">T</span><span class="bay">bay</span></div>
+    <nav class="top-nav">
+      <div class="top-nav-item" data-i18n="nav.system">系统管理</div>
+      <div class="top-nav-item" data-i18n="nav.business">业务管理</div>
+      <div class="top-nav-item" data-i18n="nav.finance">财务管理</div>
+      <div class="top-nav-item active" data-i18n="nav.marketing">营销管理</div>
+      <div class="top-nav-item" data-i18n="nav.stats">统计管理</div>
+      <div class="top-nav-item" data-i18n="nav.vendor">服务商管理</div>
+      <div class="top-nav-item" data-i18n="nav.points">积分数据</div>
+      <div class="top-nav-item" data-i18n="nav.analysis">数据分析</div>
+    </nav>
+    <div class="top-actions">
+      <select id="languageSelect" class="language-select" aria-label="Language">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+      </select>
+      <button class="download" type="button" data-i18n="top.download">导出下载</button>
+      <span>13071886575⌄</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="menu-group">
+        <div class="menu-parent"><span class="left"><span class="menu-icon"></span><span data-i18n="menu.popup">弹窗管理</span></span><span>⌄</span></div>
+      </div>
+      <div class="menu-group">
+        <div class="menu-parent"><span class="left"><span class="menu-icon"></span><span data-i18n="menu.activity">活动管理</span></span><span>⌄</span></div>
+      </div>
+      <div class="menu-group">
+        <div class="menu-parent"><span class="left"><span class="menu-icon"></span><span data-i18n="menu.spin">转盘抽奖活动</span></span><span>⌄</span></div>
+      </div>
+      <div class="menu-group">
+        <div class="menu-parent"><span class="left"><span class="menu-icon"></span><span data-i18n="menu.flash">限时抢活动</span></span><span>⌄</span></div>
+      </div>
+      <div class="menu-group">
+        <div class="menu-parent"><span class="left"><span class="menu-icon"></span><span data-i18n="menu.couponConfig">券活动配置</span></span><span>⌃</span></div>
+        <div class="submenu">
+          <div class="submenu-item" data-i18n="submenu.newUser">新客活动配置</div>
+          <div class="submenu-item" data-i18n="submenu.newUserNew">新客活动配置(新)</div>
+          <div class="submenu-item" data-i18n="submenu.oldUser">老客活动配置</div>
+          <div class="submenu-item" data-i18n="submenu.compCoupon">补偿券配置</div>
+          <div class="submenu-item" data-i18n="submenu.memberCoupon">会员级别优惠券</div>
+          <div class="submenu-item" data-i18n="submenu.compRecord">补偿券发放记录</div>
+          <div class="submenu-item" data-i18n="submenu.vendorCoupon">服务商补偿券配置</div>
+          <div class="submenu-item active" data-i18n="page.title">评价反馈奖励</div>
+        </div>
+      </div>
+      <div class="menu-group">
+        <div class="menu-parent"><span class="left"><span class="menu-icon"></span><span data-i18n="menu.activation">新用户激活</span></span><span>⌄</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="breadcrumb"><span data-i18n="nav.marketing">营销管理</span> / <span data-i18n="menu.couponConfig">券活动配置</span> / <span id="crumbTail">评价反馈奖励</span></div>
+      <section class="card">
+        <div id="listScreen" class="screen active">
+          <div class="page-head">
+            <div>
+              <div class="page-title" data-i18n="page.title">评价反馈奖励</div>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <button class="secondary-button" type="button" id="toolbarEdit" data-i18n="action.edit">编辑</button>
+            <button class="primary-button" type="button" id="toolbarEnable" data-i18n="action.enable">开启</button>
+            <button class="secondary-button" type="button" id="toolbarDisable" data-i18n="action.disable">关闭</button>
+          </div>
+
+          <table class="table">
+            <colgroup>
+              <col style="width: 6%">
+              <col style="width: 30%">
+              <col style="width: 18%">
+              <col style="width: 32%">
+              <col style="width: 12%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th></th>
+                <th data-i18n="table.scene">场景名称</th>
+                <th data-i18n="table.rewardType">奖励类型</th>
+                <th data-i18n="table.reward">奖励</th>
+                <th data-i18n="table.status">状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="table-radio"><input type="radio" name="rewardScene" value="quick_trade_submit" checked></label></td>
+                <td data-scene="quick_trade_submit">快速交易提交订单</td>
+                <td><span class="reward-tag" data-i18n="rewardType.coupon">优惠券</span></td>
+                <td>3% Rate-up Coupon</td>
+                <td><span class="status-tag off" data-i18n="status.off">关闭</span></td>
+              </tr>
+              <tr>
+                <td><label class="table-radio"><input type="radio" name="rewardScene" value="gift_card_order_detail"></label></td>
+                <td data-scene="gift_card_order_detail">礼品卡订单详情</td>
+                <td><span class="reward-tag" data-i18n="rewardType.coupon">优惠券</span></td>
+                <td>3% Rate-up Coupon</td>
+                <td><span class="status-tag on" data-i18n="status.on">开启</span></td>
+              </tr>
+              <tr>
+                <td><label class="table-radio"><input type="radio" name="rewardScene" value="withdrawal_order_detail"></label></td>
+                <td data-scene="withdrawal_order_detail">提现订单详情</td>
+                <td><span class="reward-tag" data-i18n="rewardType.coupon">优惠券</span></td>
+                <td>3% Rate-up Coupon</td>
+                <td><span class="status-tag off" data-i18n="status.off">关闭</span></td>
+              </tr>
+              <tr>
+                <td><label class="table-radio"><input type="radio" name="rewardScene" value="profile"></label></td>
+                <td data-scene="profile">个人中心</td>
+                <td><span class="reward-tag">Coins</span></td>
+                <td>50 Coins</td>
+                <td><span class="status-tag off" data-i18n="status.off">关闭</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="editScreen" class="screen">
+          <div class="page-head">
+            <div>
+              <div class="page-title" data-i18n="edit.title">编辑评价反馈奖励</div>
+            </div>
+          </div>
+
+          <form class="form">
+            <div class="form-row">
+              <div class="form-label" data-i18n="form.scene">场景名称：</div>
+              <div id="sceneName" class="readonly">礼品卡订单详情</div>
+            </div>
+            <div class="form-row">
+              <div class="form-label"><span class="required">*</span><span data-i18n="form.rewardType">奖励类型：</span></div>
+              <div class="radio-group">
+                <label class="radio"><input type="radio" name="rewardType" value="coupon" checked><span data-i18n="rewardType.coupon">优惠券</span></label>
+                <label class="radio"><input type="radio" name="rewardType" value="coins">Coins</label>
+              </div>
+            </div>
+            <div id="couponRewardRow" class="form-row">
+              <div class="form-label"><span class="required">*</span><span data-i18n="form.reward">奖励：</span></div>
+              <select class="control select">
+                <option>3% Rate-up Coupon</option>
+                <option>5% Rate-up Coupon</option>
+                <option>Fixed Coupon - 100 NGN</option>
+              </select>
+            </div>
+            <div id="coinsRewardRow" class="form-row hidden">
+              <div class="form-label"><span class="required">*</span><span data-i18n="form.reward">奖励：</span></div>
+              <input id="coinsInput" class="control" type="number" min="1" placeholder="请输入 Coins 数量">
+            </div>
+            <div class="form-actions">
+              <button class="secondary-button" type="button" id="cancelEdit" data-i18n="action.cancel">取消</button>
+              <button class="primary-button" type="button" id="saveEdit" data-i18n="action.save">保存</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="confirmModal" class="modal-mask" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div id="confirmTitle" class="modal-title" data-i18n="modal.title">确认操作</div>
+      <div id="confirmText" class="modal-body">确认开启该场景奖励配置吗？</div>
+      <div class="modal-actions">
+        <button class="secondary-button" type="button" data-close-modal data-i18n="action.cancel">取消</button>
+        <button class="primary-button" type="button" data-close-modal data-i18n="action.confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const listScreen = document.getElementById('listScreen');
+    const editScreen = document.getElementById('editScreen');
+    const crumbTail = document.getElementById('crumbTail');
+    const sceneName = document.getElementById('sceneName');
+    const couponRewardRow = document.getElementById('couponRewardRow');
+    const coinsRewardRow = document.getElementById('coinsRewardRow');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmText = document.getElementById('confirmText');
+    const coinsInput = document.getElementById('coinsInput');
+    const languageSelect = document.getElementById('languageSelect');
+    let currentLang = 'zh';
+    let currentEditScene = 'gift_card_order_detail';
+    let currentConfirmAction = 'enable';
+
+    const i18n = {
+      zh: {
+        'nav.system': '系统管理',
+        'nav.business': '业务管理',
+        'nav.finance': '财务管理',
+        'nav.marketing': '营销管理',
+        'nav.stats': '统计管理',
+        'nav.vendor': '服务商管理',
+        'nav.points': '积分数据',
+        'nav.analysis': '数据分析',
+        'top.download': '导出下载',
+        'menu.popup': '弹窗管理',
+        'menu.activity': '活动管理',
+        'menu.spin': '转盘抽奖活动',
+        'menu.flash': '限时抢活动',
+        'menu.couponConfig': '券活动配置',
+        'menu.activation': '新用户激活',
+        'submenu.newUser': '新客活动配置',
+        'submenu.newUserNew': '新客活动配置(新)',
+        'submenu.oldUser': '老客活动配置',
+        'submenu.compCoupon': '补偿券配置',
+        'submenu.memberCoupon': '会员级别优惠券',
+        'submenu.compRecord': '补偿券发放记录',
+        'submenu.vendorCoupon': '服务商补偿券配置',
+        'page.title': '评价反馈奖励',
+        'edit.title': '编辑评价反馈奖励',
+        'action.edit': '编辑',
+        'action.enable': '开启',
+        'action.disable': '关闭',
+        'action.cancel': '取消',
+        'action.save': '保存',
+        'action.confirm': '确定',
+        'table.scene': '场景名称',
+        'table.rewardType': '奖励类型',
+        'table.reward': '奖励',
+        'table.status': '状态',
+        'rewardType.coupon': '优惠券',
+        'status.on': '开启',
+        'status.off': '关闭',
+        'form.scene': '场景名称：',
+        'form.rewardType': '奖励类型：',
+        'form.reward': '奖励：',
+        'modal.title': '确认操作',
+        'placeholder.coins': '请输入 Coins 数量',
+        scene_quick_trade_submit: '快速交易提交订单',
+        scene_gift_card_order_detail: '礼品卡订单详情',
+        scene_withdrawal_order_detail: '提现订单详情',
+        scene_profile: '个人中心',
+        crumbList: '评价反馈奖励',
+        crumbEdit: '评价反馈奖励 / 编辑',
+        confirm_enable: '确认开启该场景奖励配置吗？',
+        confirm_disable: '确认关闭该场景奖励配置吗？'
+      },
+      en: {
+        'nav.system': 'System',
+        'nav.business': 'Business',
+        'nav.finance': 'Finance',
+        'nav.marketing': 'Marketing',
+        'nav.stats': 'Statistics',
+        'nav.vendor': 'Vendor',
+        'nav.points': 'Points',
+        'nav.analysis': 'Analytics',
+        'top.download': 'Export',
+        'menu.popup': 'Popup Management',
+        'menu.activity': 'Campaign Management',
+        'menu.spin': 'Spin Campaigns',
+        'menu.flash': 'Flash Campaigns',
+        'menu.couponConfig': 'Coupon Config',
+        'menu.activation': 'New User Activation',
+        'submenu.newUser': 'New User Campaign',
+        'submenu.newUserNew': 'New User Campaign (New)',
+        'submenu.oldUser': 'Existing User Campaign',
+        'submenu.compCoupon': 'Compensation Coupon',
+        'submenu.memberCoupon': 'Member Coupon',
+        'submenu.compRecord': 'Coupon Issue Records',
+        'submenu.vendorCoupon': 'Vendor Coupon Config',
+        'page.title': 'Feedback Reward',
+        'edit.title': 'Edit Feedback Reward',
+        'action.edit': 'Edit',
+        'action.enable': 'Enable',
+        'action.disable': 'Disable',
+        'action.cancel': 'Cancel',
+        'action.save': 'Save',
+        'action.confirm': 'Confirm',
+        'table.scene': 'Scenario',
+        'table.rewardType': 'Reward Type',
+        'table.reward': 'Reward',
+        'table.status': 'Status',
+        'rewardType.coupon': 'Coupon',
+        'status.on': 'Enabled',
+        'status.off': 'Disabled',
+        'form.scene': 'Scenario:',
+        'form.rewardType': 'Reward Type:',
+        'form.reward': 'Reward:',
+        'modal.title': 'Confirm',
+        'placeholder.coins': 'Enter Coins amount',
+        scene_quick_trade_submit: 'Quick Trade Order Submission',
+        scene_gift_card_order_detail: 'Gift Card Order Details',
+        scene_withdrawal_order_detail: 'Withdrawal Order Details',
+        scene_profile: 'Profile',
+        crumbList: 'Feedback Reward',
+        crumbEdit: 'Feedback Reward / Edit',
+        confirm_enable: 'Confirm enabling rewards for this scenario?',
+        confirm_disable: 'Confirm disabling rewards for this scenario?'
+      }
+    };
+
+    function t(key) {
+      return i18n[currentLang][key] || key;
+    }
+
+    function renderLanguage() {
+      document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+      });
+      document.querySelectorAll('[data-scene]').forEach(el => {
+        el.textContent = t(`scene_${el.dataset.scene}`);
+      });
+      coinsInput.placeholder = t('placeholder.coins');
+      sceneName.textContent = t(`scene_${currentEditScene}`);
+      crumbTail.textContent = editScreen.classList.contains('active') ? t('crumbEdit') : t('crumbList');
+      confirmText.textContent = t(`confirm_${currentConfirmAction}`);
+    }
+
+    function showList() {
+      listScreen.classList.add('active');
+      editScreen.classList.remove('active');
+      crumbTail.textContent = t('crumbList');
+    }
+
+    function showEdit(scene) {
+      currentEditScene = scene;
+      listScreen.classList.remove('active');
+      editScreen.classList.add('active');
+      sceneName.textContent = t(`scene_${scene}`);
+      crumbTail.textContent = t('crumbEdit');
+    }
+
+    function setRewardType(type) {
+      couponRewardRow.classList.toggle('hidden', type !== 'coupon');
+      coinsRewardRow.classList.toggle('hidden', type !== 'coins');
+    }
+
+    function showConfirm(action) {
+      currentConfirmAction = action;
+      confirmText.textContent = t(`confirm_${action}`);
+      confirmModal.classList.add('show');
+      confirmModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function selectedScene() {
+      return document.querySelector('input[name="rewardScene"]:checked').value;
+    }
+
+    function hideConfirm() {
+      confirmModal.classList.remove('show');
+      confirmModal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.getElementById('toolbarEdit').addEventListener('click', () => showEdit(selectedScene()));
+    document.getElementById('toolbarEnable').addEventListener('click', () => showConfirm('enable'));
+    document.getElementById('toolbarDisable').addEventListener('click', () => showConfirm('disable'));
+    languageSelect.addEventListener('change', () => {
+      currentLang = languageSelect.value;
+      renderLanguage();
+    });
+
+    document.querySelectorAll('input[name="rewardType"]').forEach(radio => {
+      radio.addEventListener('change', () => setRewardType(radio.value));
+    });
+
+    document.getElementById('cancelEdit').addEventListener('click', showList);
+    document.getElementById('saveEdit').addEventListener('click', showList);
+
+    document.querySelectorAll('[data-close-modal]').forEach(button => {
+      button.addEventListener('click', hideConfirm);
+    });
+
+    confirmModal.addEventListener('click', event => {
+      if (event.target === confirmModal) hideConfirm();
+    });
+
+    renderLanguage();
+  </script>
+</body>
+</html>

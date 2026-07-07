@@ -287,6 +287,16 @@
       background: #fff1f1;
     }
 
+    .tool-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
     .tag {
       display: inline-flex;
       align-items: center;
@@ -849,7 +859,7 @@
 
           <div class="cards">
             <article class="alert-card">
-              <div class="tag">Fast Transaction</div>
+              <div class="tag">Fast</div>
               <div class="card-title-row">
                 <h2 class="card-title">Amazon USD · $100 · Physical</h2>
               </div>
@@ -862,12 +872,21 @@
                 <div class="footer-note">₦22 to go · set Oct 24, 10:30</div>
                 <div class="card-tools" aria-label="Alert actions">
                   <button class="tool-btn" type="button" aria-label="Edit alert" data-edit-alert data-card="Amazon USD · $100 · Physical" data-target="1520">✎</button>
-                  <button class="tool-btn delete" type="button" aria-label="Delete alert" data-delete-alert>×</button>
+                  <button class="tool-btn delete" type="button" aria-label="Delete alert" data-delete-alert>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4h8v2" />
+                      <path d="M6 6l1 15h10l1-15" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </article>
 
             <article class="alert-card">
+              <div class="tag">Normal</div>
               <div class="card-title-row">
                 <h2 class="card-title">ITunes USD · $100 · E-code</h2>
               </div>
@@ -880,7 +899,15 @@
                 <div class="footer-note">₦60 to go · set Oct 22, 18:05</div>
                 <div class="card-tools" aria-label="Alert actions">
                   <button class="tool-btn" type="button" aria-label="Edit alert" data-edit-alert data-card="ITunes USD · $100 · E-code" data-target="1300">✎</button>
-                  <button class="tool-btn delete" type="button" aria-label="Delete alert" data-delete-alert>×</button>
+                  <button class="tool-btn delete" type="button" aria-label="Delete alert" data-delete-alert>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4h8v2" />
+                      <path d="M6 6l1 15h10l1-15" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </article>
@@ -890,9 +917,9 @@
         <section class="panel" data-panel="triggered">
           <div class="cards">
             <article class="alert-card live">
-              <div class="tag">Fast Transaction</div>
+              <div class="tag">Any</div>
               <div class="card-title-row">
-                <h2 class="card-title">Amazon USD · $100 · Physical</h2>
+                <h2 class="card-title">Razer USD · $100 · Physical</h2>
                 <div class="status-chip">Still live</div>
               </div>
               <div class="meta-row positive">
@@ -904,6 +931,7 @@
             </article>
 
             <article class="alert-card">
+              <div class="tag">Fast</div>
               <div class="card-title-row">
                 <h2 class="card-title">ITunes USD · $100 · E-code</h2>
                 <div class="status-chip warning">Missed window</div>
@@ -925,6 +953,7 @@
         <section class="panel" data-panel="expired">
           <div class="cards">
             <article class="alert-card">
+              <div class="tag">Normal</div>
               <div class="card-title-row">
                 <h2 class="card-title">Steam USD · $50 · Physical</h2>
               </div>
@@ -933,6 +962,22 @@
                 <span>Last ₦1,421</span>
               </div>
               <div class="footer-note">Expired Jul 1, 2026 · no trigger in 90 days</div>
+              <div class="split-actions">
+                <button class="outline-btn" type="button" data-rearm-alert>Re-arm</button>
+                <button class="outline-btn" type="button" data-delete-alert>Delete</button>
+              </div>
+            </article>
+
+            <article class="alert-card">
+              <div class="tag">Any</div>
+              <div class="card-title-row">
+                <h2 class="card-title">Amazon GBP · £200 · E-code</h2>
+              </div>
+              <div class="meta-row">
+                <span>Target ₦1,610</span>
+                <span>Last ₦1,552</span>
+              </div>
+              <div class="footer-note">Expired Jul 5, 2026 · no trigger in 90 days</div>
               <div class="split-actions">
                 <button class="outline-btn" type="button" data-rearm-alert>Re-arm</button>
                 <button class="outline-btn" type="button" data-delete-alert>Delete</button>

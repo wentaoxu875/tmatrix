@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tbay New Rate Alert</title>
+  <style>
+    :root {
+      --brand: #00bfbf;
+      --brand-strong: #00cccc;
+      --brand-soft: #effafa;
+      --ink: #011314;
+      --navy: #003152;
+      --muted: #7f8c8d;
+      --soft-text: #9aa4a5;
+      --line: #edeeee;
+      --page: #f4f4f6;
+      --card: #ffffff;
+      --success: #00c25f;
+      --warning: #ff8c42;
+      --danger: #f24646;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      background: #dfe3e8;
+      color: var(--ink);
+      font-family: Avenir, Helvetica, Arial, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      overflow-x: hidden;
+    }
+
+    .prototype-shell {
+      width: min(100vw, 393px);
+      min-height: 100vh;
+      background: var(--page);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, .06);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 393px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background: var(--page);
+    }
+
+    .nav {
+      height: 58px;
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: 58px 1fr 58px;
+      align-items: center;
+      background: #fff;
+      border-bottom: 1px solid rgba(0, 0, 0, .04);
+    }
+
+    .back {
+      width: 44px;
+      height: 44px;
+      margin-left: 12px;
+      border: 0;
+      background: transparent;
+      position: relative;
+    }
+
+    .back::before {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 12px;
+      width: 16px;
+      height: 16px;
+      border-left: 4px solid #050505;
+      border-bottom: 4px solid #050505;
+      transform: rotate(45deg);
+      border-radius: 2px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .content {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px 16px 102px;
+    }
+
+    .form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .field-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .field-label {
+      color: #111d1f;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .hint {
+      color: var(--soft-text);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .select-box,
+    .input-box,
+    .rate-box {
+      min-height: 52px;
+      width: 100%;
+      display: grid;
+      align-items: center;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid transparent;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .025);
+    }
+
+    .select-box {
+      grid-template-columns: 44px 1fr 24px;
+      gap: 12px;
+      padding: 0 14px;
+    }
+
+    .select-box.rate-type-select {
+      grid-template-columns: 1fr 24px;
+    }
+
+    .brand-icon.razer {
+      background: #050b07;
+      color: #44d62c;
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    .input-box,
+    .rate-box {
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 0 16px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .inline-number {
+      min-width: 0;
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .inline-number::placeholder {
+      color: #b2bcc0;
+      font-weight: 800;
+    }
+
+    .rate-note {
+      min-height: auto;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #647174;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .rate-note strong {
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .field-note {
+      margin: 7px 0 0;
+      color: #7a8688;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .field-note.good {
+      color: var(--success);
+    }
+
+    .target-reference {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      margin-top: -4px;
+      color: #647174;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .target-reference[hidden] {
+      display: none;
+    }
+
+    .target-reference strong {
+      color: var(--navy);
+      font-weight: 900;
+    }
+
+    .target-reference .good {
+      color: var(--success);
+      font-weight: 900;
+    }
+
+    .target-reference .market-good {
+      color: var(--success);
+      font-weight: 900;
+    }
+
+    .target-reference .history-muted {
+      color: #647174;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: #101820;
+      color: #ff9900;
+      font-size: 23px;
+      font-weight: 900;
+      font-family: Georgia, serif;
+    }
+
+    .flag {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      overflow: hidden;
+      background:
+        linear-gradient(#b22234 0 7.69%, #fff 7.69% 15.38%, #b22234 15.38% 23.07%, #fff 23.07% 30.76%, #b22234 30.76% 38.45%, #fff 38.45% 46.14%, #b22234 46.14% 53.83%, #fff 53.83% 61.52%, #b22234 61.52% 69.21%, #fff 69.21% 76.9%, #b22234 76.9% 84.59%, #fff 84.59% 92.28%, #b22234 92.28% 100%);
+      position: relative;
+    }
+
+    .flag::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 18px;
+      height: 21px;
+      background: #3c3b6e;
+    }
+
+    .select-value {
+      min-width: 0;
+      overflow: hidden;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chevron {
+      width: 0;
+      height: 0;
+      justify-self: end;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #004060;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 3px;
+      background: #fff;
+      border: 1px solid rgba(0, 191, 191, .26);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .segment {
+      min-height: 46px;
+      border: 0;
+      appearance: none;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: transparent;
+      color: #5d686b;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 900;
+      text-align: center;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .segment:focus-visible {
+      box-shadow: inset 0 0 0 2px rgba(0, 191, 191, .35);
+    }
+
+    .segment.active {
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(0, 191, 191, .2);
+    }
+
+    .trade-fields {
+      display: grid;
+      gap: 14px;
+    }
+
+    .trade-panel {
+      display: none;
+      gap: 14px;
+    }
+
+    .trade-panel.active {
+      display: grid;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .choice-row {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 1px;
+      scrollbar-width: none;
+    }
+
+    .choice-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .choice-card {
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      padding: 0 16px;
+      white-space: nowrap;
+    }
+
+    .choice-card.active {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .choice-card.fast-active {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .digit-choice {
+      min-width: 82px;
+    }
+
+    .currency-chip {
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .freshness {
+      color: #7a8688;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bottom-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 12px 16px 16px;
+      background: rgba(255, 255, 255, .96);
+      border-top: 1px solid rgba(0, 191, 191, .24);
+      backdrop-filter: blur(10px);
+    }
+
+    .set-btn {
+      width: 100%;
+      height: 56px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      box-shadow: 0 8px 18px rgba(0, 191, 191, .24);
+    }
+
+    .set-btn:active {
+      transform: translateY(1px);
+    }
+
+    .choice-card,
+    .select-box,
+    .input-box {
+      cursor: pointer;
+    }
+
+    .input-box.editing {
+      border-color: rgba(0, 191, 191, .55);
+      box-shadow: 0 0 0 3px rgba(0, 191, 191, .08);
+    }
+
+    .field-error {
+      margin: 8px 0 0;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 900;
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 88px;
+      z-index: 30;
+      max-width: calc(100% - 48px);
+      transform: translate(-50%, 18px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: rgba(1, 19, 20, .88);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+      text-align: center;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .sheet-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 25;
+      display: none;
+      align-items: flex-end;
+      background: rgba(0, 0, 0, .42);
+    }
+
+    .sheet-overlay.open {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      border-radius: 16px 16px 0 0;
+      background: #fff;
+      padding: 18px 16px 22px;
+      box-shadow: 0 -18px 40px rgba(0, 0, 0, .18);
+    }
+
+    .sheet-title {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .sheet-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sheet-option {
+      min-height: 48px;
+      border: 0;
+      border-radius: 8px;
+      background: #f5f6fa;
+      color: var(--ink);
+      font: 900 15px Avenir, Helvetica, Arial, sans-serif;
+      text-align: left;
+      padding: 0 14px;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        display: block;
+        background: var(--page);
+      }
+
+      .prototype-shell {
+        width: 100vw;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-shell">
+    <main class="app">
+      <header class="nav">
+        <button class="back" type="button" aria-label="Back" onclick="location.href='rate-alert-entry.html'"></button>
+        <div class="title">New rate alert</div>
+        <div></div>
+      </header>
+
+      <section class="content">
+        <form class="form">
+      <section class="field">
+            <div class="field-head">
+              <label class="field-label">Rate type</label>
+            </div>
+            <div class="segmented" role="radiogroup" aria-label="Rate type">
+              <button class="segment active" type="button" role="radio" aria-checked="true" data-rate-type="normal">Normal Transaction</button>
+              <button class="segment" type="button" role="radio" aria-checked="false" data-rate-type="fast">Fast Transaction</button>
+            </div>
+          </section>
+
+          <div class="trade-fields">
+            <div class="trade-panel active" data-panel="normal">
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">Card type</label>
+                </div>
+                <div class="choice-grid">
+                  <div class="choice-card active" data-choice-group="normal-card-type">Physical Card</div>
+                  <div class="choice-card" data-choice-group="normal-card-type">E-Code</div>
+                </div>
+              </section>
+
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">Gift card</label>
+                </div>
+                <div class="select-box" data-select-label="Gift card" data-options="Amazon,Steam,ITunes,Razer">
+                  <div class="brand-icon">a</div>
+                  <div class="select-value">Amazon</div>
+                  <div class="chevron"></div>
+                </div>
+              </section>
+
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">Currency</label>
+                </div>
+                <div class="select-box" data-select-label="Currency" data-options="USA(USD),UK(GBP),Canada(CAD),Europe(EUR)">
+                  <div class="flag"></div>
+                  <div class="select-value">USA(USD)</div>
+                  <div class="chevron"></div>
+                </div>
+              </section>
+
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">First 4 digits</label>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-card digit-choice active" data-choice-group="first-four">4118</div>
+                  <div class="choice-card digit-choice" data-choice-group="first-four">4097</div>
+                  <div class="choice-card digit-choice" data-choice-group="first-four">Other</div>
+                </div>
+              </section>
+            </div>
+
+            <div class="trade-panel" data-panel="fast">
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">Card type</label>
+                </div>
+                <div class="choice-grid">
+                  <div class="choice-card fast-active active" data-choice-group="fast-card-type">Physical</div>
+                  <div class="choice-card" data-choice-group="fast-card-type">E-code</div>
+                </div>
+              </section>
+
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">Gift card</label>
+                </div>
+                <div class="select-box" data-select-label="Gift card" data-options="Razer,Amazon,Steam,ITunes">
+                  <div class="brand-icon razer">R</div>
+                  <div class="select-value">Razer</div>
+                  <div class="chevron"></div>
+                </div>
+              </section>
+
+              <section class="field">
+                <div class="field-head">
+                  <label class="field-label">Currency</label>
+                </div>
+                <div class="select-box" data-select-label="Currency" data-options="USA(USD),UK(GBP),Canada(CAD),Europe(EUR)">
+                  <div class="flag"></div>
+                  <div class="select-value">USA(USD)</div>
+                  <div class="chevron"></div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+
+          <section class="field">
+            <div class="field-head">
+              <label class="field-label">Amount</label>
+              <span class="hint">LIMIT: $1 - $10000</span>
+            </div>
+            <div class="input-box">
+              <input class="inline-number" data-amount-value inputmode="decimal" placeholder="Enter amount" aria-label="Amount" />
+              <span class="currency-chip">USD</span>
+            </div>
+            <p class="field-error" data-amount-error>Amount must be between $1 and $10000</p>
+          </section>
+
+          <div class="target-reference" data-rate-reference hidden>
+            <span class="market-good">Current market rate: ₦1,485</span>
+            <span class="history-muted">(30-day high： ₦1,540)</span>
+          </div>
+
+          <section class="field">
+            <div class="field-head">
+              <label class="field-label">Target rate</label>
+            </div>
+            <div class="input-box">
+              <input class="inline-number" data-target-value inputmode="decimal" placeholder="Enter target rate" aria-label="Target rate" />
+              <span class="currency-chip">NGN</span>
+            </div>
+            <p class="field-error" data-target-error>Target rate must be higher than current rate</p>
+          </section>
+
+        </form>
+      </section>
+
+      <footer class="bottom-bar">
+        <button class="set-btn" type="button" data-set-alert>Set alert</button>
+      </footer>
+    </main>
+    <div class="sheet-overlay" data-sheet-overlay aria-hidden="true">
+      <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+        <h2 class="sheet-title" id="sheetTitle">Select option</h2>
+        <div class="sheet-options" data-sheet-options></div>
+      </section>
+    </div>
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+  </div>
+  <script>
+    const rateButtons = [...document.querySelectorAll("[data-rate-type]")];
+    const tradePanels = [...document.querySelectorAll("[data-panel]")];
+    const toast = document.querySelector("[data-toast]");
+    const sheetOverlay = document.querySelector("[data-sheet-overlay]");
+    const sheetTitle = document.querySelector("#sheetTitle");
+    const sheetOptions = document.querySelector("[data-sheet-options]");
+    const amountValue = document.querySelector("[data-amount-value]");
+    const targetValue = document.querySelector("[data-target-value]");
+    const amountError = document.querySelector("[data-amount-error]");
+    const targetError = document.querySelector("[data-target-error]");
+    const rateReference = document.querySelector("[data-rate-reference]");
+    let activeSelect = null;
+    let toastTimer = null;
+    const currentMarketRate = 1485;
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function switchRateType(type) {
+      rateButtons.forEach((button) => {
+        const active = button.dataset.rateType === type;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-checked", String(active));
+      });
+
+      tradePanels.forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.panel === type);
+      });
+
+      history.replaceState(null, "", type === "fast" ? "#fast" : "#normal");
+    }
+
+    rateButtons.forEach((button) => {
+      button.addEventListener("click", () => switchRateType(button.dataset.rateType));
+    });
+
+    document.querySelectorAll("[data-choice-group]").forEach((choice) => {
+      choice.addEventListener("click", () => {
+        const group = choice.dataset.choiceGroup;
+        document.querySelectorAll(`[data-choice-group="${group}"]`).forEach((item) => {
+          item.classList.remove("active", "fast-active");
+        });
+        choice.classList.add("active");
+      });
+    });
+
+    document.querySelectorAll("[data-select-label]").forEach((selectBox) => {
+      selectBox.addEventListener("click", () => {
+        activeSelect = selectBox;
+        sheetTitle.textContent = selectBox.dataset.selectLabel;
+        sheetOptions.innerHTML = "";
+        selectBox.dataset.options.split(",").forEach((option) => {
+          const button = document.createElement("button");
+          button.className = "sheet-option";
+          button.type = "button";
+          button.textContent = option;
+          button.addEventListener("click", () => {
+            activeSelect.querySelector(".select-value").textContent = option;
+            closeSheet();
+          });
+          sheetOptions.appendChild(button);
+        });
+        sheetOverlay.classList.add("open");
+        sheetOverlay.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeSheet() {
+      sheetOverlay.classList.remove("open");
+      sheetOverlay.setAttribute("aria-hidden", "true");
+      activeSelect = null;
+    }
+
+    sheetOverlay.addEventListener("click", (event) => {
+      if (event.target === sheetOverlay) closeSheet();
+    });
+
+    [amountValue, targetValue].forEach((input) => {
+      input.addEventListener("focus", () => input.closest(".input-box").classList.add("editing"));
+      input.addEventListener("blur", () => input.closest(".input-box").classList.remove("editing"));
+    });
+
+    function getValidationState() {
+      const amount = Number(amountValue.value.replace(/,/g, ""));
+      const target = Number(targetValue.value.replace(/,/g, ""));
+      const hasAmount = amountValue.value.trim() !== "";
+      const hasTarget = targetValue.value.trim() !== "";
+      const amountValid = hasAmount && amount >= 1 && amount <= 10000;
+      const targetValid = hasTarget && target > currentMarketRate;
+      return { amount, target, hasAmount, hasTarget, amountValid, targetValid };
+    }
+
+    amountValue.addEventListener("input", () => {
+      const state = getValidationState();
+      rateReference.hidden = !state.amountValid;
+      amountError.textContent = "Amount must be between $1 and $10000";
+      amountError.classList.toggle("show", state.hasAmount && !state.amountValid);
+    });
+
+    targetValue.addEventListener("input", () => {
+      const state = getValidationState();
+      targetError.textContent = "Target rate must be higher than current rate";
+      targetError.classList.toggle("show", state.hasTarget && !state.targetValid);
+    });
+
+    document.querySelector("[data-set-alert]").addEventListener("click", () => {
+      const { hasAmount, hasTarget, amountValid, targetValid } = getValidationState();
+      amountError.textContent = hasAmount ? "Amount must be between $1 and $10000" : "Please enter amount";
+      targetError.textContent = hasTarget ? "Target rate must be higher than current rate" : "Please enter target rate";
+      amountError.classList.toggle("show", !amountValid);
+      targetError.classList.toggle("show", !targetValid);
+      if (!amountValid) {
+        showToast(hasAmount ? "Amount must be between $1 and $10000" : "Please enter amount");
+        return;
+      }
+      if (!targetValid) {
+        showToast(hasTarget ? "Target rate must be higher than current rate" : "Please enter target rate");
+        return;
+      }
+      showToast("Alert saved");
+      setTimeout(() => {
+        location.href = "rate-alert-entry.html#set";
+      }, 650);
+    });
+
+    if (location.hash === "#fast") {
+      switchRateType("fast");
+    }
+  </script>
+</body>
+</html>

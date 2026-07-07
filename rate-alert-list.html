@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tbay Rate Alerts</title>
+  <style>
+    :root {
+      --bg: #f4f4f6;
+      --card: #ffffff;
+      --line: #edeeee;
+      --text: #011314;
+      --muted: #7f8c8d;
+      --muted-2: #9aa4a5;
+      --brand: #00bfbf;
+      --brand-soft: #effafa;
+      --blue: #003152;
+      --green: #00c25f;
+      --green-soft: #e9fbf1;
+      --danger: #f24646;
+      --warning: #ff8c42;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      background: #dfe3e8;
+      color: var(--text);
+      font-family: Avenir, Helvetica, Arial, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      overflow-x: hidden;
+    }
+
+    .prototype-shell {
+      width: min(100vw, 393px);
+      min-height: 100vh;
+      background: var(--bg);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, .08);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 393px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .content {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 0 16px 28px;
+    }
+
+    .topbar {
+      height: 58px;
+      display: grid;
+      grid-template-columns: 44px 1fr 80px;
+      align-items: center;
+      gap: 12px;
+      margin: 0 -16px 14px;
+      padding: 0 16px;
+      background: #fff;
+      border-bottom: 1px solid rgba(0, 0, 0, .04);
+    }
+
+    .back {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      background: transparent;
+      position: relative;
+    }
+
+    .back::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 12px;
+      width: 16px;
+      height: 16px;
+      border-left: 4px solid #050505;
+      border-bottom: 4px solid #050505;
+      transform: rotate(45deg);
+      border-radius: 2px;
+    }
+
+    .title {
+      margin: 0;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: .1px;
+    }
+
+    .actions {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 0;
+      display: grid;
+      place-items: center;
+      color: var(--brand);
+      background: var(--brand-soft);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .gear {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 191, 191, .35);
+      color: var(--brand);
+      font-size: 15px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      padding: 3px;
+      min-height: 48px;
+      border: 1px solid rgba(0, 191, 191, .24);
+      border-radius: 8px;
+      background: #fff;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      position: relative;
+      min-height: 40px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .tab-label {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .tab-badge {
+      position: absolute;
+      top: -13px;
+      right: -20px;
+      min-width: 18px;
+      height: 18px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0 5px;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      box-shadow: 0 2px 6px rgba(242, 70, 70, .28);
+    }
+
+    .tab-badge[hidden] {
+      display: none;
+    }
+
+    .tab.active {
+      color: #fff;
+      background: var(--brand);
+      box-shadow: 0 6px 14px rgba(0, 191, 191, .2);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .list-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .count-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: #063b73;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .cards {
+      display: grid;
+      gap: 14px;
+    }
+
+    .alert-card {
+      position: relative;
+      border-radius: 12px;
+      padding: 16px;
+      background: var(--card);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      border: 1px solid rgba(0, 0, 0, .02);
+    }
+
+    .alert-card.live {
+      border: 1px solid rgba(0, 194, 95, .35);
+      background: linear-gradient(0deg, rgba(0, 194, 95, .055), rgba(0, 194, 95, .055)), var(--card);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .card-tools {
+      display: inline-flex;
+      gap: 8px;
+      color: var(--brand);
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .tool-btn {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .tool-btn.delete {
+      color: var(--danger);
+      background: #fff1f1;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin: 0 0 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin: 0 0 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .status-chip.warning {
+      background: #fff4e8;
+      color: var(--warning);
+    }
+
+    .tiny-badge {
+      display: inline-grid;
+      place-items: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: var(--brand-soft);
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .tiny-badge.green {
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 7px;
+    }
+
+    .meta-row.positive {
+      color: var(--green);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .progress {
+      height: 4px;
+      border-radius: 999px;
+      background: #e7eef1;
+      overflow: hidden;
+      margin: 10px 0 8px;
+    }
+
+    .bar {
+      height: 100%;
+      width: 94%;
+      border-radius: inherit;
+      background: var(--brand);
+    }
+
+    .bar.short {
+      width: 62%;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .retention-note {
+      margin: 14px 0 0;
+      color: var(--muted-2);
+      text-align: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .card-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .sell-now {
+      width: 100%;
+      height: 44px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .split-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .split-actions.single {
+      grid-template-columns: 1fr;
+    }
+
+    .outline-btn {
+      height: 40px;
+      border-radius: 7px;
+      border: 1px solid rgba(0, 191, 191, .42);
+      background: transparent;
+      color: var(--brand);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .settings-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 18px 16px 18px;
+      background: rgba(0, 0, 0, .42);
+    }
+
+    .settings-overlay.open {
+      display: flex;
+    }
+
+    .settings-modal {
+      width: 100%;
+      max-height: calc(100vh - 36px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .22);
+    }
+
+    .settings-head {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      background: #f7f8fb;
+    }
+
+    .settings-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .settings-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 18px 20px 12px;
+    }
+
+    .setting-section {
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 10px;
+      color: #a1acbd;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .setting-row {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .setting-row + .setting-row {
+      border-top: 1px solid rgba(0, 0, 0, .06);
+      padding-top: 9px;
+      margin-top: 6px;
+    }
+
+    .switch {
+      width: 46px;
+      height: 27px;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 999px;
+      background: #dfe2e7;
+      padding: 3px;
+      position: relative;
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .16);
+      transition: transform .16s ease;
+    }
+
+    .switch.on {
+      background: var(--brand);
+    }
+
+    .switch.on::after {
+      transform: translateX(19px);
+    }
+
+    .select-card,
+    .info-card {
+      border-radius: 8px;
+      background: #f4f6fa;
+    }
+
+    .select-card {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 9px;
+      padding: 0 12px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .select-hint {
+      color: #a4adbb;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 800;
+    }
+
+    .chevron-down {
+      width: 14px;
+      height: 14px;
+      border-right: 3px solid #9ca6b5;
+      border-bottom: 3px solid #9ca6b5;
+      transform: rotate(45deg) translateY(-2px);
+    }
+
+    .helper-text {
+      margin: 7px 4px 0;
+      color: #667792;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .info-card {
+      padding: 12px;
+      color: var(--text);
+    }
+
+    .info-title {
+      margin: 0 0 9px;
+      color: #a1acbd;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .info-row + .info-row {
+      margin-top: 8px;
+    }
+
+    .info-value {
+      color: #9aa4b4;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+
+    .settings-footer {
+      padding: 14px 20px 18px;
+      border-top: 1px solid rgba(0, 0, 0, .04);
+      background: #fff;
+    }
+
+    .save-settings {
+      width: 100%;
+      height: 48px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      box-shadow: 0 5px 12px rgba(0, 191, 191, .22);
+    }
+
+    .phone-warning {
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 0 9px;
+      border-radius: 6px;
+      background: #2f2106;
+      color: #c88400;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .phone-warning[hidden] {
+      display: none;
+    }
+
+    .phone-warning-copy {
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .phone-warning-icon {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .phone-warning-open {
+      flex: 0 0 auto;
+      color: #d99a00;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      z-index: 40;
+      max-width: calc(100% - 48px);
+      transform: translate(-50%, 18px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: rgba(1, 19, 20, .88);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+      text-align: center;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .dialog-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0, 0, 0, .44);
+    }
+
+    .dialog-overlay.open {
+      display: flex;
+    }
+
+    .dialog {
+      width: 100%;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, .2);
+      overflow: hidden;
+    }
+
+    .dialog-body {
+      padding: 22px 20px 18px;
+    }
+
+    .dialog-title {
+      margin: 0 0 8px;
+      color: var(--text);
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .dialog-copy {
+      margin: 0;
+      color: #647174;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .edit-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .edit-grid[hidden] {
+      display: none;
+    }
+
+    .edit-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .edit-label {
+      color: #7f8c8d;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .edit-input {
+      height: 48px;
+      border: 1px solid #edeeee;
+      border-radius: 8px;
+      padding: 0 14px;
+      background: #f5f6fa;
+      color: var(--text);
+      font: 900 16px Avenir, Helvetica, Arial, sans-serif;
+    }
+
+    .dialog-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 20px 20px;
+    }
+
+    .dialog-btn {
+      height: 44px;
+      border: 0;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .dialog-btn.secondary {
+      background: #f5f6fa;
+      color: #647174;
+    }
+
+    .dialog-btn.primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .dialog-btn.danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        display: block;
+        background: #f4f4f6;
+      }
+
+      .prototype-shell {
+        width: 100vw;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-shell">
+    <main class="app">
+      <section class="content">
+        <header class="topbar">
+          <button class="back" type="button" aria-label="Back" onclick="location.href='rate-alert-entry.html#set'"></button>
+          <h1 class="title">Rate alerts</h1>
+          <div class="actions">
+            <a class="icon-btn" href="rate-alert-settings.html" aria-label="Add rate alert">+</a>
+            <button class="icon-btn gear" type="button" aria-label="Rate alert settings" data-open-settings>⚙</button>
+          </div>
+        </header>
+
+        <nav class="tabs" aria-label="Rate alert tabs">
+          <button class="tab active" type="button" data-tab="active"><span class="tab-label">Active</span></button>
+          <button class="tab" type="button" data-tab="triggered"><span class="tab-label">Triggered<span class="tab-badge" data-count-for="triggered">0</span></span></button>
+          <button class="tab" type="button" data-tab="expired"><span class="tab-label">Expired</span></button>
+        </nav>
+
+        <section class="panel active" data-panel="active">
+          <div class="list-head">
+            <span>2 of 10 alerts</span>
+          </div>
+
+          <div class="cards">
+            <article class="alert-card">
+              <div class="tag">Fast Transaction</div>
+              <div class="card-title-row">
+                <h2 class="card-title">Amazon USD · $100 · Physical</h2>
+              </div>
+              <div class="meta-row">
+                <span>Target ₦1,520</span>
+                <span>Now ₦1,498</span>
+              </div>
+              <div class="progress"><div class="bar"></div></div>
+              <div class="card-footer-row">
+                <div class="footer-note">₦22 to go · set Oct 24, 10:30</div>
+                <div class="card-tools" aria-label="Alert actions">
+                  <button class="tool-btn" type="button" aria-label="Edit alert" data-edit-alert data-card="Amazon USD · $100 · Physical" data-target="1520">✎</button>
+                  <button class="tool-btn delete" type="button" aria-label="Delete alert" data-delete-alert>×</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="alert-card">
+              <div class="card-title-row">
+                <h2 class="card-title">ITunes USD · $100 · E-code</h2>
+              </div>
+              <div class="meta-row">
+                <span>Target ₦1,300</span>
+                <span>Now ₦1,240</span>
+              </div>
+              <div class="progress"><div class="bar short"></div></div>
+              <div class="card-footer-row">
+                <div class="footer-note">₦60 to go · set Oct 22, 18:05</div>
+                <div class="card-tools" aria-label="Alert actions">
+                  <button class="tool-btn" type="button" aria-label="Edit alert" data-edit-alert data-card="ITunes USD · $100 · E-code" data-target="1300">✎</button>
+                  <button class="tool-btn delete" type="button" aria-label="Delete alert" data-delete-alert>×</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" data-panel="triggered">
+          <div class="cards">
+            <article class="alert-card live">
+              <div class="tag">Fast Transaction</div>
+              <div class="card-title-row">
+                <h2 class="card-title">Amazon USD · $100 · Physical</h2>
+                <div class="status-chip">Still live</div>
+              </div>
+              <div class="meta-row positive">
+                <span>Target ₦1,520</span>
+                <span>Now ₦1,527</span>
+              </div>
+              <div class="footer-note">Fired Oct 24, 10:30</div>
+              <button class="sell-now" type="button" data-sell-now>→ Sell now</button>
+            </article>
+
+            <article class="alert-card">
+              <div class="card-title-row">
+                <h2 class="card-title">ITunes USD · $100 · E-code</h2>
+                <div class="status-chip warning">Missed window</div>
+              </div>
+              <div class="meta-row">
+                <span>Target ₦1,520</span>
+                <span>Now ₦1,486</span>
+              </div>
+              <div class="footer-note">Hit ₦1,520 at Oct 24, 10:30</div>
+              <div class="split-actions">
+                <button class="outline-btn" type="button" data-rearm-alert>Re-arm</button>
+                <button class="outline-btn" type="button" data-delete-alert>Delete</button>
+              </div>
+            </article>
+          </div>
+          <p class="retention-note">Data is only retained for 30 days</p>
+        </section>
+
+        <section class="panel" data-panel="expired">
+          <div class="cards">
+            <article class="alert-card">
+              <div class="card-title-row">
+                <h2 class="card-title">Steam USD · $50 · Physical</h2>
+              </div>
+              <div class="meta-row">
+                <span>Target ₦1,480</span>
+                <span>Last ₦1,421</span>
+              </div>
+              <div class="footer-note">Expired Jul 1, 2026 · no trigger in 90 days</div>
+              <div class="split-actions">
+                <button class="outline-btn" type="button" data-rearm-alert>Re-arm</button>
+                <button class="outline-btn" type="button" data-delete-alert>Delete</button>
+              </div>
+            </article>
+          </div>
+          <p class="retention-note">Data is only retained for 30 days</p>
+        </section>
+      </section>
+    </main>
+
+    <div class="settings-overlay" data-settings-overlay aria-hidden="true">
+      <section class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="alertSettingsTitle">
+        <header class="settings-head">
+          <h2 class="settings-title" id="alertSettingsTitle">Alert settings</h2>
+        </header>
+
+        <div class="settings-body">
+          <section class="setting-section">
+            <p class="section-label">Quiet hours</p>
+            <div class="setting-row">
+              <span>Hold alerts overnight</span>
+              <button class="switch on" type="button" aria-label="Hold alerts overnight on"></button>
+            </div>
+            <div class="select-card">
+              <span>10:00 PM – 7:00 AM</span>
+              <span class="select-hint">hold &amp; deliver</span>
+            </div>
+            <p class="helper-text">Alerts that fire in this window arrive at 7:00 AM</p>
+          </section>
+
+          <section class="setting-section">
+            <p class="section-label">Default channels for new alerts</p>
+            <div class="setting-row">
+              <span>Push</span>
+              <button class="switch on" type="button" aria-label="Push on" data-channel="push"></button>
+            </div>
+            <div class="setting-row">
+              <span>Email</span>
+              <button class="switch" type="button" aria-label="Email off" data-channel="email"></button>
+            </div>
+            <div class="phone-warning" data-phone-warning>
+              <span class="phone-warning-copy"><span class="phone-warning-icon">!</span>Push is off in phone settings</span>
+              <a class="phone-warning-open" href="javascript:void(0)" data-open-phone-settings>Open ↗</a>
+            </div>
+          </section>
+
+          <section class="setting-section">
+            <p class="section-label">Email limit</p>
+            <div class="select-card">
+              <span>Max 5 alert emails / day</span>
+              <span class="chevron-down" aria-hidden="true"></span>
+            </div>
+            <p class="helper-text">Extra triggers batch into one digest</p>
+          </section>
+
+          <section class="setting-section">
+            <div class="info-card">
+              <p class="info-title">Alerts</p>
+              <div class="info-row">
+                <span>Max active alerts</span>
+                <span class="info-value">10</span>
+              </div>
+              <div class="info-row">
+                <span>Auto-expire unfired after</span>
+                <span class="info-value">90 days</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="settings-footer">
+          <button class="save-settings" type="button" data-close-settings>SAVE SETTINGS</button>
+        </footer>
+      </section>
+    </div>
+    <div class="dialog-overlay" data-dialog-overlay aria-hidden="true">
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+        <div class="dialog-body">
+          <h2 class="dialog-title" id="dialogTitle">Delete this alert?</h2>
+          <p class="dialog-copy" id="dialogCopy">This alert will stop monitoring rates immediately.</p>
+          <div class="edit-grid" data-edit-form hidden>
+            <label class="edit-field">
+              <span class="edit-label">Target rate</span>
+              <input class="edit-input" data-edit-input inputmode="decimal" value="1520" />
+            </label>
+            <p class="helper-text">Current market rate is ₦1,485. Target must be higher than current rate.</p>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button class="dialog-btn secondary" type="button" data-dialog-cancel>Cancel</button>
+          <button class="dialog-btn danger" type="button" data-dialog-confirm>Delete</button>
+        </div>
+      </section>
+    </div>
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+  </div>
+
+  <script>
+    const tabs = [...document.querySelectorAll("[data-tab]")];
+    const panels = [...document.querySelectorAll(".panel")];
+    const settingsOverlay = document.querySelector("[data-settings-overlay]");
+    const openSettingsButton = document.querySelector("[data-open-settings]");
+    const closeSettingsButtons = [...document.querySelectorAll("[data-close-settings]")];
+    const toast = document.querySelector("[data-toast]");
+    const dialogOverlay = document.querySelector("[data-dialog-overlay]");
+    const dialogTitle = document.querySelector("#dialogTitle");
+    const dialogCopy = document.querySelector("#dialogCopy");
+    const editForm = document.querySelector("[data-edit-form]");
+    const editInput = document.querySelector("[data-edit-input]");
+    const dialogConfirm = document.querySelector("[data-dialog-confirm]");
+    const dialogCancel = document.querySelector("[data-dialog-cancel]");
+    const pushSwitch = document.querySelector('[data-channel="push"]');
+    const emailSwitch = document.querySelector('[data-channel="email"]');
+    const phoneWarning = document.querySelector("[data-phone-warning]");
+    let pendingAction = null;
+    let toastTimer = null;
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function switchTab(name) {
+      tabs.forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.tab === name);
+      });
+      panels.forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.panel === name);
+      });
+      history.replaceState(null, "", `#${name}`);
+    }
+
+    function openSettings() {
+      settingsOverlay.classList.add("open");
+      settingsOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSettings() {
+      settingsOverlay.classList.remove("open");
+      settingsOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function isSwitchOn(button) {
+      return button.classList.contains("on");
+    }
+
+    function syncPhoneWarning() {
+      phoneWarning.hidden = !isSwitchOn(pushSwitch);
+    }
+
+    function openDialog(type, sourceButton) {
+      const card = sourceButton.closest(".alert-card");
+      pendingAction = { type, card };
+      editForm.hidden = type !== "edit";
+      dialogConfirm.classList.toggle("danger", type === "delete");
+      dialogConfirm.classList.toggle("primary", type !== "delete");
+      if (type === "edit") {
+        dialogTitle.textContent = "Edit alert";
+        dialogCopy.textContent = sourceButton.dataset.card || card.querySelector(".card-title").textContent;
+        editInput.value = sourceButton.dataset.target || "1520";
+        dialogConfirm.textContent = "Save";
+      } else {
+        dialogTitle.textContent = "Delete this alert?";
+        dialogCopy.textContent = "This alert will stop monitoring rates immediately.";
+        dialogConfirm.textContent = "Delete";
+      }
+      dialogOverlay.classList.add("open");
+      dialogOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDialog() {
+      dialogOverlay.classList.remove("open");
+      dialogOverlay.setAttribute("aria-hidden", "true");
+      pendingAction = null;
+    }
+
+    function updateActiveCount() {
+      const activeCards = document.querySelectorAll('[data-panel="active"] .alert-card').length;
+      const head = document.querySelector('[data-panel="active"] .list-head span');
+      if (head) head.textContent = `${activeCards} of 10 alerts`;
+    }
+
+    function updateTabBadges() {
+      document.querySelectorAll("[data-count-for]").forEach((badge) => {
+        const panelName = badge.dataset.countFor;
+        const count = document.querySelectorAll(`[data-panel="${panelName}"] .alert-card`).length;
+        badge.textContent = count;
+        badge.hidden = count === 0;
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => switchTab(tab.dataset.tab));
+    });
+
+    openSettingsButton.addEventListener("click", openSettings);
+    closeSettingsButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!isSwitchOn(pushSwitch) && !isSwitchOn(emailSwitch)) {
+          showToast("Select at least one notification method");
+          return;
+        }
+        closeSettings();
+        showToast("Alert settings saved");
+      });
+    });
+    settingsOverlay.addEventListener("click", (event) => {
+      if (event.target === settingsOverlay) {
+        closeSettings();
+      }
+    });
+
+    if (location.hash === "#triggered") {
+      switchTab("triggered");
+    } else if (location.hash === "#expired") {
+      switchTab("expired");
+    } else if (location.hash === "#settings") {
+      openSettings();
+    }
+
+    document.querySelectorAll(".switch").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.classList.toggle("on");
+        const label = button.getAttribute("aria-label") || "Switch";
+        const isOn = button.classList.contains("on");
+        button.setAttribute("aria-label", label.replace(/ on| off/g, "") + (isOn ? " on" : " off"));
+        syncPhoneWarning();
+      });
+    });
+
+    document.querySelector("[data-open-phone-settings]").addEventListener("click", () => {
+      showToast("Opening phone notification settings");
+    });
+
+    syncPhoneWarning();
+    updateTabBadges();
+
+    document.querySelectorAll("[data-delete-alert]").forEach((button) => {
+      button.addEventListener("click", () => openDialog("delete", button));
+    });
+
+    document.querySelectorAll("[data-edit-alert]").forEach((button) => {
+      button.addEventListener("click", () => openDialog("edit", button));
+    });
+
+    document.querySelectorAll("[data-rearm-alert]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const card = button.closest(".alert-card");
+        card.remove();
+        updateActiveCount();
+        updateTabBadges();
+        switchTab("active");
+        showToast("Alert re-armed");
+      });
+    });
+
+    document.querySelectorAll("[data-sell-now]").forEach((button) => {
+      button.addEventListener("click", () => {
+        showToast("Opening Sell page with alert fields filled");
+        setTimeout(() => {
+          location.href = "rate-alert-entry.html#set";
+        }, 450);
+      });
+    });
+
+    dialogCancel.addEventListener("click", closeDialog);
+    dialogOverlay.addEventListener("click", (event) => {
+      if (event.target === dialogOverlay) closeDialog();
+    });
+    dialogConfirm.addEventListener("click", () => {
+      if (!pendingAction) return;
+      if (pendingAction.type === "delete") {
+        pendingAction.card.remove();
+        updateActiveCount();
+        updateTabBadges();
+        showToast("Alert deleted");
+      } else {
+        const value = Number(editInput.value.replace(/,/g, ""));
+        if (!Number.isFinite(value) || value <= 1485) {
+          showToast("Target rate must be higher than current rate");
+          return;
+        }
+        const metaTarget = pendingAction.card.querySelector(".meta-row span:first-child");
+        const footer = pendingAction.card.querySelector(".footer-note");
+        metaTarget.textContent = `Target ₦${value.toLocaleString()}`;
+        footer.textContent = `₦${Math.max(value - 1498, 1).toLocaleString()} to go · updated just now`;
+        showToast("Alert updated");
+      }
+      closeDialog();
+    });
+  </script>
+</body>
+</html>

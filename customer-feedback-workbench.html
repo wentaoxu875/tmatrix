@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>客服工作台 - 意见反馈</title>
+  <style>
+    :root {
+      --brand: #00bfc0;
+      --brand-dark: #123c38;
+      --brand-soft: #d9f2f1;
+      --bg: #f4f5f7;
+      --panel: #ffffff;
+      --head: #eef8f7;
+      --line: #e9edf1;
+      --text: #243a3a;
+      --muted: #7b8794;
+      --weak: #a8b0ba;
+      --danger: #f05a5a;
+      --danger-soft: #ffe9e9;
+      --success: #18a86b;
+      --success-soft: #e7f6ee;
+      --warning: #ff8c3a;
+      --warning-soft: #fff2e8;
+      --gray-soft: #f1f3f5;
+      --shadow: 0 18px 48px rgba(20, 40, 45, .14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1360px;
+      color: var(--text);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      height: 64px;
+      display: grid;
+      grid-template-columns: 240px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 0 14px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--brand-dark);
+      background: var(--brand-soft);
+      font-size: 23px;
+      font-weight: 900;
+    }
+
+    .down {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 7px solid var(--text);
+    }
+
+    .primary-nav {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .nav-item {
+      min-width: 132px;
+      height: 48px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+    }
+
+    .nav-item.active {
+      background: var(--brand-soft);
+    }
+
+    .tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .image-broken {
+      width: 49px;
+      height: 49px;
+      border-radius: 6px;
+      border: 1px solid #cfd6dd;
+      background: linear-gradient(135deg, #f0f2f3, #dfe4e8);
+      position: relative;
+    }
+
+    .image-broken::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      width: 25px;
+      height: 15px;
+      background: #c7d9d6;
+      clip-path: polygon(0 100%, 35% 35%, 52% 70%, 72% 20%, 100% 100%);
+    }
+
+    .mini-input {
+      width: 120px;
+      height: 36px;
+      border: 1px solid #d9dfe6;
+      border-radius: 6px;
+      padding: 0 10px;
+      outline: none;
+      font-weight: 600;
+    }
+
+    .dark-btn {
+      height: 36px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 14px;
+      color: #fff;
+      background: var(--brand-dark);
+      font-weight: 800;
+    }
+
+    .muted-btn {
+      height: 40px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 18px;
+      color: var(--text);
+      background: #eef2f5;
+      font-weight: 800;
+    }
+
+    .switch {
+      width: 66px;
+      height: 36px;
+      border-radius: 999px;
+      padding: 4px;
+      background: #d5d9de;
+      position: relative;
+    }
+
+    .switch.on {
+      background: var(--brand);
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+      transition: transform .18s ease;
+    }
+
+    .switch.on::after {
+      transform: translateX(30px);
+    }
+
+    .select-pill {
+      min-width: 144px;
+      height: 40px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 34px 0 16px;
+      color: var(--text);
+      background: #f0f2f5;
+      font-weight: 800;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, var(--text) 50%), linear-gradient(135deg, var(--text) 50%, transparent 50%);
+      background-position: calc(100% - 18px) 17px, calc(100% - 12px) 17px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .page {
+      padding: 24px;
+    }
+
+    .panel {
+      min-height: calc(100vh - 112px);
+      background: #fff;
+      border: 1px solid #e1e5e9;
+    }
+
+    .filters {
+      padding: 26px 28px 22px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 260px 260px 340px 300px;
+      gap: 16px 28px;
+      align-items: center;
+    }
+
+    .field {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .field.wide {
+      grid-column: span 2;
+      grid-template-columns: 74px 1fr;
+    }
+
+    .field label,
+    .valid-label {
+      color: #596273;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .control,
+    .field select {
+      height: 34px;
+      border: 1px solid #d9dfe6;
+      border-radius: 5px;
+      padding: 0 12px;
+      color: #4b5563;
+      background: #fff;
+      outline: none;
+      min-width: 0;
+    }
+
+    .range {
+      display: grid;
+      grid-template-columns: 1fr 28px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .range span {
+      text-align: center;
+      color: #444;
+      font-weight: 800;
+    }
+
+    .valid-filter {
+      grid-column: span 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .segmented {
+      display: flex;
+      gap: 8px;
+      padding: 0;
+      border-radius: 8px;
+      background: transparent;
+    }
+
+    .seg {
+      height: 28px;
+      border: 1px solid #f0cdd0;
+      border-radius: 999px;
+      padding: 0 18px;
+      color: #8a5960;
+      background: transparent;
+      font-weight: 800;
+    }
+
+    .seg.active {
+      color: var(--brand);
+      border-color: var(--brand);
+      background: var(--brand-soft);
+    }
+
+    .filter-actions {
+      align-self: end;
+      display: flex;
+      gap: 14px;
+    }
+
+    .action-btn {
+      height: 38px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 24px;
+      color: #fff;
+      background: var(--brand);
+      font-weight: 900;
+    }
+
+    .reset-btn {
+      height: 38px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 24px;
+      color: #fff;
+      background: var(--brand);
+      font-weight: 900;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1280px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    thead th {
+      height: 58px;
+      padding: 0 14px;
+      color: #8d93a0;
+      background: #fbfbfc;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    tbody td {
+      min-height: 72px;
+      padding: 18px 14px;
+      border-top: 1px solid var(--line);
+      color: #687384;
+      vertical-align: middle;
+      line-height: 20px;
+      font-size: 13px;
+    }
+
+    tbody tr:hover {
+      background: #fcffff;
+    }
+
+    th:nth-child(1) { width: 135px; }
+    th:nth-child(2) { width: 160px; }
+    th:nth-child(3) { width: 120px; }
+    th:nth-child(4) { width: 170px; }
+    th:nth-child(5) { width: 110px; }
+    th:nth-child(6) { width: 250px; }
+    th:nth-child(7) { width: 120px; }
+    th:nth-child(8) { width: 140px; }
+    th:nth-child(9) { width: 120px; }
+    th:nth-child(10) { width: 120px; }
+
+    .stars {
+      color: #ff7a2d;
+      font-size: 18px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .muted {
+      color: var(--weak);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 54px;
+      height: 26px;
+      border-radius: 999px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .pill.pending {
+      color: var(--warning);
+      background: var(--warning-soft);
+    }
+
+    .pill.valid {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .pill.invalid {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .pill.done,
+    .pill.reward-none {
+      color: #6b7280;
+      background: var(--gray-soft);
+    }
+
+    .pill.rewarded {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .copy {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: #667085;
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .thumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      color: var(--brand);
+      background: #dff8f2;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .row-actions {
+      display: grid;
+      gap: 7px;
+      justify-items: start;
+    }
+
+    .link-btn {
+      border: 0;
+      padding: 0;
+      color: var(--brand);
+      background: transparent;
+      font-weight: 900;
+    }
+
+    .link-btn.primary {
+      min-width: 54px;
+      height: 32px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .link-btn.disabled {
+      color: #b8c0ca;
+      cursor: not-allowed;
+    }
+
+    .empty {
+      height: 180px;
+      display: none;
+      place-items: center;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-weight: 800;
+    }
+
+    .pager {
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 0 22px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .page-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #aecac8;
+      border-radius: 8px;
+      color: var(--text);
+      background: var(--brand-soft);
+      font-weight: 900;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(14, 27, 31, .42);
+      z-index: 50;
+    }
+
+    .modal-mask.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 520px;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modal.small {
+      width: 420px;
+    }
+
+    .modal-head {
+      height: 54px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .close {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      background: #f3f5f7;
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .modal-copy {
+      color: #4b5563;
+      font-size: 15px;
+      line-height: 24px;
+      font-weight: 700;
+    }
+
+    .modal-hint {
+      color: #a4adb8;
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 700;
+    }
+
+    .marker-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .marker-option {
+      min-height: 52px;
+      border: 1px solid #dfe4ea;
+      border-radius: 8px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #3f4a59;
+      background: #fff;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .marker-option input {
+      width: 16px;
+      height: 16px;
+      accent-color: #25b7ff;
+    }
+
+    .marker-option:has(input:checked) {
+      border-color: var(--brand);
+      background: #effdfd;
+      color: var(--brand);
+    }
+
+    .modal-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .modal-field label {
+      color: #4a5565;
+      font-weight: 900;
+    }
+
+    .modal-field select,
+    .modal-field textarea {
+      width: 100%;
+      border: 1px solid #d9dfe6;
+      border-radius: 6px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .modal-field textarea {
+      min-height: 86px;
+      resize: none;
+    }
+
+    .modal-foot {
+      padding: 14px 20px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .ghost-btn {
+      height: 36px;
+      border: 1px solid #d9dfe6;
+      border-radius: 6px;
+      padding: 0 18px;
+      color: #4b5563;
+      background: #fff;
+      font-weight: 800;
+    }
+
+    .confirm-btn {
+      height: 36px;
+      border: 0;
+      border-radius: 6px;
+      padding: 0 18px;
+      color: #fff;
+      background: var(--brand);
+      font-weight: 900;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 90px;
+      min-width: 110px;
+      height: 40px;
+      padding: 0 18px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(20, 30, 35, .88);
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(-8px);
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 70;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* T-matrix admin alignment */
+    :root {
+      --brand: #1677ff;
+      --brand-dark: #021529;
+      --brand-soft: rgba(60, 186, 251, .1);
+      --bg: #f3f5f9;
+      --panel: #ffffff;
+      --line: #f0f0f0;
+      --text: rgba(0, 0, 0, .88);
+      --muted: #939191;
+      --weak: rgba(0, 0, 0, .25);
+      --shadow: 0 8px 24px rgba(0, 21, 41, .16);
+    }
+
+    body {
+      min-width: 1280px;
+      background: var(--bg);
+      font-size: 13px;
+    }
+
+    .topbar {
+      height: 64px;
+      grid-template-columns: 208px 1fr auto;
+      gap: 0;
+      padding: 0;
+      color: #173238;
+      background: #fff;
+      border-bottom: 1px solid #f0f0f0;
+      box-shadow: none;
+    }
+
+    .account {
+      height: 64px;
+      gap: 8px;
+      padding: 0 18px;
+      color: #173238;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 3px;
+      color: #173238;
+      background: #e7f5f5;
+      font-size: 16px;
+    }
+
+    .down { border-top-color: #173238; }
+
+    .primary-nav {
+      justify-content: flex-start;
+      gap: 0;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .nav-item {
+      min-width: 88px;
+      height: 40px;
+      border-radius: 6px;
+      color: #173238;
+    }
+
+    .nav-item.active {
+      color: #173238;
+      background: #d9f0f0;
+    }
+
+    .tools {
+      gap: 8px;
+      padding: 0 16px;
+      color: #173238;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .image-broken { display: none; }
+    .mini-input { width: 54px; height: 28px; border-radius: 4px; font-size: 12px; }
+    .dark-btn, .muted-btn { height: 28px; padding: 0 10px; border-radius: 4px; font-size: 12px; font-weight: 400; }
+    .dark-btn { background: #173238; }
+    .muted-btn { color: #173238; background: #f3f5f6; }
+    .switch { width: 42px; height: 22px; padding: 2px; }
+    .switch::after { left: 2px; top: 2px; width: 18px; height: 18px; box-shadow: none; }
+    .switch.on { background: #bfc3c7; }
+    .switch.on::after { transform: translateX(20px); }
+    .select-pill { min-width: 104px; height: 36px; border-radius: 6px; color: #173238; background-color: #f3f5f6; padding: 0 26px 0 10px; font-size: 13px; font-weight: 600; background-position: calc(100% - 15px) 15px, calc(100% - 10px) 15px; }
+
+    .page {
+      min-height: calc(100vh - 64px);
+      margin-left: 0;
+      padding: 10px 20px 20px;
+    }
+
+    .panel {
+      min-height: calc(100vh - 120px);
+      border: 0;
+      border-radius: 0;
+    }
+
+    .filters {
+      display: block;
+      padding: 20px;
+      border-bottom: 0;
+    }
+
+    .filter-grid {
+      grid-template-columns: 320px 320px 420px;
+      gap: 11px 20px;
+      align-items: center;
+    }
+
+    .field, .field.wide { grid-template-columns: 82px 1fr; gap: 8px; }
+    .field.wide { grid-column: auto; }
+    .field label, .valid-label { color: rgba(0, 0, 0, .88); font-weight: 400; text-align: right; }
+    .control, .field select { height: 32px; border-color: #d9d9d9; border-radius: 6px; padding: 4px 11px; color: rgba(0,0,0,.88); font-size: 13px; }
+    .range { gap: 6px; }
+    .range span { color: #939191; font-weight: 400; }
+    .valid-filter { grid-column: span 2; gap: 8px; }
+    .segmented { gap: 0; }
+    .seg { height: 30px; border: 1px solid #d9d9d9; border-right: 0; border-radius: 0; padding: 0 14px; color: rgba(0,0,0,.65); font-size: 13px; font-weight: 400; }
+    .seg:first-child { border-radius: 4px 0 0 4px; }
+    .seg:last-child { border-right: 1px solid #d9d9d9; border-radius: 0 4px 4px 0; }
+    .seg.active { color: #1677ff; border-color: #1677ff; background: #fff; }
+    .seg.active + .seg { border-left-color: #1677ff; }
+
+    .filter-actions {
+      margin-top: 20px;
+      align-self: auto;
+      gap: 10px;
+    }
+
+    .action-btn, .reset-btn {
+      height: 31px;
+      min-width: 60px;
+      border: 1px solid #3cbafb;
+      border-radius: 4px;
+      padding: 5px 16px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+    .action-btn { background: #3cbafb; }
+    .reset-btn { color: #3cbafb; background: rgba(60,186,251,.1); }
+
+    .table-wrap { margin: 9px 20px 0; border: 1px solid #f0f0f0; }
+    table { min-width: 1160px; }
+    thead th { height: 40px; padding: 0 10px; color: rgba(0,0,0,.88); background: #fafafa; font-size: 12px; font-weight: 600; }
+    tbody td { height: 40px; min-height: 40px; padding: 10px; color: rgba(0,0,0,.88); line-height: 18px; font-size: 12px; }
+    tbody tr:hover { background: #f7fbff; }
+    .stars { color: #faad14; font-size: 14px; letter-spacing: 0; }
+    .pill { min-width: 48px; height: 22px; border-radius: 3px; padding: 0 7px; font-size: 12px; font-weight: 400; }
+    .copy { color: rgba(0,0,0,.88); }
+    .thumbs { gap: 4px; flex-wrap: nowrap; }
+    .thumb { width: 30px; height: 30px; border-radius: 2px; color: #1677ff; background: #e6f4ff; font-size: 10px; }
+    .row-actions { display: flex; gap: 10px; }
+    .link-btn { color: #1677ff; font-size: 12px; font-weight: 400; }
+    .pager { height: 52px; padding: 0 20px; color: rgba(0,0,0,.45); border-top: 0; font-size: 12px; }
+    .page-btn { width: 26px; height: 26px; border: 1px solid #d9d9d9; border-radius: 4px; color: rgba(0,0,0,.65); background: #fff; font-size: 12px; }
+
+    .modal { border-radius: 4px; }
+    .modal-head { height: 48px; font-size: 16px; font-weight: 500; }
+    .modal-body { padding: 20px 24px; }
+    .modal-foot { padding: 10px 24px 20px; }
+    .close { background: transparent; color: rgba(0,0,0,.45); }
+    .ghost-btn, .confirm-btn { height: 32px; border-radius: 4px; font-size: 13px; font-weight: 400; }
+    .confirm-btn { background: #3cbafb; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="account">
+      <div class="avatar">☻</div>
+      <span>muzi_kf</span>
+      <span class="down" aria-hidden="true"></span>
+    </div>
+    <nav class="primary-nav" aria-label="主菜单" data-i18n-aria="mainMenu">
+      <div class="nav-item" data-i18n="workbenchNav">工作台</div>
+      <div class="nav-item active" data-i18n="feedbackNav">意见反馈</div>
+      <div class="nav-item" data-i18n="settingsNav">系统设置</div>
+    </nav>
+    <div class="tools">
+      <div class="image-broken" aria-hidden="true"></div>
+      <span>kefu1</span>
+      <span data-i18n="customerSuccess">客户成功:</span>
+      <input class="mini-input" value="1" aria-label="客户成功数" data-i18n-aria="successCount">
+      <button class="dark-btn" type="button" data-i18n="modify">修改</button>
+      <button class="muted-btn" type="button" data-i18n="offline">下线</button>
+      <button class="switch on" type="button" aria-label="开启接待" data-i18n-aria="receptionSwitch"></button>
+      <select class="select-pill" id="languageSelect" aria-label="语言" data-i18n-aria="language">
+        <option value="zh">简体中文</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="panel">
+      <section class="filters" aria-label="筛选条件" data-i18n-aria="filters">
+        <div class="filter-grid">
+          <div class="field">
+            <label for="nickFilter" data-i18n="filterNick">昵称:</label>
+            <input class="control" id="nickFilter" type="text">
+          </div>
+          <div class="field">
+            <label for="orderFilter" data-i18n="filterOrder">订单号:</label>
+            <input class="control" id="orderFilter" type="text">
+          </div>
+          <div class="field">
+            <label for="typeFilter" data-i18n="filterType">反馈类型:</label>
+            <select id="typeFilter">
+              <option value="" data-i18n="all">全部</option>
+              <option value="Rate Our Service" data-i18n="typeRate">Rate Our Service</option>
+              <option value="Feedback on product and activity suggestions" data-i18n="typeSuggestion">Feedback on product and activity suggestions</option>
+              <option value="Haven't received your money yet" data-i18n="typeMoney">Haven't received your money yet</option>
+            </select>
+          </div>
+          <div class="field wide">
+            <label data-i18n="filterCreated">创建时间:</label>
+            <div class="range">
+              <input class="control" id="startFilter" type="text" placeholder="开始时间" data-i18n-placeholder="startTime">
+              <span data-i18n="to">至</span>
+              <input class="control" id="endFilter" type="text" placeholder="结束时间" data-i18n-placeholder="endTime">
+            </div>
+          </div>
+          <div class="valid-filter">
+            <span class="valid-label" data-i18n="filterValid">是否有效:</span>
+            <div class="segmented" id="validFilter">
+              <button class="seg active" data-value="" type="button" data-i18n="all">全部</button>
+              <button class="seg" data-value="有效" type="button" data-i18n="valid">有效</button>
+              <button class="seg" data-value="无效" type="button" data-i18n="invalid">无效</button>
+              <button class="seg" data-value="待判定" type="button" data-i18n="pendingValid">待判定</button>
+            </div>
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button class="action-btn" id="exportBtn" type="button" data-i18n="export">导出</button>
+          <button class="reset-btn" id="resetBtn" type="button" data-i18n="reset">重置 ↻</button>
+        </div>
+      </section>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="tableCreated">创建时间</th>
+              <th data-i18n="tableType">反馈类型</th>
+              <th data-i18n="tableRating">评价星级</th>
+              <th data-i18n="tableOrder">订单号</th>
+              <th data-i18n="tableValid">是否有效</th>
+              <th data-i18n="tableContent">反馈内容</th>
+              <th data-i18n="tableImages">上传图片</th>
+              <th data-i18n="tableNick">用户昵称</th>
+              <th data-i18n="tableReward">奖励发放</th>
+              <th data-i18n="tableAction">操作</th>
+            </tr>
+          </thead>
+          <tbody id="feedbackRows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="emptyState" data-i18n="empty">暂无符合条件的意见反馈</div>
+      <div class="pager">
+        <span id="resultCount">共 0 条</span>
+        <span>‹</span>
+        <button class="page-btn" type="button">1</button>
+        <span>›</span>
+      </div>
+    </section>
+  </main>
+
+  <section class="modal-mask" id="markModal" aria-hidden="true">
+    <div class="modal small" role="dialog" aria-modal="true" aria-labelledby="markTitle">
+      <div class="modal-head">
+        <div id="markTitle" data-i18n="markTitle">标记反馈</div>
+        <button class="close" data-close type="button">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-copy" data-i18n="markCopy">请选择该条反馈的有效性。</div>
+        <div class="marker-options">
+          <label class="marker-option">
+            <input type="radio" name="markValid" value="有效">
+            <span data-i18n="markValid">标记有效</span>
+          </label>
+          <label class="marker-option">
+            <input type="radio" name="markValid" value="无效">
+            <span data-i18n="markInvalid">标记无效</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="ghost-btn" data-close type="button" data-i18n="cancel">取消</button>
+        <button class="confirm-btn" id="markSubmit" type="button" data-i18n="confirmMark">确认标记</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="modal-mask" id="rewardModal" aria-hidden="true">
+    <div class="modal small" role="dialog" aria-modal="true" aria-labelledby="rewardTitle">
+      <div class="modal-head">
+        <div id="rewardTitle" data-i18n="rewardTitle">发放奖励</div>
+        <button class="close" data-close type="button">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-copy" data-i18n="rewardCopy">确认要给用户发放 3% 优惠券奖励吗？</div>
+        <div class="modal-hint" data-i18n="rewardHint">如用户 24 小时已获得奖励，奖励将不会被发放。</div>
+      </div>
+      <div class="modal-foot">
+        <button class="ghost-btn" data-close type="button" data-i18n="cancel">取消</button>
+        <button class="confirm-btn" id="rewardSubmit" type="button" data-i18n="confirmReward">确认发放</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Succeed</div>
+
+  <script>
+    const translations = {
+      zh: {
+        pageTitle: "客服工作台 - 意见反馈",
+        mainMenu: "主菜单",
+        successCount: "客户成功数",
+        receptionSwitch: "开启接待",
+        language: "语言",
+        filters: "筛选条件",
+        workbenchNav: "工作台",
+        feedbackNav: "意见反馈",
+        settingsNav: "系统设置",
+        customerSuccess: "客户成功:",
+        modify: "修改",
+        offline: "下线",
+        filterNick: "昵称:",
+        filterOrder: "订单号:",
+        filterType: "反馈类型:",
+        filterCreated: "创建时间:",
+        filterValid: "是否有效:",
+        startTime: "开始时间",
+        endTime: "结束时间",
+        to: "至",
+        all: "全部",
+        typeRate: "服务评价",
+        typeSuggestion: "产品与活动建议",
+        typeMoney: "未收到款项",
+        valid: "有效",
+        invalid: "无效",
+        pendingValid: "待判定",
+        export: "导出",
+        reset: "重置 ↻",
+        tableCreated: "创建时间",
+        tableType: "反馈类型",
+        tableRating: "评价星级",
+        tableOrder: "订单号",
+        tableValid: "是否有效",
+        tableContent: "反馈内容",
+        tableImages: "上传图片",
+        tableNick: "用户昵称",
+        tableReward: "奖励发放",
+        tableAction: "操作",
+        empty: "暂无符合条件的意见反馈",
+        markTitle: "标记反馈",
+        markCopy: "请选择该条反馈的有效性。",
+        markValid: "标记有效",
+        markInvalid: "标记无效",
+        rewardTitle: "发放奖励",
+        rewardCopy: "确认要给用户发放 3% 优惠券奖励吗？",
+        rewardHint: "如用户 24 小时已获得奖励，奖励将不会被发放。",
+        cancel: "取消",
+        confirmMark: "确认标记",
+        confirmReward: "确认发放",
+        issueReward: "发放奖励",
+        mark: "标记",
+        noImage: "-",
+        count: (count) => `共 ${count} 条`,
+        success: "Succeed",
+        exportSuccess: "导出成功",
+        values: {
+          "有效": "有效",
+          "无效": "无效",
+          "待判定": "待判定",
+          "已发放": "已发放",
+          "未发放": "未发放",
+          "加载失败": "加载失败",
+          "Rate Our Service": "服务评价",
+          "Feedback on product and activity suggestions": "产品与活动建议",
+          "Haven't received your money yet": "未收到款项"
+        }
+      },
+      en: {
+        pageTitle: "Customer Service Workbench - Feedback",
+        mainMenu: "Main menu",
+        successCount: "Customer success count",
+        receptionSwitch: "Reception enabled",
+        language: "Language",
+        filters: "Filters",
+        workbenchNav: "Workbench",
+        feedbackNav: "Feedback",
+        settingsNav: "System Settings",
+        customerSuccess: "Success:",
+        modify: "Save",
+        offline: "Offline",
+        filterNick: "Nickname:",
+        filterOrder: "Order No.:",
+        filterType: "Feedback Type:",
+        filterCreated: "Created At:",
+        filterValid: "Validity:",
+        startTime: "Start time",
+        endTime: "End time",
+        to: "to",
+        all: "All",
+        typeRate: "Rate Our Service",
+        typeSuggestion: "Product and campaign suggestions",
+        typeMoney: "Payment not received",
+        valid: "Valid",
+        invalid: "Invalid",
+        pendingValid: "Pending",
+        export: "Export",
+        reset: "Reset ↻",
+        tableCreated: "Created At",
+        tableType: "Feedback Type",
+        tableRating: "Rating",
+        tableOrder: "Order No.",
+        tableValid: "Validity",
+        tableContent: "Feedback Content",
+        tableImages: "Images",
+        tableNick: "Nickname",
+        tableReward: "Reward",
+        tableAction: "Action",
+        empty: "No feedback matches the current filters",
+        markTitle: "Mark Feedback",
+        markCopy: "Select whether this feedback is valid.",
+        markValid: "Mark as valid",
+        markInvalid: "Mark as invalid",
+        rewardTitle: "Issue Reward",
+        rewardCopy: "Confirm issuing a 3% coupon reward to this user?",
+        rewardHint: "If the user has received a reward in the last 24 hours, no reward will be issued.",
+        cancel: "Cancel",
+        confirmMark: "Confirm",
+        confirmReward: "Confirm",
+        issueReward: "Issue reward",
+        mark: "Mark",
+        noImage: "-",
+        count: (count) => `${count} records`,
+        success: "Succeed",
+        exportSuccess: "Export successful",
+        values: {
+          "有效": "Valid",
+          "无效": "Invalid",
+          "待判定": "Pending",
+          "已发放": "Issued",
+          "未发放": "Not issued",
+          "加载失败": "Failed",
+          "Rate Our Service": "Rate Our Service",
+          "Feedback on product and activity suggestions": "Product and campaign suggestions",
+          "Haven't received your money yet": "Payment not received"
+        }
+      }
+    };
+
+    let currentLang = "zh";
+    const feedbackData = [
+      {
+        id: 1,
+        createdAt: "2026.06.24 15:45:18",
+        type: "Rate Our Service",
+        rating: 4,
+        orderNo: "GO20260624153150870471047",
+        valid: "待判定",
+        content: "The trade process was clear and I could check the order status easily.",
+        images: [],
+        nick: "Tb_85403581",
+        reward: "未发放"
+      },
+      {
+        id: 2,
+        createdAt: "2026.06.24 15:36:02",
+        type: "Rate Our Service",
+        rating: 1,
+        orderNo: "GO20260624152011077305",
+        valid: "无效",
+        content: "not good",
+        images: [],
+        nick: "Tb_6",
+        reward: "未发放"
+      },
+      {
+        id: 3,
+        createdAt: "2026.06.23 13:39:58",
+        type: "Feedback on product and activity suggestions",
+        rating: null,
+        orderNo: "-",
+        valid: "有效",
+        content: "The content of the activity proposal, The content of the activity proposal",
+        images: ["IMG", "PIC"],
+        nick: "Tb_85403581",
+        reward: "已发放"
+      },
+      {
+        id: 4,
+        createdAt: "2025.03.10 17:28:13",
+        type: "Haven't received your money yet",
+        rating: 3,
+        orderNo: "OO20250307174726116906074",
+        valid: "有效",
+        content: "这笔订单我这边看是完成的状态，我是可以收到 points 吗？",
+        images: ["加载失败"],
+        nick: "Tb_6",
+        reward: "已发放"
+      },
+      {
+        id: 5,
+        createdAt: "2026.06.22 10:12:45",
+        type: "Rate Our Service",
+        rating: 5,
+        orderNo: "GO20260622100688910012",
+        valid: "有效",
+        content: "Fast release and the buyer replied quickly. The experience was smooth.",
+        images: ["IMG"],
+        nick: "Tb_777",
+        reward: "未发放"
+      }
+    ];
+
+    let rows = feedbackData.map((item) => ({ ...item }));
+    let validFilterValue = "";
+    let activeMarkId = null;
+    let activeRewardId = null;
+
+    const feedbackRows = document.getElementById("feedbackRows");
+    const emptyState = document.getElementById("emptyState");
+    const resultCount = document.getElementById("resultCount");
+    const toast = document.getElementById("toast");
+    const nickFilter = document.getElementById("nickFilter");
+    const orderFilter = document.getElementById("orderFilter");
+    const typeFilter = document.getElementById("typeFilter");
+    const startFilter = document.getElementById("startFilter");
+    const endFilter = document.getElementById("endFilter");
+    const validFilter = document.getElementById("validFilter");
+    const languageSelect = document.getElementById("languageSelect");
+    const markModal = document.getElementById("markModal");
+    const rewardModal = document.getElementById("rewardModal");
+
+    function t(key) {
+      return translations[currentLang][key] || translations.zh[key] || key;
+    }
+
+    function valueLabel(value) {
+      return translations[currentLang].values[value] || value;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
+      document.title = t("pageTitle");
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        node.textContent = t(node.dataset.i18n);
+      });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+        node.placeholder = t(node.dataset.i18nPlaceholder);
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach((node) => {
+        node.setAttribute("aria-label", t(node.dataset.i18nAria));
+      });
+      applyFilters();
+    }
+
+    function starText(rating) {
+      if (!rating) return "-";
+      return "★★★★★".slice(0, rating) + "☆☆☆☆☆".slice(0, 5 - rating);
+    }
+
+    function pillClass(value) {
+      if (value === "有效") return "valid";
+      if (value === "无效") return "invalid";
+      if (value === "已发放") return "rewarded";
+      if (value === "未发放") return "reward-none";
+      return "pending";
+    }
+
+    function imageCells(images) {
+      if (!images.length) return `<span class="muted">${t("noImage")}</span>`;
+      return `<div class="thumbs">${images.map((image) => `<span class="thumb">${valueLabel(image)}</span>`).join("")}</div>`;
+    }
+
+    function rowActions(item) {
+      const canReward = item.reward === "未发放";
+      return `
+        <div class="row-actions">
+          ${canReward ? `<button class="link-btn" data-action="reward" data-id="${item.id}" type="button">${t("issueReward")}</button>` : ""}
+          <button class="link-btn" data-action="mark" data-id="${item.id}" type="button">${t("mark")}</button>
+        </div>
+      `;
+    }
+
+    function renderTable(list) {
+      feedbackRows.innerHTML = list.map((item) => `
+        <tr>
+          <td>${item.createdAt.replace(" ", "<br>")}</td>
+          <td>${valueLabel(item.type)}</td>
+          <td><span class="stars">${starText(item.rating)}</span></td>
+          <td>${item.orderNo}</td>
+          <td><span class="pill ${pillClass(item.valid)}">${valueLabel(item.valid)}</span></td>
+          <td><div class="copy" title="${item.content}">${item.content}</div></td>
+          <td>${imageCells(item.images)}</td>
+          <td>${item.nick}</td>
+          <td><span class="pill ${pillClass(item.reward)}">${valueLabel(item.reward)}</span></td>
+          <td>${rowActions(item)}</td>
+        </tr>
+      `).join("");
+      emptyState.style.display = list.length ? "none" : "grid";
+      resultCount.textContent = t("count")(list.length);
+    }
+
+    function applyFilters() {
+      const nick = nickFilter.value.trim().toLowerCase();
+      const order = orderFilter.value.trim().toLowerCase();
+      const type = typeFilter.value;
+      const start = startFilter.value.trim();
+      const end = endFilter.value.trim();
+      const filtered = rows.filter((item) => {
+        const matchesNick = !nick || item.nick.toLowerCase().includes(nick);
+        const matchesOrder = !order || item.orderNo.toLowerCase().includes(order);
+        const matchesType = !type || item.type === type;
+        const matchesValid = !validFilterValue || item.valid === validFilterValue;
+        const matchesStart = !start || item.createdAt >= start;
+        const matchesEnd = !end || item.createdAt <= end;
+        return matchesNick && matchesOrder && matchesType && matchesValid && matchesStart && matchesEnd;
+      });
+      renderTable(filtered);
+    }
+
+    function showToast(message = t("success")) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1500);
+    }
+
+    function openModal(modal) {
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModals() {
+      document.querySelectorAll(".modal-mask").forEach((modal) => {
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+      });
+    }
+
+    function openMarkModal(id) {
+      const item = rows.find((row) => row.id === id);
+      activeMarkId = id;
+      const checkedValue = item.valid === "无效" ? "无效" : "有效";
+      document.querySelectorAll('input[name="markValid"]').forEach((input) => {
+        input.checked = input.value === checkedValue;
+      });
+      openModal(markModal);
+    }
+
+    function submitMark() {
+      const item = rows.find((row) => row.id === activeMarkId);
+      const selected = document.querySelector('input[name="markValid"]:checked');
+      item.valid = selected ? selected.value : item.valid;
+      closeModals();
+      applyFilters();
+      showToast();
+    }
+
+    function issueReward(id) {
+      activeRewardId = id;
+      openModal(rewardModal);
+    }
+
+    function confirmReward() {
+      const item = rows.find((row) => row.id === activeRewardId);
+      if (item && item.reward === "未发放") {
+        item.reward = "已发放";
+      }
+      closeModals();
+      applyFilters();
+      showToast();
+    }
+
+    function resetFilters() {
+      nickFilter.value = "";
+      orderFilter.value = "";
+      typeFilter.value = "";
+      startFilter.value = "";
+      endFilter.value = "";
+      validFilterValue = "";
+      validFilter.querySelectorAll(".seg").forEach((button) => {
+        button.classList.toggle("active", button.dataset.value === "");
+      });
+      applyFilters();
+    }
+
+    document.querySelector(".switch").addEventListener("click", (event) => {
+      event.currentTarget.classList.toggle("on");
+    });
+
+    languageSelect.addEventListener("change", (event) => {
+      currentLang = event.target.value;
+      applyLanguage();
+    });
+
+    [nickFilter, orderFilter, typeFilter, startFilter, endFilter].forEach((control) => {
+      control.addEventListener("input", applyFilters);
+      control.addEventListener("change", applyFilters);
+    });
+
+    validFilter.addEventListener("click", (event) => {
+      const button = event.target.closest(".seg");
+      if (!button) return;
+      validFilterValue = button.dataset.value;
+      validFilter.querySelectorAll(".seg").forEach((seg) => seg.classList.toggle("active", seg === button));
+      applyFilters();
+    });
+
+    feedbackRows.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button || button.disabled) return;
+      const id = Number(button.dataset.id);
+      if (button.dataset.action === "reward") issueReward(id);
+      if (button.dataset.action === "mark") openMarkModal(id);
+    });
+
+    document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", closeModals));
+    document.getElementById("markSubmit").addEventListener("click", submitMark);
+    document.getElementById("rewardSubmit").addEventListener("click", confirmReward);
+    document.getElementById("resetBtn").addEventListener("click", resetFilters);
+    document.getElementById("exportBtn").addEventListener("click", () => showToast(t("exportSuccess")));
+    document.querySelectorAll(".modal-mask").forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModals();
+      });
+    });
+
+    applyLanguage();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T矩阵成长激励看板</title>
+  <style>
+    :root {
+      --header: #021529;
+      --sidebar: #001529;
+      --sidebar-sub: #000c17;
+      --nav-active: #00c1ba;
+      --group-active: #2fecff;
+      --page-bg: #f3f5f9;
+      --content: #fff;
+      --line: #f0f0f0;
+      --border: #d9d9d9;
+      --text: rgba(0, 0, 0, .88);
+      --sub: #666;
+      --muted: #939191;
+      --primary: #3cbafb;
+      --primary-soft: rgba(60, 186, 251, .1);
+      --success: #13a86b;
+      --warning: #faad14;
+      --danger: #ff4d4f;
+      --purple: #7c6ff0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1280px;
+      color: var(--text);
+      background: var(--page-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      grid-template-rows: 60px 1fr;
+    }
+
+    .topbar {
+      grid-column: 1 / 3;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      background: var(--header);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+      z-index: 2;
+    }
+
+    .brand {
+      width: 190px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 23px;
+      color: #fff;
+      font-size: 28px;
+      font-weight: 800;
+      font-style: italic;
+    }
+
+    .brand-mark {
+      width: 25px;
+      height: 25px;
+      border: 3px solid #f4fbff;
+      border-right: 0;
+      border-bottom: 0;
+      border-radius: 3px 0 0 0;
+      position: relative;
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 7px;
+      width: 15px;
+      height: 3px;
+      border-radius: 3px;
+      background: #f4fbff;
+    }
+
+    .top-menu {
+      height: 100%;
+      display: flex;
+    }
+
+    .top-menu-item {
+      min-width: 88px;
+      height: 55px;
+      padding: 0 16px;
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, .65);
+      font-size: 14px;
+    }
+
+    .top-menu-item.active {
+      color: #fff;
+      background: var(--nav-active);
+    }
+
+    .top-tools {
+      margin-left: auto;
+      height: 100%;
+      padding-right: 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .language {
+      width: 100px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: rgba(0, 0, 0, .88);
+      background: #fff;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .75);
+      background:
+        radial-gradient(circle at 50% 36%, #f1d1b9 0 7px, transparent 8px),
+        radial-gradient(circle at 50% 77%, #5f83a9 0 12px, transparent 13px),
+        linear-gradient(135deg, #eaf6ff, #7ba5d8);
+    }
+
+    .sidebar {
+      grid-row: 2;
+      min-height: calc(100vh - 60px);
+      background: var(--sidebar);
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .side-group,
+    .side-item {
+      height: 55px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      font-size: 14px;
+    }
+
+    .side-group {
+      padding: 0 20px 0 52px;
+      color: var(--group-active);
+    }
+
+    .side-group::after {
+      content: "^";
+      position: absolute;
+      right: 22px;
+      top: 18px;
+      color: var(--group-active);
+      font-weight: 700;
+    }
+
+    .side-item {
+      padding: 0 16px 0 52px;
+      background: var(--sidebar-sub);
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .side-item.sub {
+      padding-left: 72px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .56);
+      background: #00101d;
+    }
+
+    .side-item.active {
+      color: #fff;
+      background: var(--nav-active);
+    }
+
+    .main {
+      grid-column: 2;
+      grid-row: 2;
+      padding: 0 20px 28px;
+      overflow: auto;
+    }
+
+    .crumb {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      min-height: calc(100vh - 98px);
+      padding: 20px;
+      background: var(--content);
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .title-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 700;
+    }
+
+    .metric-help-trigger {
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 0;
+      border-bottom: 2px solid #1f2329;
+      background: transparent;
+      color: #1f2329;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 0 2px;
+    }
+
+    .info-dot {
+      width: 14px;
+      height: 14px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #1f2329;
+      color: #fff;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .metric-help-popover {
+      position: absolute;
+      left: 0;
+      top: 34px;
+      width: min(760px, calc(100vw - 48px));
+      z-index: 10;
+      display: none;
+      padding: 12px 14px;
+      border: 1px solid #dfe3eb;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(18, 31, 51, .16);
+      color: #1f2329;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .metric-help-popover.show,
+    .title-tools:hover .metric-help-popover {
+      display: block;
+    }
+
+    .metric-help-popover strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .metric-help-section + .metric-help-section {
+      margin-top: 9px;
+    }
+
+    .metric-help-section b {
+      display: block;
+      color: #1f2329;
+      font-size: 12px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 11px 16px;
+      padding: 14px 0 18px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+
+    .field {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    select,
+    input {
+      width: 200px;
+      height: 32px;
+      padding: 4px 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      font-size: 13px;
+    }
+
+    input[type="date"] {
+      width: 148px;
+    }
+
+    .range {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .range span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .btn {
+      min-width: 60px;
+      height: 31px;
+      padding: 5px 16px;
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 13px;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 34px;
+      margin-bottom: 10px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 22px;
+      font-weight: 700;
+    }
+
+    .section-title .en {
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric-card {
+      min-height: 112px;
+      padding: 14px 14px 12px;
+      border: 1px solid #edf0f5;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .metric-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .metric-name {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+    }
+
+    .metric-value {
+      margin-bottom: 8px;
+      color: #17233d;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 700;
+    }
+
+    .metric-value.small {
+      color: var(--success);
+    }
+
+    .funnel-wrap {
+      display: block;
+    }
+
+    .funnel {
+      border: 1px solid #edf0f5;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .funnel-list {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 860px;
+    }
+
+    .funnel-list th,
+    .funnel-list td {
+      height: 42px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      line-height: 18px;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    .funnel-list th {
+      color: var(--sub);
+      background: #fafafa;
+      font-weight: 700;
+    }
+
+    .funnel-list tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .progress-cell {
+      display: grid;
+      grid-template-columns: minmax(160px, 1fr) 58px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-track {
+      height: 6px;
+      border-radius: 999px;
+      background: #eef1f5;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      display: block;
+      width: var(--p);
+      height: 100%;
+      border-radius: inherit;
+      background: #2f6df6;
+    }
+
+    .loss-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 58px;
+      height: 22px;
+      padding: 0 8px;
+      border: 1px solid #ffa5a5;
+      border-radius: 4px;
+      color: #ff6b6b;
+      background: #fff7f7;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .loss-empty {
+      color: #c5c8ce;
+    }
+
+    .table-card {
+      border: 1px solid #edf0f5;
+      border-radius: 6px;
+      overflow: auto;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 1060px;
+    }
+
+    th,
+    td {
+      height: 40px;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 12px;
+      line-height: 18.8571px;
+    }
+
+    th {
+      background: #fafafa;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    td {
+      color: var(--text);
+    }
+
+    tr:hover td {
+      background: #fafafa;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .rate-up {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .rate-warn {
+      color: var(--warning);
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: inline-flex;
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .tabs button {
+      width: 58px;
+      height: 30px;
+      border: 0;
+      border-left: 1px solid rgba(60, 186, 251, .25);
+      color: var(--primary);
+      background: #fff;
+      font-size: 13px;
+    }
+
+    .tabs button:first-child {
+      border-left: 0;
+    }
+
+    .tabs button.active {
+      color: #fff;
+      background: var(--primary);
+    }
+
+    .period-table {
+      display: none;
+    }
+
+    .period-table.active {
+      display: block;
+    }
+
+    .ratio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 74px;
+      justify-content: flex-end;
+    }
+
+    .ratio::before {
+      content: "";
+      width: 42px;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary) var(--p), #edf1f6 var(--p));
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark"></span><span>- matrix</span></div>
+      <nav class="top-menu">
+        <div class="top-menu-item" data-i18n="nav.system">系统管理</div>
+        <div class="top-menu-item" data-i18n="nav.business">业务管理</div>
+        <div class="top-menu-item" data-i18n="nav.marketing">营销管理</div>
+        <div class="top-menu-item active" data-i18n="nav.data">数据统计</div>
+      </nav>
+      <div class="top-tools">
+        <select class="language" aria-label="语言">
+          <option value="zh">简体中文</option>
+          <option value="en">English</option>
+        </select>
+        <div class="user"><span class="avatar"></span><span>admin</span></div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="side-group" data-i18n="side.providerStats">服务商统计</div>
+      <div class="side-item" data-i18n="side.serviceQuality">服务质量</div>
+      <div class="side-item sub" data-i18n="side.basicData">基础数据</div>
+      <div class="side-group" data-i18n="side.marketingData">营销数据</div>
+      <div class="side-item" data-i18n="side.couponIssue">券发放数据</div>
+      <div class="side-item sub active" data-i18n="side.growth">成长激励</div>
+    </aside>
+
+    <main class="main">
+      <div class="crumb" data-i18n="crumb">数据统计 / 营销数据 / 券发放数据 / 成长激励</div>
+      <section class="panel">
+        <div class="page-head">
+          <div class="title-tools">
+            <h1 data-i18n="page.title">T矩阵成长激励看板</h1>
+            <button class="metric-help-trigger" type="button">
+              <span data-i18n="metricHelp.trigger">指标说明</span>
+              <span class="info-dot">i</span>
+            </button>
+            <div class="metric-help-popover">
+              <strong data-i18n="metricHelp.title">指标说明</strong>
+              <div class="metric-help-section">
+                <b data-i18n="metricHelp.overview">概览</b>
+                <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间内的去重用户数；参与率：报名用户数 / 潜在用户数；奖励发放总额 (Points)：统计时间段内实际发放的奖励积分；活动总 GMV (Points)：活动进行中用户在统计时间内的订单放币积分。</div>
+              </div>
+              <div class="metric-help-section">
+                <b data-i18n="metricHelp.funnel">参与漏斗</b>
+                <div data-i18n="metricHelp.funnelDetail">活跃交易用户：统计期内有交易的去重用户；报名用户数：已成功报名的去重用户；完成 M1 / M2 / 第90天：在对应阶段完成所需任务的去重用户。占比为当前阶段用户数 / 活跃交易用户数；流失率为 1 - 当前阶段用户数 / 上一阶段用户数。</div>
+              </div>
+              <div class="metric-help-section">
+                <b data-i18n="metricHelp.milestone">里程碑明细</b>
+                <div data-i18n="metricHelp.milestoneDetail">到达用户数：到达对应天数节点的去重用户；完成签到用户：在节点完成签到的去重用户；交易签到用户：完成签到且完成交易的去重用户；交易签到率：交易签到用户 / 到达用户数；节点奖励发放：节点对应实际发放的奖励积分；当日 GMV (Points)：节点当日订单放币积分。</div>
+              </div>
+              <div class="metric-help-section">
+                <b data-i18n="metricHelp.makeup">补签卡</b>
+                <div data-i18n="metricHelp.makeupDetail">补签卡发放量：系统发放补签卡与交易发放补签卡之和；补签卡使用：统计期内已使用的补签卡数量；日常补签：用于普通日期补签的次数；关键补签：用于关键节点补签的次数。日、周、月仅改变汇总维度。</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn primary" data-i18n="action.export">导出</button>
+        </div>
+
+        <div class="filters">
+          <label class="field"><span data-i18n="filter.site">站点</span>:
+            <select>
+              <option data-i18n="option.all">全部</option>
+              <option>TroveLoop</option>
+              <option>Tbay</option>
+              <option>TrustCard</option>
+            </select>
+          </label>
+          <label class="field"><span data-i18n="filter.platform">端</span>:
+            <select>
+              <option data-i18n="option.all">全部</option>
+              <option>Android</option>
+              <option>IOS</option>
+            </select>
+          </label>
+          <label class="field"><span data-i18n="filter.time">统计时间</span>:
+            <span class="range">
+              <input type="date" value="2026-06-15">
+              <span data-i18n="filter.to">至</span>
+              <input type="date" value="2026-07-14">
+            </span>
+          </label>
+          <label class="field"><span data-i18n="filter.granularity">统计维度</span>:
+            <span class="tabs" role="tablist" aria-label="统计维度">
+              <button class="active" data-period="day" type="button" data-i18n="period.day">日</button>
+              <button data-period="week" type="button" data-i18n="period.week">周</button>
+              <button data-period="month" type="button" data-i18n="period.month">月</button>
+            </span>
+          </label>
+          <button class="btn primary" data-i18n="action.search">查询</button>
+          <button class="btn" data-i18n="action.reset">重置</button>
+        </div>
+
+        <section class="section">
+          <div class="section-title">
+            <h2 data-i18n="section.overview">概览</h2>
+          </div>
+          <div class="overview-grid">
+            <article class="metric-card">
+              <div class="metric-top">
+                <div>
+                  <div class="metric-name" data-i18n="metric.registered">报名用户数</div>
+                </div>
+              </div>
+              <div class="metric-value">18,426</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-top">
+                <div>
+                  <div class="metric-name" data-i18n="metric.participation">参与率</div>
+                </div>
+              </div>
+              <div class="metric-value small">42.86%</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-top">
+                <div>
+                  <div class="metric-name" data-i18n="metric.reward">奖励发放总额 (Points)</div>
+                </div>
+              </div>
+              <div class="metric-value">92,580</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-top">
+                <div>
+                  <div class="metric-name" data-i18n="metric.gmv">活动总 GMV (Points)</div>
+                </div>
+              </div>
+              <div class="metric-value">8,742,300</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title">
+            <h2 data-i18n="section.funnel">参与漏斗</h2>
+          </div>
+          <div class="funnel-wrap">
+            <div class="funnel">
+              <table class="funnel-list">
+                <colgroup>
+                  <col style="width: 260px">
+                  <col style="width: 130px">
+                  <col>
+                  <col style="width: 120px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th data-i18n="funnel.stage">阶段节点</th>
+                    <th class="num" data-i18n="funnel.users">用户数</th>
+                    <th data-i18n="funnel.share">占比</th>
+                    <th data-i18n="funnel.loss">流失率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-i18n="metric.activeTrading">活跃交易用户</td>
+                    <td class="num">43,000</td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 100%;"></span></span><span class="num">100%</span></div></td>
+                    <td><span class="loss-empty">-</span></td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="metric.registered">报名用户数</td>
+                    <td class="num">18,426</td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 42.85%;"></span></span><span class="num">42.85%</span></div></td>
+                    <td><span class="loss-badge">57.15%</span></td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="metric.completeM1">完成 M1（第30天）</td>
+                    <td class="num">12,805</td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 29.78%;"></span></span><span class="num">29.78%</span></div></td>
+                    <td><span class="loss-badge">30.51%</span></td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="metric.completeM2">完成 M2（第60天）</td>
+                    <td class="num">8,943</td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 20.80%;"></span></span><span class="num">20.80%</span></div></td>
+                    <td><span class="loss-badge">30.16%</span></td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="metric.completeD90">完成第90天</td>
+                    <td class="num">5,736</td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 13.34%;"></span></span><span class="num">13.34%</span></div></td>
+                    <td><span class="loss-badge">35.86%</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title">
+            <h2 data-i18n="section.milestone">里程碑明细</h2>
+          </div>
+          <div class="table-card">
+            <table>
+              <colgroup>
+                <col style="width: 100px">
+                <col style="width: 120px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 120px">
+                <col style="width: 140px">
+                <col style="width: 140px">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th data-i18n="table.milestone">节点</th>
+                  <th class="num" data-i18n="table.reachedUsers">到达用户数</th>
+                  <th class="num" data-i18n="table.checkinUsers">完成签到用户</th>
+                  <th class="num" data-i18n="table.txCheckinUsers">交易签到用户</th>
+                  <th class="num" data-i18n="table.txCheckinRate">交易签到率</th>
+                  <th class="num" data-i18n="table.milestoneReward">节点奖励发放 (Points)</th>
+                  <th class="num" data-i18n="table.dailyGmv">当日 GMV (Points)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-i18n="day.7">第7天</td>
+                  <td class="num">16,804</td>
+                  <td class="num">15,276</td>
+                  <td class="num">9,862</td>
+                  <td class="num rate-up">58.69%</td>
+                  <td class="num">7,638</td>
+                  <td class="num">624,500</td>
+                </tr>
+                <tr>
+                  <td data-i18n="day.14">第14天</td>
+                  <td class="num">15,318</td>
+                  <td class="num">13,904</td>
+                  <td class="num">8,731</td>
+                  <td class="num rate-up">57.00%</td>
+                  <td class="num">9,270</td>
+                  <td class="num">711,930</td>
+                </tr>
+                <tr>
+                  <td data-i18n="day.30">第30天</td>
+                  <td class="num">13,240</td>
+                  <td class="num">12,805</td>
+                  <td class="num">7,642</td>
+                  <td class="num rate-up">57.72%</td>
+                  <td class="num">18,960</td>
+                  <td class="num">1,248,600</td>
+                </tr>
+                <tr>
+                  <td data-i18n="day.45">第45天</td>
+                  <td class="num">10,716</td>
+                  <td class="num">9,842</td>
+                  <td class="num">5,126</td>
+                  <td class="num rate-warn">47.84%</td>
+                  <td class="num">12,306</td>
+                  <td class="num">936,180</td>
+                </tr>
+                <tr>
+                  <td data-i18n="day.60">第60天</td>
+                  <td class="num">9,375</td>
+                  <td class="num">8,943</td>
+                  <td class="num">4,836</td>
+                  <td class="num rate-up">51.58%</td>
+                  <td class="num">21,462</td>
+                  <td class="num">1,102,700</td>
+                </tr>
+                <tr>
+                  <td data-i18n="day.75">第75天</td>
+                  <td class="num">7,921</td>
+                  <td class="num">7,145</td>
+                  <td class="num">3,508</td>
+                  <td class="num rate-warn">44.29%</td>
+                  <td class="num">10,718</td>
+                  <td class="num">745,060</td>
+                </tr>
+                <tr>
+                  <td data-i18n="day.90">第90天</td>
+                  <td class="num">6,184</td>
+                  <td class="num">5,736</td>
+                  <td class="num">2,982</td>
+                  <td class="num rate-up">48.22%</td>
+                  <td class="num">12,226</td>
+                  <td class="num">639,420</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title">
+            <h2 data-i18n="section.makeup">补签卡</h2>
+          </div>
+          <div class="table-card period-table active" data-table="day">
+            <table>
+              <colgroup>
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 150px">
+                <col style="width: 150px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th data-i18n="table.date">日期</th>
+                  <th class="num" data-i18n="table.cardsIssued">补签卡发放量</th>
+                  <th class="num" data-i18n="table.systemCards">系统发放补签卡</th>
+                  <th class="num" data-i18n="table.txCards">交易发放补签卡</th>
+                  <th class="num" data-i18n="table.cardsUsed">补签卡使用</th>
+                  <th class="num" data-i18n="table.regularMakeup">日常补签</th>
+                  <th class="num" data-i18n="table.keyMakeup">关键补签</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-07-14</td><td class="num">1,428</td><td class="num">620</td><td class="num">808</td><td class="num">1,036</td><td class="num">704</td><td class="num">332</td></tr>
+                <tr><td>2026-07-13</td><td class="num">1,306</td><td class="num">594</td><td class="num">712</td><td class="num">968</td><td class="num">651</td><td class="num">317</td></tr>
+                <tr><td>2026-07-12</td><td class="num">1,154</td><td class="num">540</td><td class="num">614</td><td class="num">820</td><td class="num">586</td><td class="num">234</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-card period-table" data-table="week">
+            <table>
+              <colgroup>
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 150px">
+                <col style="width: 150px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th data-i18n="table.week">周维度</th>
+                  <th class="num" data-i18n="table.cardsIssued">补签卡发放量</th>
+                  <th class="num" data-i18n="table.systemCards">系统发放补签卡</th>
+                  <th class="num" data-i18n="table.txCards">交易发放补签卡</th>
+                  <th class="num" data-i18n="table.cardsUsed">补签卡使用</th>
+                  <th class="num" data-i18n="table.regularMakeup">日常补签</th>
+                  <th class="num" data-i18n="table.keyMakeup">关键补签</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-W29</td><td class="num">8,614</td><td class="num">3,786</td><td class="num">4,828</td><td class="num">6,204</td><td class="num">4,213</td><td class="num">1,991</td></tr>
+                <tr><td>2026-W28</td><td class="num">7,926</td><td class="num">3,492</td><td class="num">4,434</td><td class="num">5,876</td><td class="num">3,932</td><td class="num">1,944</td></tr>
+                <tr><td>2026-W27</td><td class="num">7,104</td><td class="num">3,316</td><td class="num">3,788</td><td class="num">5,288</td><td class="num">3,694</td><td class="num">1,594</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-card period-table" data-table="month">
+            <table>
+              <colgroup>
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 150px">
+                <col style="width: 150px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+                <col style="width: 130px">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th data-i18n="table.month">月份</th>
+                  <th class="num" data-i18n="table.cardsIssued">补签卡发放量</th>
+                  <th class="num" data-i18n="table.systemCards">系统发放补签卡</th>
+                  <th class="num" data-i18n="table.txCards">交易发放补签卡</th>
+                  <th class="num" data-i18n="table.cardsUsed">补签卡使用</th>
+                  <th class="num" data-i18n="table.regularMakeup">日常补签</th>
+                  <th class="num" data-i18n="table.keyMakeup">关键补签</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-07</td><td class="num">31,842</td><td class="num">13,920</td><td class="num">17,922</td><td class="num">23,640</td><td class="num">16,582</td><td class="num">7,058</td></tr>
+                <tr><td>2026-06</td><td class="num">28,106</td><td class="num">12,746</td><td class="num">15,360</td><td class="num">20,948</td><td class="num">14,273</td><td class="num">6,675</td></tr>
+                <tr><td>2026-05</td><td class="num">24,732</td><td class="num">11,826</td><td class="num">12,906</td><td class="num">18,354</td><td class="num">12,801</td><td class="num">5,553</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const messages = {
+      zh: {
+        "nav.system": "系统管理",
+        "nav.business": "业务管理",
+        "nav.marketing": "营销管理",
+        "nav.data": "数据统计",
+        "side.providerStats": "服务商统计",
+        "side.serviceQuality": "服务质量",
+        "side.basicData": "基础数据",
+        "side.marketingData": "营销数据",
+        "side.couponIssue": "券发放数据",
+        "side.growth": "成长激励",
+        "crumb": "数据统计 / 营销数据 / 券发放数据 / 成长激励",
+        "page.title": "T矩阵成长激励看板",
+        "metricHelp.trigger": "指标说明",
+        "metricHelp.title": "指标说明",
+        "metricHelp.overview": "概览",
+        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间内的去重用户数；参与率：报名用户数 / 潜在用户数；奖励发放总额 (Points)：统计时间段内实际发放的奖励积分；活动总 GMV (Points)：活动进行中用户在统计时间内的订单放币积分。",
+        "metricHelp.funnel": "参与漏斗",
+        "metricHelp.funnelDetail": "活跃交易用户：统计期内有交易的去重用户；报名用户数：已成功报名的去重用户；完成 M1 / M2 / 第90天：在对应阶段完成所需任务的去重用户。占比为当前阶段用户数 / 活跃交易用户数；流失率为 1 - 当前阶段用户数 / 上一阶段用户数。",
+        "metricHelp.milestone": "里程碑明细",
+        "metricHelp.milestoneDetail": "到达用户数：到达对应天数节点的去重用户；完成签到用户：在节点完成签到的去重用户；交易签到用户：完成签到且完成交易的去重用户；交易签到率：交易签到用户 / 到达用户数；节点奖励发放：节点对应实际发放的奖励积分；当日 GMV (Points)：节点当日订单放币积分。",
+        "metricHelp.makeup": "补签卡",
+        "metricHelp.makeupDetail": "补签卡发放量：系统发放补签卡与交易发放补签卡之和；补签卡使用：统计期内已使用的补签卡数量；日常补签：用于普通日期补签的次数；关键补签：用于关键节点补签的次数。日、周、月仅改变汇总维度。",
+        "action.export": "导出",
+        "action.search": "查询",
+        "action.reset": "重置",
+        "filter.site": "站点",
+        "filter.platform": "端",
+        "filter.time": "统计时间",
+        "filter.to": "至",
+        "filter.granularity": "统计维度",
+        "option.all": "全部",
+        "period.day": "日",
+        "period.week": "周",
+        "period.month": "月",
+        "section.overview": "概览",
+        "section.funnel": "参与漏斗",
+        "section.milestone": "里程碑明细",
+        "section.makeup": "补签卡",
+        "metric.registered": "报名用户数",
+        "metric.participation": "参与率",
+        "metric.reward": "奖励发放总额 (Points)",
+        "metric.gmv": "活动总 GMV (Points)",
+        "metric.activeTrading": "活跃交易用户",
+        "metric.completeM1": "完成 M1（第30天）",
+        "metric.enterM2": "进入 M2（第31天）",
+        "metric.completeM2": "完成 M2（第60天）",
+        "metric.enterM3": "进入 M3（第61天）",
+        "metric.completeD90": "完成第90天",
+        "metric.m1Fail": "M1失败率",
+        "metric.m2Fail": "M2失败率",
+        "metric.m3Fail": "M3失败率",
+        "funnel.stage": "阶段节点",
+        "funnel.users": "用户数",
+        "funnel.share": "占比",
+        "funnel.loss": "流失率",
+        "table.milestone": "节点",
+        "table.reachedUsers": "到达用户数",
+        "table.checkinUsers": "完成签到用户",
+        "table.txCheckinUsers": "交易签到用户",
+        "table.txCheckinRate": "交易签到率",
+        "table.milestoneReward": "节点奖励发放 (Points)",
+        "table.dailyGmv": "当日 GMV (Points)",
+        "table.date": "日期",
+        "table.week": "周维度",
+        "table.month": "月份",
+        "table.cardsIssued": "补签卡发放量",
+        "table.systemCards": "系统发放补签卡",
+        "table.txCards": "交易发放补签卡",
+        "table.cardsUsed": "补签卡使用",
+        "table.regularMakeup": "日常补签",
+        "table.keyMakeup": "关键补签",
+        "day.7": "第7天",
+        "day.14": "第14天",
+        "day.30": "第30天",
+        "day.45": "第45天",
+        "day.60": "第60天",
+        "day.75": "第75天",
+        "day.90": "第90天"
+      },
+      en: {
+        "nav.system": "System",
+        "nav.business": "Business",
+        "nav.marketing": "Marketing",
+        "nav.data": "Analytics",
+        "side.providerStats": "Provider Analytics",
+        "side.serviceQuality": "Service Quality",
+        "side.basicData": "Basic Data",
+        "side.marketingData": "Marketing Data",
+        "side.couponIssue": "Coupon Issuance Data",
+        "side.growth": "Growth Incentive",
+        "crumb": "Analytics / Marketing Data / Coupon Issuance Data / Growth Incentive",
+        "page.title": "T-matrix Growth Incentive Dashboard",
+        "metricHelp.trigger": "Metric Notes",
+        "metricHelp.title": "Metric Notes",
+        "metricHelp.overview": "Overview",
+        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose registration succeeded in the selected period; Participation Rate: registered users / potential users; Total Reward Payout (Points): reward points actually issued in the selected period; Campaign GMV (Points): order release points from in-campaign users in the selected period.",
+        "metricHelp.funnel": "Participation Funnel",
+        "metricHelp.funnelDetail": "Active Trading Users: deduplicated users who traded in the selected period; Registered Users: users with a successful registration; Completed M1 / M2 / Day 90: deduplicated users who completed the required task at that stage. Share = stage users / active trading users; Loss Rate = 1 - stage users / prior-stage users.",
+        "metricHelp.milestone": "Milestone Details",
+        "metricHelp.milestoneDetail": "Users Reached: deduplicated users reaching the applicable day; Check-in Users: deduplicated users completing a check-in at the milestone; Transaction Check-in Users: users who checked in and completed a transaction; Transaction Check-in Rate: transaction check-in users / users reached; Milestone Reward: reward points actually issued at the milestone; Daily GMV (Points): order release points on that milestone day.",
+        "metricHelp.makeup": "Makeup Check-in Cards",
+        "metricHelp.makeupDetail": "Cards Issued: system-issued cards plus transaction-issued cards; Cards Used: cards used in the selected period; Regular Makeup: check-ins made up for regular dates; Key Makeup: check-ins made up for key milestones. Day, week, and month only change the aggregation level.",
+        "action.export": "Export",
+        "action.search": "Search",
+        "action.reset": "Reset",
+        "filter.site": "Site",
+        "filter.platform": "Platform",
+        "filter.time": "Date Range",
+        "filter.to": "to",
+        "filter.granularity": "Granularity",
+        "option.all": "All",
+        "period.day": "Day",
+        "period.week": "Week",
+        "period.month": "Month",
+        "section.overview": "Overview",
+        "section.funnel": "Participation Funnel",
+        "section.milestone": "Milestone Details",
+        "section.makeup": "Makeup Check-in Cards",
+        "metric.registered": "Registered Users",
+        "metric.participation": "Participation Rate",
+        "metric.reward": "Total Reward Payout (Points)",
+        "metric.gmv": "Campaign GMV (Points)",
+        "metric.activeTrading": "Active Trading Users",
+        "metric.completeM1": "Completed M1 (Day 30)",
+        "metric.enterM2": "Entered M2 (Day 31)",
+        "metric.completeM2": "Completed M2 (Day 60)",
+        "metric.enterM3": "Entered M3 (Day 61)",
+        "metric.completeD90": "Completed Day 90",
+        "metric.m1Fail": "M1 Failure Rate",
+        "metric.m2Fail": "M2 Failure Rate",
+        "metric.m3Fail": "M3 Failure Rate",
+        "funnel.stage": "Stage",
+        "funnel.users": "Users",
+        "funnel.share": "Share",
+        "funnel.loss": "Loss Rate",
+        "table.milestone": "Milestone",
+        "table.reachedUsers": "Users Reached",
+        "table.checkinUsers": "Check-in Users",
+        "table.txCheckinUsers": "Transaction Check-in Users",
+        "table.txCheckinRate": "Transaction Check-in Rate",
+        "table.milestoneReward": "Milestone Reward (Points)",
+        "table.dailyGmv": "Daily GMV (Points)",
+        "table.date": "Date",
+        "table.week": "Week",
+        "table.month": "Month",
+        "table.cardsIssued": "Cards Issued",
+        "table.systemCards": "System-issued Cards",
+        "table.txCards": "Transaction-issued Cards",
+        "table.cardsUsed": "Cards Used",
+        "table.regularMakeup": "Regular Makeup",
+        "table.keyMakeup": "Key Makeup",
+        "day.7": "Day 7",
+        "day.14": "Day 14",
+        "day.30": "Day 30",
+        "day.45": "Day 45",
+        "day.60": "Day 60",
+        "day.75": "Day 75",
+        "day.90": "Day 90"
+      }
+    };
+
+    const periodButtons = document.querySelectorAll("[data-period]");
+    const periodTables = document.querySelectorAll("[data-table]");
+    const languageSelect = document.querySelector(".language");
+    const metricHelpTrigger = document.querySelector(".metric-help-trigger");
+    const metricHelpPopover = document.querySelector(".metric-help-popover");
+
+    function applyLanguage(language) {
+      document.documentElement.lang = language === "en" ? "en" : "zh-CN";
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        const key = node.dataset.i18n;
+        node.textContent = messages[language][key] || messages.zh[key] || node.textContent;
+      });
+    }
+
+    periodButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const period = button.dataset.period;
+
+        periodButtons.forEach((item) => item.classList.toggle("active", item === button));
+        periodTables.forEach((table) => table.classList.toggle("active", table.dataset.table === period));
+      });
+    });
+
+    metricHelpTrigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      metricHelpPopover.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".title-tools")) {
+        metricHelpPopover.classList.remove("show");
+      }
+    });
+
+    languageSelect.addEventListener("change", () => {
+      localStorage.setItem("growthDashboardLang", languageSelect.value);
+      applyLanguage(languageSelect.value);
+    });
+
+    const initialLanguage = new URLSearchParams(location.search).get("lang") || localStorage.getItem("growthDashboardLang") || languageSelect.value;
+    languageSelect.value = initialLanguage === "en" ? "en" : "zh";
+    applyLanguage(languageSelect.value);
+  </script>
+</body>
+</html>

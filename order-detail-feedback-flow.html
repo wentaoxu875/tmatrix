@@ -941,7 +941,7 @@
       </div>
     </section>
 
-    <div class="toast" id="toast" role="status" aria-live="polite">Thanks for your feedback.</div>
+    <div class="toast" id="toast" role="status" aria-live="polite">Thanks for lending a hand to improve your experience!</div>
   </main>
 
   <script>
@@ -1081,7 +1081,8 @@
       if (!isValid) return;
       hasSubmitted = true;
       hideSheet();
-      showToast("Thanks for your feedback.");
+      feedbackEntry.hidden = true;
+      showToast("Thanks for lending a hand to improve your experience!");
     }
 
     rewardScenarioToggle.addEventListener("change", () => {

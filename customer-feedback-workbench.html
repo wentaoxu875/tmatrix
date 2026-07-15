@@ -815,6 +815,37 @@
     .field.wide { grid-column: auto; }
     .field label, .valid-label { color: rgba(0, 0, 0, .88); font-weight: 400; text-align: right; }
     .control, .field select { height: 32px; border-color: #d9d9d9; border-radius: 6px; padding: 4px 11px; color: rgba(0,0,0,.88); font-size: 13px; }
+    .nick-autocomplete { position: relative; min-width: 0; }
+    .nick-autocomplete .control { width: 100%; }
+    .nick-suggestions {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      display: none;
+      max-height: 156px;
+      overflow-y: auto;
+      margin: 0;
+      padding: 4px 0;
+      list-style: none;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+      z-index: 20;
+    }
+    .nick-suggestions.show { display: block; }
+    .nick-suggestions button {
+      width: 100%;
+      height: 30px;
+      border: 0;
+      padding: 0 12px;
+      color: rgba(0,0,0,.88);
+      background: #fff;
+      text-align: left;
+      font-size: 13px;
+    }
+    .nick-suggestions button:hover { background: #e6f4ff; }
     .range { gap: 6px; }
     .range span { color: #939191; font-weight: 400; }
     .valid-filter { grid-column: span 2; gap: 8px; }
@@ -899,8 +930,11 @@
       <section class="filters" aria-label="筛选条件" data-i18n-aria="filters">
         <div class="filter-grid">
           <div class="field">
-            <label for="nickFilter" data-i18n="filterNick">昵称:</label>
-            <input class="control" id="nickFilter" type="text">
+            <label for="nickFilter" data-i18n="filterNick">用户昵称:</label>
+            <div class="nick-autocomplete">
+              <input class="control" id="nickFilter" type="text" autocomplete="off">
+              <ul class="nick-suggestions" id="nickSuggestions" role="listbox"></ul>
+            </div>
           </div>
           <div class="field">
             <label for="orderFilter" data-i18n="filterOrder">订单号:</label>
@@ -934,6 +968,7 @@
           </div>
         </div>
         <div class="filter-actions">
+          <button class="action-btn" id="queryBtn" type="button" data-i18n="query">查询</button>
           <button class="action-btn" id="exportBtn" type="button" data-i18n="export">导出</button>
           <button class="reset-btn" id="resetBtn" type="button" data-i18n="reset">重置 ↻</button>
         </div>
@@ -1028,7 +1063,7 @@
         customerSuccess: "客户成功:",
         modify: "修改",
         offline: "下线",
-        filterNick: "昵称:",
+        filterNick: "用户昵称:",
         filterOrder: "订单号:",
         filterType: "反馈类型:",
         filterCreated: "创建时间:",
@@ -1043,6 +1078,7 @@
         valid: "有效",
         invalid: "无效",
         pendingValid: "待判定",
+        query: "查询",
         export: "导出",
         reset: "重置 ↻",
         tableCreated: "创建时间",
@@ -1097,7 +1133,7 @@
         customerSuccess: "Success:",
         modify: "Save",
         offline: "Offline",
-        filterNick: "Nickname:",
+        filterNick: "User Nickname:",
         filterOrder: "Order No.:",
         filterType: "Feedback Type:",
         filterCreated: "Created At:",
@@ -1112,6 +1148,7 @@
         valid: "Valid",
         invalid: "Invalid",
         pendingValid: "Pending",
+        query: "Search",
         export: "Export",
         reset: "Reset ↻",
         tableCreated: "Created At",
@@ -1229,6 +1266,7 @@
     const resultCount = document.getElementById("resultCount");
     const toast = document.getElementById("toast");
     const nickFilter = document.getElementById("nickFilter");
+    const nickSuggestions = document.getElementById("nickSuggestions");
     const orderFilter = document.getElementById("orderFilter");
     const typeFilter = document.getElementById("typeFilter");
     const startFilter = document.getElementById("startFilter");
@@ -1326,6 +1364,20 @@
       renderTable(filtered);
     }
 
+    function renderNickSuggestions() {
+      const keyword = nickFilter.value.trim().toLowerCase();
+      const candidates = [...new Set(rows.map((item) => item.nick))]
+        .filter((nick) => !keyword || nick.toLowerCase().includes(keyword));
+      nickSuggestions.innerHTML = candidates.map((nick) => `
+        <li><button type="button" data-nick="${nick}">${nick}</button></li>
+      `).join("");
+      nickSuggestions.classList.toggle("show", candidates.length > 0);
+    }
+
+    function closeNickSuggestions() {
+      nickSuggestions.classList.remove("show");
+    }
+
     function showToast(message = t("success")) {
       toast.textContent = message;
       toast.classList.add("show");
@@ -1388,6 +1440,7 @@
       validFilter.querySelectorAll(".seg").forEach((button) => {
         button.classList.toggle("active", button.dataset.value === "");
       });
+      closeNickSuggestions();
       applyFilters();
     }
 
@@ -1400,9 +1453,17 @@
       applyLanguage();
     });
 
-    [nickFilter, orderFilter, typeFilter, startFilter, endFilter].forEach((control) => {
-      control.addEventListener("input", applyFilters);
-      control.addEventListener("change", applyFilters);
+    nickFilter.addEventListener("input", renderNickSuggestions);
+    nickFilter.addEventListener("focus", renderNickSuggestions);
+    nickSuggestions.addEventListener("mousedown", (event) => {
+      const button = event.target.closest("button[data-nick]");
+      if (!button) return;
+      event.preventDefault();
+      nickFilter.value = button.dataset.nick;
+      closeNickSuggestions();
+    });
+    document.addEventListener("mousedown", (event) => {
+      if (!event.target.closest(".nick-autocomplete")) closeNickSuggestions();
     });
 
     validFilter.addEventListener("click", (event) => {
@@ -1410,7 +1471,6 @@
       if (!button) return;
       validFilterValue = button.dataset.value;
       validFilter.querySelectorAll(".seg").forEach((seg) => seg.classList.toggle("active", seg === button));
-      applyFilters();
     });
 
     feedbackRows.addEventListener("click", (event) => {
@@ -1424,6 +1484,7 @@
     document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", closeModals));
     document.getElementById("markSubmit").addEventListener("click", submitMark);
     document.getElementById("rewardSubmit").addEventListener("click", confirmReward);
+    document.getElementById("queryBtn").addEventListener("click", applyFilters);
     document.getElementById("resetBtn").addEventListener("click", resetFilters);
     document.getElementById("exportBtn").addEventListener("click", () => showToast(t("exportSuccess")));
     document.querySelectorAll(".modal-mask").forEach((modal) => {

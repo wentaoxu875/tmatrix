@@ -317,6 +317,10 @@
       font-size: 12px;
     }
 
+    .metric-help-section div {
+      white-space: pre-line;
+    }
+
     .meta {
       color: var(--muted);
       font-size: 12px;
@@ -331,6 +335,13 @@
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       margin-bottom: 20px;
+    }
+
+    .filter-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
     }
 
     .field {
@@ -614,14 +625,6 @@
       background: var(--primary);
     }
 
-    .period-table {
-      display: none;
-    }
-
-    .period-table.active {
-      display: block;
-    }
-
     .ratio {
       display: inline-flex;
       align-items: center;
@@ -681,29 +684,45 @@
               <strong data-i18n="metricHelp.title">指标说明</strong>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.overview">概览</b>
-                <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间内的去重用户数；参与率：报名用户数 / 潜在用户数；奖励发放总额 (Points)：统计时间段内实际发放的奖励积分；活动总 GMV (Points)：活动进行中用户在统计时间内的订单放币积分。</div>
+                <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间的用户数（去重）；
+参与率：报名用户数 / 潜在用户数，乘以 100% 后四舍五入保留 2 位小数；潜在用户数为统计时间段内满足报名门槛且非冷却期的用户（去重）；
+奖励发放总额：统计时间段内，实际发放的总金额，包含日常签到和关键奖励（含补签）；
+活动总 GMV：筛选期间内所有里程碑节点「当日 GMV」的累计加总。</div>
               </div>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.funnel">参与漏斗</b>
-                <div data-i18n="metricHelp.funnelDetail">活跃交易用户：统计期内有交易的去重用户；报名用户数：已成功报名的去重用户；完成 M1 / M2 / 第90天：在对应阶段完成所需任务的去重用户。占比为当前阶段用户数 / 活跃交易用户数；流失率为 1 - 当前阶段用户数 / 上一阶段用户数。</div>
+                <div data-i18n="metricHelp.funnelDetail">活跃交易用户：筛选期间有成交（放币）的用户；
+报名用户数：成功报名的用户数（去重）；
+完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；
+完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；
+完成 Day 90：挑战成功的用户数（去重）。</div>
               </div>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.milestone">里程碑明细</b>
-                <div data-i18n="metricHelp.milestoneDetail">到达用户数：到达对应天数节点的去重用户；完成签到用户：在节点完成签到的去重用户；交易签到用户：完成签到且完成交易的去重用户；交易签到率：交易签到用户 / 到达用户数；节点奖励发放：节点对应实际发放的奖励积分；当日 GMV (Points)：节点当日订单放币积分。</div>
+                <div data-i18n="metricHelp.milestoneDetail">节点：关键节点编号，如 Day 7、Day 14 等，按天数升序排序；
+到达用户数：到达该关键节点的用户数（去重）；
+完成签到用户：成功签到该节点的用户数（去重）；
+交易签到用户：完成签到的用户中，通过交易自动签到的用户；
+交易签到率：交易签到用户 / 到达用户数，乘以 100% 后四舍五入保留 2 位小数；
+节点奖励：追踪用户在该节点发放的实际奖励；
+当日 GMV：完成签到用户中，该节点时间内的订单总金额（放币金额），不区分是否达成交易门槛。</div>
               </div>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.makeup">补签卡</b>
-                <div data-i18n="metricHelp.makeupDetail">补签卡发放量：系统发放补签卡与交易发放补签卡之和；补签卡使用：统计期内已使用的补签卡数量；日常补签：用于普通日期补签的次数；关键补签：用于关键节点补签的次数。日、周、月仅改变汇总维度。</div>
+                <div data-i18n="metricHelp.makeupDetail">补签卡发放量：给追踪用户发放的补签卡数量；
+系统发放补签卡：发放补签卡中，系统发放的补签卡数量；
+交易发放补签卡：发放补签卡中，用户通过交易发放的补签卡数量；
+补签卡使用：追踪用户使用补签卡的数量；
+日常补签：使用的补签卡中，用于日常补签的补签卡数量；
+关键补签：使用的补签卡中，用于交易补签的补签卡数量。</div>
               </div>
             </div>
           </div>
-          <button class="btn primary" data-i18n="action.export">导出</button>
         </div>
 
         <div class="filters">
           <label class="field"><span data-i18n="filter.site">站点</span>:
             <select>
-              <option data-i18n="option.all">全部</option>
               <option>TroveLoop</option>
               <option>Tbay</option>
               <option>TrustCard</option>
@@ -714,6 +733,7 @@
               <option data-i18n="option.all">全部</option>
               <option>Android</option>
               <option>IOS</option>
+              <option>H5</option>
             </select>
           </label>
           <label class="field"><span data-i18n="filter.time">统计时间</span>:
@@ -723,15 +743,11 @@
               <input type="date" value="2026-07-14">
             </span>
           </label>
-          <label class="field"><span data-i18n="filter.granularity">统计维度</span>:
-            <span class="tabs" role="tablist" aria-label="统计维度">
-              <button class="active" data-period="day" type="button" data-i18n="period.day">日</button>
-              <button data-period="week" type="button" data-i18n="period.week">周</button>
-              <button data-period="month" type="button" data-i18n="period.month">月</button>
-            </span>
-          </label>
-          <button class="btn primary" data-i18n="action.search">查询</button>
-          <button class="btn" data-i18n="action.reset">重置</button>
+          <div class="filter-actions">
+            <button class="btn primary" data-i18n="action.search">查询</button>
+            <button class="btn" data-i18n="action.reset">重置</button>
+            <button class="btn primary" data-i18n="action.export">导出</button>
+          </div>
         </div>
 
         <section class="section">
@@ -809,19 +825,19 @@
                     <td><span class="loss-badge">57.15%</span></td>
                   </tr>
                   <tr>
-                    <td data-i18n="metric.completeM1">完成 M1（第30天）</td>
+                    <td data-i18n="metric.completeM1">完成 M1（Day 30）</td>
                     <td class="num">12,805</td>
                     <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 29.78%;"></span></span><span class="num">29.78%</span></div></td>
                     <td><span class="loss-badge">30.51%</span></td>
                   </tr>
                   <tr>
-                    <td data-i18n="metric.completeM2">完成 M2（第60天）</td>
+                    <td data-i18n="metric.completeM2">完成 M2（Day 60）</td>
                     <td class="num">8,943</td>
                     <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 20.80%;"></span></span><span class="num">20.80%</span></div></td>
                     <td><span class="loss-badge">30.16%</span></td>
                   </tr>
                   <tr>
-                    <td data-i18n="metric.completeD90">完成第90天</td>
+                    <td data-i18n="metric.completeD90">完成 Day 90</td>
                     <td class="num">5,736</td>
                     <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 13.34%;"></span></span><span class="num">13.34%</span></div></td>
                     <td><span class="loss-badge">35.86%</span></td>
@@ -854,7 +870,7 @@
                   <th class="num" data-i18n="table.checkinUsers">完成签到用户</th>
                   <th class="num" data-i18n="table.txCheckinUsers">交易签到用户</th>
                   <th class="num" data-i18n="table.txCheckinRate">交易签到率</th>
-                  <th class="num" data-i18n="table.milestoneReward">节点奖励发放 (Points)</th>
+                  <th class="num" data-i18n="table.milestoneReward">节点奖励 (Points)</th>
                   <th class="num" data-i18n="table.dailyGmv">当日 GMV (Points)</th>
                 </tr>
               </thead>
@@ -931,10 +947,9 @@
           <div class="section-title">
             <h2 data-i18n="section.makeup">补签卡</h2>
           </div>
-          <div class="table-card period-table active" data-table="day">
+          <div class="table-card">
             <table>
               <colgroup>
-                <col style="width: 130px">
                 <col style="width: 130px">
                 <col style="width: 150px">
                 <col style="width: 150px">
@@ -944,7 +959,6 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th data-i18n="table.date">日期</th>
                   <th class="num" data-i18n="table.cardsIssued">补签卡发放量</th>
                   <th class="num" data-i18n="table.systemCards">系统发放补签卡</th>
                   <th class="num" data-i18n="table.txCards">交易发放补签卡</th>
@@ -954,67 +968,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td>2026-07-14</td><td class="num">1,428</td><td class="num">620</td><td class="num">808</td><td class="num">1,036</td><td class="num">704</td><td class="num">332</td></tr>
-                <tr><td>2026-07-13</td><td class="num">1,306</td><td class="num">594</td><td class="num">712</td><td class="num">968</td><td class="num">651</td><td class="num">317</td></tr>
-                <tr><td>2026-07-12</td><td class="num">1,154</td><td class="num">540</td><td class="num">614</td><td class="num">820</td><td class="num">586</td><td class="num">234</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-card period-table" data-table="week">
-            <table>
-              <colgroup>
-                <col style="width: 130px">
-                <col style="width: 130px">
-                <col style="width: 150px">
-                <col style="width: 150px">
-                <col style="width: 130px">
-                <col style="width: 130px">
-                <col style="width: 130px">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th data-i18n="table.week">周维度</th>
-                  <th class="num" data-i18n="table.cardsIssued">补签卡发放量</th>
-                  <th class="num" data-i18n="table.systemCards">系统发放补签卡</th>
-                  <th class="num" data-i18n="table.txCards">交易发放补签卡</th>
-                  <th class="num" data-i18n="table.cardsUsed">补签卡使用</th>
-                  <th class="num" data-i18n="table.regularMakeup">日常补签</th>
-                  <th class="num" data-i18n="table.keyMakeup">关键补签</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>2026-W29</td><td class="num">8,614</td><td class="num">3,786</td><td class="num">4,828</td><td class="num">6,204</td><td class="num">4,213</td><td class="num">1,991</td></tr>
-                <tr><td>2026-W28</td><td class="num">7,926</td><td class="num">3,492</td><td class="num">4,434</td><td class="num">5,876</td><td class="num">3,932</td><td class="num">1,944</td></tr>
-                <tr><td>2026-W27</td><td class="num">7,104</td><td class="num">3,316</td><td class="num">3,788</td><td class="num">5,288</td><td class="num">3,694</td><td class="num">1,594</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-card period-table" data-table="month">
-            <table>
-              <colgroup>
-                <col style="width: 130px">
-                <col style="width: 130px">
-                <col style="width: 150px">
-                <col style="width: 150px">
-                <col style="width: 130px">
-                <col style="width: 130px">
-                <col style="width: 130px">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th data-i18n="table.month">月份</th>
-                  <th class="num" data-i18n="table.cardsIssued">补签卡发放量</th>
-                  <th class="num" data-i18n="table.systemCards">系统发放补签卡</th>
-                  <th class="num" data-i18n="table.txCards">交易发放补签卡</th>
-                  <th class="num" data-i18n="table.cardsUsed">补签卡使用</th>
-                  <th class="num" data-i18n="table.regularMakeup">日常补签</th>
-                  <th class="num" data-i18n="table.keyMakeup">关键补签</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>2026-07</td><td class="num">31,842</td><td class="num">13,920</td><td class="num">17,922</td><td class="num">23,640</td><td class="num">16,582</td><td class="num">7,058</td></tr>
-                <tr><td>2026-06</td><td class="num">28,106</td><td class="num">12,746</td><td class="num">15,360</td><td class="num">20,948</td><td class="num">14,273</td><td class="num">6,675</td></tr>
-                <tr><td>2026-05</td><td class="num">24,732</td><td class="num">11,826</td><td class="num">12,906</td><td class="num">18,354</td><td class="num">12,801</td><td class="num">5,553</td></tr>
+                <tr><td class="num">1,428</td><td class="num">620</td><td class="num">808</td><td class="num">1,036</td><td class="num">704</td><td class="num">332</td></tr>
               </tbody>
             </table>
           </div>
@@ -1041,13 +995,13 @@
         "metricHelp.trigger": "指标说明",
         "metricHelp.title": "指标说明",
         "metricHelp.overview": "概览",
-        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间内的去重用户数；参与率：报名用户数 / 潜在用户数；奖励发放总额 (Points)：统计时间段内实际发放的奖励积分；活动总 GMV (Points)：活动进行中用户在统计时间内的订单放币积分。",
+        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数（去重）；\n参与率：报名用户数 / 潜在用户数，乘以 100% 后四舍五入保留 2 位小数；潜在用户数为统计时间段内满足报名门槛且非冷却期的用户（去重）；\n奖励发放总额：统计时间段内，实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：筛选期间内所有里程碑节点「当日 GMV」的累计加总。",
         "metricHelp.funnel": "参与漏斗",
-        "metricHelp.funnelDetail": "活跃交易用户：统计期内有交易的去重用户；报名用户数：已成功报名的去重用户；完成 M1 / M2 / 第90天：在对应阶段完成所需任务的去重用户。占比为当前阶段用户数 / 活跃交易用户数；流失率为 1 - 当前阶段用户数 / 上一阶段用户数。",
+        "metricHelp.funnelDetail": "活跃交易用户：筛选期间有成交（放币）的用户；\n报名用户数：成功报名的用户数（去重）；\n完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；\n完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；\n完成 Day 90：挑战成功的用户数（去重）。",
         "metricHelp.milestone": "里程碑明细",
-        "metricHelp.milestoneDetail": "到达用户数：到达对应天数节点的去重用户；完成签到用户：在节点完成签到的去重用户；交易签到用户：完成签到且完成交易的去重用户；交易签到率：交易签到用户 / 到达用户数；节点奖励发放：节点对应实际发放的奖励积分；当日 GMV (Points)：节点当日订单放币积分。",
+        "metricHelp.milestoneDetail": "节点：关键节点编号，如 Day 7、Day 14 等，按天数升序排序；\n到达用户数：到达该关键节点的用户数（去重）；\n完成签到用户：成功签到该节点的用户数（去重）；\n交易签到用户：完成签到的用户中，通过交易自动签到的用户；\n交易签到率：交易签到用户 / 到达用户数，乘以 100% 后四舍五入保留 2 位小数；\n节点奖励：追踪用户在该节点发放的实际奖励；\n当日 GMV：完成签到用户中，该节点时间内的订单总金额（放币金额），不区分是否达成交易门槛。",
         "metricHelp.makeup": "补签卡",
-        "metricHelp.makeupDetail": "补签卡发放量：系统发放补签卡与交易发放补签卡之和；补签卡使用：统计期内已使用的补签卡数量；日常补签：用于普通日期补签的次数；关键补签：用于关键节点补签的次数。日、周、月仅改变汇总维度。",
+        "metricHelp.makeupDetail": "补签卡发放量：给追踪用户发放的补签卡数量；\n系统发放补签卡：发放补签卡中，系统发放的补签卡数量；\n交易发放补签卡：发放补签卡中，用户通过交易发放的补签卡数量；\n补签卡使用：追踪用户使用补签卡的数量；\n日常补签：使用的补签卡中，用于日常补签的补签卡数量；\n关键补签：使用的补签卡中，用于交易补签的补签卡数量。",
         "action.export": "导出",
         "action.search": "查询",
         "action.reset": "重置",
@@ -1055,11 +1009,7 @@
         "filter.platform": "端",
         "filter.time": "统计时间",
         "filter.to": "至",
-        "filter.granularity": "统计维度",
         "option.all": "全部",
-        "period.day": "日",
-        "period.week": "周",
-        "period.month": "月",
         "section.overview": "概览",
         "section.funnel": "参与漏斗",
         "section.milestone": "里程碑明细",
@@ -1069,11 +1019,11 @@
         "metric.reward": "奖励发放总额 (Points)",
         "metric.gmv": "活动总 GMV (Points)",
         "metric.activeTrading": "活跃交易用户",
-        "metric.completeM1": "完成 M1（第30天）",
+        "metric.completeM1": "完成 M1（Day 30）",
         "metric.enterM2": "进入 M2（第31天）",
-        "metric.completeM2": "完成 M2（第60天）",
+        "metric.completeM2": "完成 M2（Day 60）",
         "metric.enterM3": "进入 M3（第61天）",
-        "metric.completeD90": "完成第90天",
+        "metric.completeD90": "完成 Day 90",
         "metric.m1Fail": "M1失败率",
         "metric.m2Fail": "M2失败率",
         "metric.m3Fail": "M3失败率",
@@ -1086,11 +1036,8 @@
         "table.checkinUsers": "完成签到用户",
         "table.txCheckinUsers": "交易签到用户",
         "table.txCheckinRate": "交易签到率",
-        "table.milestoneReward": "节点奖励发放 (Points)",
+        "table.milestoneReward": "节点奖励 (Points)",
         "table.dailyGmv": "当日 GMV (Points)",
-        "table.date": "日期",
-        "table.week": "周维度",
-        "table.month": "月份",
         "table.cardsIssued": "补签卡发放量",
         "table.systemCards": "系统发放补签卡",
         "table.txCards": "交易发放补签卡",
@@ -1121,13 +1068,13 @@
         "metricHelp.trigger": "Metric Notes",
         "metricHelp.title": "Metric Notes",
         "metricHelp.overview": "Overview",
-        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose registration succeeded in the selected period; Participation Rate: registered users / potential users; Total Reward Payout (Points): reward points actually issued in the selected period; Campaign GMV (Points): order release points from in-campaign users in the selected period.",
+        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose successful registration time falls within the selected period;\nParticipation Rate: Registered Users / Potential Users, multiplied by 100% and rounded to 2 decimals; Potential Users are deduplicated users in the selected period who meet the registration threshold and are outside the cooling-off period;\nTotal Reward Payout: the total amount actually issued in the selected period, including regular check-ins and milestone rewards, including makeup check-ins;\nCampaign GMV: the cumulative sum of Daily GMV across all milestone nodes in the selected period.",
         "metricHelp.funnel": "Participation Funnel",
-        "metricHelp.funnelDetail": "Active Trading Users: deduplicated users who traded in the selected period; Registered Users: users with a successful registration; Completed M1 / M2 / Day 90: deduplicated users who completed the required task at that stage. Share = stage users / active trading users; Loss Rate = 1 - stage users / prior-stage users.",
+        "metricHelp.funnelDetail": "Active Trading Users: users with completed transactions (released funds) in the selected period;\nRegistered Users: deduplicated users who successfully registered;\nCompleted M1 (Day 30): deduplicated users who successfully checked in on Day 30;\nCompleted M2 (Day 60): deduplicated users who successfully checked in on Day 60;\nCompleted Day 90: deduplicated users who completed the challenge successfully.",
         "metricHelp.milestone": "Milestone Details",
-        "metricHelp.milestoneDetail": "Users Reached: deduplicated users reaching the applicable day; Check-in Users: deduplicated users completing a check-in at the milestone; Transaction Check-in Users: users who checked in and completed a transaction; Transaction Check-in Rate: transaction check-in users / users reached; Milestone Reward: reward points actually issued at the milestone; Daily GMV (Points): order release points on that milestone day.",
-        "metricHelp.makeup": "Makeup Check-in Cards",
-        "metricHelp.makeupDetail": "Cards Issued: system-issued cards plus transaction-issued cards; Cards Used: cards used in the selected period; Regular Makeup: check-ins made up for regular dates; Key Makeup: check-ins made up for key milestones. Day, week, and month only change the aggregation level.",
+        "metricHelp.milestoneDetail": "Milestone: key node identifiers such as Day 7 and Day 14, sorted in ascending day order;\nReached Users: deduplicated users who reached the milestone;\nTotal Check-in Users: deduplicated users who successfully checked in at the milestone;\nTransaction Check-in Users: users among completed check-ins who were automatically checked in through a transaction;\nTransaction Check-in Rate: Transaction Check-in Users / Reached Users, multiplied by 100% and rounded to 2 decimals;\nMilestone Rewards: actual rewards issued to tracked users at the milestone;\nDaily GMV: total order amount (released amount) for completed check-in users during the milestone period, regardless of whether the transaction threshold is met.",
+        "metricHelp.makeup": "Makeup Cards",
+        "metricHelp.makeupDetail": "Makeup Cards: number of makeup cards issued to tracked users;\nSystem-issued Makeup Cards: number of system-issued cards among issued makeup cards;\nTransaction-issued Makeup Cards: number of cards issued through transactions among issued makeup cards;\nMakeup Cards Usage: number of makeup cards used by tracked users;\nRegular Makeup Usage: number of used makeup cards applied to regular makeup check-ins;\nMilestone Makeup Usage: number of used makeup cards applied to transaction makeup check-ins.",
         "action.export": "Export",
         "action.search": "Search",
         "action.reset": "Reset",
@@ -1135,15 +1082,11 @@
         "filter.platform": "Platform",
         "filter.time": "Date Range",
         "filter.to": "to",
-        "filter.granularity": "Granularity",
         "option.all": "All",
-        "period.day": "Day",
-        "period.week": "Week",
-        "period.month": "Month",
         "section.overview": "Overview",
         "section.funnel": "Participation Funnel",
         "section.milestone": "Milestone Details",
-        "section.makeup": "Makeup Check-in Cards",
+        "section.makeup": "Makeup Cards",
         "metric.registered": "Registered Users",
         "metric.participation": "Participation Rate",
         "metric.reward": "Total Reward Payout (Points)",
@@ -1162,21 +1105,18 @@
         "funnel.share": "Share",
         "funnel.loss": "Loss Rate",
         "table.milestone": "Milestone",
-        "table.reachedUsers": "Users Reached",
-        "table.checkinUsers": "Check-in Users",
+        "table.reachedUsers": "Reached Users",
+        "table.checkinUsers": "Total Check-in Users",
         "table.txCheckinUsers": "Transaction Check-in Users",
         "table.txCheckinRate": "Transaction Check-in Rate",
-        "table.milestoneReward": "Milestone Reward (Points)",
+        "table.milestoneReward": "Milestone Rewards (Points)",
         "table.dailyGmv": "Daily GMV (Points)",
-        "table.date": "Date",
-        "table.week": "Week",
-        "table.month": "Month",
-        "table.cardsIssued": "Cards Issued",
+        "table.cardsIssued": "Makeup Cards",
         "table.systemCards": "System-issued Cards",
         "table.txCards": "Transaction-issued Cards",
-        "table.cardsUsed": "Cards Used",
-        "table.regularMakeup": "Regular Makeup",
-        "table.keyMakeup": "Key Makeup",
+        "table.cardsUsed": "Makeup Cards Usage",
+        "table.regularMakeup": "Regular Makeup Usage",
+        "table.keyMakeup": "Milestone Makeup Usage",
         "day.7": "Day 7",
         "day.14": "Day 14",
         "day.30": "Day 30",
@@ -1187,8 +1127,6 @@
       }
     };
 
-    const periodButtons = document.querySelectorAll("[data-period]");
-    const periodTables = document.querySelectorAll("[data-table]");
     const languageSelect = document.querySelector(".language");
     const metricHelpTrigger = document.querySelector(".metric-help-trigger");
     const metricHelpPopover = document.querySelector(".metric-help-popover");
@@ -1200,15 +1138,6 @@
         node.textContent = messages[language][key] || messages.zh[key] || node.textContent;
       });
     }
-
-    periodButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const period = button.dataset.period;
-
-        periodButtons.forEach((item) => item.classList.toggle("active", item === button));
-        periodTables.forEach((table) => table.classList.toggle("active", table.dataset.table === period));
-      });
-    });
 
     metricHelpTrigger.addEventListener("click", (event) => {
       event.stopPropagation();

@@ -365,19 +365,8 @@
       font-size: 13px;
     }
 
-    input[type="date"] {
-      width: 148px;
-    }
-
-    .range {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .range span {
-      color: var(--muted);
-      font-size: 12px;
+    .week-range-select {
+      width: 250px;
     }
 
     .btn {
@@ -685,14 +674,13 @@
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.overview">概览</b>
                 <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间的用户数（去重）；
-参与率：报名用户数 / 潜在用户数，乘以 100% 后四舍五入保留 2 位小数；潜在用户数为统计时间段内满足报名门槛且非冷却期的用户（去重）；
-奖励发放总额：统计时间段内，实际发放的总金额，包含日常签到和关键奖励（含补签）；
-活动总 GMV：筛选期间内所有里程碑节点「当日 GMV」的累计加总。</div>
+挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；
+奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；
+活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。</div>
               </div>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.funnel">参与漏斗</b>
-                <div data-i18n="metricHelp.funnelDetail">活跃交易用户：筛选期间有成交（放币）的用户；
-报名用户数：成功报名的用户数（去重）；
+                <div data-i18n="metricHelp.funnelDetail">报名用户数：成功报名的用户数（去重）；
 完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；
 完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；
 完成 Day 90：挑战成功的用户数（去重）。</div>
@@ -736,12 +724,10 @@
               <option>H5</option>
             </select>
           </label>
-          <label class="field"><span data-i18n="filter.time">统计时间</span>:
-            <span class="range">
-              <input type="date" value="2026-06-15">
-              <span data-i18n="filter.to">至</span>
-              <input type="date" value="2026-07-14">
-            </span>
+          <label class="field"><span data-i18n="filter.week">统计周</span>:
+            <select class="week-range-select" aria-label="统计周">
+              <option>2026.7.15~2026.7.21</option>
+            </select>
           </label>
           <div class="filter-actions">
             <button class="btn primary" data-i18n="action.search">查询</button>
@@ -766,10 +752,10 @@
             <article class="metric-card">
               <div class="metric-top">
                 <div>
-                  <div class="metric-name" data-i18n="metric.participation">参与率</div>
+                  <div class="metric-name" data-i18n="metric.challengeSuccessRate">挑战成功率</div>
                 </div>
               </div>
-              <div class="metric-value small">42.86%</div>
+              <div class="metric-value small">31.13%</div>
             </article>
             <article class="metric-card">
               <div class="metric-top">
@@ -813,33 +799,27 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td data-i18n="metric.activeTrading">活跃交易用户</td>
-                    <td class="num">43,000</td>
+                    <td data-i18n="metric.registered">报名用户数</td>
+                    <td class="num">18,426</td>
                     <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 100%;"></span></span><span class="num">100%</span></div></td>
                     <td><span class="loss-empty">-</span></td>
                   </tr>
                   <tr>
-                    <td data-i18n="metric.registered">报名用户数</td>
-                    <td class="num">18,426</td>
-                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 42.85%;"></span></span><span class="num">42.85%</span></div></td>
-                    <td><span class="loss-badge">57.15%</span></td>
-                  </tr>
-                  <tr>
                     <td data-i18n="metric.completeM1">完成 M1（Day 30）</td>
                     <td class="num">12,805</td>
-                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 29.78%;"></span></span><span class="num">29.78%</span></div></td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 69.49%;"></span></span><span class="num">69.49%</span></div></td>
                     <td><span class="loss-badge">30.51%</span></td>
                   </tr>
                   <tr>
                     <td data-i18n="metric.completeM2">完成 M2（Day 60）</td>
                     <td class="num">8,943</td>
-                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 20.80%;"></span></span><span class="num">20.80%</span></div></td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 48.53%;"></span></span><span class="num">48.53%</span></div></td>
                     <td><span class="loss-badge">30.16%</span></td>
                   </tr>
                   <tr>
                     <td data-i18n="metric.completeD90">完成 Day 90</td>
                     <td class="num">5,736</td>
-                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 13.34%;"></span></span><span class="num">13.34%</span></div></td>
+                    <td><div class="progress-cell"><span class="progress-track"><span class="progress-fill" style="--p: 31.13%;"></span></span><span class="num">31.13%</span></div></td>
                     <td><span class="loss-badge">35.86%</span></td>
                   </tr>
                 </tbody>
@@ -995,9 +975,9 @@
         "metricHelp.trigger": "指标说明",
         "metricHelp.title": "指标说明",
         "metricHelp.overview": "概览",
-        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数（去重）；\n参与率：报名用户数 / 潜在用户数，乘以 100% 后四舍五入保留 2 位小数；潜在用户数为统计时间段内满足报名门槛且非冷却期的用户（去重）；\n奖励发放总额：统计时间段内，实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：筛选期间内所有里程碑节点「当日 GMV」的累计加总。",
+        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数（去重）；\n挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；\n奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。",
         "metricHelp.funnel": "参与漏斗",
-        "metricHelp.funnelDetail": "活跃交易用户：筛选期间有成交（放币）的用户；\n报名用户数：成功报名的用户数（去重）；\n完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；\n完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；\n完成 Day 90：挑战成功的用户数（去重）。",
+        "metricHelp.funnelDetail": "报名用户数：成功报名的用户数（去重）；\n完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；\n完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；\n完成 Day 90：挑战成功的用户数（去重）。",
         "metricHelp.milestone": "里程碑明细",
         "metricHelp.milestoneDetail": "节点：关键节点编号，如 Day 7、Day 14 等，按天数升序排序；\n到达用户数：到达该关键节点的用户数（去重）；\n完成签到用户：成功签到该节点的用户数（去重）；\n交易签到用户：完成签到的用户中，通过交易自动签到的用户；\n交易签到率：交易签到用户 / 到达用户数，乘以 100% 后四舍五入保留 2 位小数；\n节点奖励：追踪用户在该节点发放的实际奖励；\n当日 GMV：完成签到用户中，该节点时间内的订单总金额（放币金额），不区分是否达成交易门槛。",
         "metricHelp.makeup": "补签卡",
@@ -1007,18 +987,16 @@
         "action.reset": "重置",
         "filter.site": "站点",
         "filter.platform": "端",
-        "filter.time": "统计时间",
-        "filter.to": "至",
+        "filter.week": "统计周",
         "option.all": "全部",
         "section.overview": "概览",
         "section.funnel": "参与漏斗",
         "section.milestone": "里程碑明细",
         "section.makeup": "补签卡",
         "metric.registered": "报名用户数",
-        "metric.participation": "参与率",
+        "metric.challengeSuccessRate": "挑战成功率",
         "metric.reward": "奖励发放总额 (Points)",
         "metric.gmv": "活动总 GMV (Points)",
-        "metric.activeTrading": "活跃交易用户",
         "metric.completeM1": "完成 M1（Day 30）",
         "metric.enterM2": "进入 M2（第31天）",
         "metric.completeM2": "完成 M2（Day 60）",
@@ -1068,9 +1046,9 @@
         "metricHelp.trigger": "Metric Notes",
         "metricHelp.title": "Metric Notes",
         "metricHelp.overview": "Overview",
-        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose successful registration time falls within the selected period;\nParticipation Rate: Registered Users / Potential Users, multiplied by 100% and rounded to 2 decimals; Potential Users are deduplicated users in the selected period who meet the registration threshold and are outside the cooling-off period;\nTotal Reward Payout: the total amount actually issued in the selected period, including regular check-ins and milestone rewards, including makeup check-ins;\nCampaign GMV: the cumulative sum of Daily GMV across all milestone nodes in the selected period.",
+        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose successful registration time falls within the selected period;\nChallenge Success Rate: the share of registered users who completed the challenge successfully, calculated as Completed Day 90 users / Registered Users;\nTotal Reward Payout: the total amount actually issued to registered users, including regular check-ins and milestone rewards, including makeup check-ins;\nCampaign GMV: the cumulative sum of Daily GMV across all milestone nodes.",
         "metricHelp.funnel": "Participation Funnel",
-        "metricHelp.funnelDetail": "Active Trading Users: users with completed transactions (released funds) in the selected period;\nRegistered Users: deduplicated users who successfully registered;\nCompleted M1 (Day 30): deduplicated users who successfully checked in on Day 30;\nCompleted M2 (Day 60): deduplicated users who successfully checked in on Day 60;\nCompleted Day 90: deduplicated users who completed the challenge successfully.",
+        "metricHelp.funnelDetail": "Registered Users: deduplicated users who successfully registered;\nCompleted M1 (Day 30): deduplicated users who successfully checked in on Day 30;\nCompleted M2 (Day 60): deduplicated users who successfully checked in on Day 60;\nCompleted Day 90: deduplicated users who completed the challenge successfully.",
         "metricHelp.milestone": "Milestone Details",
         "metricHelp.milestoneDetail": "Milestone: key node identifiers such as Day 7 and Day 14, sorted in ascending day order;\nReached Users: deduplicated users who reached the milestone;\nTotal Check-in Users: deduplicated users who successfully checked in at the milestone;\nTransaction Check-in Users: users among completed check-ins who were automatically checked in through a transaction;\nTransaction Check-in Rate: Transaction Check-in Users / Reached Users, multiplied by 100% and rounded to 2 decimals;\nMilestone Rewards: actual rewards issued to tracked users at the milestone;\nDaily GMV: total order amount (released amount) for completed check-in users during the milestone period, regardless of whether the transaction threshold is met.",
         "metricHelp.makeup": "Makeup Cards",
@@ -1080,18 +1058,16 @@
         "action.reset": "Reset",
         "filter.site": "Site",
         "filter.platform": "Platform",
-        "filter.time": "Date Range",
-        "filter.to": "to",
+        "filter.week": "Week Range",
         "option.all": "All",
         "section.overview": "Overview",
         "section.funnel": "Participation Funnel",
         "section.milestone": "Milestone Details",
         "section.makeup": "Makeup Cards",
         "metric.registered": "Registered Users",
-        "metric.participation": "Participation Rate",
+        "metric.challengeSuccessRate": "challenge success rate",
         "metric.reward": "Total Reward Payout (Points)",
         "metric.gmv": "Campaign GMV (Points)",
-        "metric.activeTrading": "Active Trading Users",
         "metric.completeM1": "Completed M1 (Day 30)",
         "metric.enterM2": "Entered M2 (Day 31)",
         "metric.completeM2": "Completed M2 (Day 60)",
@@ -1130,9 +1106,41 @@
     const languageSelect = document.querySelector(".language");
     const metricHelpTrigger = document.querySelector(".metric-help-trigger");
     const metricHelpPopover = document.querySelector(".metric-help-popover");
+    const weekRangeSelect = document.querySelector(".week-range-select");
+
+    function formatWeekDate(date) {
+      return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+    }
+
+    function formatWeekValue(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function populateWeekRanges() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const options = [];
+
+      for (let index = 0; index < 52; index += 1) {
+        const endDate = new Date(today);
+        endDate.setDate(today.getDate() - index * 7);
+        const startDate = new Date(endDate);
+        startDate.setDate(endDate.getDate() - 6);
+        options.push({
+          label: `${formatWeekDate(startDate)}~${formatWeekDate(endDate)}`,
+          value: `${formatWeekValue(startDate)}_${formatWeekValue(endDate)}`
+        });
+      }
+
+      weekRangeSelect.innerHTML = options.map((option) => `<option value="${option.value}">${option.label}</option>`).join("");
+    }
 
     function applyLanguage(language) {
       document.documentElement.lang = language === "en" ? "en" : "zh-CN";
+      weekRangeSelect.setAttribute("aria-label", language === "en" ? messages.en["filter.week"] : messages.zh["filter.week"]);
       document.querySelectorAll("[data-i18n]").forEach((node) => {
         const key = node.dataset.i18n;
         node.textContent = messages[language][key] || messages.zh[key] || node.textContent;
@@ -1154,6 +1162,8 @@
       localStorage.setItem("growthDashboardLang", languageSelect.value);
       applyLanguage(languageSelect.value);
     });
+
+    populateWeekRanges();
 
     const initialLanguage = new URLSearchParams(location.search).get("lang") || localStorage.getItem("growthDashboardLang") || languageSelect.value;
     languageSelect.value = initialLanguage === "en" ? "en" : "zh";

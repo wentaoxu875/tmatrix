@@ -892,10 +892,10 @@
               <strong data-i18n="metricHelp.title">指标说明</strong>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.overview">概览</b>
-                <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间的用户数（去重）；
+                <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间的用户数；
 活跃用户数：报名用户中，当前用户状态为进行中的用户；
-挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；
-超时失败用户：因活动超时直接失败的用户，断签小于 3 天的失败用户；
+挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数➗报名用户数；
+超时失败用户：因活动超时直接失败的用户，断签＜3天的失败用户；
 奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；
 活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。</div>
               </div>
@@ -905,18 +905,18 @@
               </div>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.funnel">参与漏斗</b>
-                <div data-i18n="metricHelp.funnelDetail">报名用户数：成功报名的用户数（去重）；
-完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；
-完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；
-完成 Day 90：挑战成功的用户数（去重）。</div>
+                <div data-i18n="metricHelp.funnelDetail">报名用户数：成功报名的用户数；
+完成 M1（Day 30）：成功签到Day 30的用户；
+完成 M2（Day 60）：成功签到Day 60的用户；
+完成 Day 90：挑战成功的用户数。</div>
               </div>
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.milestone">里程碑明细</b>
                 <div data-i18n="metricHelp.milestoneDetail">节点：关键节点编号，如 Day 7、Day 14 等，按天数升序排序；
-到达用户数：到达该关键节点的用户数（去重）；
-完成签到用户：成功签到该节点的用户数（去重）；
+到达用户数：到达该关键节点的用户数；
+完成签到用户：成功签到该节点的用户数；
 交易签到用户：完成签到的用户中，通过交易自动签到的用户；
-交易签到率：交易签到用户 / 到达用户数，乘以 100% 后四舍五入保留 2 位小数；
+交易签到率：交易签到用户➗到达用户数，100%后四舍五入保留2位小数；
 节点奖励：追踪用户在该节点发放的实际奖励；
 当日 GMV：完成签到用户中，该节点时间内的订单总金额（放币金额），不区分是否达成交易门槛。</div>
               </div>
@@ -1276,13 +1276,13 @@
         "metricHelp.trigger": "指标说明",
         "metricHelp.title": "指标说明",
         "metricHelp.overview": "概览",
-        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数（去重）；\n活跃用户数：报名用户中，当前用户状态为进行中的用户；\n挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；\n超时失败用户：因活动超时直接失败的用户，断签小于 3 天的失败用户；\n奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。",
+        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数；\n活跃用户数：报名用户中，当前用户状态为进行中的用户；\n挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数➗报名用户数；\n超时失败用户：因活动超时直接失败的用户，断签＜3天的失败用户；\n奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。",
         "metricHelp.activeCurve": "活跃曲线",
         "metricHelp.activeCurveDetail": "活跃用户：报名用户中，活动所在天，用户状态为进行中的用户。",
         "metricHelp.funnel": "参与漏斗",
-        "metricHelp.funnelDetail": "报名用户数：成功报名的用户数（去重）；\n完成 M1（Day 30）：成功签到 Day 30 的用户（去重）；\n完成 M2（Day 60）：成功签到 Day 60 的用户（去重）；\n完成 Day 90：挑战成功的用户数（去重）。",
+        "metricHelp.funnelDetail": "报名用户数：成功报名的用户数；\n完成 M1（Day 30）：成功签到Day 30的用户；\n完成 M2（Day 60）：成功签到Day 60的用户；\n完成 Day 90：挑战成功的用户数。",
         "metricHelp.milestone": "里程碑明细",
-        "metricHelp.milestoneDetail": "节点：关键节点编号，如 Day 7、Day 14 等，按天数升序排序；\n到达用户数：到达该关键节点的用户数（去重）；\n完成签到用户：成功签到该节点的用户数（去重）；\n交易签到用户：完成签到的用户中，通过交易自动签到的用户；\n交易签到率：交易签到用户 / 到达用户数，乘以 100% 后四舍五入保留 2 位小数；\n节点奖励：追踪用户在该节点发放的实际奖励；\n当日 GMV：完成签到用户中，该节点时间内的订单总金额（放币金额），不区分是否达成交易门槛。",
+        "metricHelp.milestoneDetail": "节点：关键节点编号，如 Day 7、Day 14 等，按天数升序排序；\n到达用户数：到达该关键节点的用户数；\n完成签到用户：成功签到该节点的用户数；\n交易签到用户：完成签到的用户中，通过交易自动签到的用户；\n交易签到率：交易签到用户➗到达用户数，100%后四舍五入保留2位小数；\n节点奖励：追踪用户在该节点发放的实际奖励；\n当日 GMV：完成签到用户中，该节点时间内的订单总金额（放币金额），不区分是否达成交易门槛。",
         "metricHelp.makeup": "补签卡",
         "metricHelp.makeupDetail": "补签卡发放量：给追踪用户发放的补签卡数量；\n系统发放补签卡：发放补签卡中，系统发放的补签卡数量；\n交易发放补签卡：发放补签卡中，用户通过交易发放的补签卡数量；\n补签卡使用：追踪用户使用补签卡的数量；\n日常补签：使用的补签卡中，用于日常补签的补签卡数量；\n关键补签：使用的补签卡中，用于交易补签的补签卡数量。",
         "action.export": "导出",
@@ -1354,13 +1354,13 @@
         "metricHelp.trigger": "Metric Notes",
         "metricHelp.title": "Metric Notes",
         "metricHelp.overview": "Overview",
-        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose successful registration time falls within the selected period;\nActive Users: among registered users, users whose current status is in progress;\nChallenge Success Rate: the share of registered users who completed the challenge successfully, calculated as Completed Day 90 users / Registered Users;\nRestart-triggering breaks: users who fail directly due to campaign timeout and whose missed check-in streak is under 3 days;\nTotal Reward Payout: the total amount actually issued to registered users, including regular check-ins and milestone rewards, including makeup check-ins;\nCampaign GMV: the cumulative sum of Daily GMV across all milestone nodes.",
+        "metricHelp.overviewDetail": "Registered Users: users whose successful registration time falls within the selected period;\nActive Users: among registered users, users whose current status is in progress;\nchallenge success rate: the share of registered users who completed the challenge successfully, calculated as successful challenge users / registered users;\nRestart-triggering breaks: users who fail directly due to campaign timeout and whose missed check-in streak is under 3 days;\nTotal Reward Payout: total amount actually issued to registered users, including regular check-ins and key rewards, including makeup check-ins;\nCampaign GMV: cumulative sum of Daily GMV across all milestone nodes.",
         "metricHelp.activeCurve": "Survival Curve",
         "metricHelp.activeCurveDetail": "Active Users: among registered users, users whose status is in progress on the corresponding campaign day.",
         "metricHelp.funnel": "Participation Funnel",
-        "metricHelp.funnelDetail": "Registered Users: deduplicated users who successfully registered;\nCompleted M1 (Day 30): deduplicated users who successfully checked in on Day 30;\nCompleted M2 (Day 60): deduplicated users who successfully checked in on Day 60;\nCompleted Day 90: deduplicated users who completed the challenge successfully.",
+        "metricHelp.funnelDetail": "Registered Users: users who successfully registered;\nCompleted M1 (Day 30): users who successfully checked in on Day 30;\nCompleted M2 (Day 60): users who successfully checked in on Day 60;\nCompleted Day 90: users who completed the challenge successfully.",
         "metricHelp.milestone": "Milestone Details",
-        "metricHelp.milestoneDetail": "Milestone: key node identifiers such as Day 7 and Day 14, sorted in ascending day order;\nReached Users: deduplicated users who reached the milestone;\nTotal Check-in Users: deduplicated users who successfully checked in at the milestone;\nTransaction Check-in Users: users among completed check-ins who were automatically checked in through a transaction;\nTransaction Check-in Rate: Transaction Check-in Users / Reached Users, multiplied by 100% and rounded to 2 decimals;\nMilestone Rewards: actual rewards issued to tracked users at the milestone;\nDaily GMV: total order amount (released amount) for completed check-in users during the milestone period, regardless of whether the transaction threshold is met.",
+        "metricHelp.milestoneDetail": "Milestone: key node identifiers such as Day 7 and Day 14, sorted in ascending day order;\nReached Users: users who reached the milestone;\nTotal Check-in Users: users who successfully checked in at the milestone;\nTransaction Check-in Users: among completed check-in users, users automatically checked in through a transaction;\nTransaction Check-in Rate: Transaction Check-in Users / Reached Users, rounded to 2 decimals after applying percentage formatting;\nMilestone Rewards: actual rewards issued to tracked users at the milestone;\nDaily GMV: total order amount (released amount) from completed check-in users during the milestone period, regardless of whether the transaction threshold is met.",
         "metricHelp.makeup": "Makeup Cards",
         "metricHelp.makeupDetail": "Makeup Cards: number of makeup cards issued to tracked users;\nSystem-issued Makeup Cards: number of system-issued cards among issued makeup cards;\nTransaction-issued Makeup Cards: number of cards issued through transactions among issued makeup cards;\nMakeup Cards Usage: number of makeup cards used by tracked users;\nRegular Makeup Usage: number of used makeup cards applied to regular makeup check-ins;\nMilestone Makeup Usage: number of used makeup cards applied to transaction makeup check-ins.",
         "action.export": "Export",

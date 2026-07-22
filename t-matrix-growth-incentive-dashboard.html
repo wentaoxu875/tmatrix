@@ -893,6 +893,7 @@
               <div class="metric-help-section">
                 <b data-i18n="metricHelp.overview">概览</b>
                 <div data-i18n="metricHelp.overviewDetail">报名用户数：成功报名时间在统计时间的用户数（去重）；
+活跃用户数：报名用户中，当前用户状态为进行中的用户；
 挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；
 超时失败用户：因活动超时直接失败的用户，断签小于 3 天的失败用户；
 奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；
@@ -975,6 +976,14 @@
                 </div>
               </div>
               <div class="metric-value">18,426</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-top">
+                <div>
+                  <div class="metric-name" data-i18n="metric.activeUsersCount">活跃用户数</div>
+                </div>
+              </div>
+              <div class="metric-value">4,300</div>
             </article>
             <article class="metric-card">
               <div class="metric-top">
@@ -1267,7 +1276,7 @@
         "metricHelp.trigger": "指标说明",
         "metricHelp.title": "指标说明",
         "metricHelp.overview": "概览",
-        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数（去重）；\n挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；\n超时失败用户：因活动超时直接失败的用户，断签小于 3 天的失败用户；\n奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。",
+        "metricHelp.overviewDetail": "报名用户数：成功报名时间在统计时间的用户数（去重）；\n活跃用户数：报名用户中，当前用户状态为进行中的用户；\n挑战成功率：报名用户中挑战成功的用户占比，挑战成功用户数 / 报名用户数；\n超时失败用户：因活动超时直接失败的用户，断签小于 3 天的失败用户；\n奖励发放总额：给报名用户数实际发放的总金额，包含日常签到和关键奖励（含补签）；\n活动总 GMV：所有里程碑节点「当日 GMV」的累计加总。",
         "metricHelp.activeCurve": "活跃曲线",
         "metricHelp.activeCurveDetail": "活跃用户：报名用户中，活动所在天，用户状态为进行中的用户。",
         "metricHelp.funnel": "参与漏斗",
@@ -1289,6 +1298,7 @@
         "section.milestone": "里程碑明细",
         "section.makeup": "补签卡",
         "metric.registered": "报名用户数",
+        "metric.activeUsersCount": "活跃用户数",
         "metric.challengeSuccessRate": "挑战成功率",
         "metric.timeoutFailure": "超时失败用户",
         "metric.reward": "奖励发放总额 (Points)",
@@ -1344,7 +1354,7 @@
         "metricHelp.trigger": "Metric Notes",
         "metricHelp.title": "Metric Notes",
         "metricHelp.overview": "Overview",
-        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose successful registration time falls within the selected period;\nChallenge Success Rate: the share of registered users who completed the challenge successfully, calculated as Completed Day 90 users / Registered Users;\nRestart-triggering breaks: users who fail directly due to campaign timeout and whose missed check-in streak is under 3 days;\nTotal Reward Payout: the total amount actually issued to registered users, including regular check-ins and milestone rewards, including makeup check-ins;\nCampaign GMV: the cumulative sum of Daily GMV across all milestone nodes.",
+        "metricHelp.overviewDetail": "Registered Users: deduplicated users whose successful registration time falls within the selected period;\nActive Users: among registered users, users whose current status is in progress;\nChallenge Success Rate: the share of registered users who completed the challenge successfully, calculated as Completed Day 90 users / Registered Users;\nRestart-triggering breaks: users who fail directly due to campaign timeout and whose missed check-in streak is under 3 days;\nTotal Reward Payout: the total amount actually issued to registered users, including regular check-ins and milestone rewards, including makeup check-ins;\nCampaign GMV: the cumulative sum of Daily GMV across all milestone nodes.",
         "metricHelp.activeCurve": "Survival Curve",
         "metricHelp.activeCurveDetail": "Active Users: among registered users, users whose status is in progress on the corresponding campaign day.",
         "metricHelp.funnel": "Participation Funnel",
@@ -1366,6 +1376,7 @@
         "section.milestone": "Milestone Details",
         "section.makeup": "Makeup Cards",
         "metric.registered": "Registered Users",
+        "metric.activeUsersCount": "Active Users",
         "metric.challengeSuccessRate": "challenge success rate",
         "metric.timeoutFailure": "Restart-triggering breaks",
         "metric.reward": "Total Reward Payout (Points)",

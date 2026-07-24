@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T-matrix · MFA Login Prototype</title>
+  <style>
+    :root { color-scheme: dark; --mint:#73f0dd; --ink:#061c22; --panel:rgba(4,20,25,.76); --line:rgba(255,255,255,.72); --muted:rgba(255,255,255,.62); --danger:#ff8499; --success:#7ff1c7; }
+    * { box-sizing:border-box; } body { margin:0; min-width:320px; min-height:100vh; color:#fff; font:16px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#071d23; overflow-x:hidden; }
+    .aurora { position:fixed; inset:0; overflow:hidden; background:radial-gradient(ellipse 65% 45% at 77% 35%,rgba(44,199,193,.8),transparent 62%),radial-gradient(ellipse 55% 37% at 27% 50%,rgba(245,214,231,.75),transparent 63%),linear-gradient(180deg,#0a3138 0%,#236b72 40%,#073039 67%,#031a20 100%); }
+    .aurora::before,.aurora::after { content:""; position:absolute; left:-8%; width:116%; height:150px; border-radius:50%; transform:rotate(-4deg); opacity:.85; }
+    .aurora::before { top:45%; background:repeating-linear-gradient(174deg,rgba(255,255,255,.78) 0 3px,rgba(166,249,245,.55) 4px 8px,transparent 10px 17px); filter:blur(1px); }
+    .aurora::after { bottom:-62px; height:44%; background:linear-gradient(180deg,transparent,rgba(0,10,14,.7)),repeating-linear-gradient(90deg,transparent 0 38px,rgba(103,243,234,.08) 39px 40px); transform:none; opacity:.7; }
+    .page { position:relative; z-index:1; min-height:100vh; display:grid; place-items:center; padding:48px 20px 88px; }
+    .card { width:min(596px,100%); min-height:558px; padding:44px 60px 40px; border-radius:32px; background:linear-gradient(180deg,rgba(3,25,30,.84),rgba(4,13,17,.88)); box-shadow:0 28px 70px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.06); backdrop-filter:blur(17px); }
+    .brand { display:grid; justify-items:center; gap:12px; margin:3px 0 36px; } .wordmark { display:flex; align-items:center; gap:9px; font-size:38px; font-weight:800; font-style:italic; letter-spacing:-2.1px; } .mark { width:29px; height:33px; border:4px solid #fff; border-radius:2px 2px 8px 2px; position:relative; transform:skewY(-12deg); } .mark::after { content:""; position:absolute; width:20px; height:6px; background:var(--panel); top:5px; left:-4px; border-top:4px solid #fff; border-bottom:4px solid #fff; } .brand small { font-weight:700; font-size:21px; }
+    [data-screen] { display:none; animation:rise .28s ease both; } [data-screen].active { display:block; } @keyframes rise { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:none; } }
+    h1 { margin:0 0 8px; text-align:center; font-size:25px; letter-spacing:-.4px; } .lead { text-align:center; color:var(--muted); margin:0 0 28px; font-size:14px; }
+    .field { position:relative; margin:0 0 18px; } input { width:100%; height:57px; border:2px solid var(--line); border-radius:9px; background:rgba(255,255,255,.08); color:white; outline:none; padding:0 24px; font:inherit; transition:.18s; } input::placeholder { color:rgba(255,255,255,.52); } input:focus { border-color:var(--mint); box-shadow:0 0 0 4px rgba(115,240,221,.13); } .field.error input { border-color:var(--danger); }
+    .icon-button { border:0; position:absolute; right:14px; top:12px; width:33px; height:33px; border-radius:7px; color:#fff; background:transparent; cursor:pointer; font-size:18px; } .icon-button:hover { background:rgba(255,255,255,.1); }
+    button { font:inherit; cursor:pointer; } .primary { width:100%; height:53px; border:0; border-radius:9px; background:#fff; color:#0a0c10; font-size:17px; font-weight:800; transition:transform .18s,background .18s; } .primary:hover { transform:translateY(-1px); background:#ddfffa; } .primary:disabled { cursor:wait; opacity:.73; transform:none; }
+    .message { min-height:22px; margin:2px 0 15px; color:var(--danger); text-align:left; font-size:13px; } .message.ok { color:var(--success); } .link { display:block; border:0; padding:0; margin:14px auto 0; color:rgba(255,255,255,.76); background:transparent; text-decoration:underline; font-size:13px; cursor:pointer; } .link:hover { color:#fff; }
+    .step { display:flex; justify-content:center; gap:7px; margin:0 0 19px; } .step span { height:4px; width:38px; border-radius:5px; background:rgba(255,255,255,.18); } .step span.on { background:var(--mint); }
+    .otp { display:flex; justify-content:center; gap:8px; margin:19px 0 14px; } .otp input { width:49px; height:56px; padding:0; border-radius:10px; text-align:center; font-size:23px; font-weight:700; }
+    .setup-copy { margin:4px 0 24px; color:var(--muted); font-size:13px; text-align:left; } code { display:block; margin-top:8px; padding:8px; border-radius:7px; color:#fff; background:rgba(255,255,255,.11); font:12px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.2px; }
+    .codes { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:22px 0; } .codes code { margin:0; padding:10px; text-align:center; font-size:13px; } .notice { padding:12px 14px; border:1px solid rgba(127,241,199,.45); border-radius:9px; background:rgba(127,241,199,.1); color:#ddfff3; font-size:13px; }
+    .dashboard { min-height:393px; } [data-screen].dashboard.active { display:block; } .home-top { display:flex; align-items:center; justify-content:space-between; margin:0 0 28px; padding-bottom:18px; border-bottom:1px solid rgba(255,255,255,.14); } .home-top h1 { margin:0; text-align:left; font-size:22px; } .home-top p { margin:4px 0 0; color:var(--muted); font-size:12px; } .avatar { display:grid; place-items:center; width:36px; height:36px; border:1px solid rgba(115,240,221,.6); border-radius:50%; color:var(--mint); font-size:13px; font-weight:800; } .overview { margin:0 0 12px; color:rgba(255,255,255,.7); font-size:13px; } .metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; } .metric { padding:14px 12px; border:1px solid rgba(255,255,255,.12); border-radius:12px; background:rgba(255,255,255,.055); } .metric small { display:block; color:var(--muted); font-size:11px; } .metric b { display:block; margin-top:6px; font-size:21px; letter-spacing:-.6px; } .metric b.up { color:var(--success); } .todo-card { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:19px; padding:15px; border-radius:12px; background:linear-gradient(90deg,rgba(115,240,221,.16),rgba(255,255,255,.045)); border:1px solid rgba(115,240,221,.25); } .todo-card span { display:block; color:var(--muted); font-size:12px; } .todo-card b { font-size:14px; } .dot { width:9px; height:9px; border-radius:50%; background:var(--mint); box-shadow:0 0 12px var(--mint); }
+    .demo { position:fixed; bottom:19px; left:50%; z-index:3; display:flex; align-items:center; gap:7px; max-width:calc(100% - 26px); padding:8px; border:1px solid rgba(255,255,255,.18); border-radius:14px; background:rgba(2,15,19,.75); box-shadow:0 9px 25px rgba(0,0,0,.22); transform:translateX(-50%); backdrop-filter:blur(12px); } .demo span { padding:0 6px; color:rgba(255,255,255,.7); font-size:11px; white-space:nowrap; } .demo button { padding:7px 9px; border:1px solid rgba(255,255,255,.17); border-radius:8px; background:rgba(255,255,255,.08); color:#fff; font-size:11px; white-space:nowrap; } .demo button:hover { background:rgba(115,240,221,.2); }
+    @media (max-width:640px) { .page { padding:24px 15px 92px; } .card { min-height:0; padding:30px 25px; border-radius:24px; } .wordmark { font-size:32px; } .brand { margin-bottom:26px; } .brand small { font-size:17px; } .otp { gap:5px; } .otp input { width:calc((100vw - 110px)/6); max-width:49px; } .demo { overflow-x:auto; justify-content:flex-start; } .demo span { display:none; } }
+  </style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="page">
+    <section class="card" aria-live="polite">
+      <header class="brand"><div class="wordmark"><i class="mark"></i><span>- matrix</span></div><small>T-matrix admin backend</small></header>
+
+      <section data-screen="login" class="active">
+        <form id="login-form" novalidate>
+          <div class="field" id="user-field"><input id="username" autocomplete="username" placeholder="Username" aria-label="Username"></div>
+          <div class="field" id="pass-field"><input id="password" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password"><button class="icon-button" id="toggle-password" type="button" aria-label="Show password">◉</button></div>
+          <div class="message" id="login-message"></div>
+          <button class="primary" id="login-button" type="submit">Log in</button>
+        </form>
+      </section>
+
+      <section data-screen="mfa">
+        <div class="step"><span class="on"></span><span class="on"></span></div><h1>Authenticator code</h1><p class="lead">Open your authenticator app and enter the 6-digit code for <b id="mfa-account">admin</b>.</p>
+        <div class="otp" data-otp data-flow="mfa"></div><div class="message" id="mfa-message"></div>
+        <button class="primary" id="verify-mfa" type="button">Verify &amp; log in</button>
+      </section>
+
+      <section data-screen="enroll">
+        <div class="step"><span class="on"></span><span class="on"></span></div><h1>Set up your authenticator</h1><p class="lead">Add an account manually in your authenticator app.</p>
+        <div class="setup-copy">Use this setup key.<code>TMTX-5R2K-9DPQ-7XNV</code></div>
+        <p class="lead" style="margin-bottom:5px">Then enter the 6-digit code displayed in your app.</p><div class="otp" data-otp data-flow="enroll"></div><div class="message" id="enroll-message"></div>
+        <button class="primary" id="complete-enroll" type="button">Verify &amp; enable MFA</button>
+      </section>
+
+      <section data-screen="dashboard" class="dashboard"><div class="home-top"><div><h1>Admin dashboard</h1><p>Welcome back, Administrator</p></div><div class="avatar">AD</div></div><p class="overview">Today's operations overview</p><div class="metrics"><div class="metric"><small>Pending approvals</small><b>12</b></div><div class="metric"><small>Online users</small><b class="up">286</b></div><div class="metric"><small>System status</small><b class="up">Normal</b></div></div><div class="todo-card"><div><span>Priority action</span><b>Review pending access requests</b></div><i class="dot" aria-label="Pending"></i></div><button class="link" type="button" data-go="login">Sign out and return to demo</button></section>
+    </section>
+  </main>
+  <nav class="demo" aria-label="Prototype shortcuts"><span>Prototype demo</span><button data-demo="mfa">Existing MFA</button><button data-demo="enroll">First-time setup</button><button data-demo="error">Password error</button><button data-go="login">Reset</button></nav>
+
+  <script>
+    const state = { screen: 'login', lastMfaScreen: 'mfa' };
+    const screens = [...document.querySelectorAll('[data-screen]')];
+    const $ = (selector) => document.querySelector(selector);
+    function show(screen) { state.screen = screen; screens.forEach(node => node.classList.toggle('active', node.dataset.screen === screen)); if (screen === 'mfa' || screen === 'enroll') setTimeout(() => document.querySelector(`[data-screen="${screen}"] [data-otp] input`)?.focus(), 40); }
+    function clearMessages() { document.querySelectorAll('.message').forEach(el => { el.textContent = ''; el.classList.remove('ok'); }); document.querySelectorAll('.field').forEach(el => el.classList.remove('error')); }
+    function routeAfterPassword() { const name = $('#username').value.trim(); const password = $('#password').value; clearMessages(); if (!name || !password) { $('#login-message').textContent = 'Enter both username and password.'; if (!name) $('#user-field').classList.add('error'); if (!password) $('#pass-field').classList.add('error'); return; } const button = $('#login-button'); button.disabled = true; button.textContent = 'Verifying…'; setTimeout(() => { button.disabled = false; button.textContent = 'Log in'; if (name === 'wrong.admin') { $('#pass-field').classList.add('error'); $('#login-message').textContent = 'The username or password is incorrect.'; return; } if (name === 'new.admin') { show('enroll'); return; } $('#mfa-account').textContent = name; state.lastMfaScreen = 'mfa'; show('mfa'); }, 650); }
+    function otpInputs(container) { return [...container.querySelectorAll('input')]; }
+    function readOtp(flow) { return otpInputs(document.querySelector(`[data-flow="${flow}"]`)).map(input => input.value).join(''); }
+    function createOtp(flow) { const container = document.querySelector(`[data-flow="${flow}"]`); for (let i = 0; i < 6; i++) { const input = document.createElement('input'); input.inputMode = 'numeric'; input.maxLength = 1; input.setAttribute('aria-label', `Digit ${i + 1}`); input.addEventListener('input', () => { input.value = input.value.replace(/\D/g, '').slice(-1); if (input.value && i < 5) otpInputs(container)[i + 1].focus(); }); input.addEventListener('keydown', event => { if (event.key === 'Backspace' && !input.value && i > 0) otpInputs(container)[i - 1].focus(); if (event.key === 'Enter') verifyOtp(flow); }); container.append(input); } container.addEventListener('paste', event => { event.preventDefault(); const digits = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6); otpInputs(container).forEach((input, index) => input.value = digits[index] || ''); if (digits.length === 6) verifyOtp(flow); }); }
+    function resetOtp(flow) { otpInputs(document.querySelector(`[data-flow="${flow}"]`)).forEach(input => input.value = ''); }
+    function verifyOtp(flow) { const message = $(`#${flow}-message`); const code = readOtp(flow); if (code !== '123456') { message.textContent = code.length < 6 ? 'Enter all 6 digits.' : 'That code is invalid or has expired. Try again.'; resetOtp(flow); document.querySelector(`[data-flow="${flow}"] input`)?.focus(); return; } message.textContent = 'Code verified.'; message.classList.add('ok'); setTimeout(showDashboard, 420); }
+    function showDashboard() { show('dashboard'); }
+    $('#login-form').addEventListener('submit', event => { event.preventDefault(); routeAfterPassword(); });
+    $('#toggle-password').addEventListener('click', () => { const password = $('#password'); password.type = password.type === 'password' ? 'text' : 'password'; });
+    $('#verify-mfa').addEventListener('click', () => verifyOtp('mfa')); $('#complete-enroll').addEventListener('click', () => verifyOtp('enroll'));
+    document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { clearMessages(); show(button.dataset.go === 'mfa' ? state.lastMfaScreen : button.dataset.go); }));
+    document.querySelectorAll('[data-demo]').forEach(button => button.addEventListener('click', () => { clearMessages(); if (button.dataset.demo === 'error') { show('login'); $('#username').value = 'wrong.admin'; $('#password').value = 'demo-password'; routeAfterPassword(); return; } show(button.dataset.demo); }));
+    createOtp('mfa'); createOtp('enroll');
+  </script>
+</body>
+</html>

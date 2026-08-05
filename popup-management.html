@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T-matrix · 弹框管理</title>
+  <style>
+    :root { --header:#021529; --side:#001529; --side-sub:#000c17; --nav:#00c1ba; --group:#2fecff; --page:#f3f5f9; --line:#f0f0f0; --border:#d9d9d9; --text:rgba(0,0,0,.88); --muted:#939191; --weak:rgba(255,255,255,.65); --primary:#3cbafb; --primary-soft:rgba(60,186,251,.1); --blue:#1677ff; --danger:#ff4d4f; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:1240px; color:var(--text); background:var(--page); font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    .layout { min-height:100vh; display:grid; grid-template:60px 1fr / 190px 1fr; }
+    .topbar { grid-column:1 / 3; display:flex; align-items:center; background:var(--header); color:white; box-shadow:0 2px 5px rgba(0,0,0,.1); z-index:2; }
+    .brand { width:230px; padding-left:38px; display:flex; align-items:center; gap:10px; font-size:27px; font-weight:800; font-style:italic; letter-spacing:-1px; }
+    .brand-mark { width:25px; height:31px; position:relative; border:3px solid #fff; border-right:0; border-bottom:0; border-radius:2px 0 0 0; }
+    .brand-mark::after { content:""; position:absolute; width:19px; height:3px; left:7px; top:8px; background:#fff; box-shadow:0 8px 0 #fff; }
+    .topmenu { display:flex; height:100%; }
+    .topmenu a { height:55px; min-width:94px; padding:0 18px; display:grid; place-items:center; color:var(--weak); text-decoration:none; }
+    .topmenu a.active { background:var(--nav); color:#fff; }
+    .tools { margin-left:auto; display:flex; align-items:center; gap:22px; padding-right:32px; }
+    .lang { width:102px; height:32px; border:1px solid var(--border); border-radius:6px; padding:0 10px; color:var(--text); background:#fff; }
+    .account { display:flex; gap:10px; align-items:center; font-weight:600; }
+    .avatar { width:32px; height:32px; border-radius:50%; border:2px solid rgba(255,255,255,.7); background:radial-gradient(circle at 50% 35%,#f3d4bd 0 7px,transparent 7.5px),radial-gradient(circle at 50% 80%,#7095ba 0 13px,transparent 13.5px),#dfeefa; }
+    .sidebar { grid-row:2; color:var(--weak); background:var(--side); }
+    .side-group,.side-item { height:55px; display:flex; align-items:center; position:relative; }
+    .side-group { padding:0 28px 0 64px; color:var(--group); background:#001f38; font-weight:600; }
+    .side-group .chev { position:absolute; right:25px; top:20px; color:var(--group); font-size:18px; }
+    .side-item { padding-left:64px; color:var(--weak); text-decoration:none; }
+    .side-item:hover { color:#fff; background:#00233d; }
+    .side-item.selected { background:var(--nav); color:#fff; font-weight:600; }
+    .side-sub { background:var(--side-sub); }
+    .content { padding:11px 20px 32px 28px; min-width:0; }
+    .crumb { height:30px; color:var(--muted); font-size:13px; }
+    .main { min-height:calc(100vh - 133px); padding:30px 27px 18px; background:#fff; }
+    .tabs { height:49px; display:flex; gap:34px; border-bottom:1px solid var(--line); margin-bottom:23px; }
+    .tab { height:49px; padding:12px 2px 15px; color:#555; font-size:16px; }
+    .tab.active { color:var(--blue); border-bottom:3px solid var(--blue); font-weight:600; }
+    .filters { display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; }
+    .field { display:flex; align-items:center; gap:10px; }
+    .field label { color:#666; white-space:nowrap; }
+    .control { width:218px; height:32px; padding:4px 11px; border:1px solid var(--border); border-radius:6px; color:var(--text); background:#fff; outline:none; }
+    .control:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(60,186,251,.12); }
+    .small { width:190px; }
+    .btn { height:31px; padding:0 16px; border:1px solid var(--primary); border-radius:4px; color:#fff; background:var(--primary); }
+    .btn.secondary { color:var(--primary); background:var(--primary-soft); }
+    .toolbar { margin:27px 0 26px; display:flex; gap:10px; }
+    .toolbar .btn[disabled] { opacity:.48; cursor:not-allowed; }
+    .table-wrap { overflow:auto; border-radius:8px 8px 0 0; }
+    table { width:100%; min-width:1390px; border-collapse:collapse; table-layout:fixed; font-size:12px; }
+    th { height:46px; padding:10px; background:#fafafa; font-weight:650; border-bottom:1px solid var(--line); white-space:nowrap; }
+    td { height:54px; padding:10px; text-align:center; border-bottom:1px solid var(--line); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    tr:hover td { background:#fafafa; }
+    .radio { width:16px; height:16px; accent-color:var(--blue); vertical-align:middle; }
+    .tag { display:inline-block; min-width:58px; padding:3px 8px; border-radius:3px; font-size:12px; }
+    .tag.wait { color:#a75b00; background:#fff7e6; }
+    .tag.live { color:#078464; background:#e6fffb; }
+    .tag.ended { color:#777; background:#f5f5f5; }
+    .thumbnail { width:46px; height:30px; padding:0; border:1px solid #e7e7e7; border-radius:3px; overflow:hidden; background:linear-gradient(135deg,#105f76 0 42%,#42c7c4 42% 60%,#f7be70 60%); }
+    .thumbnail span { display:block; width:100%; height:100%; background:radial-gradient(circle at 68% 38%,rgba(255,255,255,.9) 0 3px,transparent 3.5px),linear-gradient(160deg,transparent 40%,rgba(255,255,255,.28) 41% 60%,transparent 61%); }
+    .multi { color:#555; line-height:18px; }
+    .link { border:0; padding:0 5px; color:#444; background:transparent; font-weight:600; }
+    .link:hover { color:var(--blue); }
+    .link.danger:hover { color:var(--danger); }
+    .pagination { display:flex; align-items:center; justify-content:center; gap:11px; margin-top:22px; color:#555; font-size:12px; }
+    .page { width:28px; height:28px; border:0; border-radius:6px; background:transparent; color:#333; }
+    .page.active { border:1px solid var(--blue); color:var(--blue); font-weight:600; background:#fff; }
+    .page-size { width:94px; height:28px; border:1px solid var(--border); border-radius:6px; padding:0 8px; background:#fff; color:#555; }
+    .modal-backdrop { display:none; position:fixed; inset:0; z-index:9; background:rgba(0,0,0,.45); align-items:center; justify-content:center; }
+    .modal-backdrop.show { display:flex; }
+    .modal { width:960px; max-height:88vh; display:flex; flex-direction:column; border-radius:7px; background:#fff; box-shadow:0 10px 36px rgba(0,0,0,.22); }
+    .modal-head { height:55px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid var(--line); font-size:17px; font-weight:600; }
+    .close { border:0; background:transparent; color:#888; font-size:25px; line-height:1; }
+    .modal-body { min-height:0; padding:18px 30px 20px; overflow:auto; }
+    .form-grid { display:flex; flex-direction:column; gap:18px; }
+    .form-section { padding-bottom:18px; border-bottom:1px solid var(--line); }
+    .form-section:last-child { padding-bottom:0; border-bottom:0; }
+    .section-title { margin-bottom:12px; color:rgba(0,0,0,.88); font-size:14px; font-weight:600; }
+    .section-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px 28px; align-items:start; }
+    .form-row { min-height:0; }
+    .form-row.full { grid-column:1 / -1; }
+    .form-row label { display:block; margin-bottom:6px; font-size:13px; color:#555; }
+    .required::before { content:"*"; margin-right:4px; color:var(--danger); }
+    .form-row .control { width:100%; }
+    .checks { height:32px; display:flex; align-items:center; gap:20px; }
+    .checks label { margin:0; color:var(--text); }
+    .radios { min-height:32px; display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; padding:5px 0; }
+    .radios label { margin:0; color:var(--text); white-space:nowrap; }
+    .radios input { margin:0 5px 0 0; accent-color:var(--blue); vertical-align:-1px; }
+    .version-box { display:none; grid-template-columns:1fr 18px 1fr; align-items:center; gap:7px; }
+    .version-box.show { display:grid; }
+    .version-box label { grid-column:1 / 4; }
+    .version-box .control { min-width:0; }
+    .hint { margin-top:5px; color:#939191; font-size:12px; }
+    .upload { height:32px; display:none; align-items:center; gap:10px; }
+    .upload.show { display:flex; }
+    .upload .btn { height:30px; font-size:12px; }
+    .datetime-range { display:grid; grid-template-columns:1fr 18px 1fr; align-items:center; gap:7px; }
+    .datetime-range .control { min-width:0; }
+    .image-upload { display:flex; width:118px; height:78px; align-items:center; justify-content:center; overflow:hidden; border:1px dashed #d9d9d9; border-radius:4px; background:#fafafa; cursor:pointer; position:relative; }
+    .image-upload:hover { border-color:var(--primary); }
+    .image-upload input { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+    .image-upload .plus { color:#111; font-size:30px; font-weight:300; }
+    .image-upload img { width:100%; height:100%; object-fit:cover; display:none; }
+    .image-upload.has-preview .plus { display:none; }
+    .image-upload.has-preview img { display:block; }
+    .image-upload.readonly { pointer-events:none; background:#f5f5f5; }
+    .image-remove { display:none; position:absolute; top:4px; right:4px; z-index:2; width:20px; height:20px; border:0; border-radius:50%; color:#fff; background:rgba(0,0,0,.58); font-size:16px; line-height:18px; }
+    .image-upload.has-preview .image-remove { display:block; }
+    textarea.control { min-height:78px; padding-top:7px; resize:vertical; }
+    .modal-foot { height:64px; padding:16px 24px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid var(--line); }
+    .notice { display:none; position:fixed; top:82px; left:50%; transform:translateX(-50%); z-index:20; padding:10px 18px; border-radius:5px; color:#fff; background:#52c41a; box-shadow:0 3px 12px rgba(0,0,0,.18); }
+    .notice.show { display:block; }
+    .confirm { width:400px; }
+    .confirm .modal-body { padding:25px 30px; color:#555; }
+    .image-dialog { width:480px; }
+    .image-dialog .modal-body { display:grid; place-items:center; padding:24px; }
+    .image-large { width:320px; height:380px; border-radius:6px; background:radial-gradient(circle at 68% 25%,rgba(255,255,255,.92) 0 19px,transparent 20px),linear-gradient(150deg,#0a526a 0 43%,#2abdc1 43% 61%,#f8be65 61%); box-shadow:0 5px 16px rgba(0,0,0,.15); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark"></span><span>- matrix</span></div>
+      <nav class="topmenu"><a href="#">系统管理</a><a href="#">业务管理</a><a class="active" href="#">营销管理</a><a href="#">数据统计</a></nav>
+      <div class="tools"><select class="lang" id="language"><option value="zh">简体中文</option><option value="en">English</option></select><div class="account"><span class="avatar"></span>xiabing</div></div>
+    </header>
+    <aside class="sidebar">
+      <div class="side-group">内容管理 <span class="chev">⌃</span></div>
+      <a class="side-item side-sub" href="#">Banner管理</a>
+      <div class="side-group">活动管理 <span class="chev">⌃</span></div>
+      <a class="side-item side-sub" href="#">邀请裂变</a><a class="side-item side-sub" href="#">新手任务</a><a class="side-item side-sub" href="#">成长激励</a><a class="side-item side-sub" href="#">优惠券管理</a><a class="side-item side-sub" href="#">券活动管理</a><a class="side-item side-sub" href="#">现金发放</a>
+      <a class="side-item" href="#">消息通知管理</a>
+      <a class="side-item selected" href="#">弹框管理</a>
+    </aside>
+    <main class="content">
+      <div class="crumb">营销管理 / 内容管理 / 弹框管理</div>
+      <section class="main">
+        <div class="filters">
+          <div class="field"><label for="site">站点:</label><select id="site" class="control small"><option>全部站点</option><option>Troveloop</option></select></div>
+          <div class="field"><label for="name">弹框名称:</label><input id="name" class="control" placeholder="请输入"></div>
+          <div class="field"><label for="status">状态:</label><select id="status" class="control small"><option>全部</option><option>未开始</option><option>进行中</option><option>已结束</option></select></div>
+          <button class="btn" id="searchBtn">查询</button><button class="btn secondary" id="resetBtn">重置</button>
+        </div>
+        <div class="toolbar"><button class="btn" id="newBtn">新增活动</button></div>
+        <div class="table-wrap"><table><thead><tr><th style="width:115px">活动编码</th><th style="width:95px">站点</th><th style="width:160px">弹框名称</th><th style="width:100px">展示终端</th><th style="width:170px">版本范围</th><th style="width:80px">图片</th><th style="width:82px">展示顺序</th><th style="width:106px">展示频率</th><th style="width:120px">目标受众</th><th style="width:92px">有效人数</th><th style="width:220px">有效期</th><th style="width:95px">状态</th><th style="width:140px">操作</th></tr></thead>
+          <tbody id="activityRows">
+            <tr data-status="进行中" data-name="首单交易引导" data-terminal="Android,iOS" data-android-start="2.4.0" data-android-end="2.9.9" data-ios-start="2.5.0" data-ios-end="2.9.9" data-order="1" data-frequency="每日一次" data-audience="all" data-validity-start="2026-08-01T00:00" data-validity-end="2026-08-31T23:59"><td>TC010042</td><td>Troveloop</td><td>首单交易引导</td><td>Android / iOS</td><td class="multi">Android：2.4.0~2.9.9<br>iOS：2.5.0~2.9.9</td><td><button class="thumbnail" aria-label="查看首单交易引导图片"><span></span></button></td><td>1</td><td>每日一次</td><td>全量用户</td><td>全部</td><td>2026-08-01 00:00:00<br>~ 2026-08-31 23:59:59</td><td><span class="tag live">进行中</span></td><td><button class="link view">查看</button><button class="link copy">复制</button><button class="link danger end">结束</button></td></tr>
+            <tr data-status="未开始" data-name="新用户权益弹框" data-terminal="Android" data-android-start="2.6.0" data-android-end="3.0.0" data-order="2" data-frequency="仅一次" data-audience="specified" data-validity-start="2026-08-08T00:00" data-validity-end="2026-08-15T23:59"><td>TC010043</td><td>Troveloop</td><td>新用户权益弹框</td><td>Android</td><td>Android：2.6.0~3.0.0</td><td><button class="thumbnail" aria-label="查看新用户权益弹框图片"><span></span></button></td><td>2</td><td>仅一次</td><td>指定用户</td><td>1,286</td><td>2026-08-08 00:00:00<br>~ 2026-08-15 23:59:59</td><td><span class="tag wait">未开始</span></td><td><button class="link view">查看</button><button class="link edit">编辑</button><button class="link copy">复制</button></td></tr>
+            <tr data-status="已结束" data-name="闲钱激活活动" data-terminal="iOS" data-ios-start="2.3.0" data-ios-end="2.6.0" data-order="3" data-frequency="每次启动" data-audience="specified" data-validity-start="2026-07-01T00:00" data-validity-end="2026-07-31T23:59"><td>TC010031</td><td>Troveloop</td><td>闲钱激活活动</td><td>iOS</td><td>iOS：2.3.0~2.6.0</td><td><button class="thumbnail" aria-label="查看闲钱激活活动图片"><span></span></button></td><td>3</td><td>每次启动</td><td>指定用户</td><td>382</td><td>2026-07-01 00:00:00<br>~ 2026-07-31 23:59:59</td><td><span class="tag ended">已结束</span></td><td><button class="link view">查看</button><button class="link copy">复制</button></td></tr>
+          </tbody></table></div>
+        <div class="pagination"><span>共 3 条</span><button class="page">‹</button><button class="page active">1</button><button class="page">›</button><select class="page-size"><option>10 条/页</option><option>20 条/页</option><option>50 条/页</option></select></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="formModal"><section class="modal"><header class="modal-head"><span id="modalTitle">新增弹框活动</span><button class="close" data-close="formModal">×</button></header><div class="modal-body"><div class="form-grid">
+    <section class="form-section"><div class="section-title">基础信息</div><div class="section-grid">
+      <div class="form-row"><label class="required">站点</label><select class="control" id="configSite"><option>Troveloop</option></select></div>
+      <div class="form-row"><label class="required">弹框名称</label><input class="control" id="popupName" placeholder="请输入弹框名称"></div>
+      <div class="form-row full"><label class="required">展示终端</label><div class="checks"><label><input type="checkbox" class="terminal" value="android"> Android</label><label><input type="checkbox" class="terminal" value="ios"> iOS</label></div></div>
+      <div class="form-row version-box" id="androidVersion"><label class="required">Android版本</label><input class="control" id="androidStart" placeholder="开始版本"><span>~</span><input class="control" id="androidEnd" placeholder="结束版本"></div>
+      <div class="form-row version-box" id="iosVersion"><label class="required">iOS版本</label><input class="control" id="iosStart" placeholder="开始版本"><span>~</span><input class="control" id="iosEnd" placeholder="结束版本"></div>
+    </div></section>
+    <section class="form-section"><div class="section-title">投放配置</div><div class="section-grid">
+      <div class="form-row"><label class="required">展示位置</label><select class="control" id="displayPosition"><option>首页</option><option>我的</option></select></div>
+      <div class="form-row"><label class="required">点击后动作</label><div class="radios"><label><input type="radio" name="clickAction" value="native" checked>APP原生页</label><label><input type="radio" name="clickAction" value="h5">APP内H5</label><label><input type="radio" name="clickAction" value="browser">浏览器打开</label><label><input type="radio" name="clickAction" value="none">不跳转</label></div></div>
+      <div class="form-row"><label class="required">跳转参数</label><input class="control" id="pathParameter" placeholder="请输入原生路由或页面地址"></div>
+      <div class="form-row"><label class="required">展示顺序</label><input class="control" id="displayOrder" type="number" min="1" placeholder="请输入正整数"></div>
+      <div class="form-row full"><label class="required">有效期</label><div class="datetime-range"><input class="control" id="validityStart" type="datetime-local"><span>~</span><input class="control" id="validityEnd" type="datetime-local"></div></div>
+      <div class="form-row"><label class="required">弹框频率</label><div class="radios"><label><input type="radio" name="frequency" value="仅一次" checked>仅一次</label><label><input type="radio" name="frequency" value="每日一次">每日一次</label><label><input type="radio" name="frequency" value="每次启动">每次启动</label></div></div>
+      <div class="form-row"><label class="required">目标受众</label><div class="radios"><label><input type="radio" name="audience" value="all" checked>全量用户</label><label><input type="radio" name="audience" value="specified">指定用户</label></div></div>
+      <div class="form-row full upload" id="audienceUpload"><button class="btn secondary" type="button">上传 XLSX 名单</button><span class="hint">以用户 ID 为唯一字段，重复和无效用户将被剔除</span></div>
+    </div></section>
+    <section class="form-section"><div class="section-title">素材与备注</div><div class="section-grid">
+      <div class="form-row"><label class="required">弹框素材</label><label class="image-upload" id="imageUpload"><span class="plus">+</span><img id="imagePreview" alt="弹框素材预览"><button class="image-remove" id="removeImage" type="button" aria-label="删除图片">×</button><input id="imageFile" type="file" accept="image/png,image/jpeg"></label></div>
+      <div class="form-row"><label>备注</label><textarea class="control" maxlength="500" placeholder="请输入内部备注（最多 500 字）"></textarea></div>
+    </div></section>
+  </div></div><footer class="modal-foot"><button class="btn secondary" data-close="formModal">取消</button><button class="btn" id="saveBtn">确认保存</button></footer></section></div>
+  <div class="modal-backdrop" id="viewModal"><section class="modal confirm"><header class="modal-head"><span>弹框活动详情</span><button class="close" data-close="viewModal">×</button></header><div class="modal-body" id="viewContent"></div><footer class="modal-foot"><button class="btn" data-close="viewModal">关闭</button></footer></section></div>
+  <div class="modal-backdrop" id="imageModal"><section class="modal image-dialog"><header class="modal-head"><span id="imageTitle">弹框素材预览</span><button class="close" data-close="imageModal">×</button></header><div class="modal-body"><div class="image-large" aria-label="弹框素材大图预览"></div></div><footer class="modal-foot"><button class="btn" data-close="imageModal">关闭</button></footer></section></div>
+  <div class="modal-backdrop" id="endModal"><section class="modal confirm"><header class="modal-head"><span>确认结束活动</span><button class="close" data-close="endModal">×</button></header><div class="modal-body">结束后活动将立即变为“已结束”，且不可恢复。若需要再次投放，请复制参数创建新活动。</div><footer class="modal-foot"><button class="btn secondary" data-close="endModal">取消</button><button class="btn" id="confirmEnd">确认结束</button></footer></section></div>
+  <div class="notice" id="notice">操作成功</div>
+  <script>
+    const formModal=document.getElementById('formModal'), endModal=document.getElementById('endModal'), viewModal=document.getElementById('viewModal'), notice=document.getElementById('notice');
+    let selectedRow=null;
+    let currentLocale='zh';
+    const zhToEn={
+      '系统管理':'System','业务管理':'Business','营销管理':'Marketing','数据统计':'Analytics','内容管理':'Content Management','活动管理':'Campaign Management','Banner管理':'Banner Management','邀请裂变':'Referral','新手任务':'New User Tasks','成长激励':'Growth Incentives','优惠券管理':'Coupon Management','券活动管理':'Coupon Campaigns','现金发放':'Cash Distribution','消息通知管理':'Message Notifications','弹框管理':'Popup Management','营销管理 / 内容管理 / 弹框管理':'Marketing / Content Management / Popup Management',
+      '站点:':'Site:','弹框名称:':'Popup Name:','状态:':'Status:','状态':'Status','全部站点':'All Sites','全部':'All','未开始':'Not Started','进行中':'In Progress','已结束':'Ended','查询':'Search','重置':'Reset','新增活动':'Create Popup','活动编码':'Activity Code','站点':'Site','弹框名称':'Popup Name','展示终端':'Display Platform','版本范围':'Version Range','图片':'Image','展示顺序':'Display Order','展示频率':'Frequency','目标受众':'Target Audience','有效人数':'Eligible Users','有效期':'Valid Period','操作':'Actions','查看':'View','编辑':'Edit','复制':'Copy','结束':'End','全量用户':'All Users','指定用户':'Specified Users','全部':'All','仅一次':'Once','每日一次':'Once Daily','每次启动':'Every Launch',
+      '基础信息':'Basic Information','投放配置':'Delivery Settings','素材与备注':'Creative & Notes','展示位置':'Display Position','首页':'Home','我的':'Profile','点击后动作':'Action After Click','APP原生页':'Native App Page','APP内H5':'In-app H5','浏览器打开':'Open in Browser','不跳转':'No Redirect','跳转参数':'Route Parameters','弹框素材':'Popup Creative','备注':'Notes','弹框频率':'Popup Frequency','Android版本':'Android Version','iOS版本':'iOS Version','开始版本':'Start Version','结束版本':'End Version','上传 XLSX 名单':'Upload XLSX List','以用户 ID 为唯一字段，重复和无效用户将被剔除':'User ID is the unique field; duplicate and invalid users are excluded.','请输入':'Enter','请输入弹框名称':'Enter popup name','请输入原生路由或页面地址':'Enter native route or page URL','请输入正整数':'Enter a positive integer','请输入内部备注（最多 500 字）':'Enter internal notes (max. 500 characters)',
+      '新增弹框活动':'Create Popup Activity','编辑弹框活动':'Edit Popup Activity','复制弹框活动参数':'Copy Popup Activity Settings','查看弹框活动':'View Popup Activity','确认结束活动':'Confirm End Activity','结束后活动将立即变为“已结束”，且不可恢复。若需要再次投放，请复制参数创建新活动。':'Ending takes effect immediately and cannot be reversed. Copy the settings to create a new activity for another launch.','确认结束':'Confirm End','取消':'Cancel','关闭':'Close','确认保存':'Save','弹框素材预览':'Creative Preview','操作成功':'Operation successful','活动已结束':'Activity ended','弹框活动保存成功，已生成活动编码':'Popup activity saved and activity code generated.','查询完成':'Search complete','筛选条件已重置':'Filters reset',
+      '首单交易引导':'First Trade Guide','新用户权益弹框':'New User Benefit Popup','闲钱激活活动':'Idle Funds Activation'
+    };
+    const enToZh=Object.fromEntries(Object.entries(zhToEn).map(([zh,en])=>[en,zh]));
+    const localize=value=>currentLocale==='en'?(zhToEn[value]||value):(enToZh[value]||value);
+    const translatePage=()=>{const dictionary=currentLocale==='en'?zhToEn:enToZh;const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(node=>{const parent=node.parentElement;if(!parent||parent.tagName==='SCRIPT'||parent.tagName==='STYLE'||(parent.tagName==='OPTION'&&parent.parentElement?.id==='language'))return;const trimmed=node.nodeValue.trim();if(dictionary[trimmed])node.nodeValue=node.nodeValue.replace(trimmed,dictionary[trimmed])});document.querySelectorAll('[placeholder]').forEach(el=>{if(!el.dataset.zhPlaceholder)el.dataset.zhPlaceholder=el.placeholder;el.placeholder=currentLocale==='en'?(zhToEn[el.dataset.zhPlaceholder]||el.dataset.zhPlaceholder):el.dataset.zhPlaceholder});};
+    const showNotice=(text)=>{notice.textContent=text;notice.classList.add('show');setTimeout(()=>notice.classList.remove('show'),1800)};
+    const toggleVersion=()=>{document.getElementById('androidVersion').classList.toggle('show',document.querySelector('.terminal[value="android"]').checked);document.getElementById('iosVersion').classList.toggle('show',document.querySelector('.terminal[value="ios"]').checked)};
+    const setFormReadonly=(readonly)=>{formModal.querySelectorAll('.modal-body input,.modal-body select,.modal-body textarea').forEach(el=>el.disabled=readonly);document.querySelector('#audienceUpload button').disabled=readonly;document.getElementById('removeImage').disabled=readonly;document.getElementById('imageUpload').classList.toggle('readonly',readonly);document.getElementById('saveBtn').style.display=readonly?'none':'';formModal.querySelector('.modal-foot [data-close="formModal"]').textContent=readonly?'关闭':'取消'};
+    const openForm=(title,row,readonly=false)=>{document.getElementById('modalTitle').textContent=localize(title);document.getElementById('popupName').value=row?.dataset.name||'';document.querySelector('.terminal[value="android"]').checked=Boolean(row?.dataset.terminal?.includes('Android'));document.querySelector('.terminal[value="ios"]').checked=Boolean(row?.dataset.terminal?.includes('iOS'));document.getElementById('androidStart').value=row?.dataset.androidStart||'';document.getElementById('androidEnd').value=row?.dataset.androidEnd||'';document.getElementById('iosStart').value=row?.dataset.iosStart||'';document.getElementById('iosEnd').value=row?.dataset.iosEnd||'';document.getElementById('displayOrder').value=row?.dataset.order||'';document.getElementById('validityStart').value=row?.dataset.validityStart||'';document.getElementById('validityEnd').value=row?.dataset.validityEnd||'';const frequency=row?.dataset.frequency||'仅一次';document.querySelector(`input[name="frequency"][value="${frequency}"]`).checked=true;const audience=row?.dataset.audience||'all';document.querySelector(`input[name="audience"][value="${audience}"]`).checked=true;document.getElementById('audienceUpload').classList.toggle('show',audience==='specified');toggleVersion();setFormReadonly(readonly);formModal.classList.add('show')};
+    document.getElementById('newBtn').onclick=()=>openForm('新增弹框活动');
+    document.querySelectorAll('.terminal').forEach(el=>el.addEventListener('change',toggleVersion));
+    document.querySelectorAll('input[name="audience"]').forEach(el=>el.addEventListener('change',e=>document.getElementById('audienceUpload').classList.toggle('show',e.target.value==='specified')));
+    document.getElementById('imageFile').onchange=e=>{const file=e.target.files?.[0];if(!file)return;const preview=document.getElementById('imagePreview');preview.src=URL.createObjectURL(file);document.getElementById('imageUpload').classList.add('has-preview')};
+    document.getElementById('removeImage').onclick=e=>{e.preventDefault();e.stopPropagation();document.getElementById('imageFile').value='';document.getElementById('imagePreview').removeAttribute('src');document.getElementById('imageUpload').classList.remove('has-preview')};
+    document.querySelectorAll('[data-close]').forEach(el=>el.onclick=()=>document.getElementById(el.dataset.close).classList.remove('show'));
+    document.getElementById('saveBtn').onclick=()=>{formModal.classList.remove('show');showNotice('弹框活动保存成功，已生成活动编码')};
+    document.getElementById('activityRows').onclick=e=>{const button=e.target.closest('button');if(!button)return;const row=button.closest('tr');if(button.classList.contains('thumbnail')){document.getElementById('imageTitle').textContent=`${row.dataset.name} · 弹框素材`;document.getElementById('imageModal').classList.add('show')}if(button.classList.contains('view'))openForm('查看弹框活动',row,true);if(button.classList.contains('edit'))openForm('编辑弹框活动',row);if(button.classList.contains('copy'))openForm('复制弹框活动参数',row);if(button.classList.contains('end')){selectedRow=row;endModal.classList.add('show')}};
+    document.getElementById('confirmEnd').onclick=()=>{endModal.classList.remove('show');if(selectedRow){selectedRow.dataset.status='已结束';selectedRow.cells[11].innerHTML='<span class="tag ended">已结束</span>';selectedRow.cells[12].innerHTML='<button class="link view">查看</button><button class="link copy">复制</button>';}showNotice('活动已结束')};
+    document.getElementById('resetBtn').onclick=()=>{document.getElementById('site').selectedIndex=0;document.getElementById('name').value='';document.getElementById('status').selectedIndex=0;showNotice('筛选条件已重置')};
+    document.getElementById('searchBtn').onclick=()=>showNotice('查询完成');
+    document.getElementById('language').onchange=e=>{currentLocale=e.target.value;translatePage()};
+  </script>
+</body>
+</html>

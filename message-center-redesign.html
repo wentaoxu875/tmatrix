@@ -134,7 +134,7 @@
     .empty h2 { margin: 0; font-size: 17px; }
     .empty p { margin: 6px 0 0; color: var(--text-3); font-size: 13px; }
 
-    .bottom-nav { height: calc(72px + env(safe-area-inset-bottom)); padding: 8px 22px env(safe-area-inset-bottom); border-top: 1px solid #eef2f2; background: var(--surface); display: grid; grid-template-columns: repeat(3, 1fr); flex: 0 0 auto; }
+    .bottom-nav { height: calc(72px + env(safe-area-inset-bottom)); padding: 8px 12px env(safe-area-inset-bottom); border-top: 1px solid #eef2f2; background: var(--surface); display: grid; grid-template-columns: repeat(4, 1fr); flex: 0 0 auto; }
     .nav-item { position: relative; border: 0; background: transparent; color: #b6bfc3; display: grid; justify-items: center; align-content: center; gap: 3px; font-size: 11px; cursor: pointer; }
     .nav-item.active { color: var(--brand-dark); font-weight: 600; }
     .nav-badge { position: absolute; top: 0; left: calc(50% + 7px); min-width: 19px; height: 19px; padding: 0 5px; border: 2px solid white; border-radius: 10px; display: grid; place-items: center; background: var(--danger); color: white; font-size: 9px; font-weight: 700; }
@@ -211,6 +211,7 @@
       <nav class="bottom-nav" aria-label="Primary navigation">
         <button class="nav-item"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2Z"/></svg><span>Home</span></button>
         <button class="nav-item active"><span class="nav-badge" id="navBadge">10</span><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg><span>Message</span></button>
+        <button class="nav-item" id="ordersNav"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h14v20l-3-2-4 2-4-2-3 2V2Zm3 5v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg><span>Orders</span></button>
         <button class="nav-item"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0Z"/></svg><span>Mine</span></button>
       </nav>
     </section>
@@ -432,6 +433,7 @@
     });
     document.getElementById('backBtn').addEventListener('click', closeDetail);
     document.getElementById('checkNow').addEventListener('click', () => showToast('Opening related page…'));
+    document.getElementById('ordersNav').addEventListener('click', () => showToast('Opening orders…'));
     window.addEventListener('keydown', e => { if (e.key === 'Escape' && currentNoticeId) closeDetail(); });
     document.addEventListener('click', e => { if (openRow && !openRow.contains(e.target)) closeOpenRow(); });
 

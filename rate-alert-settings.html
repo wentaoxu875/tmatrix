@@ -307,7 +307,7 @@
 
     .segmented {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 0;
       padding: 3px;
       background: #fff;
@@ -565,7 +565,6 @@
             <div class="segmented" role="radiogroup" aria-label="Rate type">
               <button class="segment active" type="button" role="radio" aria-checked="true" data-rate-type="fast">Fast</button>
               <button class="segment" type="button" role="radio" aria-checked="false" data-rate-type="normal">Normal</button>
-              <button class="segment" type="button" role="radio" aria-checked="false" data-rate-type="any">Any</button>
             </div>
           </section>
 
@@ -718,7 +717,6 @@
     }
 
     function switchRateType(type) {
-      const panelType = type === "any" ? "fast" : type;
       rateButtons.forEach((button) => {
         const active = button.dataset.rateType === type;
         button.classList.toggle("active", active);
@@ -726,7 +724,7 @@
       });
 
       tradePanels.forEach((panel) => {
-        panel.classList.toggle("active", panel.dataset.panel === panelType);
+        panel.classList.toggle("active", panel.dataset.panel === type);
       });
 
       history.replaceState(null, "", `#${type}`);
@@ -825,12 +823,10 @@
       }, 650);
     });
 
-    if (location.hash === "#fast") {
-      switchRateType("fast");
-    } else if (location.hash === "#any") {
-      switchRateType("any");
-    } else if (location.hash === "#normal") {
+    if (location.hash === "#normal") {
       switchRateType("normal");
+    } else {
+      switchRateType("fast");
     }
   </script>
 </body>

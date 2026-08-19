@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Luckcard · Sell Gift Cards</title>
+  <style>
+    :root{
+      --brand:#287631;
+      --brand-dark:#1f6027;
+      --brand-soft:#edf6ee;
+      --lime:#d8ff51;
+      --lime-soft:#ecffa0;
+      --canvas:#f5f5f5;
+      --surface:#ffffff;
+      --text:#173334;
+      --muted:#747b78;
+      --faint:#a4aaa6;
+      --border:#e7ebe7;
+      --orange:#ff6b00;
+      --danger:#df4b43;
+      --shadow:0 8px 26px rgba(25,55,29,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:#e7ebe7;-webkit-font-smoothing:antialiased}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .phone{width:min(100%,430px);height:100dvh;min-height:700px;margin:0 auto;overflow:hidden;display:flex;flex-direction:column;background:var(--canvas);position:relative}
+    @media(min-width:560px){body{padding:24px 0}.phone{height:min(900px,calc(100dvh - 48px));border-radius:30px;box-shadow:0 24px 70px rgba(20,40,23,.18)}}
+    .status{height:calc(44px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 24px 0;display:flex;align-items:center;justify-content:space-between;background:var(--surface);color:#050505;font-size:15px;font-weight:750}
+    .status-icons{display:flex;align-items:center;gap:7px;font-size:12px}
+    .battery{width:24px;height:12px;border:1.5px solid #222;border-radius:3px;padding:2px;position:relative}.battery:after{content:"";position:absolute;right:-4px;top:3px;width:2px;height:5px;border-radius:0 2px 2px 0;background:#222}.battery i{display:block;width:100%;height:100%;border-radius:1px;background:#111}
+    .topbar{height:58px;padding:0 16px;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;background:var(--surface);border-bottom:1px solid var(--border)}
+    .topbar h1{margin:0;text-align:center;font-size:20px;line-height:26px;font-weight:760}
+    .icon-button{width:44px;height:44px;border:0;border-radius:50%;display:grid;place-items:center;background:transparent;color:var(--text);font-size:32px;line-height:1}
+    .icon-button:active{background:var(--brand-soft)}
+    .notice{padding:14px 18px;background:var(--lime-soft);color:var(--brand);font-size:13px;line-height:20px}.notice strong{display:block;margin-bottom:2px;font-size:15px}
+    .content{min-height:0;flex:1;overflow:auto;padding:14px 14px 96px;scrollbar-width:none}.content::-webkit-scrollbar{display:none}
+    .section{margin-bottom:12px;padding:16px;background:var(--surface);border-radius:var(--radius)}
+    .section-title{margin:0 0 12px;font-size:16px;font-weight:750;color:#101311}
+    .field{margin-top:14px}.field:first-child{margin-top:0}.field-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}.field-label{font-size:14px;font-weight:720}.field-help{font-size:12px;color:var(--muted)}
+    .segmented{height:40px;display:grid;grid-template-columns:1fr 1fr;gap:8px}.segment{border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--brand);font-weight:720}.segment.active{border-color:var(--brand);background:var(--brand);color:#fff}
+    .select-row,.amount-row{width:100%;min-height:52px;padding:0 14px;display:flex;align-items:center;gap:12px;border:1px solid var(--border);border-radius:7px;background:#fff;text-align:left}
+    .brand-mark{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;background:#07558a;color:#fff;font-size:13px;font-weight:800}.flag{font-size:27px;line-height:1}
+    .select-row strong{min-width:0;flex:1;font-size:15px}.chevron{width:28px;height:28px;flex:0 0 28px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:13px}
+    .amount-row input{width:90px;border:0;outline:0;color:var(--text);font-size:17px;font-weight:720}.rate{margin-left:auto;padding-left:12px;border-left:2px solid var(--text);font-size:13px;font-weight:650;white-space:nowrap}
+    .chips{display:flex;gap:8px;margin-top:10px}.chip{padding:2px 10px;border-radius:12px;background:#fff;color:#515754;font-size:11px}
+    .terms{display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;color:var(--muted);font-size:12px;line-height:18px}.terms-icon{width:18px;height:18px;flex:0 0 18px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:11px;font-weight:800}
+    .payout{padding:4px 0 14px;border-bottom:1px solid var(--border)}.payout-label{font-size:13px;color:#222}.payout-main{margin-top:11px;text-align:center}.total-line{display:flex;align-items:baseline;justify-content:center;gap:8px}.payout-main strong{font-size:27px;color:var(--brand)}.total-gain{display:none;color:var(--brand);font-size:15px;font-weight:750}.total-gain.show{display:inline}.payout-main small{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+    .benefit-row{min-height:54px;margin-top:12px;padding:9px 12px;display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:8px;background:#fff;text-align:left;width:100%;white-space:nowrap}.benefit-row.coupon{background:var(--lime);border-color:var(--lime)}
+    .benefit-copy{min-width:0;flex:1;display:flex;align-items:center;gap:7px;overflow:hidden}.benefit-copy strong{flex:0 0 auto;font-size:14px}.benefit-copy small{min-width:0;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:10px;line-height:15px}.coupon .benefit-copy small{color:#36563a}
+    .benefit-value{display:flex;align-items:center;gap:5px;text-align:right;color:var(--brand);font-size:12px;font-weight:720;white-space:nowrap}.coupon .benefit-value{color:var(--orange);font-size:16px}.benefit-value small{color:var(--muted);font-size:10px;font-weight:600}.row-arrow{flex:0 0 auto;color:var(--brand);font-size:24px;line-height:1}
+    .upload-title{display:flex;gap:5px;align-items:center;font-size:14px;font-weight:720}.required{color:var(--danger)}
+    .upload-box{width:62px;height:62px;margin-top:12px;border:1px dashed var(--border);border-radius:7px;display:grid;place-items:center;background:#fff}.plus-circle{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font-size:24px;line-height:1}
+    .code-box{width:100%;height:72px;margin-top:7px;padding:12px;border:1px solid var(--border);border-radius:7px;resize:none;outline:0}.code-box:focus{border-color:var(--brand)}
+    .bottom-bar{position:absolute;z-index:5;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--border)}.sell{width:100%;height:50px;border:0;border-radius:10px;background:var(--brand);color:#fff;font-size:16px;font-weight:750}.sell:active{background:var(--brand-dark)}
+    .modal{position:absolute;z-index:20;inset:0;display:none;align-items:flex-end;background:rgba(9,30,12,.48)}.modal.show{display:flex}.sheet{width:100%;padding:0 18px calc(18px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;background:var(--surface);box-shadow:0 -10px 36px rgba(18,46,22,.16);animation:sheetUp .22s ease}.sheet-grab{width:38px;height:4px;margin:9px auto 5px;border-radius:3px;background:#d8dcd8}.sheet-head{height:50px;display:flex;align-items:center;justify-content:space-between}.sheet-head h2{margin:0;font-size:18px}.close{width:44px;height:44px;border:0;background:transparent;color:var(--muted);font-size:27px}.sheet-balance{padding:12px 0 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.sheet-balance span{color:var(--muted);font-size:12px}.sheet-balance strong{font-size:15px;color:var(--brand)}
+    .mode-switch{height:42px;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;padding:3px;border-radius:9px;background:#f0f2f0}.mode{border:0;border-radius:7px;background:transparent;color:var(--muted);font-size:13px;font-weight:700}.mode.active{background:#fff;color:var(--brand);box-shadow:0 2px 8px rgba(27,55,30,.08)}
+    .coin-adjust{padding:18px 0 16px;text-align:center}.coin-adjust.disabled{opacity:.42}.coin-value{font-size:34px;font-weight:800;color:var(--text)}.coin-value small{font-size:14px;color:var(--muted)}.points-gain{margin-top:5px;color:var(--brand);font-size:14px;font-weight:750}
+    .stepper{margin:0 auto;display:grid;grid-template-columns:52px minmax(150px,1fr) 52px;align-items:center;gap:12px;max-width:310px}.coin-amount{min-width:0}.step-btn{width:52px;height:46px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--brand);font-size:27px;font-weight:500}.step-btn:disabled{color:#c1c6c2;background:#f5f6f5;cursor:not-allowed}.step-label{margin-top:12px;font-size:11px;line-height:16px;color:var(--muted)}
+    .rule-note{padding:10px 12px;border-radius:7px;background:var(--brand-soft);color:#4d6550;font-size:11px;line-height:17px}.sheet-actions{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:16px}.sheet-btn{height:46px;border-radius:8px;font-size:14px;font-weight:750}.sheet-btn.secondary{border:1px solid var(--border);background:#fff;color:var(--text)}.sheet-btn.primary{border:1px solid var(--brand);background:var(--brand);color:#fff}
+    .toast{position:absolute;z-index:30;left:50%;top:78px;transform:translate(-50%,-10px);padding:9px 14px;border-radius:6px;background:rgba(12,25,14,.88);color:#fff;font-size:12px;white-space:nowrap;opacity:0;transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @keyframes sheetUp{from{transform:translateY(35px);opacity:.6}to{transform:translateY(0);opacity:1}}
+    @media(max-width:360px){.rate{font-size:12px}.benefit-row{padding-left:9px;padding-right:9px;gap:6px}.benefit-copy{gap:5px}.benefit-copy strong{font-size:12px}.benefit-copy small,.benefit-value small{font-size:9px}.benefit-value{font-size:11px;gap:3px}.coupon .benefit-value{font-size:14px}.sheet{padding-left:14px;padding-right:14px}}
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="status"><span>9:41</span><div class="status-icons"><span>▮▮▮</span><span>⌁</span><span class="battery"><i></i></span></div></div>
+    <header class="topbar"><button class="icon-button" type="button" aria-label="Back">‹</button><h1>Sell Gift Cards</h1><span></span></header>
+    <div class="notice"><strong>Official Fast Channel</strong>You can enjoy faster transaction processing speed by placing an order here.</div>
+
+    <main class="content">
+      <section class="section">
+        <div class="field"><div class="field-head"><span class="field-label">Card type</span></div><div class="segmented"><button class="segment active" type="button">Gift Card</button><button class="segment" type="button">Gift Code</button></div></div>
+        <div class="field"><div class="field-head"><span class="field-label">Select Card</span></div><button class="select-row" type="button"><span class="brand-mark">S</span><strong>Steam Gift Card</strong><span class="chevron">▼</span></button></div>
+        <div class="field"><div class="field-head"><span class="field-label">Select Currency</span></div><button class="select-row" type="button"><span class="flag">🇺🇸</span><strong>USD {1-200}</strong><span class="chevron">▼</span></button></div>
+        <div class="field"><div class="field-head"><span class="field-label">Gift Card Amount</span><span class="field-help">Limits 1-100</span></div><div class="amount-row"><input id="cardAmount" type="number" min="1" max="100" value="100" inputmode="decimal" aria-label="Gift card amount"><span class="rate">Rate: ₦1051.66</span></div><div class="chips"><span class="chip">Physical</span><span class="chip">E-code</span></div></div>
+      </section>
+
+      <section class="section">
+        <div class="terms"><span class="terms-icon">!</span><span>Trade Terms: We guarantee that we always have sufficient balance.</span></div>
+        <div class="payout">
+          <span class="payout-label">You get</span>
+          <div class="payout-main"><div class="total-line"><strong><span id="totalPoints">155</span> Points</strong><span class="total-gain" id="totalGain">+0</span></div><small id="nairaEstimate">≈ ₦1,192,022.00</small></div>
+        </div>
+        <button class="benefit-row coupon" type="button"><span class="benefit-copy"><strong>COUPON</strong><small>Fast channel reward applied</small></span><span class="benefit-value">+3%</span><span class="row-arrow">›</span></button>
+        <button class="benefit-row" id="coinEntry" type="button"><span class="benefit-copy"><strong>Coins</strong><small id="coinEntryHint">Balance 1,280</small></span><span class="benefit-value" id="coinEntryValue">Not used</span><span class="row-arrow">›</span></button>
+      </section>
+
+      <section class="section">
+        <div class="upload-title"><span class="required">*</span><span>Upload Gift Card Image(s)（0/10）</span></div><button class="upload-box" type="button" aria-label="Upload gift card image"><span class="plus-circle">+</span></button>
+        <div class="field"><div class="field-head"><span class="field-label">Enter Gift Card Code</span></div><textarea class="code-box" aria-label="Gift card code"></textarea></div>
+      </section>
+    </main>
+
+    <footer class="bottom-bar"><button class="sell" id="sellButton" type="button">Sell</button></footer>
+
+    <div class="modal" id="coinModal" role="dialog" aria-modal="true" aria-labelledby="coinModalTitle">
+      <section class="sheet">
+        <div class="sheet-grab"></div>
+        <header class="sheet-head"><h2 id="coinModalTitle">Use Coins</h2><button class="close" id="closeModal" type="button" aria-label="Close">×</button></header>
+        <div class="sheet-balance"><span>Available balance</span><strong>1,280 Coins</strong></div>
+        <div class="mode-switch" role="group" aria-label="Coins usage"><button class="mode active" id="useMode" type="button">Use Coins</button><button class="mode" id="noUseMode" type="button">Don't use</button></div>
+        <div class="coin-adjust" id="coinAdjust">
+          <div class="stepper"><button class="step-btn" id="minusCoins" type="button" aria-label="Decrease Coins">−</button><div class="coin-amount"><div class="coin-value"><span id="draftCoins">1,200</span> <small>Coins</small></div><div class="points-gain">+ <span id="draftPoints">1.2</span> Points</div></div><button class="step-btn" id="plusCoins" type="button" aria-label="Increase Coins">+</button></div>
+          <div class="step-label">Adjust in 100-Coin steps</div>
+        </div>
+        <div class="rule-note" id="ruleNote">Maximum 1,200 Coins for this order. Coins must be used in multiples of 100 and cannot exceed 0.5% of the order amount. 1 Point = 1,000 Coins.</div>
+        <div class="sheet-actions"><button class="sheet-btn secondary" id="cancelCoins" type="button">Cancel</button><button class="sheet-btn primary" id="applyCoins" type="button">Apply</button></div>
+      </section>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script>
+    const coinBalance=1280,coinStep=100,coinsPerPoint=1000,capRate=.005,baseNairaAt100=1153340.5;
+    let selectedCoins=0,draftCoins=0,useCoinsMode=true;
+    const $=id=>document.getElementById(id),format=n=>Number(n).toLocaleString('en-US'),coinModal=$('coinModal');
+    function values(){const amount=Math.max(1,Math.min(100,Number($('cardAmount').value)||1)),basePoints=Math.round(amount*1.5),couponPoints=Math.round(basePoints*.03),orderNaira=baseNairaAt100*amount/100,capCoins=Math.floor(orderNaira*capRate/coinStep)*coinStep,maxCoins=Math.min(Math.floor(coinBalance/coinStep)*coinStep,capCoins);return{amount,basePoints,couponPoints,orderNaira,maxCoins}}
+    function renderSummary(){const v=values();if(selectedCoins>v.maxCoins)selectedCoins=v.maxCoins;const points=selectedCoins/coinsPerPoint,total=v.basePoints+v.couponPoints+points;$('totalPoints').textContent=format(total);$('totalGain').textContent=`+${format(points)}`;$('totalGain').classList.toggle('show',selectedCoins>0);$('nairaEstimate').textContent='≈ ₦'+format((v.orderNaira*total/v.basePoints).toFixed(2));$('coinEntryHint').textContent=`Balance ${format(coinBalance)}`;$('coinEntryValue').innerHTML=selectedCoins>0?`${format(selectedCoins)} Coins<small>+${format(points)} Points</small>`:'Not used'}
+    function renderDraft(){const v=values(),points=draftCoins/coinsPerPoint;$('draftCoins').textContent=format(draftCoins);$('draftPoints').textContent=format(points);$('coinAdjust').classList.toggle('disabled',!useCoinsMode);$('minusCoins').disabled=!useCoinsMode||draftCoins<=coinStep;$('plusCoins').disabled=!useCoinsMode||draftCoins>=v.maxCoins;$('useMode').classList.toggle('active',useCoinsMode);$('noUseMode').classList.toggle('active',!useCoinsMode);$('ruleNote').textContent=`Maximum ${format(v.maxCoins)} Coins for this order. Coins must be used in multiples of 100 and cannot exceed 0.5% of the order amount. 1 Point = 1,000 Coins.`}
+    function openCoins(){const v=values();useCoinsMode=selectedCoins>0||selectedCoins===0;draftCoins=selectedCoins>0?selectedCoins:v.maxCoins;coinModal.classList.add('show');renderDraft()}
+    function closeCoins(){coinModal.classList.remove('show')}
+    function showToast(message){const toast=$('toast');toast.textContent=message;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1900)}
+    $('coinEntry').onclick=openCoins;$('closeModal').onclick=closeCoins;$('cancelCoins').onclick=closeCoins;coinModal.onclick=e=>{if(e.target===coinModal)closeCoins()};
+    $('useMode').onclick=()=>{useCoinsMode=true;if(draftCoins===0)draftCoins=values().maxCoins;renderDraft()};
+    $('noUseMode').onclick=()=>{useCoinsMode=false;draftCoins=0;renderDraft()};
+    $('minusCoins').onclick=()=>{draftCoins=Math.max(coinStep,draftCoins-coinStep);renderDraft()};
+    $('plusCoins').onclick=()=>{draftCoins=Math.min(values().maxCoins,draftCoins+coinStep);renderDraft()};
+    $('applyCoins').onclick=()=>{selectedCoins=useCoinsMode?draftCoins:0;closeCoins();renderSummary();showToast(selectedCoins>0?`${format(selectedCoins)} Coins applied`:'Coins not used')};
+    $('cardAmount').oninput=()=>{const v=values();$('cardAmount').value=v.amount;if(selectedCoins>v.maxCoins)selectedCoins=v.maxCoins;renderSummary()};
+    $('sellButton').onclick=()=>showToast('Order details are ready to submit');
+    document.querySelectorAll('.segment').forEach(button=>button.onclick=()=>{document.querySelectorAll('.segment').forEach(item=>item.classList.remove('active'));button.classList.add('active')});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCoins()});
+    renderSummary();
+  </script>
+</body>
+</html>

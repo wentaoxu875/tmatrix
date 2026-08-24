@@ -37,7 +37,7 @@
         <div class="chart-wrap"><svg id="chart" viewBox="0 0 1000 230" preserveAspectRatio="none"></svg><div class="chart-tooltip" id="chartTooltip"></div><div class="chart-empty">暂无数据</div></div>
       </section>
       <div class="table-head"><strong>每日签到数据明细</strong></div>
-      <div class="table-wrap"><table class="table"><colgroup><col style="width:110px"><col style="width:130px"><col style="width:130px"><col style="width:110px"><col style="width:120px"><col style="width:130px"><col style="width:140px"><col style="width:180px"><col style="width:100px"></colgroup><thead><tr><th>日期</th><th>金币获取总量</th><th>金币消耗总量</th><th>签到用户数</th><th>金币核销人数</th><th>金币核销订单数</th><th>金币加价金额（N）</th><th>金币加价订单金额（Points）</th><th>签到率</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div class="table-wrap"><table class="table"><colgroup><col style="width:110px"><col style="width:130px"><col style="width:130px"><col style="width:110px"><col style="width:120px"><col style="width:130px"><col style="width:160px"><col style="width:180px"><col style="width:100px"></colgroup><thead><tr><th>日期</th><th>金币获取总量</th><th>金币消耗总量</th><th>签到用户数</th><th>金币核销人数</th><th>金币核销订单数</th><th>金币加价金额(Points)</th><th>金币加价订单金额（Points）</th><th>签到率</th></tr></thead><tbody id="rows"></tbody></table></div>
       <div class="pagination"><span>共 7 条</span><button class="page">‹</button><button class="page active">1</button><button class="page">›</button><select class="page-size"><option>10 条/页</option><option>20 条/页</option></select></div>
     </section>
   </main>
@@ -51,7 +51,7 @@
         <dl class="definition"><dt>签到用户数</dt><dd>当日签到的用户总数</dd></dl>
         <dl class="definition"><dt>金币核销人数</dt><dd>使用金币抵扣订单并成交的用户总数；按用户ID去重</dd></dl>
         <dl class="definition"><dt>金币核销订单数</dt><dd>使用金币抵扣订单并成交的订单总数；按订单号计数</dd></dl>
-        <dl class="definition"><dt>金币加价金额（N）</dt><dd>订单使用金币实际加价的金额；奈拉计</dd></dl>
+        <dl class="definition"><dt>金币加价金额(Points)</dt><dd>订单使用金币实际加价的金额；Points 计</dd></dl>
         <dl class="definition"><dt>金币加价订单金额（Points）</dt><dd>实际价值 + 各类加价金额</dd></dl>
         <dl class="definition"><dt>签到率</dt><dd>签到人数 / 活跃人数；活跃人数口径待确认</dd></dl>
       </div>
@@ -60,17 +60,17 @@
   <div class="toast" id="toast"></div>
   <script>
     const data=[
-      {date:'2026-08-14',activeUsers:10320,earned:47280,consumed:8060,checkinUsers:1924,redeemUsers:564,redeemOrders:672,markupN:80.60,markupOrderPoints:14820.40,checkinRate:18.64},
-      {date:'2026-08-13',activeUsers:9980,earned:45120,consumed:7640,checkinUsers:1835,redeemUsers:531,redeemOrders:638,markupN:76.40,markupOrderPoints:14260.20,checkinRate:18.39},
-      {date:'2026-08-12',activeUsers:10042,earned:45860,consumed:7190,checkinUsers:1868,redeemUsers:508,redeemOrders:604,markupN:71.90,markupOrderPoints:13950.80,checkinRate:18.60},
-      {date:'2026-08-11',activeUsers:9650,earned:43120,consumed:6930,checkinUsers:1782,redeemUsers:492,redeemOrders:580,markupN:69.30,markupOrderPoints:13480.60,checkinRate:18.47},
-      {date:'2026-08-10',activeUsers:9720,earned:44200,consumed:6710,checkinUsers:1810,redeemUsers:479,redeemOrders:568,markupN:67.10,markupOrderPoints:13206.40,checkinRate:18.62},
-      {date:'2026-08-09',activeUsers:9130,earned:41360,consumed:6420,checkinUsers:1685,redeemUsers:451,redeemOrders:542,markupN:64.20,markupOrderPoints:12914.20,checkinRate:18.46},
-      {date:'2026-08-08',activeUsers:9480,earned:45740,consumed:5970,checkinUsers:1780,redeemUsers:461,redeemOrders:568,markupN:59.70,markupOrderPoints:14210.00,checkinRate:18.78}
+      {date:'2026-08-14',activeUsers:10320,earned:47280,consumed:8060,checkinUsers:1924,redeemUsers:564,redeemOrders:672,markupPoints:80.60,markupOrderPoints:14820.40,checkinRate:18.64},
+      {date:'2026-08-13',activeUsers:9980,earned:45120,consumed:7640,checkinUsers:1835,redeemUsers:531,redeemOrders:638,markupPoints:76.40,markupOrderPoints:14260.20,checkinRate:18.39},
+      {date:'2026-08-12',activeUsers:10042,earned:45860,consumed:7190,checkinUsers:1868,redeemUsers:508,redeemOrders:604,markupPoints:71.90,markupOrderPoints:13950.80,checkinRate:18.60},
+      {date:'2026-08-11',activeUsers:9650,earned:43120,consumed:6930,checkinUsers:1782,redeemUsers:492,redeemOrders:580,markupPoints:69.30,markupOrderPoints:13480.60,checkinRate:18.47},
+      {date:'2026-08-10',activeUsers:9720,earned:44200,consumed:6710,checkinUsers:1810,redeemUsers:479,redeemOrders:568,markupPoints:67.10,markupOrderPoints:13206.40,checkinRate:18.62},
+      {date:'2026-08-09',activeUsers:9130,earned:41360,consumed:6420,checkinUsers:1685,redeemUsers:451,redeemOrders:542,markupPoints:64.20,markupOrderPoints:12914.20,checkinRate:18.46},
+      {date:'2026-08-08',activeUsers:9480,earned:45740,consumed:5970,checkinUsers:1780,redeemUsers:461,redeemOrders:568,markupPoints:59.70,markupOrderPoints:14210.00,checkinRate:18.78}
     ];
     let metric='earned';const fmt=n=>Number(n).toLocaleString('en-US');
     const metricNames={earned:'金币获取总量',consumed:'金币消耗总量',checkinUsers:'签到用户数',redeemOrders:'核销订单数',checkinRate:'签到率'};
-    function table(){const totals=data.reduce((a,d)=>{Object.keys(d).forEach(k=>{if(k!=='date'&&k!=='checkinRate')a[k]=(a[k]||0)+d[k]});return a},{}),rate=totals.checkinUsers/totals.activeUsers*100;document.getElementById('rows').innerHTML=`<tr class="total"><td>总计</td><td>${fmt(totals.earned)}</td><td>${fmt(totals.consumed)}</td><td>${fmt(totals.checkinUsers)}</td><td>${fmt(totals.redeemUsers)}</td><td>${fmt(totals.redeemOrders)}</td><td>₦ ${fmt(totals.markupN.toFixed(2))}</td><td>${fmt(totals.markupOrderPoints.toFixed(2))}</td><td>${rate.toFixed(2)}%</td></tr>`+data.map(d=>`<tr><td>${d.date}</td><td>${fmt(d.earned)}</td><td>${fmt(d.consumed)}</td><td>${fmt(d.checkinUsers)}</td><td>${fmt(d.redeemUsers)}</td><td>${fmt(d.redeemOrders)}</td><td>₦ ${d.markupN.toFixed(2)}</td><td>${fmt(d.markupOrderPoints.toFixed(2))}</td><td>${d.checkinRate.toFixed(2)}%</td></tr>`).join('')}
+    function table(){const totals=data.reduce((a,d)=>{Object.keys(d).forEach(k=>{if(k!=='date'&&k!=='checkinRate')a[k]=(a[k]||0)+d[k]});return a},{}),rate=totals.checkinUsers/totals.activeUsers*100;document.getElementById('rows').innerHTML=`<tr class="total"><td>总计</td><td>${fmt(totals.earned)}</td><td>${fmt(totals.consumed)}</td><td>${fmt(totals.checkinUsers)}</td><td>${fmt(totals.redeemUsers)}</td><td>${fmt(totals.redeemOrders)}</td><td>${fmt(totals.markupPoints.toFixed(2))}</td><td>${fmt(totals.markupOrderPoints.toFixed(2))}</td><td>${rate.toFixed(2)}%</td></tr>`+data.map(d=>`<tr><td>${d.date}</td><td>${fmt(d.earned)}</td><td>${fmt(d.consumed)}</td><td>${fmt(d.checkinUsers)}</td><td>${fmt(d.redeemUsers)}</td><td>${fmt(d.redeemOrders)}</td><td>${d.markupPoints.toFixed(2)}</td><td>${fmt(d.markupOrderPoints.toFixed(2))}</td><td>${d.checkinRate.toFixed(2)}%</td></tr>`).join('')}
     function chart(){
       const ordered=[...data].reverse(),vals=ordered.map(d=>d[metric]),max=Math.max(...vals)*1.15||1,min=0,w=1000,h=210,p={l:62,r:18,t:12,b:30},cw=w-p.l-p.r,ch=h-p.t-p.b,x=i=>p.l+i*cw/(vals.length-1),y=v=>p.t+ch-(v-min)/(max-min)*ch,isRate=metric==='checkinRate';
       let grid='',labels='';

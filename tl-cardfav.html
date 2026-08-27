@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Troveloop · 卡种收藏</title>
+  <style>
+    :root {
+      --brand:#163b38;
+      --brand-deep:#0d302d;
+      --mint:#57c997;
+      --page:#f1f3f4;
+      --surface:#fff;
+      --soft:#f1f5f5;
+      --text:#173936;
+      --muted:#8e9a99;
+      --gold:#ffb527;
+      --line:#e5eceb;
+      --danger:#eb5f58;
+      --shadow:0 14px 44px rgba(15,47,43,.16);
+    }
+    * { box-sizing:border-box; }
+    html, body { margin:0; min-height:100%; background:#dfe5e4; }
+    body { color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif; }
+    button, input { font:inherit; }
+    button { border:0; cursor:pointer; }
+    button:focus-visible, input:focus-visible { outline:3px solid rgba(87,201,151,.35); outline-offset:2px; }
+    [hidden] { display:none !important; }
+
+    .phone {
+      width:min(100%, 430px);
+      min-height:100dvh;
+      margin:0 auto;
+      position:relative;
+      overflow:hidden;
+      background:var(--page);
+      padding-bottom:104px;
+    }
+    .status-bar { height:48px; padding:16px 28px 0 32px; display:flex; justify-content:space-between; color:#08100f; font-weight:800; }
+    .signals { display:flex; align-items:center; gap:7px; font-size:13px; }
+    .battery { width:25px; height:12px; border:2px solid #14201f; border-radius:4px; position:relative; opacity:.75; }
+    .battery::before { content:""; position:absolute; inset:2px 4px 2px 2px; background:#14201f; border-radius:1px; }
+    .battery::after { content:""; position:absolute; right:-4px; top:3px; width:2px; height:4px; background:#14201f; border-radius:0 2px 2px 0; }
+
+    .home { padding:18px 18px 22px; }
+    .profile { display:flex; align-items:center; gap:12px; }
+    .avatar { width:48px; height:48px; display:grid; place-items:center; border-radius:50%; background:#ffad98; font-size:26px; }
+    .welcome { flex:1; font-weight:900; font-size:21px; line-height:1.15; letter-spacing:.2px; }
+    .welcome span { display:block; margin-top:4px; }
+    .support { width:42px; height:42px; display:grid; place-items:center; color:var(--brand); background:transparent; font-size:29px; }
+
+    .hero { height:126px; margin-top:15px; padding:23px 22px; overflow:hidden; position:relative; color:#fff; border-radius:17px; background:radial-gradient(circle at 23% 58%,#2e8a70 0 13%,transparent 14%),linear-gradient(120deg,#0a332d,#064a3e 55%,#092f2c); }
+    .hero::before { content:"T"; position:absolute; left:18px; top:10px; color:white; font-size:37px; font-weight:1000; font-style:italic; }
+    .hero-copy { margin-left:73px; color:#ffd77b; font-weight:900; font-size:18px; line-height:1.15; }
+    .hero-copy small { display:block; margin-top:10px; color:#d9e9df; font-size:10px; font-weight:600; }
+    .ghost { position:absolute; left:49px; bottom:18px; font-size:48px; filter:drop-shadow(0 5px 3px rgba(0,0,0,.14)); }
+    .hero-dots { position:absolute; right:20px; bottom:13px; display:flex; gap:5px; }
+    .hero-dots i { width:7px; height:7px; border-radius:10px; background:#66857f; }
+    .hero-dots i:first-child { width:22px; background:white; }
+
+    .bonus { height:76px; margin-top:14px; padding:0 18px; display:flex; align-items:center; gap:15px; border-radius:16px; color:white; background:linear-gradient(105deg,#153c39,#102c2a); }
+    .bonus .art { font-size:38px; }
+    .bonus strong { flex:1; font-size:18px; font-style:italic; line-height:1.05; }
+    .bonus button { width:91px; height:39px; border-radius:24px; color:var(--brand); background:#cde9e5; font-weight:900; }
+
+    .shortcuts { margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+    .shortcut { min-width:0; height:65px; padding:10px; display:flex; align-items:center; gap:9px; border-radius:15px; background:white; }
+    .shortcut-icon { flex:0 0 40px; height:40px; display:grid; place-items:center; border-radius:12px; color:#2b9c82; background:#edf9f7; font-size:21px; }
+    .shortcut strong { display:block; white-space:nowrap; font-size:15px; }
+    .shortcut small { display:block; margin-top:4px; color:#9aa3a2; white-space:nowrap; font-size:11px; }
+
+    .tabs { margin-top:27px; display:grid; grid-template-columns:1fr 1fr; border-radius:13px; background:#e2e7e7; }
+    .tab { height:46px; border-radius:13px; color:var(--brand); background:transparent; font-size:16px; font-weight:850; }
+    .tab.active { color:white; background:var(--brand); }
+    .filters { margin-top:12px; display:grid; grid-template-columns:1.25fr .9fr; gap:10px; }
+    .filter { height:53px; padding:7px 12px; display:flex; align-items:center; gap:10px; color:var(--text); text-align:left; border-radius:28px; background:white; box-shadow:0 4px 16px rgba(15,47,43,.04); }
+    .filter-logo { width:34px; height:34px; display:grid; place-items:center; flex:0 0 34px; border-radius:10px; background:#f7f5ff; font-size:21px; }
+    .filter-name { flex:1; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-weight:850; font-size:15px; }
+    .down { width:24px; height:24px; display:grid; place-items:center; border-radius:50%; color:white; background:var(--brand); font-size:10px; }
+
+    .merchant { margin-top:12px; padding:16px 13px 14px; border-radius:17px; background:white; }
+    .merchant-head { display:flex; align-items:flex-start; gap:10px; }
+    .merchant-avatar { width:48px; height:48px; display:grid; place-items:center; flex:0 0 48px; position:relative; border-radius:13px; color:white; background:linear-gradient(145deg,#6b655e,#1e2524); font-size:22px; }
+    .online { width:13px; height:13px; position:absolute; right:-2px; bottom:2px; border:2px solid white; border-radius:50%; background:#00d729; }
+    .merchant-copy { flex:1; min-width:0; }
+    .merchant-copy strong { display:block; font-size:16px; }
+    .merchant-copy div { margin-top:7px; color:#808b89; font-size:13px; }
+    .tag { margin-left:7px; padding:2px 9px; border-radius:8px; color:#40504d; background:#e8e4f5; font-weight:800; }
+    .limit { white-space:nowrap; font-size:12px; }
+    .rate { margin-top:15px; padding-top:12px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--line); }
+    .rate strong { font-size:16px; }
+    .rate strong em { color:var(--gold); font-style:normal; }
+    .rate small { display:block; margin-top:5px; color:#a2acab; }
+    .sell { min-width:89px; height:39px; border-radius:24px; color:white; background:var(--brand); font-weight:900; }
+
+    .bottom-nav { width:min(100%,430px); height:87px; position:fixed; z-index:10; left:50%; bottom:0; transform:translateX(-50%); display:grid; grid-template-columns:repeat(5,1fr); align-items:end; padding:9px 7px 11px; background:rgba(250,251,251,.97); box-shadow:0 -5px 25px rgba(21,53,49,.08); }
+    .nav-item { display:grid; place-items:center; gap:5px; color:#8c9493; background:transparent; font-size:11px; }
+    .nav-icon { width:28px; height:28px; display:grid; place-items:center; border-radius:9px; color:#5b8882; background:#d7f2ef; font-size:15px; }
+    .nav-item.active { color:var(--brand); }
+    .nav-item.active .nav-icon { color:white; background:var(--brand); }
+    .nav-item.fast .nav-icon { width:68px; height:68px; margin-top:-44px; border:6px solid white; border-radius:50%; color:white; background:var(--brand); box-shadow:0 5px 15px rgba(17,51,47,.22); font-size:30px; }
+
+    .overlay { position:fixed; z-index:20; inset:0; display:flex; justify-content:center; align-items:flex-end; padding:0 max(0px,calc((100% - 430px)/2)); background:rgba(10,18,17,.57); opacity:0; visibility:hidden; transition:.2s ease; }
+    .overlay.open { opacity:1; visibility:visible; }
+    .sheet { width:100%; max-height:82dvh; overflow:hidden; display:flex; flex-direction:column; padding:12px 14px calc(18px + env(safe-area-inset-bottom)); border-radius:22px 22px 0 0; background:white; box-shadow:var(--shadow); transform:translateY(24px); transition:.22s ease; }
+    .overlay.open .sheet { transform:translateY(0); }
+    .grabber { width:42px; height:5px; margin:0 auto 11px; border-radius:5px; background:#d4dddc; }
+    .search { height:55px; display:flex; align-items:center; gap:11px; padding:0 15px; border:1.5px solid var(--brand); border-radius:16px; }
+    .search span { font-size:24px; }
+    .search input { flex:1; min-width:0; border:0; outline:0; color:var(--text); font-size:17px; }
+    .search input::placeholder { color:#c6cecd; font-weight:700; }
+    .clear-search { width:25px; height:25px; display:none; place-items:center; border-radius:50%; color:#667471; background:#e9eeee; }
+    .clear-search.visible { display:grid; }
+    .list-wrap { margin-top:12px; overflow:auto; overscroll-behavior:contain; scroll-behavior:smooth; }
+    .card-list { display:grid; gap:8px; }
+    .card-row { min-height:60px; padding:8px 8px 8px 12px; display:flex; align-items:center; gap:12px; position:relative; border:1.5px solid transparent; border-radius:15px; color:var(--text); background:var(--soft); transition:.16s ease; }
+    .card-row:hover { background:#eaf2f1; }
+    .logo { width:38px; height:38px; display:grid; place-items:center; flex:0 0 38px; overflow:hidden; border-radius:10px; color:white; background:#222; font-size:11px; font-weight:1000; letter-spacing:-.4px; }
+    .logo.apple { background:linear-gradient(145deg,#e940a2,#663bea); font-size:21px; }
+    .logo.google { color:#737b7a; background:white; font-size:8px; }
+    .logo.nike { font-size:23px; font-style:italic; }
+    .logo.razer { color:#4edc76; background:white; font-size:20px; }
+    .logo.steam { background:#182235; }
+    .logo.amazon { color:#111; background:#ffca28; font-size:18px; }
+    .logo.sephora { background:#090909; font-size:9px; }
+    .logo.target { color:#e43137; background:white; font-size:22px; }
+    .card-name { flex:1; min-width:0; overflow:hidden; text-align:left; white-space:nowrap; text-overflow:ellipsis; font-weight:850; font-size:16px; }
+    .favorite { width:42px; height:42px; flex:0 0 42px; display:grid; place-items:center; border-radius:50%; color:#aeb8b7; background:transparent; font-size:26px; line-height:1; transition:.15s ease; }
+    .favorite:hover { background:white; }
+    .favorite.on { color:var(--gold); }
+    .favorite.pulse { animation:pulse .28s ease; }
+    @keyframes pulse { 50% { transform:scale(1.35); } }
+    .empty { padding:34px 12px; color:#879492; text-align:center; }
+    .empty span { display:block; margin-bottom:9px; font-size:35px; }
+    .toast { width:min(350px,calc(100% - 38px)); position:fixed; z-index:40; left:50%; bottom:103px; transform:translate(-50%,18px); padding:12px 16px; border-radius:12px; color:white; background:rgba(14,48,44,.96); text-align:center; font-size:13px; font-weight:750; opacity:0; pointer-events:none; transition:.2s ease; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    .sr-only { width:1px; height:1px; margin:-1px; padding:0; position:absolute; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (min-width:560px) {
+      body { padding:22px 0; }
+      .phone { min-height:860px; border-radius:28px; box-shadow:0 22px 70px rgba(14,43,40,.2); }
+      .bottom-nav { bottom:22px; border-radius:0 0 28px 28px; }
+      .overlay { padding-bottom:22px; }
+      .sheet { max-width:430px; border-radius:22px 22px 28px 28px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" aria-label="Troveloop 首页卡种收藏原型">
+    <div class="status-bar"><span>09:29</span><span class="signals">▮▮▮　◉ <i class="battery"></i></span></div>
+    <section class="home">
+      <div class="profile">
+        <div class="avatar" aria-hidden="true">👨🏻‍💻</div>
+        <div class="welcome">Welcome<span>tl_ml4fmubmp</span></div>
+        <button class="support" aria-label="联系客服">♧</button>
+      </div>
+      <div class="hero" aria-label="Instagram 活动横幅">
+        <span class="ghost">👻</span>
+        <div class="hero-copy">Follow Us on Instagram!<br>Be part of our community!<small>Exclusive content, community events, and rewards!</small></div>
+        <span class="hero-dots"><i></i><i></i></span>
+      </div>
+      <div class="bonus"><span class="art">👻</span><strong>New users bonus<br>awaits you</strong><button type="button">Go</button></div>
+      <div class="shortcuts">
+        <div class="shortcut"><span class="shortcut-icon">⚡</span><span><strong>Hustle Loop</strong><small>Earn daily cash</small></span></div>
+        <div class="shortcut"><span class="shortcut-icon">％</span><span><strong>Refer&Earn</strong><small>Invite for +2% rate</small></span></div>
+      </div>
+      <div class="tabs" role="tablist"><button class="tab active" type="button">Sell Gift Card</button><button class="tab" type="button">Fast Transaction</button></div>
+      <div class="filters">
+        <button class="filter" id="open-selector" type="button" aria-haspopup="dialog" aria-controls="card-sheet"><span class="filter-logo" id="selected-logo"></span><span class="filter-name" id="selected-name">Apple&iTunes</span><span class="down">▼</span></button>
+        <button class="filter" type="button"><span class="filter-logo">💵</span><span class="filter-name">AUD</span><span class="down">▼</span></button>
+      </div>
+      <article class="merchant">
+        <div class="merchant-head"><div class="merchant-avatar">◉<i class="online"></i></div><div class="merchant-copy"><strong>muzi_fws</strong><div>1008 Trades <span class="tag">Physical</span></div></div><span class="limit">Limits 1~600</span></div>
+        <div class="rate"><div><strong>AUD1=$0.13<em>+0.01</em></strong><small>Extra +6% Rate, Expires in 6 days</small></div><button class="sell" type="button">Sell</button></div>
+      </article>
+      <article class="merchant">
+        <div class="merchant-head"><div class="merchant-avatar" style="background:#eef8f7;color:#1d9185">Tbay<i class="online"></i></div><div class="merchant-copy"><strong>aa</strong><div>742 Trades <span class="tag">Physical</span></div></div><span class="limit">Limits 1~600</span></div>
+        <div class="rate"><div><strong>AUD1=$0.12<em>+0.01</em></strong><small>Secure trade protection</small></div><button class="sell" type="button">Sell</button></div>
+      </article>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="主导航">
+    <button class="nav-item active" type="button"><span class="nav-icon">⌂</span>Home</button>
+    <button class="nav-item" type="button"><span class="nav-icon">•••</span>Message</button>
+    <button class="nav-item fast" type="button"><span class="nav-icon">ϟ</span>Fast Trade</button>
+    <button class="nav-item" type="button"><span class="nav-icon">☰</span>Orders</button>
+    <button class="nav-item" type="button"><span class="nav-icon">♙</span>Profile</button>
+  </nav>
+
+  <div class="overlay" id="card-sheet" role="dialog" aria-modal="true" aria-label="选择卡种">
+    <section class="sheet">
+      <div class="grabber" aria-hidden="true"></div>
+      <label class="search"><span aria-hidden="true">⌕</span><span class="sr-only">搜索卡种</span><input id="search-input" type="search" autocomplete="off" placeholder="Search gift cards"><button class="clear-search" id="clear-search" type="button" aria-label="清空搜索">×</button></label>
+      <div class="list-wrap" id="list-wrap"><div id="card-groups"></div></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const cards = [
+      { id:'apple', name:'Apple&iTunes', letter:'A', logo:'', className:'apple' },
+      { id:'amazon', name:'Amazon Gift Card', letter:'A', logo:'a', className:'amazon' },
+      { id:'google', name:'Google Play Gift Card', letter:'G', logo:'Google Play', className:'google' },
+      { id:'nike', name:'Nike Gift Card', letter:'N', logo:'⌁', className:'nike' },
+      { id:'razer', name:'Razer Gift Card', letter:'R', logo:'♧', className:'razer' },
+      { id:'sephora', name:'Sephora Gift Card', letter:'S', logo:'SEPHORA', className:'sephora' },
+      { id:'steam', name:'Steam Gift Card', letter:'S', logo:'STEAM', className:'steam' },
+      { id:'target', name:'Target Gift Card', letter:'T', logo:'◎', className:'target' }
+    ];
+    const storageKey = 'troveloop-favorite-card-types-v1';
+    const selectedKey = 'troveloop-selected-card-type-v1';
+    const defaultFavorites = ['apple'];
+    let favorites = readFavorites();
+    let selectedId = localStorage.getItem(selectedKey) || 'apple';
+    let lastFocused = null;
+
+    const overlay = document.getElementById('card-sheet');
+    const groups = document.getElementById('card-groups');
+    const searchInput = document.getElementById('search-input');
+    const clearSearch = document.getElementById('clear-search');
+
+    function readFavorites() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        return Array.isArray(saved) ? new Set(saved.filter(id => cards.some(card => card.id === id))) : new Set(defaultFavorites);
+      } catch (_) { return new Set(defaultFavorites); }
+    }
+
+    function saveFavorites() {
+      localStorage.setItem(storageKey, JSON.stringify([...favorites]));
+    }
+
+    function logoMarkup(card) {
+      return `<span class="logo ${card.className}">${card.logo}</span>`;
+    }
+
+    function rowMarkup(card) {
+      const isFavorite = favorites.has(card.id);
+      return `<div class="card-row" role="button" tabindex="0" data-card-id="${card.id}" aria-label="选择 ${card.name}">
+        ${logoMarkup(card)}
+        <span class="card-name">${card.name}</span>
+        <button class="favorite${isFavorite ? ' on' : ''}" type="button" data-favorite-id="${card.id}" aria-label="${isFavorite ? '取消收藏' : '收藏'} ${card.name}" aria-pressed="${isFavorite}">${isFavorite ? '★' : '☆'}</button>
+      </div>`;
+    }
+
+    function renderCards() {
+      const query = searchInput.value.trim().toLowerCase();
+      const matches = cards.filter(card => card.name.toLowerCase().includes(query));
+      if (!matches.length) {
+        groups.innerHTML = `<div class="empty"><span>⌕</span>No matching gift cards<br><small>Try another keyword</small></div>`;
+        return;
+      }
+
+      const matchingIds = new Set(matches.map(card => card.id));
+      const favoriteCards = [...favorites].map(id => cards.find(card => card.id === id)).filter(card => card && matchingIds.has(card.id));
+      const regularCards = matches.filter(card => !favorites.has(card.id)).sort((a,b) => a.name.localeCompare(b.name));
+      groups.innerHTML = `<div class="card-list">${[...favoriteCards, ...regularCards].map(rowMarkup).join('')}</div>`;
+    }
+
+    function openSelector() {
+      lastFocused = document.activeElement;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      renderCards();
+      window.setTimeout(() => searchInput.focus(), 180);
+    }
+
+    function closeSelector() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      clearSearch.classList.remove('visible');
+      if (lastFocused) lastFocused.focus();
+    }
+
+    function toggleFavorite(id, button) {
+      const card = cards.find(item => item.id === id);
+      if (!card) return;
+      const adding = !favorites.has(id);
+      if (adding) favorites = new Set([id, ...favorites]); else favorites.delete(id);
+      saveFavorites();
+      button.classList.add('pulse');
+      window.setTimeout(renderCards, 160);
+    }
+
+    function selectCard(id) {
+      const card = cards.find(item => item.id === id);
+      if (!card) return;
+      selectedId = id;
+      localStorage.setItem(selectedKey, id);
+      document.getElementById('selected-name').textContent = card.name;
+      document.getElementById('selected-logo').textContent = card.logo;
+      closeSelector();
+      showToast(`${card.name} selected`);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 1900);
+    }
+
+    document.getElementById('open-selector').addEventListener('click', openSelector);
+    overlay.addEventListener('click', event => { if (event.target === overlay) closeSelector(); });
+    searchInput.addEventListener('input', () => {
+      clearSearch.classList.toggle('visible', Boolean(searchInput.value));
+      renderCards();
+      document.getElementById('list-wrap').scrollTop = 0;
+    });
+    clearSearch.addEventListener('click', () => { searchInput.value = ''; clearSearch.classList.remove('visible'); renderCards(); searchInput.focus(); });
+    groups.addEventListener('click', event => {
+      const favoriteButton = event.target.closest('[data-favorite-id]');
+      if (favoriteButton) { event.stopPropagation(); toggleFavorite(favoriteButton.dataset.favoriteId, favoriteButton); return; }
+      const row = event.target.closest('[data-card-id]');
+      if (row) selectCard(row.dataset.cardId);
+    });
+    groups.addEventListener('keydown', event => {
+      if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-card-id]')) { event.preventDefault(); selectCard(event.target.dataset.cardId); }
+    });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && overlay.classList.contains('open')) closeSelector(); });
+
+    const initialCard = cards.find(card => card.id === selectedId) || cards[0];
+    selectedId = initialCard.id;
+    document.getElementById('selected-name').textContent = initialCard.name;
+    document.getElementById('selected-logo').textContent = initialCard.logo;
+    renderCards();
+  </script>
+</body>
+</html>

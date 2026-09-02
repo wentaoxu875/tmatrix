@@ -17,13 +17,29 @@
       --divider: #e9ecef;
       --text: #111827;
       --text-2: #4b5563;
-      --text-3: #8a939f;
-      --success: #16845d;
+      --text-3: #9ca3af;
+      --success: #16a36a;
       --success-soft: #e8f7ef;
-      --warning: #a66b00;
+      --warning: #f5b73f;
       --warning-soft: #fff4d8;
+      --error: #e5484d;
+      --error-soft: #fdecec;
+      --info: #2f80ed;
+      --disabled: #c7cdd4;
       --silver: #dce3e9;
       --silver-dark: #42515e;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-pill: 999px;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
       --shadow: 0 14px 36px rgba(11, 46, 43, .11);
       --safe-bottom: max(16px, env(safe-area-inset-bottom));
     }
@@ -42,6 +58,8 @@
 
     button, a { -webkit-tap-highlight-color: transparent; }
     button { font: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid rgba(47,128,237,.35); outline-offset: 2px; }
+    button:disabled { cursor: not-allowed; }
 
     .app {
       width: 100%;
@@ -49,12 +67,12 @@
       margin: 0 auto;
       background: var(--page);
       position: relative;
-      padding-bottom: calc(78px + var(--safe-bottom));
+      padding-bottom: 0;
       overflow: hidden;
     }
 
     .app-bar {
-      min-height: calc(52px + env(safe-area-inset-top));
+      min-height: calc(44px + env(safe-area-inset-top));
       padding: env(safe-area-inset-top) 8px 0;
       display: grid;
       grid-template-columns: 44px 1fr 44px;
@@ -69,7 +87,7 @@
     .app-bar h1 {
       margin: 0;
       text-align: center;
-      font-size: 17px;
+      font-size: 16px;
       line-height: 24px;
       font-weight: 650;
     }
@@ -90,6 +108,7 @@
     .icon-button svg { width: 22px; height: 22px; }
 
     .rule-button {
+      min-height: 44px;
       border: 0;
       background: transparent;
       color: #fff;
@@ -144,15 +163,16 @@
     .card-level-nav, .member-main, .benefit-strip, .card-growth { position: relative; z-index: 1; }
 
     .card-level-nav {
+      margin: 0 8px;
       display: grid;
-      grid-template-columns: 38px 1fr 38px;
+      grid-template-columns: 36px 1fr 36px;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .card-arrow {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
       border: 1px solid rgba(255,255,255,.16);
@@ -162,7 +182,7 @@
       cursor: pointer;
     }
 
-    .card-arrow svg { width: 18px; height: 18px; }
+    .card-arrow svg { width: 16px; height: 16px; }
     .card-arrow:active:not(:disabled) { background: rgba(255,255,255,.15); }
     .card-arrow:disabled { opacity: .28; cursor: default; }
 
@@ -184,8 +204,8 @@
     }
 
     .card-dot {
-      width: 22px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       padding: 0;
       border: 0;
       position: relative;
@@ -254,6 +274,7 @@
 
     .benefit-item {
       min-width: 0;
+      min-height: 44px;
       padding: 0;
       display: flex;
       align-items: center;
@@ -294,13 +315,13 @@
     .card-growth .progress-bar { background: #9bdac8; }
     .card-growth .progress-meta { color: rgba(255,255,255,.54); }
 
-    main { padding: 16px; }
+    .member-screen > main { padding: var(--space-4) var(--space-4) calc(65px + var(--safe-bottom)); }
 
     .section {
       margin-bottom: 14px;
       padding: 16px;
       border: 1px solid rgba(221,227,231,.78);
-      border-radius: 14px;
+      border-radius: var(--radius-lg);
       background: var(--card);
     }
 
@@ -316,6 +337,7 @@
     .section-head p { margin: 2px 0 0; color: var(--text-3); font-size: 11px; }
 
     .text-button {
+      min-height: 44px;
       border: 0;
       padding: 6px 0;
       color: var(--brand);
@@ -380,7 +402,7 @@
       height: 42px;
       display: grid;
       place-items: center;
-      border-radius: 12px;
+      border-radius: var(--radius-lg);
       color: var(--brand);
       background: var(--brand-soft);
     }
@@ -410,6 +432,7 @@
     .month-filter { position: relative; display: flex; align-items: center; gap: 4px; color: var(--brand); }
     .month-filter svg { width: 15px; height: 15px; pointer-events: none; }
     .month-filter select {
+      min-height: 44px;
       max-width: 102px;
       padding: 6px 18px 6px 0;
       border: 0;
@@ -453,10 +476,10 @@
     .history-copy span { display: block; margin-top: 3px; color: var(--text-3); font-size: 10px; }
     .history-value { color: var(--success); font-size: 15px; font-weight: 750; text-align: right; }
 
-    .empty-state { display: none; padding: 28px 8px 20px; text-align: center; color: var(--text-3); }
-    .empty-state svg { width: 42px; height: 42px; color: #bdc6cc; }
-    .empty-state strong { display: block; margin-top: 8px; color: var(--text-2); font-size: 13px; }
-    .empty-state p { margin: 4px 0 0; font-size: 11px; }
+    .empty-state { display: none; padding: 32px 8px 24px; text-align: center; color: var(--text-3); }
+    .empty-state svg { width: 96px; height: 96px; color: #bdc6cc; }
+    .empty-state strong { display: block; margin-top: 12px; color: var(--text); font-size: 16px; line-height: 24px; }
+    .empty-state p { margin: 4px 0 0; font-size: 14px; line-height: 20px; }
 
     .modal-mask {
       position: fixed;
@@ -472,11 +495,11 @@
     }
     .modal-mask.open { opacity: 1; visibility: visible; }
     .benefit-modal {
-      width: min(100%, 342px);
+      width: min(100%, 335px);
       max-height: min(640px, 82dvh);
       overflow-y: auto;
       padding: 20px;
-      border-radius: 18px;
+      border-radius: var(--radius-xl);
       background: #fff;
       box-shadow: 0 24px 64px rgba(4, 27, 25, .28);
       transform: translateY(10px) scale(.98);
@@ -486,41 +509,41 @@
     .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
     .modal-kicker { display: block; color: var(--brand); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
     .modal-head h2 { margin: 4px 0 0; font-size: 20px; line-height: 26px; }
-    .modal-close { width: 34px; height: 34px; flex: 0 0 auto; border: 0; border-radius: 50%; color: var(--text-2); background: #f1f3f4; font-size: 20px; cursor: pointer; }
-    .modal-lead { margin: 14px 0 0; color: var(--text-2); font-size: 12px; line-height: 19px; }
+    .modal-close { width: 44px; height: 44px; flex: 0 0 auto; border: 0; border-radius: 50%; color: var(--text-2); background: #f1f3f4; font-size: 20px; cursor: pointer; }
+    .modal-lead { margin: 16px 0 0; color: var(--text-2); font-size: 14px; line-height: 22px; }
     .coupon-list { margin-top: 16px; }
     .coupon-list-label { display: block; margin-bottom: 8px; color: var(--text-3); font-size: 10px; font-weight: 750; letter-spacing: .7px; }
     .coupon-card {
-      min-height: 94px;
+      min-height: 104px;
       display: grid;
-      grid-template-columns: 82px 1fr;
+      grid-template-columns: 92px 1fr;
       overflow: hidden;
-      border: 1px solid #d7e5e1;
-      border-radius: 12px;
-      background: #fbfdfc;
+      border: 1px solid #cfe7e4;
+      border-radius: var(--radius-lg);
+      background: var(--brand-soft);
     }
     .coupon-stub {
-      padding: 14px 10px;
+      padding: 14px 8px;
       display: grid;
       align-content: center;
       justify-items: center;
       position: relative;
-      color: #fff;
-      background: var(--brand);
+      color: #123936;
+      background: #f3fbfa;
       text-align: center;
     }
-    .coupon-stub::after { content: ""; width: 1px; position: absolute; top: 8px; right: -1px; bottom: 8px; border-right: 1px dashed rgba(255,255,255,.5); }
-    .coupon-stub svg { width: 22px; height: 22px; }
-    .coupon-stub strong { margin-top: 5px; font-size: 9px; letter-spacing: .6px; }
-    .coupon-copy { min-width: 0; padding: 13px 12px; }
-    .coupon-copy strong { display: block; font-size: 13px; }
-    .coupon-copy span { display: block; margin-top: 5px; color: var(--text-2); font-size: 10px; line-height: 15px; }
-    .coupon-copy small { display: block; margin-top: 4px; color: var(--text-3); font-size: 9px; line-height: 14px; }
+    .coupon-stub::after { content: ""; width: 1px; position: absolute; top: 0; right: -1px; bottom: 0; border-right: 1px solid #d2ebe8; }
+    .coupon-value { font-size: 28px; line-height: 32px; font-weight: 850; letter-spacing: -.7px; }
+    .coupon-limit { margin-top: 4px; font-size: 11px; line-height: 15px; font-weight: 750; }
+    .coupon-copy { min-width: 0; padding: 15px 14px; display: flex; flex-direction: column; justify-content: center; }
+    .coupon-copy strong { min-width: 0; display: block; overflow: hidden; color: #173d3a; font-size: 14px; line-height: 19px; text-overflow: ellipsis; white-space: nowrap; }
+    .coupon-copy span { display: block; margin-top: 7px; color: #668a87; font-size: 11px; line-height: 15px; }
+    .coupon-copy small { display: block; margin-top: 7px; color: #668a87; font-size: 10px; line-height: 14px; }
     .coupon-empty { margin-top: 16px; padding: 18px 14px; border: 1px dashed #ccd6d8; border-radius: 11px; color: var(--text-3); text-align: center; font-size: 11px; }
     .formula-card { margin-top: 16px; padding: 14px; border-radius: 11px; color: #fff; background: var(--brand); }
     .formula-card small { display: block; color: rgba(255,255,255,.64); font-size: 10px; }
     .formula-card strong { display: block; margin-top: 5px; font-size: 18px; }
-    .modal-button { width: 100%; height: 44px; margin-top: 18px; border: 0; border-radius: 9px; color: #fff; background: var(--brand); font-size: 14px; font-weight: 700; cursor: pointer; }
+    .modal-button { width: 100%; height: 48px; margin-top: 20px; border: 0; border-radius: var(--radius-md); color: #fff; background: var(--brand); font-size: 16px; font-weight: 700; cursor: pointer; }
 
     .bottom-nav {
       position: fixed;
@@ -528,8 +551,8 @@
       right: 0;
       bottom: 0;
       z-index: 20;
-      min-height: calc(58px + var(--safe-bottom));
-      padding: 7px 10px var(--safe-bottom);
+      min-height: calc(49px + var(--safe-bottom));
+      padding: 5px 10px var(--safe-bottom);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       border-top: 1px solid var(--divider);
@@ -538,13 +561,16 @@
     }
 
     .nav-item {
+      min-height: 44px;
       border: 0;
       color: var(--text-3);
       background: transparent;
       font-size: 10px;
       cursor: pointer;
+      text-align: center;
+      text-decoration: none;
     }
-    .nav-item svg { display: block; width: 22px; height: 22px; margin: 0 auto 3px; }
+    .nav-item svg { display: block; width: 24px; height: 24px; margin: 0 auto 2px; }
     .nav-item.active { color: var(--brand); font-weight: 650; }
 
     .toast {
@@ -568,11 +594,219 @@
     }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+    .view-hidden { display: none !important; }
+
+    .home-screen { min-height: 100dvh; padding: 20px var(--space-4) calc(65px + var(--safe-bottom)); background: var(--page); }
+    .home-status { display: flex; align-items: center; justify-content: space-between; color: var(--brand-dark); font-size: 12px; font-weight: 700; }
+    .home-signal { color: var(--text-3); letter-spacing: 2px; }
+    .home-greeting { margin-top: 26px; display: flex; align-items: center; gap: 12px; }
+    .home-avatar { width: 46px; height: 46px; flex: 0 0 46px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(145deg,#ffad8c,#f47f66); font-size: 18px; font-weight: 800; box-shadow: inset 0 0 0 4px rgba(255,255,255,.3); }
+    .home-user { min-width: 0; flex: 1; }
+    .home-user small { display: block; color: var(--brand); font-size: 18px; line-height: 22px; font-weight: 800; }
+    .home-user-line { margin-top: 2px; display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .home-nickname { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--brand-dark); font-size: 18px; font-weight: 750; }
+    .home-level-button { height: 28px; flex: 0 0 auto; padding: 3px 9px 3px 4px; display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 999px; color: #4f3d12; background: #f8e7ab; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .home-level-icon { width: 21px; height: 21px; display: grid; place-items: center; border-radius: 50%; color: #42515e; background: #eef1f4; font-size: 9px; box-shadow: inset 0 0 0 1px #cdd5dc; }
+    .home-support { width: 44px; height: 44px; border: 0; border-radius: 50%; color: var(--brand); background: transparent; font-size: 22px; }
+    .home-banner { height: 118px; margin-top: 14px; padding: 18px; position: relative; overflow: hidden; border-radius: 16px; color: #f8d675; background: linear-gradient(125deg,#0c443d,#07302c); }
+    .home-banner::after { content:""; position:absolute; width:125px; height:125px; right:-26px; bottom:-55px; border:18px solid rgba(255,255,255,.06); border-radius:50%; }
+    .home-banner b { display: block; max-width: 270px; font-size: 19px; line-height: 24px; }
+    .home-banner span { display: inline-block; margin-top: 12px; padding: 4px 11px; border: 1px solid rgba(248,214,117,.6); border-radius: 999px; color: #fff; font-size: 10px; }
+    .home-promos { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .home-promo { padding: var(--space-3); display: flex; align-items: center; gap: var(--space-2); border-radius: var(--radius-lg); background: var(--card); }
+    .home-promo-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: var(--radius-md); color: var(--brand); background: var(--brand-soft); font-size: 18px; }
+    .home-promo strong { display:block; color:var(--brand-dark); font-size:13px; }
+    .home-promo small { display:block; margin-top:2px; color:var(--text-3); font-size:9px; }
+    .home-tabs { margin-top: var(--space-5); padding: 4px; display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--radius-lg); background: #e4e8e8; }
+    .home-tabs button { min-height:40px; padding:8px 4px; border:0; border-radius:var(--radius-md); text-align:center; color:var(--brand); background:transparent; font-size:14px; font-weight:750; cursor:pointer; }
+    .home-tabs .active { color:#fff; background:var(--brand); }
+    .home-filters { margin-top:12px; display:grid; grid-template-columns:1.25fr .75fr; gap:10px; }
+    .home-filter { min-height:44px; padding:8px 14px; display:flex; align-items:center; justify-content:space-between; border:1px solid var(--border); border-radius:var(--radius-pill); color:var(--brand-dark); background:#fff; font-size:13px; font-weight:700; }
+    .home-seller { margin-top:var(--space-3); padding:var(--space-4); border-radius:var(--radius-lg); background:var(--card); }
+    .home-seller-head { display:flex; align-items:flex-start; gap:10px; }
+    .seller-avatar { width:42px; height:42px; flex:0 0 42px; display:grid; place-items:center; border-radius:12px; color:#fff; background:linear-gradient(145deg,#788391,#303a45); font-size:11px; font-weight:800; }
+    .seller-copy { min-width:0; flex:1; }
+    .seller-copy strong { display:block; color:var(--brand-dark); font-size:14px; }
+    .seller-copy span { display:block; margin-top:3px; color:var(--text-2); font-size:11px; }
+    .seller-limit { color:var(--text-2); font-size:10px; white-space:nowrap; }
+    .seller-tags { margin:9px 0 0 52px; display:flex; gap:6px; flex-wrap:wrap; }
+    .seller-tags span { padding:4px 9px; border-radius:999px; color:#a4afb2; background:#f0f2f2; font-size:9px; }
+    .home-quote { margin-top:14px; padding-top:13px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid #edf0f0; }
+    .home-amount { display:flex; align-items:baseline; gap:6px; color:var(--brand-dark); font-size:15px; font-weight:800; }
+    .home-level-bonus { color:#b85c00; font-size:13px; font-weight:850; }
+    .quote-level-badge { padding:2px 5px; border:1px solid var(--warning); border-radius:var(--radius-pill); color:#9b4e00; background:var(--warning-soft); font-size:9px; line-height:13px; font-weight:850; }
+    .home-sell { min-width:88px; height:40px; border:0; border-radius:var(--radius-md); color:#fff; background:var(--brand); font-size:14px; font-weight:750; cursor:pointer; }
+    .fast-filter { margin-top:12px; }
+    .fast-filter .home-filter { width:100%; }
+    .fast-card { margin-top:var(--space-3); padding:var(--space-3) var(--space-4); display:grid; grid-template-columns:48px 1fr auto; align-items:center; gap:var(--space-3); border-radius:var(--radius-lg); background:var(--card); }
+    .fast-logo { width:48px; height:48px; display:grid; place-items:center; border-radius:var(--radius-lg); color:#fff; background:#17202a; font-size:10px; font-weight:850; letter-spacing:.5px; }
+    .fast-logo.light { color:var(--brand); background:#eef5f4; }
+    .fast-copy { min-width:0; }
+    .fast-copy strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--brand-dark); font-size:14px; }
+    .fast-price { margin-top:5px; display:flex; align-items:baseline; gap:7px; color:var(--brand); font-size:13px; }
+    .home-bottom-nav { position:fixed; left:0; right:0; bottom:0; z-index:20; min-height:calc(49px + var(--safe-bottom)); padding:5px 6px var(--safe-bottom); display:grid; grid-template-columns:repeat(5,1fr); border-top:1px solid var(--divider); background:rgba(255,255,255,.96); backdrop-filter:blur(16px); }
+    .home-nav-button { min-height:44px; border:0; color:var(--text-3); background:transparent; font-size:10px; cursor:pointer; }
+    .home-nav-button svg { display:block; width:24px; height:24px; margin:0 auto 2px; }
+    .home-nav-button.active { color:var(--brand); font-weight:700; }
+    .fast-trade-screen { min-height:100dvh; padding:18px var(--space-4) calc(92px + var(--safe-bottom)); background:var(--card); }
+    .trade-header { min-height:44px; margin:var(--space-5) 0 var(--space-6); display:grid; grid-template-columns:44px 1fr 44px; align-items:center; }
+    .trade-back { width:44px; height:44px; display:grid; place-items:center; border:0; border-radius:50%; color:#fff; background:var(--brand); cursor:pointer; }
+    .trade-back svg { width:22px; height:22px; }
+    .trade-header h1 { margin:0; color:var(--brand-dark); text-align:center; font-size:16px; line-height:24px; font-weight:600; }
+    .trade-panel { padding:var(--space-4); border-radius:var(--radius-lg); background:var(--page); }
+    .trade-field + .trade-field { margin-top:16px; }
+    .trade-label { display:block; margin-bottom:9px; color:var(--brand-dark); font-size:15px; font-weight:800; }
+    .trade-label.required::before { content:'*'; margin-right:2px; color:var(--error); }
+    .trade-segment { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .trade-segment button { height:44px; border:0; border-radius:var(--radius-md); color:var(--brand); background:#fff; font-size:14px; font-weight:750; cursor:pointer; }
+    .trade-segment button.active { color:#fff; background:var(--brand); }
+    .trade-select { width:100%; min-height:48px; padding:0 var(--space-3); display:flex; align-items:center; gap:var(--space-3); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--brand-dark); background:#fff; text-align:left; font-size:14px; font-weight:750; cursor:pointer; }
+    .trade-select-logo { width:36px; height:36px; flex:0 0 36px; display:grid; place-items:center; overflow:hidden; border-radius:50%; color:#fff; background:#17202a; font-size:9px; font-weight:850; letter-spacing:.4px; }
+    .trade-select-logo.currency { color:var(--brand); background:#e9f4f2; font-size:18px; }
+    .trade-select-label { min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .trade-select-arrow { width:27px; height:27px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--brand); font-size:11px; }
+    .trade-amount-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .trade-amount-head .trade-label { margin:0; }
+    .trade-limit { color:#9a9b9f; font-size:12px; white-space:nowrap; }
+    .trade-amount-box { min-height:48px; margin-top:var(--space-2); padding:0 var(--space-3); display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); border:1px solid var(--border); border-radius:var(--radius-md); background:#fff; }
+    .trade-amount-box:focus-within { border-color:var(--brand); box-shadow:0 0 0 3px rgba(18,60,56,.12); }
+    .trade-amount-box input { width:64px; min-width:0; border:0; outline:0; color:var(--brand-dark); background:transparent; font-family:inherit; font-size:16px; line-height:22px; font-weight:750; }
+    .trade-rate { min-width:0; display:flex; align-items:baseline; justify-content:flex-end; gap:5px; color:var(--brand-dark); font-size:13px; font-weight:800; white-space:nowrap; }
+    .trade-rate .home-level-bonus { font-size:12px; }
+    .trade-chip { display:inline-block; margin-top:10px; padding:5px 11px; border-radius:999px; color:var(--brand); background:#fff; font-size:11px; }
+    .trade-summary { margin-top:var(--space-3); padding:var(--space-4); border-radius:var(--radius-lg); background:var(--page); }
+    .trade-terms { display:flex; align-items:center; gap:8px; color:#7d9998; font-size:12px; }
+    .trade-terms strong { color:var(--brand); font-size:16px; }
+    .trade-output { margin-top:var(--space-3); padding:var(--space-4) var(--space-3); border-radius:var(--radius-lg); background:var(--brand-soft); color:var(--brand-dark); }
+    .trade-output > span { display:block; font-size:13px; }
+    .trade-output strong { display:block; margin-top:13px; text-align:center; font-size:21px; line-height:29px; }
+    .trade-output small { display:block; margin-top:2px; text-align:center; font-size:16px; font-weight:750; }
+    .trade-coupon { width:100%; min-height:48px; margin-top:var(--space-3); padding:0 var(--space-3); display:flex; align-items:center; border:1px solid var(--border); border-radius:var(--radius-md); color:var(--brand-dark); background:#fff; font-size:14px; font-weight:800; cursor:pointer; }
+    .trade-coupon span { margin-left:auto; color:#9da3a6; font-size:13px; font-weight:500; }
+    .trade-coupon::after { content:'›'; margin-left:8px; color:var(--brand); font-size:22px; font-weight:400; }
+    .trade-submit-bar { position:fixed; left:0; right:0; bottom:0; z-index:24; padding:var(--space-3) var(--space-4) var(--safe-bottom); border-top:1px solid var(--divider); background:rgba(255,255,255,.97); backdrop-filter:blur(14px); }
+    .trade-submit { width:100%; height:48px; border:0; border-radius:var(--radius-md); color:#fff; background:var(--brand); font-size:16px; font-weight:800; cursor:pointer; }
+    .order-screen { min-height:100dvh; padding:18px var(--space-4) calc(92px + var(--safe-bottom)); background:var(--card); }
+    .order-seller-card { padding:var(--space-4); border-radius:var(--radius-lg); background:var(--warning-soft); }
+    .order-seller-head { display:flex; align-items:center; gap:12px; }
+    .order-seller-avatar { width:48px; height:48px; flex:0 0 48px; display:grid; place-items:center; position:relative; border-radius:var(--radius-lg); color:#fff; background:linear-gradient(145deg,#788391,#303a45); font-size:10px; font-weight:850; }
+    .order-seller-avatar::after { content:''; width:11px; height:11px; position:absolute; right:-2px; bottom:-2px; border:2px solid var(--warning-soft); border-radius:50%; background:var(--success); }
+    .order-seller-copy strong { display:block; color:var(--brand-dark); font-size:18px; }
+    .order-seller-copy span { display:block; margin-top:4px; color:#78908f; font-size:13px; }
+    .order-choice { min-height:48px; margin-top:var(--space-3); padding:0 var(--space-3); display:flex; align-items:center; gap:var(--space-3); border:1px solid rgba(221,227,231,.7); border-radius:var(--radius-md); color:var(--brand-dark); background:#fff; font-size:14px; font-weight:750; }
+    .order-choice-icon { width:36px; height:36px; display:grid; place-items:center; border-radius:50%; background:#f4f6f6; font-size:18px; }
+    .order-card-type { margin-top:var(--space-3); padding:4px; border-radius:var(--radius-lg); background:#e6e8e9; }
+    .order-rate-panel { margin-top:var(--space-3); padding:var(--space-4); border-radius:var(--radius-lg); background:var(--brand-soft); }
+    .order-rate-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .order-rate-value { min-width:0; display:flex; align-items:baseline; gap:6px; color:var(--brand-dark); font-size:17px; font-weight:850; white-space:nowrap; }
+    .order-rate-limit { color:var(--brand-dark); font-size:14px; font-weight:800; }
+    .order-amount-label { display:block; margin-top:24px; color:var(--brand-dark); font-size:15px; font-weight:800; }
+    .order-amount-label::before { content:'*'; margin-right:2px; color:var(--error); }
+    .order-amount-box { min-height:48px; margin-top:var(--space-2); padding:0 var(--space-3); display:flex; align-items:center; justify-content:space-between; border:1px solid var(--border); border-radius:var(--radius-md); background:#fff; }
+    .order-amount-box:focus-within { border-color:var(--brand); box-shadow:0 0 0 3px rgba(18,60,56,.12); }
+    .order-amount-box input { width:120px; border:0; outline:0; color:var(--brand-dark); background:transparent; font-family:inherit; font-size:16px; font-weight:750; }
+    .order-amount-box span { color:var(--brand-dark); font-size:16px; font-weight:800; }
+    .order-summary { margin-top:var(--space-3); padding:var(--space-4); border-radius:var(--radius-lg); background:var(--page); }
+    .order-terms { display:flex; align-items:flex-start; gap:8px; color:#789493; font-size:12px; line-height:18px; }
+    .order-terms strong { width:20px; height:20px; flex:0 0 20px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--brand); font-size:12px; }
+    .order-output { margin-top:var(--space-3); padding:var(--space-4) var(--space-3); border-radius:var(--radius-lg); background:var(--brand-soft); color:var(--brand-dark); }
+    .order-output > span { display:block; font-size:13px; }
+    .order-output strong { display:block; margin-top:13px; text-align:center; font-size:22px; }
+    .order-output small { display:block; margin-top:5px; text-align:center; font-size:17px; font-weight:750; }
+    .order-submit-bar { position:fixed; left:0; right:0; bottom:0; z-index:24; padding:var(--space-3) var(--space-4) var(--safe-bottom); display:grid; grid-template-columns:.8fr 1.2fr; gap:var(--space-3); border-top:1px solid var(--divider); background:rgba(255,255,255,.97); backdrop-filter:blur(14px); }
+    .order-submit-bar button { height:48px; border:1px solid transparent; border-radius:var(--radius-md); font-size:16px; font-weight:800; cursor:pointer; }
+    .order-chat { border-color:var(--brand); color:var(--brand); background:#fff; }
+    .order-submit { color:#fff; background:var(--brand); }
+    .profile-screen { min-height:100dvh; padding:20px var(--space-4) calc(65px + var(--safe-bottom)); background:var(--page); }
+    .profile-head { margin-top:28px; display:flex; align-items:center; gap:13px; }
+    .profile-avatar { width:58px; height:58px; flex:0 0 58px; display:grid; place-items:center; border-radius:50%; color:#fff; background:linear-gradient(145deg,#ffad8c,#ef7862); font-size:20px; font-weight:800; box-shadow:inset 0 0 0 4px rgba(255,255,255,.3); }
+    .profile-identity { min-width:0; flex:1; }
+    .profile-name-line { display:flex; align-items:center; gap:8px; min-width:0; }
+    .profile-name-line strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--brand-dark); font-size:19px; }
+    .profile-meta-row { margin-top:3px; display:flex; align-items:center; gap:9px; }
+    .profile-email { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-2); font-size:13px; }
+    .profile-settings { width:44px; height:44px; border:0; color:var(--brand); background:transparent; font-size:24px; }
+    .balance-card { margin-top:var(--space-5); padding:var(--space-4); border-radius:var(--radius-lg); background:var(--card); }
+    .balance-head { display:flex; justify-content:space-between; color:var(--brand); font-size:13px; }
+    .balance-value { padding:34px 0 28px; text-align:center; }
+    .balance-value strong { display:block; color:var(--brand); font-size:25px; }
+    .balance-value span { display:block; margin-top:4px; color:#a5afb0; font-size:18px; }
+    .balance-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .balance-actions button { height:48px; border:1px solid var(--brand); border-radius:var(--radius-md); color:var(--brand); background:#fff; font-size:14px; font-weight:750; }
+    .withdraw-button { width:100%; height:48px; margin-top:var(--space-3); border:0; border-radius:var(--radius-md); color:#fff; background:var(--brand); font-size:16px; font-weight:750; }
+    .profile-menu { margin-top:var(--space-3); display:grid; gap:var(--space-2); }
+    .profile-menu button { min-height:48px; padding:0 var(--space-4); display:flex; align-items:center; gap:var(--space-3); border:0; border-radius:var(--radius-lg); color:var(--brand); background:var(--card); text-align:left; font-size:14px; font-weight:700; }
+    .profile-menu-icon { width:30px; height:30px; display:grid; place-items:center; border-radius:var(--radius-md); background:var(--brand-soft); }
+    .profile-menu button::after { content:'›'; margin-left:auto; color:var(--text-3); font-size:22px; font-weight:400; }
+
+    .rules-screen { min-height:100dvh; background:var(--page); }
+    .rules-hero { min-height:176px; padding:24px 20px 28px; position:relative; overflow:hidden; color:#fff; background:linear-gradient(148deg,var(--brand) 0%,var(--brand-dark) 78%); }
+    .rules-hero::before, .rules-hero::after { content:''; position:absolute; border-radius:50%; pointer-events:none; }
+    .rules-hero::before { width:170px; height:170px; right:-80px; top:-56px; border:28px solid rgba(255,255,255,.05); }
+    .rules-hero::after { width:100px; height:100px; left:-58px; bottom:-60px; background:rgba(255,255,255,.04); }
+    .rules-hero-inner { position:relative; z-index:1; }
+    .rules-hero h2 { max-width:310px; margin:0 0 var(--space-2); font-size:24px; line-height:32px; letter-spacing:-.3px; }
+    .rules-hero p { max-width:325px; margin:0; color:rgba(255,255,255,.76); font-size:14px; line-height:21px; }
+    .rules-main { padding:var(--space-4); }
+    .rules-section { margin-bottom:var(--space-3); padding:var(--space-4); border:1px solid var(--border); border-radius:var(--radius-lg); background:var(--card); }
+    .rules-section-title { display:flex; align-items:flex-start; gap:var(--space-3); }
+    .rules-section-icon { width:32px; height:32px; flex:0 0 auto; display:grid; place-items:center; border-radius:var(--radius-md); color:var(--brand); background:var(--brand-soft); }
+    .rules-section-icon svg { width:18px; height:18px; }
+    .rules-section-title h2 { margin:2px 0 0; font-size:18px; line-height:26px; }
+    .rules-section-intro { margin:var(--space-2) 0 0 44px; color:var(--text-2); font-size:14px; line-height:21px; }
+    .rules-level-track { margin-top:var(--space-5); padding:0 2px; display:grid; grid-template-columns:repeat(5,minmax(46px,1fr)); position:relative; }
+    .rules-level-track::before { content:''; height:2px; position:absolute; left:9%; right:9%; top:17px; background:#dfe5e6; }
+    .rules-level-step { min-width:0; position:relative; z-index:1; text-align:center; }
+    .rules-level-dot { width:34px; height:34px; margin:0 auto var(--space-2); display:grid; place-items:center; border:3px solid #fff; border-radius:50%; color:#fff; background:var(--brand); box-shadow:0 0 0 1px #cbd5d7; font-size:10px; font-weight:800; }
+    .rules-level-step.current .rules-level-dot { box-shadow:0 0 0 3px #c9e6dd; }
+    .rules-level-step strong { display:block; overflow:hidden; font-size:10px; white-space:nowrap; text-overflow:ellipsis; }
+    .rules-level-step span { display:block; margin-top:3px; color:var(--text-3); font-size:10px; }
+    .rules-level-table { margin-top:var(--space-5); overflow:hidden; border:1px solid var(--divider); border-radius:var(--radius-md); }
+    .rules-level-row { min-height:44px; padding:9px var(--space-3); display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:var(--space-2); border-bottom:1px solid var(--divider); }
+    .rules-level-row:last-child { border-bottom:0; }
+    .rules-level-code { color:var(--brand); font-size:12px; font-weight:800; }
+    .rules-level-name { font-size:14px; font-weight:650; }
+    .rules-level-points { color:var(--text-2); font-size:12px; }
+    .rules-timeline { margin-top:var(--space-5); }
+    .rules-timeline-item { display:grid; grid-template-columns:34px 1fr; gap:var(--space-3); position:relative; }
+    .rules-timeline-item:not(:last-child)::after { content:''; width:1px; position:absolute; left:16px; top:34px; bottom:-4px; background:#d9e3e2; }
+    .rules-timeline-badge { width:34px; height:34px; display:grid; place-items:center; z-index:1; border-radius:50%; color:var(--brand); background:var(--brand-soft); font-size:11px; font-weight:800; }
+    .rules-timeline-copy { padding:1px 0 var(--space-5); }
+    .rules-timeline-copy strong { display:block; font-size:14px; line-height:20px; }
+    .rules-timeline-copy p { margin:var(--space-1) 0 0; color:var(--text-2); font-size:13px; line-height:20px; }
+    .rules-timeline-item:last-child .rules-timeline-copy { padding-bottom:0; }
+    .rules-task-grid { margin-top:var(--space-5); display:grid; gap:var(--space-2); }
+    .rules-task-card { padding:var(--space-3); display:grid; grid-template-columns:38px 1fr auto; align-items:center; gap:var(--space-3); border:1px solid var(--divider); border-radius:var(--radius-lg); background:#fafbfb; }
+    .rules-task-icon { width:38px; height:38px; display:grid; place-items:center; border-radius:var(--radius-md); color:var(--brand); background:var(--brand-soft); }
+    .rules-task-icon svg { width:20px; height:20px; }
+    .rules-task-copy strong { display:block; font-size:14px; }
+    .rules-task-copy span { display:block; margin-top:3px; color:var(--text-3); font-size:11px; line-height:16px; }
+    .rules-task-points { color:var(--brand); font-size:13px; font-weight:800; white-space:nowrap; }
+    .rules-note { margin:var(--space-3) 0 0; padding:var(--space-3); display:flex; align-items:flex-start; gap:var(--space-2); border-radius:var(--radius-md); color:var(--text-2); background:var(--brand-soft); font-size:12px; line-height:18px; }
+    .rules-note svg { width:16px; height:16px; flex:0 0 auto; margin-top:1px; color:var(--brand); }
+    .rules-benefit-list { margin-top:var(--space-5); display:grid; }
+    .rules-benefit { padding:var(--space-3) 0; display:grid; grid-template-columns:36px 1fr; gap:var(--space-3); border-bottom:1px solid var(--divider); }
+    .rules-benefit:first-child { padding-top:0; }
+    .rules-benefit:last-child { padding-bottom:0; border-bottom:0; }
+    .rules-benefit-icon { width:36px; height:36px; display:grid; place-items:center; border-radius:50%; color:var(--brand); background:var(--brand-soft); }
+    .rules-benefit-icon svg { width:18px; height:18px; }
+    .rules-benefit strong { display:block; font-size:14px; }
+    .rules-benefit p { margin:var(--space-1) 0 0; color:var(--text-2); font-size:13px; line-height:20px; }
+    .rules-benefit-meta { display:block; margin-top:var(--space-2); color:var(--brand); font-size:11px; line-height:16px; font-weight:700; }
+    .rules-footer-note { padding:0 18px calc(24px + var(--safe-bottom)); color:var(--text-3); text-align:center; font-size:11px; line-height:16px; }
+
+    .home-sell:active, .trade-submit:active, .order-submit:active, .withdraw-button:active, .modal-button:active { background:var(--brand-pressed); }
+    .order-chat:active, .balance-actions button:active, .task-action:active { background:var(--brand-soft); }
+    .trade-submit:disabled, .order-submit:disabled, .withdraw-button:disabled, .modal-button:disabled { color:#fff; background:var(--disabled); }
+
     @media (min-width: 600px) {
       body { padding: 24px 0; }
-      .app { width: 390px; min-height: 844px; border-radius: 28px; box-shadow: 0 24px 70px rgba(17,40,38,.18); }
-      .app-bar { position: sticky; border-radius: 28px 28px 0 0; }
-      .bottom-nav { width: 390px; left: 50%; right: auto; transform: translateX(-50%); border-radius: 0 0 28px 28px; }
+      .app { width: 375px; min-height: 812px; border-radius: 24px; box-shadow: 0 24px 70px rgba(17,40,38,.18); }
+      .app-bar { position: sticky; border-radius: 24px 24px 0 0; }
+      .bottom-nav { width: 375px; left: 50%; right: auto; transform: translateX(-50%); border-radius: 0 0 24px 24px; }
+      .home-bottom-nav { width:375px; left:50%; right:auto; transform:translateX(-50%); border-radius:0 0 24px 24px; }
+      .trade-submit-bar { width:375px; left:50%; right:auto; transform:translateX(-50%); border-radius:0 0 24px 24px; }
+      .order-submit-bar { width:375px; left:50%; right:auto; transform:translateX(-50%); border-radius:0 0 24px 24px; }
       .toast { bottom: 96px; }
     }
 
@@ -583,12 +817,196 @@
 </head>
 <body>
   <div class="app" id="app">
+    <section class="home-screen" id="homeView" aria-label="Home">
+      <div class="home-status"><span>16:32</span><span class="home-signal">••• ◉ ▰</span></div>
+      <header class="home-greeting">
+        <div class="home-avatar" aria-hidden="true">TL</div>
+        <div class="home-user">
+          <small>Welcome</small>
+          <div class="home-user-line">
+            <span class="home-nickname">tl_u4u0oh8ns</span>
+            <button class="home-level-button" id="homeLevelButton" type="button" aria-label="Open L2 Silver Member Center">
+              <span class="home-level-icon">L2</span><span>Silver</span>
+            </button>
+          </div>
+        </div>
+        <button class="home-support" type="button" aria-label="Customer support">◔</button>
+      </header>
+
+      <section class="home-banner" aria-label="Community banner"><b>Follow Us on Instagram!<br>Be part of our community!</b><span>@troveloop</span></section>
+
+      <div class="home-promos">
+        <article class="home-promo"><span class="home-promo-icon">ϟ</span><div><strong>Hustle Loop</strong><small>Earn daily cash</small></div></article>
+        <article class="home-promo"><span class="home-promo-icon">%</span><div><strong>Refer&amp;Earn</strong><small>Invite for +2% rate</small></div></article>
+      </div>
+
+      <div class="home-tabs" role="tablist" aria-label="Transaction type"><button class="active" id="sellGiftTab" type="button" role="tab" aria-selected="true" aria-controls="sellGiftView">Sell Gift Card</button><button id="fastTransactionTab" type="button" role="tab" aria-selected="false" aria-controls="fastTransactionView">Fast Transaction</button></div>
+
+      <div id="sellGiftView">
+        <div class="home-filters"><div class="home-filter"><span>🍎 Apple&amp;iTunes</span><span>▾</span></div><div class="home-filter"><span>🇦🇺 AUD</span><span>▾</span></div></div>
+
+        <article class="home-seller">
+          <div class="home-seller-head"><div class="seller-avatar">MUZI</div><div class="seller-copy"><strong>TL-muzi_fws</strong><span>1009 Trades · Physical</span></div><span class="seller-limit">Limits 1~600</span></div>
+          <div class="seller-tags"><span>Fast response</span><span>Physical card</span></div>
+          <div class="home-quote"><div class="home-amount"><span>AUD1=₦10.68</span><span class="home-level-bonus">+1.53</span><span class="quote-level-badge">L2</span></div><button class="home-sell normal-order-button" type="button" data-seller="TL-muzi_fws" data-trades="1009">Sell</button></div>
+        </article>
+
+        <article class="home-seller">
+          <div class="home-seller-head"><div class="seller-avatar">TBAY</div><div class="seller-copy"><strong>aa</strong><span>744 Trades · Physical</span></div><span class="seller-limit">Limits 1~600</span></div>
+          <div class="seller-tags"><span>pretty</span></div>
+          <div class="home-quote"><div class="home-amount"><span>AUD1=₦10.13</span><span class="home-level-bonus">+1.53</span><span class="quote-level-badge">L2</span></div><button class="home-sell normal-order-button" type="button" data-seller="aa" data-trades="744">Sell</button></div>
+        </article>
+      </div>
+
+      <div class="view-hidden" id="fastTransactionView">
+        <div class="fast-filter"><div class="home-filter"><span>🇺🇸 USD</span><span>▾</span></div></div>
+        <article class="fast-card"><div class="fast-logo">STEAM</div><div class="fast-copy"><strong>Steam Gift Card</strong><div class="fast-price"><span>₦157.23</span><span class="home-level-bonus">+2.98</span><span class="quote-level-badge">L2</span></div></div><button class="home-sell fast-order-button" type="button">Sell</button></article>
+        <article class="fast-card"><div class="fast-logo light">AMEX</div><div class="fast-copy"><strong>American Express</strong><div class="fast-price"><span>₦137.21</span><span class="home-level-bonus">+2.98</span><span class="quote-level-badge">L2</span></div></div><button class="home-sell fast-order-button" type="button">Sell</button></article>
+        <article class="fast-card"><div class="fast-logo light">APPLE</div><div class="fast-copy"><strong>Apple&amp;iTunes</strong><div class="fast-price"><span>₦106.72</span><span class="home-level-bonus">+2.98</span><span class="quote-level-badge">L2</span></div></div><button class="home-sell fast-order-button" type="button">Sell</button></article>
+        <article class="fast-card"><div class="fast-logo light">RAZER</div><div class="fast-copy"><strong>Razer Gift Card</strong><div class="fast-price"><span>₦78.62</span><span class="home-level-bonus">+2.98</span><span class="quote-level-badge">L2</span></div></div><button class="home-sell fast-order-button" type="button">Sell</button></article>
+      </div>
+
+      <nav class="home-bottom-nav" aria-label="Home navigation">
+        <button class="home-nav-button active" type="button" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m3 11 9-8 9 8v9H3z"/></svg>Home</button>
+        <button class="home-nav-button" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v12H8l-4 3z"/></svg>Message</button>
+        <button class="home-nav-button" id="homeFastTradeButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="m12 7 2 4-2 6-2-6z"/></svg>Fast Trade</button>
+        <button class="home-nav-button" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8"/></svg>Orders</button>
+        <button class="home-nav-button" id="homeMemberButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.4 3.5-7 8-7s7.2 2.6 8 7"/></svg>Mine</button>
+      </nav>
+    </section>
+
+    <section class="fast-trade-screen view-hidden" id="fastTradeView" aria-label="Fast Trade">
+      <div class="home-status"><span>16:28</span><span class="home-signal">••• ◉ ▰</span></div>
+      <header class="trade-header">
+        <button class="trade-back" id="fastTradeBack" type="button" aria-label="Back to previous page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <h1>Fast Trade</h1>
+        <span aria-hidden="true"></span>
+      </header>
+
+      <main>
+        <section class="trade-panel" aria-label="Fast trade form">
+          <div class="trade-field">
+            <span class="trade-label required">Card type</span>
+            <div class="trade-segment" id="tradeCardType" role="group" aria-label="Card type"><button class="active" type="button" aria-pressed="true">Physical Card</button><button type="button" aria-pressed="false">E-Code</button></div>
+          </div>
+
+          <div class="trade-field">
+            <span class="trade-label required">Select Card</span>
+            <button class="trade-select" type="button" data-trade-select="card"><span class="trade-select-logo">STEAM</span><span class="trade-select-label">Steam Gift Card</span><span class="trade-select-arrow">▼</span></button>
+          </div>
+
+          <div class="trade-field">
+            <span class="trade-label required">Select Currency</span>
+            <button class="trade-select" type="button" data-trade-select="currency"><span class="trade-select-logo currency">🇺🇸</span><span class="trade-select-label">USA (USD)　(1 - 1234)</span><span class="trade-select-arrow">▼</span></button>
+          </div>
+
+          <div class="trade-field">
+            <div class="trade-amount-head"><span class="trade-label required">Gift Card Amount</span><span class="trade-limit">Limits 1~1234</span></div>
+            <div class="trade-amount-box">
+              <input id="tradeAmount" type="number" min="1" max="1234" step="1" value="100" inputmode="decimal" aria-label="Gift card amount" />
+              <div class="trade-rate"><span>Rate: ₦2,358.45</span><span class="home-level-bonus">+1.87</span><span class="quote-level-badge">L2</span></div>
+            </div>
+            <span class="trade-chip" id="tradeCardTypeChip">Physical</span>
+          </div>
+        </section>
+
+        <section class="trade-summary" aria-label="Trade summary">
+          <div class="trade-terms"><strong>!</strong><span>Trade Terms: lilizichong</span></div>
+          <div class="trade-output"><span>You get</span><strong id="tradePoints">157.2327 Points</strong><small id="tradeNaira">≈ 235849.05 ₦</small></div>
+          <button class="trade-coupon" type="button" id="tradeCoupon">Coupon <span>no available coupons</span></button>
+        </section>
+      </main>
+
+      <div class="trade-submit-bar"><button class="trade-submit" id="fastTradeSubmit" type="button">Sell Now</button></div>
+    </section>
+
+    <section class="order-screen view-hidden" id="normalOrderView" aria-label="Sell Gift Cards order">
+      <div class="home-status"><span>16:28</span><span class="home-signal">••• ◉ ▰</span></div>
+      <header class="trade-header">
+        <button class="trade-back" id="normalOrderBack" type="button" aria-label="Back to home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <h1>Sell Gift Cards</h1>
+        <span aria-hidden="true"></span>
+      </header>
+
+      <main>
+        <section class="order-seller-card" aria-label="Selected seller and gift card">
+          <div class="order-seller-head">
+            <div class="order-seller-avatar">MUZI</div>
+            <div class="order-seller-copy"><strong id="orderSellerName">TL-muzi_fws</strong><span id="orderSellerTrades">1009 Trades</span></div>
+          </div>
+          <div class="order-choice"><span class="order-choice-icon">🍎</span><span>Apple&amp;iTunes</span></div>
+          <div class="order-choice"><span class="order-choice-icon">🇦🇺</span><span>AUD</span></div>
+        </section>
+
+        <div class="trade-segment order-card-type" id="orderCardType" role="group" aria-label="Card type"><button class="active" type="button" aria-pressed="true">Physical Card</button><button type="button" aria-pressed="false">E-Code</button></div>
+
+        <section class="order-rate-panel" aria-label="Order rate and amount">
+          <div class="order-rate-row">
+            <div class="order-rate-value"><span>Rate: ₦462.30</span><span class="home-level-bonus">+1.58</span><span class="quote-level-badge">L2</span></div>
+            <span class="order-rate-limit">1~195</span>
+          </div>
+          <label class="order-amount-label" for="orderAmount">Gift Card Amount</label>
+          <div class="order-amount-box"><input id="orderAmount" type="number" min="1" max="195" step="1" value="10" inputmode="decimal" /><span>AUD</span></div>
+        </section>
+
+        <section class="order-summary" aria-label="Order preview">
+          <div class="order-terms"><strong>!</strong><span>Trade Terms: This is a card, you know? Please confirm the card details before selling.</span></div>
+          <div class="order-output"><span>You get</span><strong id="orderPoints">3.0821 Points</strong><small id="orderNaira">≈ 4627.15 ₦</small></div>
+        </section>
+      </main>
+
+      <div class="order-submit-bar"><button class="order-chat" id="orderLiveChat" type="button">Live Chat</button><button class="order-submit" id="normalOrderSubmit" type="button">Sell</button></div>
+    </section>
+
+    <section class="profile-screen view-hidden" id="profileView" aria-label="Profile">
+      <div class="home-status"><span>16:25</span><span class="home-signal">••• ◉ ▰</span></div>
+      <header class="profile-head">
+        <div class="profile-avatar" aria-hidden="true">TL</div>
+        <div class="profile-identity">
+          <div class="profile-name-line">
+            <strong>tl_u4u0oh8ns</strong>
+            <button class="home-level-button" id="profileLevelButton" type="button" aria-label="Open L2 Silver Member Center"><span class="home-level-icon">L2</span><span>Silver</span></button>
+          </div>
+          <div class="profile-meta-row"><span class="profile-email">sssss@gmail.com</span></div>
+        </div>
+        <button class="profile-settings" type="button" aria-label="Settings">⚙</button>
+      </header>
+
+      <section class="balance-card" aria-label="Available balance">
+        <div class="balance-head"><span>Available Balance　?</span><strong>NGN　▾</strong></div>
+        <div class="balance-value"><strong>0 Points</strong><span>≈ 0 ₦</span></div>
+        <div class="balance-actions"><button type="button">History</button><button type="button">Transaction Records</button></div>
+        <button class="withdraw-button" type="button">Withdraw</button>
+      </section>
+
+      <div class="profile-menu">
+        <button type="button"><span class="profile-menu-icon">🎁</span>Invitation Reward</button>
+        <button type="button"><span class="profile-menu-icon">券</span>Bonus Coupon</button>
+        <button type="button"><span class="profile-menu-icon">◎</span>Profile</button>
+        <button type="button"><span class="profile-menu-icon">⌁</span>Transaction PIN</button>
+        <button type="button"><span class="profile-menu-icon">☷</span>Help us improve</button>
+      </div>
+
+      <nav class="home-bottom-nav" aria-label="Profile navigation">
+        <button class="home-nav-button" id="profileHomeButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m3 11 9-8 9 8v9H3z"/></svg>Home</button>
+        <button class="home-nav-button" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v12H8l-4 3z"/></svg>Message</button>
+        <button class="home-nav-button" id="profileFastTradeButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="m12 7 2 4-2 6-2-6z"/></svg>Fast Trade</button>
+        <button class="home-nav-button" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8"/></svg>Orders</button>
+        <button class="home-nav-button active" type="button" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.4 3.5-7 8-7s7.2 2.6 8 7"/></svg>Mine</button>
+      </nav>
+    </section>
+
+    <section class="member-screen view-hidden" id="memberView" aria-label="Member Center">
     <header class="app-bar">
       <button class="icon-button" aria-label="Back" id="backButton">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
       </button>
       <h1>Member Center</h1>
-      <a class="rule-button" href="./会员等级规则.html">Rules</a>
+      <button class="rule-button" id="memberRulesButton" type="button">Rules</button>
     </header>
 
     <div class="hero-wrap">
@@ -598,7 +1016,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
           </button>
           <div class="level-state">
-            <strong id="levelState">CURRENT LEVEL</strong>
+            <strong id="levelState"></strong>
             <div class="card-dots" id="cardDots" aria-label="Level 3 of 5"></div>
           </div>
           <button class="card-arrow" id="nextLevel" aria-label="View next level">
@@ -609,7 +1027,7 @@
           <div class="medal" id="levelMedal">L2</div>
           <div class="member-copy">
             <div class="level-line"><strong id="levelName">Silver Member</strong><span id="levelCode">L2</span></div>
-            <p id="levelDescription">Protected until Nov 18, 2026</p>
+            <p id="levelDescription">Based on Jun–Aug 2026 Growth Points</p>
           </div>
         </div>
         <div class="card-growth">
@@ -617,7 +1035,7 @@
             <div class="growth-value"><span id="growthValue">860</span><small id="growthTarget"> / 1,500</small></div>
             <div class="growth-tip" id="growthTip"><span id="growthLeft">640</span> pts to<br><b>Gold Member</b></div>
           </div>
-          <span class="growth-update">Update on the 1st each month</span>
+          <span class="growth-update">Level updates monthly · Previous 3 calendar months</span>
           <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="1500" aria-valuenow="860" id="growthProgress">
             <div class="progress-bar" id="progressBar"></div>
           </div>
@@ -650,21 +1068,21 @@
             <div class="task-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
             </div>
-            <div class="task-copy"><strong>Link Email</strong><p>First successful link <span class="reward">+50</span> · One time</p></div>
+            <div class="task-copy"><strong>Link Email</strong><p>First successful link <span class="reward">+50</span></p></div>
             <button class="task-action" id="bindEmail">Go</button>
           </article>
           <article class="task">
             <div class="task-icon gold">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5"/><path d="m15 15 1.5 1.5L20 13"/></svg>
             </div>
-            <div class="task-copy"><strong>Complete a Sale</strong><p>Earn <span class="reward">+1</span> per 1 Point · Up to 3,000/mo</p></div>
+            <div class="task-copy"><strong>Complete a Sale</strong><p>Earn <span class="reward">+1</span> per 1 Point</p></div>
             <button class="task-action" id="sellNow">Sell Now</button>
           </article>
           <article class="task" data-completed="true">
             <div class="task-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v9l6 3"/><circle cx="12" cy="12" r="9"/></svg>
             </div>
-            <div class="task-copy"><strong>Daily Sign-in</strong><p>First sign-in each day <span class="reward">+1</span> · 20/20</p></div>
+            <div class="task-copy"><strong>Daily Sign-in</strong><p>First sign-in each day <span class="reward">+1</span></p></div>
             <button class="task-action done" disabled>Completed</button>
           </article>
         </div>
@@ -726,11 +1144,93 @@
     </main>
 
     <nav class="bottom-nav" aria-label="Main navigation">
-      <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 11 9-8 9 8v9H3z"/><path d="M9 20v-6h6v6"/></svg>Home</button>
+      <a class="nav-item" id="memberHomeButton" href="./tl-member-center.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 11 9-8 9 8v9H3z"/><path d="M9 20v-6h6v6"/></svg>Home</a>
       <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 5h16v12H8l-4 3z"/></svg>Message</button>
       <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Orders</button>
-      <button class="nav-item active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.4 3.5-7 8-7s7.2 2.6 8 7"/></svg>Mine</button>
+      <button class="nav-item active" id="memberProfileButton" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.4 3.5-7 8-7s7.2 2.6 8 7"/></svg>Mine</button>
     </nav>
+    </section>
+
+    <section class="rules-screen view-hidden" id="rulesView" aria-label="Membership Rules">
+      <header class="app-bar">
+        <button class="icon-button" id="rulesBackButton" type="button" aria-label="Back to Member Center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <h1>Membership Rules</h1>
+        <span aria-hidden="true"></span>
+      </header>
+
+      <section class="rules-hero" aria-labelledby="rulesHeroTitle">
+        <div class="rules-hero-inner">
+          <h2 id="rulesHeroTitle">How Your Membership Level Is Calculated</h2>
+          <p>Growth Points update in real time. Your membership level is recalculated on the 1st of each month using the total from the previous three calendar months.</p>
+        </div>
+      </section>
+
+      <main class="rules-main">
+        <section class="rules-section" aria-labelledby="rulesLevelsTitle">
+          <div class="rules-section-title">
+            <span class="rules-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19V9l4 3 4-7 4 7 4-3v10H4Z"/></svg></span>
+            <h2 id="rulesLevelsTitle">Membership Levels and Growth Points</h2>
+          </div>
+          <p class="rules-section-intro">The total Growth Points earned during the previous three full calendar months determines your level.</p>
+          <div class="rules-level-track" aria-label="Membership level progression">
+            <div class="rules-level-step"><div class="rules-level-dot">L0</div><strong>Member</strong><span>0</span></div>
+            <div class="rules-level-step"><div class="rules-level-dot">L1</div><strong>Bronze</strong><span>100</span></div>
+            <div class="rules-level-step"><div class="rules-level-dot">L2</div><strong>Silver</strong><span>500</span></div>
+            <div class="rules-level-step"><div class="rules-level-dot">L3</div><strong>Gold</strong><span>1,500</span></div>
+            <div class="rules-level-step"><div class="rules-level-dot">L4</div><strong>Platinum</strong><span>5,000</span></div>
+          </div>
+          <div class="rules-level-table" aria-label="Membership level thresholds">
+            <div class="rules-level-row"><span class="rules-level-code">L0</span><span class="rules-level-name">Member</span><span class="rules-level-points">0 points</span></div>
+            <div class="rules-level-row"><span class="rules-level-code">L1</span><span class="rules-level-name">Bronze</span><span class="rules-level-points">100 points</span></div>
+            <div class="rules-level-row"><span class="rules-level-code">L2</span><span class="rules-level-name">Silver</span><span class="rules-level-points">500 points</span></div>
+            <div class="rules-level-row"><span class="rules-level-code">L3</span><span class="rules-level-name">Gold</span><span class="rules-level-points">1,500 points</span></div>
+            <div class="rules-level-row"><span class="rules-level-code">L4</span><span class="rules-level-name">Platinum</span><span class="rules-level-points">5,000 points</span></div>
+          </div>
+        </section>
+
+        <section class="rules-section" aria-labelledby="rulesEvaluationTitle">
+          <div class="rules-section-title">
+            <span class="rules-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <h2 id="rulesEvaluationTitle">How Levels Are Updated</h2>
+          </div>
+          <div class="rules-timeline">
+            <div class="rules-timeline-item"><span class="rules-timeline-badge">01</span><div class="rules-timeline-copy"><strong>Growth Points update in real time</strong><p>Eligible task and transaction points are credited immediately after validation.</p></div></div>
+            <div class="rules-timeline-item"><span class="rules-timeline-badge">02</span><div class="rules-timeline-copy"><strong>Level review on the 1st</strong><p>Your membership level is recalculated once each month on the 1st.</p></div></div>
+            <div class="rules-timeline-item"><span class="rules-timeline-badge">03</span><div class="rules-timeline-copy"><strong>Previous three calendar months</strong><p>The review uses the combined Growth Points from the three full calendar months immediately before the review date.</p></div></div>
+            <div class="rules-timeline-item"><span class="rules-timeline-badge">04</span><div class="rules-timeline-copy"><strong>New level takes effect after review</strong><p>The recalculated level and its benefits remain active until the next monthly review.</p></div></div>
+          </div>
+        </section>
+
+        <section class="rules-section" aria-labelledby="rulesEarnTitle">
+          <div class="rules-section-title">
+            <span class="rules-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v18M7 7.5C7 5.6 8.8 4 12 4s5 1.4 5 3.3S15.2 10 12 10s-5 1.5-5 3.5S8.8 17 12 17s5-1.6 5-3.5"/></svg></span>
+            <h2 id="rulesEarnTitle">How to Earn Growth Points</h2>
+          </div>
+          <div class="rules-task-grid">
+            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div class="rules-task-copy"><strong>Daily Sign-in</strong><span>First valid sign-in each day</span></div><span class="rules-task-points">+1</span></article>
+            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span><div class="rules-task-copy"><strong>Link Email</strong><span>First successful email link</span></div><span class="rules-task-points">+50</span></article>
+            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5"/><path d="m15 15 1.5 1.5L20 13"/></svg></span><div class="rules-task-copy"><strong>Complete a Sale</strong><span>Earn 1 Growth Point per 1 Point</span></div><span class="rules-task-points">1:1</span></article>
+          </div>
+          <p class="rules-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><span>Transaction Growth Points are credited after the order is completed and passes validation.</span></p>
+        </section>
+
+        <section class="rules-section" aria-labelledby="rulesBenefitsTitle">
+          <div class="rules-section-title">
+            <span class="rules-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 0 6.5 10 2.5 2.5 0 0 0 4 12.5V17h16v-4.5a2.5 2.5 0 0 0 0-5V3H4z"/><path d="M12 6v8" stroke-dasharray="2 2"/></svg></span>
+            <h2 id="rulesBenefitsTitle">How Membership Benefits Work</h2>
+          </div>
+          <div class="rules-benefit-list">
+            <div class="rules-benefit"><span class="rules-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 7V5h8v2M8 12h8"/></svg></span><div><strong>Sell Rate Bonus</strong><p>Higher levels add a larger percentage-point bonus to the base Sell Rate.</p><span class="rules-benefit-meta">L0 0 pp · L1 +0.2 pp · L2 +0.5 pp · L3 +1.0 pp · L4 +1.5 pp</span></div></div>
+            <div class="rules-benefit"><span class="rules-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM12 8v11M3 5h18v3H3z"/><path d="M12 5c-2.8 0-4-1-4-2 2.6-.5 4 .3 4 2Zm0 0c2.8 0 4-1 4-2-2.6-.5-4 .3-4 2Z"/></svg></span><div><strong>Upgrade Coupon Pack</strong><p>When the monthly review moves you to a higher level, the coupon pack configured for that level is issued.</p></div></div>
+            <div class="rules-benefit"><span class="rules-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/></svg></span><div><strong>Monthly Benefit Update</strong><p>Your recalculated level and its associated benefits take effect after the monthly review.</p></div></div>
+          </div>
+        </section>
+      </main>
+
+      <p class="rules-footer-note">Growth Points and benefit values are subject to the active configuration for your TroveLoop site.</p>
+    </section>
 
     <div class="modal-mask" id="benefitModal" aria-hidden="true">
       <section class="benefit-modal" role="dialog" aria-modal="true" aria-labelledby="benefitModalTitle">
@@ -772,14 +1272,14 @@
       card.style.setProperty('--medal-text', level.medalText);
       card.setAttribute('aria-label', `${level.code} ${level.name} membership, benefits, and Growth Points`);
 
-      document.getElementById('levelState').textContent = isCurrent ? 'CURRENT LEVEL' : 'LEVEL PREVIEW';
+      document.getElementById('levelState').textContent = isCurrent ? '' : 'LEVEL PREVIEW';
       document.getElementById('levelMedal').textContent = level.code;
       document.getElementById('levelName').textContent = level.name === 'Member' ? 'Member' : `${level.name} Member`;
       document.getElementById('levelCode').textContent = level.code;
       document.getElementById('levelDescription').textContent = isCurrent
-        ? 'Protected until Nov 18, 2026'
+        ? 'Based on Jun–Aug 2026 Growth Points'
         : isUnlocked
-          ? 'Unlocked with your current Growth Points'
+          ? 'Threshold reached in the current 3-month total'
           : `Unlock at ${formatNumber(level.threshold)} Growth Points`;
       document.getElementById('cardRate').textContent = level.rate;
       document.getElementById('cardCoupon').textContent = level.coupon;
@@ -803,7 +1303,7 @@
       growthValue.textContent = formatNumber(growth);
 
       if (index < currentLevelIndex) {
-        growthTarget.textContent = ' pts this month';
+        growthTarget.textContent = ' pts / 3 months';
         growthTip.innerHTML = '<b>Unlocked</b><br>with current points';
         progressBar.style.width = '100%';
         growthProgress.setAttribute('aria-valuemax', Math.max(level.threshold, 1));
@@ -868,18 +1368,18 @@
         document.getElementById('benefitModalTitle').textContent = level.coupon;
         const hasCoupon = viewedLevelIndex > 0;
         benefitModalContent.innerHTML = hasCoupon ? `
-          <p class="modal-lead">This coupon pack is issued when you actually upgrade to ${level.code} ${level.name}.</p>
+          <p class="modal-lead">This coupon pack is issued when the monthly level update moves you to ${level.code} ${level.name}.</p>
           <div class="coupon-list" aria-label="Coupons in ${level.coupon}">
             <span class="coupon-list-label">COUPONS IN THIS PACK</span>
             <article class="coupon-card">
               <div class="coupon-stub">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 0 6.5 10 2.5 2.5 0 0 0 4 12.5V17h16v-4.5a2.5 2.5 0 0 0 0-5V3H4z"/><path d="M12 6v8" stroke-dasharray="2 2"/></svg>
-                <strong>COUPON</strong>
+                <strong class="coupon-value">+3%</strong>
+                <span class="coupon-limit">Max 50 Points</span>
               </div>
               <div class="coupon-copy">
-                <strong>Coupon item</strong>
-                <span>Value and minimum spend are configured by your site.</span>
-                <small>Validity is shown after the coupon is issued.</small>
+                <strong>Compensation Coupon</strong>
+                <span>Order over 2 Points</span>
+                <small>Valid until Sunday 10/05/2026</small>
               </div>
             </article>
           </div>
@@ -916,10 +1416,155 @@
       toast.classList.add('show');
       toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
     }
+    const homeView = document.getElementById('homeView');
+    const profileView = document.getElementById('profileView');
+    const memberView = document.getElementById('memberView');
+    const fastTradeView = document.getElementById('fastTradeView');
+    const normalOrderView = document.getElementById('normalOrderView');
+    const rulesView = document.getElementById('rulesView');
+    let memberReturnView = 'home';
+    let fastTradeReturnView = 'home';
+    function showHomeView() {
+      memberView.classList.add('view-hidden');
+      profileView.classList.add('view-hidden');
+      fastTradeView.classList.add('view-hidden');
+      normalOrderView.classList.add('view-hidden');
+      rulesView.classList.add('view-hidden');
+      homeView.classList.remove('view-hidden');
+      history.replaceState(null, '', window.location.href.split('#')[0]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showProfileView() {
+      homeView.classList.add('view-hidden');
+      memberView.classList.add('view-hidden');
+      fastTradeView.classList.add('view-hidden');
+      normalOrderView.classList.add('view-hidden');
+      rulesView.classList.add('view-hidden');
+      profileView.classList.remove('view-hidden');
+      history.replaceState(null, '', '#profile');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showMemberView(returnView = memberReturnView) {
+      memberReturnView = returnView;
+      homeView.classList.add('view-hidden');
+      profileView.classList.add('view-hidden');
+      fastTradeView.classList.add('view-hidden');
+      normalOrderView.classList.add('view-hidden');
+      rulesView.classList.add('view-hidden');
+      memberView.classList.remove('view-hidden');
+      renderMemberCard(currentLevelIndex);
+      history.replaceState(null, '', '#member');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showFastTradeView(returnView = fastTradeReturnView) {
+      fastTradeReturnView = returnView;
+      homeView.classList.add('view-hidden');
+      profileView.classList.add('view-hidden');
+      memberView.classList.add('view-hidden');
+      normalOrderView.classList.add('view-hidden');
+      rulesView.classList.add('view-hidden');
+      fastTradeView.classList.remove('view-hidden');
+      history.replaceState(null, '', '#fast-trade');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showNormalOrderView(trigger) {
+      homeView.classList.add('view-hidden');
+      profileView.classList.add('view-hidden');
+      memberView.classList.add('view-hidden');
+      fastTradeView.classList.add('view-hidden');
+      rulesView.classList.add('view-hidden');
+      normalOrderView.classList.remove('view-hidden');
+      if (trigger) {
+        document.getElementById('orderSellerName').textContent = trigger.dataset.seller;
+        document.getElementById('orderSellerTrades').textContent = `${trigger.dataset.trades} Trades`;
+      }
+      history.replaceState(null, '', '#order');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showRulesView() {
+      homeView.classList.add('view-hidden');
+      profileView.classList.add('view-hidden');
+      memberView.classList.add('view-hidden');
+      fastTradeView.classList.add('view-hidden');
+      normalOrderView.classList.add('view-hidden');
+      rulesView.classList.remove('view-hidden');
+      history.replaceState(null, '', '#rules');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-    document.getElementById('backButton').addEventListener('click', () => showToast('Back to Mine'));
+    document.getElementById('homeLevelButton').addEventListener('click', () => showMemberView('home'));
+    document.getElementById('homeMemberButton').addEventListener('click', showProfileView);
+    document.getElementById('homeFastTradeButton').addEventListener('click', () => showFastTradeView('home'));
+    document.getElementById('profileLevelButton').addEventListener('click', () => showMemberView('profile'));
+    document.getElementById('memberHomeButton').addEventListener('click', showHomeView);
+    document.getElementById('profileHomeButton').addEventListener('click', showHomeView);
+    document.getElementById('profileFastTradeButton').addEventListener('click', () => showFastTradeView('profile'));
+    document.getElementById('memberProfileButton').addEventListener('click', showProfileView);
+    document.getElementById('memberRulesButton').addEventListener('click', showRulesView);
+    document.getElementById('rulesBackButton').addEventListener('click', () => showMemberView(memberReturnView));
+    document.getElementById('backButton').addEventListener('click', () => memberReturnView === 'profile' ? showProfileView() : showHomeView());
+    document.getElementById('fastTradeBack').addEventListener('click', () => fastTradeReturnView === 'profile' ? showProfileView() : showHomeView());
+    document.getElementById('normalOrderBack').addEventListener('click', showHomeView);
+    const sellGiftTab = document.getElementById('sellGiftTab');
+    const fastTransactionTab = document.getElementById('fastTransactionTab');
+    const sellGiftView = document.getElementById('sellGiftView');
+    const fastTransactionView = document.getElementById('fastTransactionView');
+    function showTransactionView(type) {
+      const showFast = type === 'fast';
+      sellGiftTab.classList.toggle('active', !showFast);
+      fastTransactionTab.classList.toggle('active', showFast);
+      sellGiftTab.setAttribute('aria-selected', String(!showFast));
+      fastTransactionTab.setAttribute('aria-selected', String(showFast));
+      sellGiftView.classList.toggle('view-hidden', showFast);
+      fastTransactionView.classList.toggle('view-hidden', !showFast);
+    }
+    sellGiftTab.addEventListener('click', () => showTransactionView('sell'));
+    fastTransactionTab.addEventListener('click', () => showTransactionView('fast'));
+    document.querySelectorAll('#tradeCardType button').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('#tradeCardType button').forEach(item => {
+        const selected = item === button;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+      document.getElementById('tradeCardTypeChip').textContent = button.textContent.startsWith('Physical') ? 'Physical' : 'E-Code';
+    }));
+    document.querySelectorAll('[data-trade-select]').forEach(button => button.addEventListener('click', () => showToast(`Select ${button.dataset.tradeSelect}`)));
+    const tradeAmount = document.getElementById('tradeAmount');
+    function updateTradePreview() {
+      const amount = Math.min(1234, Math.max(1, Number(tradeAmount.value) || 1));
+      document.getElementById('tradePoints').textContent = `${(amount * 1.572327).toFixed(4)} Points`;
+      document.getElementById('tradeNaira').textContent = `≈ ${(amount * 2358.4905).toFixed(2)} ₦`;
+    }
+    tradeAmount.addEventListener('input', updateTradePreview);
+    document.getElementById('tradeCoupon').addEventListener('click', () => showToast('No coupons available'));
+    document.getElementById('fastTradeSubmit').addEventListener('click', () => showToast('Fast trade submitted'));
+    document.querySelectorAll('#orderCardType button').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('#orderCardType button').forEach(item => {
+        const selected = item === button;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+    }));
+    const orderAmount = document.getElementById('orderAmount');
+    function updateOrderPreview() {
+      const amount = Math.min(195, Math.max(1, Number(orderAmount.value) || 1));
+      document.getElementById('orderPoints').textContent = `${(amount * .30821).toFixed(4)} Points`;
+      document.getElementById('orderNaira').textContent = `≈ ${(amount * 462.715).toFixed(2)} ₦`;
+    }
+    orderAmount.addEventListener('input', updateOrderPreview);
+    document.querySelectorAll('.normal-order-button').forEach(button => button.addEventListener('click', () => showNormalOrderView(button)));
+    document.querySelectorAll('.fast-order-button').forEach(button => button.addEventListener('click', () => showFastTradeView('home')));
+    document.getElementById('orderLiveChat').addEventListener('click', () => showToast('Opening live chat'));
+    document.getElementById('normalOrderSubmit').addEventListener('click', () => showToast('Sell order submitted'));
     document.getElementById('sellNow').addEventListener('click', () => showToast('Opening Sell Gift Cards'));
-    document.querySelectorAll('.nav-item:not(.active)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));
+    document.querySelectorAll('.nav-item:not(.active):not(#memberHomeButton)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));
+    document.querySelectorAll('.home-nav-button:not(.active):not(#homeMemberButton):not(#profileHomeButton):not(#homeFastTradeButton):not(#profileFastTradeButton)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));
+    document.querySelectorAll('.profile-menu button,.balance-actions button,.withdraw-button').forEach(button => button.addEventListener('click', () => showToast(button.textContent.trim())));
+    if (window.location.hash === '#member') showMemberView('home');
+    if (window.location.hash === '#profile') showProfileView();
+    if (window.location.hash === '#fast-trade') showFastTradeView('home');
+    if (window.location.hash === '#order') showNormalOrderView();
+    if (window.location.hash === '#rules') showRulesView();
 
     document.getElementById('bindEmail').addEventListener('click', event => {
       const button = event.currentTarget;

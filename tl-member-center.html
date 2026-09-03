@@ -194,6 +194,17 @@
       line-height: 14px;
       letter-spacing: 1.1px;
     }
+    .level-state strong.locked-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .level-lock-icon {
+      width: 10px;
+      height: 10px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+    }
 
     .card-dots {
       margin-top: 5px;
@@ -261,7 +272,7 @@
 
     .level-line strong { font-size: 24px; line-height: 30px; letter-spacing: .2px; }
     .level-line span { color: rgba(255,255,255,.66); font-size: 12px; }
-    .member-copy p { margin: 4px 0 0; color: rgba(255,255,255,.66); font-size: 11px; }
+    .member-copy p { margin: 4px 0 0; color: rgba(255,255,255,.66); font-size: 10px; letter-spacing: -.1px; white-space: nowrap; }
 
     .benefit-strip {
       margin-top: 15px;
@@ -269,22 +280,30 @@
       border-top: 1px solid rgba(255,255,255,.12);
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 8px;
     }
 
     .benefit-item {
       min-width: 0;
-      min-height: 44px;
-      padding: 0;
+      min-height: 58px;
+      padding: 8px 9px;
       display: flex;
       align-items: center;
       gap: 9px;
-      border: 0;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
       color: inherit;
-      background: transparent;
       text-align: left;
       font: inherit;
       cursor: pointer;
+    }
+    .benefit-item.rate-benefit {
+      border-color: rgba(145,225,204,.24);
+      background: linear-gradient(135deg,rgba(113,213,186,.17),rgba(113,213,186,.06));
+    }
+    .benefit-item.reward-benefit {
+      border-color: rgba(255,214,112,.28);
+      background: linear-gradient(135deg,rgba(244,190,55,.18),rgba(244,190,55,.06));
     }
     .benefit-item:active { opacity: .72; }
     .benefit-icon {
@@ -296,8 +315,12 @@
       background: rgba(255,255,255,.1);
     }
     .benefit-icon svg { width: 17px; height: 17px; }
+    .rate-benefit .benefit-icon { color:#b3f0df; background:rgba(113,213,186,.18); }
+    .reward-benefit .benefit-icon { color:#ffe08a; background:rgba(244,190,55,.18); }
     .benefit-item small { display: block; color: rgba(255,255,255,.6); font-size: 10px; }
     .benefit-item b { display: block; margin-top: 2px; font-size: 12px; font-weight: 600; }
+    .rate-benefit b { color:#bff4e6; font-size:14px; font-weight:750; }
+    .reward-benefit b { color:#ffe39a; font-weight:700; }
 
     .card-growth {
       margin-top: 14px;
@@ -383,6 +406,14 @@
       color: var(--text-3);
       font-size: 10px;
     }
+    .locked-level-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      color: rgba(255,255,255,.72);
+      font-weight: 650;
+    }
 
     .task-list { display: grid; gap: 11px; }
 
@@ -397,7 +428,7 @@
     .task:first-child { padding-top: 0; }
     .task:last-child { padding-bottom: 0; border-bottom: 0; }
 
-    .task-icon {
+    .task-icon { 
       width: 42px;
       height: 42px;
       display: grid;
@@ -407,6 +438,8 @@
       background: var(--brand-soft);
     }
     .task-icon.gold { color: #9b6500; background: var(--warning-soft); }
+    .task-icon.rose { color:#b53b68; background:#fff0f5; }
+    .task-icon.blue { color:#2869bd; background:#edf5ff; }
     .task-icon svg { width: 21px; height: 21px; }
 
     .task-copy { min-width: 0; }
@@ -1027,7 +1060,7 @@
           <div class="medal" id="levelMedal">L2</div>
           <div class="member-copy">
             <div class="level-line"><strong id="levelName">Silver Member</strong><span id="levelCode">L2</span></div>
-            <p id="levelDescription">Based on Jun–Aug 2026 Growth Points</p>
+            <p id="levelDescription">Membership level valid until Nov 30, 2026</p>
           </div>
         </div>
         <div class="card-growth">
@@ -1035,20 +1068,20 @@
             <div class="growth-value"><span id="growthValue">860</span><small id="growthTarget"> / 1,500</small></div>
             <div class="growth-tip" id="growthTip"><span id="growthLeft">640</span> pts to<br><b>Gold Member</b></div>
           </div>
-          <span class="growth-update">Level updates monthly · Previous 3 calendar months</span>
+          <span class="growth-update">Last 3 months</span>
           <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="1500" aria-valuenow="860" id="growthProgress">
             <div class="progress-bar" id="progressBar"></div>
           </div>
           <div class="progress-meta"><span id="progressStart">L2 Silver · 500</span><span id="progressEnd">L3 Gold · 1,500</span></div>
         </div>
         <div class="benefit-strip">
-          <button class="benefit-item" id="rateBenefit" type="button" aria-haspopup="dialog">
+          <button class="benefit-item rate-benefit" id="rateBenefit" type="button" aria-haspopup="dialog">
             <span class="benefit-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 7V5h8v2M8 12h8"/></svg>
             </span>
             <span><small>Sell Rate Bonus</small><b id="cardRate">+0.5 pp</b></span>
           </button>
-          <button class="benefit-item" id="couponBenefit" type="button" aria-haspopup="dialog">
+          <button class="benefit-item reward-benefit" id="couponBenefit" type="button" aria-haspopup="dialog">
             <span class="benefit-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 0 6.5 10 2.5 2.5 0 0 0 4 12.5V17h16v-4.5a2.5 2.5 0 0 0 0-5V3H4z"/><path d="M12 6v8" stroke-dasharray="2 2"/></svg>
             </span>
@@ -1064,26 +1097,40 @@
           <div><h2 id="tasksTitle">Growth Tasks</h2></div>
         </div>
         <div class="task-list" id="taskList">
-          <article class="task" id="emailTask">
-            <div class="task-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
-            </div>
-            <div class="task-copy"><strong>Link Email</strong><p>First successful link <span class="reward">+50</span></p></div>
-            <button class="task-action" id="bindEmail">Go</button>
-          </article>
           <article class="task">
             <div class="task-icon gold">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5"/><path d="m15 15 1.5 1.5L20 13"/></svg>
             </div>
             <div class="task-copy"><strong>Complete a Sale</strong><p>Earn <span class="reward">+1</span> per 1 Point</p></div>
-            <button class="task-action" id="sellNow">Sell Now</button>
+            <button class="task-action" id="sellNow" type="button">Sell Now</button>
           </article>
-          <article class="task" data-completed="true">
+          <article class="task">
+            <div class="task-icon gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-7 11h6l-1 9 7-12h-6z"/></svg>
+            </div>
+            <div class="task-copy"><strong>First Fast Trade</strong><p>Complete your first Fast Trade <span class="reward">+100</span></p></div>
+            <button class="task-action" id="firstFastTrade" type="button">Trade Now</button>
+          </article>
+          <article class="task">
+            <div class="task-icon rose">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v8M7 11l5-7c1 0 2 .8 2 2v3h4.6a2 2 0 0 1 2 2.4l-1.2 6A2 2 0 0 1 17.5 19H7M3 11h4v8H3z"/></svg>
+            </div>
+            <div class="task-copy"><strong>Follow Social Media</strong><p>Follow our social media account <span class="reward">+20</span></p></div>
+            <button class="task-action" id="followSocial" type="button">Follow</button>
+          </article>
+          <article class="task">
+            <div class="task-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.6-3.4 2.4-5 5.5-5s4.9 1.6 5.5 5M16 8h5M18.5 5.5v5"/></svg>
+            </div>
+            <div class="task-copy"><strong>Successful Referral</strong><p>Successfully invite a new user <span class="reward">+100</span></p></div>
+            <button class="task-action" id="inviteUser" type="button">Invite</button>
+          </article>
+          <article class="task">
             <div class="task-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v9l6 3"/><circle cx="12" cy="12" r="9"/></svg>
             </div>
-            <div class="task-copy"><strong>Daily Sign-in</strong><p>First sign-in each day <span class="reward">+1</span></p></div>
-            <button class="task-action done" disabled>Completed</button>
+            <div class="task-copy"><strong>Daily Sign-in</strong><p>Sign in once a day <span class="reward">+1</span></p></div>
+            <button class="task-action done" type="button" disabled>Completed</button>
           </article>
         </div>
       </section>
@@ -1210,8 +1257,10 @@
           </div>
           <div class="rules-task-grid">
             <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div class="rules-task-copy"><strong>Daily Sign-in</strong><span>First valid sign-in each day</span></div><span class="rules-task-points">+1</span></article>
-            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span><div class="rules-task-copy"><strong>Link Email</strong><span>First successful email link</span></div><span class="rules-task-points">+50</span></article>
             <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5"/><path d="m15 15 1.5 1.5L20 13"/></svg></span><div class="rules-task-copy"><strong>Complete a Sale</strong><span>Earn 1 Growth Point per 1 Point</span></div><span class="rules-task-points">1:1</span></article>
+            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-7 11h6l-1 9 7-12h-6z"/></svg></span><div class="rules-task-copy"><strong>First Fast Trade</strong><span>Complete your first Fast Trade</span></div><span class="rules-task-points">+100</span></article>
+            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v8M7 11l5-7c1 0 2 .8 2 2v3h4.6a2 2 0 0 1 2 2.4l-1.2 6A2 2 0 0 1 17.5 19H7M3 11h4v8H3z"/></svg></span><div class="rules-task-copy"><strong>Follow Social Media</strong><span>Follow our social media account</span></div><span class="rules-task-points">+20</span></article>
+            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.6-3.4 2.4-5 5.5-5s4.9 1.6 5.5 5M16 8h5M18.5 5.5v5"/></svg></span><div class="rules-task-copy"><strong>Successful Referral</strong><span>Successfully invite a new user</span></div><span class="rules-task-points">+100</span></article>
           </div>
           <p class="rules-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><span>Transaction Growth Points are credited after the order is completed and passes validation.</span></p>
         </section>
@@ -1258,7 +1307,7 @@
     const currentLevelIndex = 2;
     let viewedLevelIndex = currentLevelIndex;
     let growth = 860;
-    const iconTicket = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 0 6.5 10 2.5 2.5 0 0 0 4 12.5V17h16v-4.5a2.5 2.5 0 0 0 0-5V3H4z"/><path d="M12 6v8" stroke-dasharray="2 2"/></svg>';
+    const levelLockIcon = '<svg class="level-lock-icon" viewBox="0 0 16 16" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/></svg>';
 
     const formatNumber = value => value.toLocaleString('en-US');
 
@@ -1267,17 +1316,20 @@
       const level = levels[index];
       const isCurrent = index === currentLevelIndex;
       const isUnlocked = index < currentLevelIndex;
+      const isLocked = index > currentLevelIndex;
       const card = document.getElementById('memberCard');
       card.style.setProperty('--medal-bg', level.medalBg);
       card.style.setProperty('--medal-text', level.medalText);
       card.setAttribute('aria-label', `${level.code} ${level.name} membership, benefits, and Growth Points`);
 
-      document.getElementById('levelState').textContent = isCurrent ? '' : 'LEVEL PREVIEW';
+      const levelState = document.getElementById('levelState');
+      levelState.classList.toggle('locked-state', isLocked);
+      levelState.innerHTML = isCurrent ? '' : isLocked ? `${levelLockIcon} LOCKED` : 'LEVEL PREVIEW';
       document.getElementById('levelMedal').textContent = level.code;
       document.getElementById('levelName').textContent = level.name === 'Member' ? 'Member' : `${level.name} Member`;
       document.getElementById('levelCode').textContent = level.code;
       document.getElementById('levelDescription').textContent = isCurrent
-        ? 'Based on Jun–Aug 2026 Growth Points'
+        ? 'Membership level valid until Nov 30, 2026'
         : isUnlocked
           ? 'Threshold reached in the current 3-month total'
           : `Unlock at ${formatNumber(level.threshold)} Growth Points`;
@@ -1309,6 +1361,7 @@
         growthProgress.setAttribute('aria-valuemax', Math.max(level.threshold, 1));
         growthProgress.setAttribute('aria-valuenow', Math.max(level.threshold, 1));
         progressStart.textContent = `Current · ${formatNumber(growth)}`;
+        progressEnd.classList.remove('locked-level-label');
         progressEnd.textContent = `${level.code} ${level.name} · ${formatNumber(level.threshold)}`;
       } else {
         const targetIndex = isCurrent ? Math.min(index + 1, levels.length - 1) : index;
@@ -1323,7 +1376,11 @@
         growthProgress.setAttribute('aria-valuemax', target.threshold);
         growthProgress.setAttribute('aria-valuenow', Math.min(growth, target.threshold));
         progressStart.textContent = isCurrent ? `${level.code} ${level.name} · ${formatNumber(level.threshold)}` : `Current · ${formatNumber(growth)}`;
-        progressEnd.textContent = `${target.code} ${target.name} · ${formatNumber(target.threshold)}`;
+        const targetIsLocked = targetIndex > currentLevelIndex;
+        progressEnd.classList.toggle('locked-level-label', targetIsLocked);
+        progressEnd.innerHTML = targetIsLocked
+          ? `${levelLockIcon}<span>${target.code} ${target.name} · ${formatNumber(target.threshold)}</span>`
+          : `${target.code} ${target.name} · ${formatNumber(target.threshold)}`;
       }
     }
 
@@ -1363,7 +1420,7 @@
         document.getElementById('benefitModalTitle').textContent = 'Sell Rate Bonus';
         benefitModalContent.innerHTML = `
           <p class="modal-lead">Your membership bonus is added to the base Sell Rate when you request a quote.</p>
-          <div class="formula-card"><small>RATE CALCULATION</small><strong>Base Sell Rate + ${level.rate}</strong></div>`;
+          <div class="formula-card"><small>RATE CALCULATION</small><strong>Base Sell Rate ${level.rate}</strong></div>`;
       } else {
         document.getElementById('benefitModalTitle').textContent = level.coupon;
         const hasCoupon = viewedLevelIndex > 0;
@@ -1503,7 +1560,11 @@
     document.getElementById('memberRulesButton').addEventListener('click', showRulesView);
     document.getElementById('rulesBackButton').addEventListener('click', () => showMemberView(memberReturnView));
     document.getElementById('backButton').addEventListener('click', () => memberReturnView === 'profile' ? showProfileView() : showHomeView());
-    document.getElementById('fastTradeBack').addEventListener('click', () => fastTradeReturnView === 'profile' ? showProfileView() : showHomeView());
+    document.getElementById('fastTradeBack').addEventListener('click', () => {
+      if (fastTradeReturnView === 'profile') showProfileView();
+      else if (fastTradeReturnView === 'member') showMemberView(memberReturnView);
+      else showHomeView();
+    });
     document.getElementById('normalOrderBack').addEventListener('click', showHomeView);
     const sellGiftTab = document.getElementById('sellGiftTab');
     const fastTransactionTab = document.getElementById('fastTransactionTab');
@@ -1557,6 +1618,9 @@
     document.getElementById('orderLiveChat').addEventListener('click', () => showToast('Opening live chat'));
     document.getElementById('normalOrderSubmit').addEventListener('click', () => showToast('Sell order submitted'));
     document.getElementById('sellNow').addEventListener('click', () => showToast('Opening Sell Gift Cards'));
+    document.getElementById('firstFastTrade').addEventListener('click', () => showFastTradeView('member'));
+    document.getElementById('followSocial').addEventListener('click', () => showToast('Opening social media accounts'));
+    document.getElementById('inviteUser').addEventListener('click', () => showToast('Opening referral invitation'));
     document.querySelectorAll('.nav-item:not(.active):not(#memberHomeButton)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));
     document.querySelectorAll('.home-nav-button:not(.active):not(#homeMemberButton):not(#profileHomeButton):not(#homeFastTradeButton):not(#profileFastTradeButton)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));
     document.querySelectorAll('.profile-menu button,.balance-actions button,.withdraw-button').forEach(button => button.addEventListener('click', () => showToast(button.textContent.trim())));
@@ -1565,29 +1629,6 @@
     if (window.location.hash === '#fast-trade') showFastTradeView('home');
     if (window.location.hash === '#order') showNormalOrderView();
     if (window.location.hash === '#rules') showRulesView();
-
-    document.getElementById('bindEmail').addEventListener('click', event => {
-      const button = event.currentTarget;
-      if (button.classList.contains('done')) return;
-      growth += 50;
-      renderMemberCard(viewedLevelIndex);
-      button.textContent = 'Completed';
-      button.classList.add('done');
-      button.disabled = true;
-      const task = document.getElementById('emailTask');
-      task.querySelector('.task-copy p').innerHTML = 'First successful link <span class="reward">+50</span> · Credited';
-      task.dataset.completed = 'true';
-      document.getElementById('taskList').appendChild(task);
-
-      const entry = document.createElement('article');
-      entry.className = 'history-item';
-      entry.dataset.month = '2026-08';
-      entry.dataset.points = '50';
-      entry.innerHTML = `<div class="history-icon">${iconTicket}</div><div class="history-copy"><strong>Linked Email</strong><span>Account security task · Just now</span></div><div class="history-value">+50</div>`;
-      document.getElementById('historyList').prepend(entry);
-      updateHistoryForMonth();
-      showToast('Email linked · +50 Growth Points');
-    });
 
     const monthNames = { '2026-08': 'Aug', '2026-07': 'Jul', '2026-06': 'Jun' };
     function updateHistoryForMonth() {

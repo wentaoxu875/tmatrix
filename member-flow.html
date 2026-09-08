@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会员等级业务流程与关键规则</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--paper:#f4f7fa;--paper-2:#eaf1f8;--ink:#18324a;--muted:#526a82;--soft:#74889c;--rule:rgba(24,50,74,.14);--accent:#1b5ea6;--accent-tint:rgba(27,94,166,.08);--sans:'Geist',system-ui,-apple-system,sans-serif;--serif:'Instrument Serif','Songti SC',serif;--mono:'Geist Mono',ui-monospace,monospace}
+    body{min-height:100vh;padding:40px 32px;background:var(--paper);color:var(--ink);font-family:var(--sans)}
+    .frame{width:100%;max-width:1200px;margin:0 auto}
+    .title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}.eyebrow{margin-bottom:8px;color:var(--muted);font:500 8px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase}
+    h1{font:400 clamp(28px,3vw,40px)/1.08 var(--serif);letter-spacing:-.02em}
+    .lede{width:100%;max-width:none;margin:12px 0 24px;color:var(--muted);font-size:clamp(6px,1.5vw,14px);line-height:1.7;letter-spacing:-.02em;white-space:nowrap}
+    .lang-switch{display:inline-flex;flex:0 0 auto;padding:3px;border:1px solid var(--rule);border-radius:6px;background:#fff}.lang-switch button{min-width:40px;height:28px;padding:0 10px;border:0;border-radius:4px;background:transparent;color:var(--muted);font:500 11px/1 var(--sans);cursor:pointer}.lang-switch button.active{background:var(--accent);color:#fff}.lang-switch button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .diagram{overflow-x:auto}
+    svg{display:block;width:100%;min-width:840px}
+    .impact-title{margin:28px 0 12px;font-size:16px;font-weight:600}
+    .impacts{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}
+    .impact{min-height:112px;padding:16px;background:#fff;border:1px solid var(--rule);border-radius:6px}
+    .impact:nth-child(2),.impact:nth-child(3){background:var(--paper-2)}
+    .impact-tag{display:block;margin-bottom:8px;color:var(--accent);font:500 8px/1.4 var(--mono);letter-spacing:.14em}
+    .impact h2{margin-bottom:6px;font-size:14px}
+    .impact p,.impact li{color:var(--muted);font-size:12px;line-height:1.65}.impact ul{padding-left:18px}.impact li+li{margin-top:3px}
+    .rules-heading{margin-top:48px;padding-top:28px;border-top:1px solid var(--rule)}
+    .rules-heading h2{font-size:20px;line-height:1.3}.rules-heading p:last-child{max-width:720px;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.65}
+    .rule-section{margin-top:32px;padding-top:24px;border-top:1px solid var(--rule)}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:12px}.section-head h2{font-size:20px;line-height:1.3}.section-note{color:var(--soft);font:400 9px/1.4 var(--mono);letter-spacing:.05em;text-align:right}
+    figure{overflow-x:auto}figcaption{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.6}
+    footer{margin-top:24px;padding-top:12px;border-top:1px solid var(--rule);color:var(--soft);font:400 9px/1.5 var(--mono)}
+    @media(max-width:760px){body{padding:28px 16px}.impacts{grid-template-columns:1fr}.title-row{gap:12px}.lang-switch button{min-width:34px;padding:0 8px}.section-head{display:block}.section-note{margin-top:8px;text-align:left}}
+  </style>
+</head>
+<body>
+  <main class="frame">
+    <div class="title-row"><div><p class="eyebrow">MEMBERSHIP · END-TO-END PROCESS</p><h1>会员等级业务流程与关键规则</h1></div><div class="lang-switch" role="group" aria-label="Language"><button class="active" id="langZh" type="button" aria-pressed="true">中</button><button id="langEn" type="button" aria-pressed="false">EN</button></div></div>
+    <p class="lede">从等级配置、成长事件和成长值计算，到等级更新、权益通知与各业务端应用，并补充关键判断规则。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 840 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="membership-process-title membership-process-desc">
+        <title id="membership-process-title">会员等级业务流程</title>
+        <desc id="membership-process-desc">展示等级配置、成长事件、成长值计算、等级更新、权益通知以及各业务端应用的端到端流程。</desc>
+        <defs>
+          <pattern id="membership-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="0.8" fill="rgba(24,50,74,0.10)"/></pattern>
+          <marker id="membership-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker>
+          <marker id="membership-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker>
+          <marker id="membership-arrow-sm" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#526a82"/></marker>
+        </defs>
+
+        <rect width="840" height="356" fill="#f4f7fa"/>
+        <rect x="140" y="36" width="700" height="80" fill="rgba(24,50,74,.018)"/>
+        <rect x="140" y="196" width="700" height="80" fill="rgba(24,50,74,.018)"/>
+        <line x1="140" y1="36" x2="840" y2="36" stroke="rgba(24,50,74,.14)" stroke-width="0.8"/>
+        <line x1="140" y1="116" x2="840" y2="116" stroke="rgba(24,50,74,.14)" stroke-width="0.8"/>
+        <line x1="140" y1="196" x2="840" y2="196" stroke="rgba(24,50,74,.14)" stroke-width="0.8"/>
+        <line x1="140" y1="276" x2="840" y2="276" stroke="rgba(24,50,74,.14)" stroke-width="0.8"/>
+        <line x1="140" y1="36" x2="140" y2="276" stroke="rgba(24,50,74,.20)" stroke-width="1"/>
+
+        <!-- connectors are drawn before nodes -->
+        <path d="M248 76 H302 Q310 76 310 84 V124" fill="none" stroke="#526a82" stroke-width="1" marker-end="url(#membership-arrow)"/>
+        <path d="M360 156 H414 Q422 156 422 164 V204" fill="none" stroke="#526a82" stroke-width="1" marker-end="url(#membership-arrow)"/>
+        <path d="M472 236 H526 Q534 236 534 228 V188" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#membership-arrow-accent)"/>
+        <line x1="584" y1="156" x2="596" y2="156" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#membership-arrow-accent)"/>
+        <line x1="696" y1="156" x2="708" y2="156" stroke="#526a82" stroke-width="1" marker-end="url(#membership-arrow)"/>
+
+        <!-- step headers -->
+        <g font-family="'Geist Mono',monospace" text-anchor="middle">
+          <g><rect x="190" y="8" width="16" height="16" rx="8" fill="rgba(24,50,74,.12)"/><text x="198" y="20" fill="#18324a" font-size="8">1</text><text x="198" y="32" fill="#526a82" font-size="6" letter-spacing=".12em">配置</text></g>
+          <g><rect x="302" y="8" width="16" height="16" rx="8" fill="rgba(24,50,74,.12)"/><text x="310" y="20" fill="#18324a" font-size="8">2</text><text x="310" y="32" fill="#526a82" font-size="6" letter-spacing=".12em">成长事件</text></g>
+          <g><rect x="414" y="8" width="16" height="16" rx="8" fill="rgba(24,50,74,.12)"/><text x="422" y="20" fill="#18324a" font-size="8">3</text><text x="422" y="32" fill="#526a82" font-size="6" letter-spacing=".12em">成长计算</text></g>
+          <g><rect x="526" y="8" width="16" height="16" rx="8" fill="rgba(27,94,166,.18)"/><text x="534" y="20" fill="#1b5ea6" font-size="8">4</text><text x="534" y="32" fill="#1b5ea6" font-size="6" font-weight="600" letter-spacing=".12em">等级更新</text></g>
+          <g><rect x="638" y="8" width="16" height="16" rx="8" fill="rgba(24,50,74,.12)"/><text x="646" y="20" fill="#18324a" font-size="8">5</text><text x="646" y="32" fill="#526a82" font-size="6" letter-spacing=".12em">权益通知</text></g>
+          <g><rect x="750" y="8" width="16" height="16" rx="8" fill="rgba(24,50,74,.12)"/><text x="758" y="20" fill="#18324a" font-size="8">6</text><text x="758" y="32" fill="#526a82" font-size="6" letter-spacing=".12em">业务应用</text></g>
+        </g>
+
+        <!-- lane labels -->
+        <g fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" font-weight="500" text-anchor="middle" letter-spacing=".08em">
+          <text x="70" y="80">后台运营</text>
+          <text x="70" y="160">会员业务系统</text>
+          <text x="70" y="240">事件与计算</text>
+        </g>
+
+        <!-- node 1 -->
+        <g><rect x="148" y="44" width="100" height="64" rx="6" fill="#fff" stroke="rgba(24,50,74,.26)"/><rect x="156" y="52" width="20" height="12" rx="2" fill="rgba(24,50,74,.10)"/><text x="166" y="61" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6" font-weight="600" text-anchor="middle">CFG</text><text x="198" y="72" fill="#18324a" font-family="'Geist',sans-serif" font-size="9" font-weight="600" text-anchor="middle">等级配置</text><text x="198" y="84" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">等级定义 · 权益管理</text><text x="198" y="96" fill="#74889c" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">任务管理</text><rect x="228" y="98" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="236" y="104" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">LS</text></g>
+
+        <!-- node 2 -->
+        <g><rect x="260" y="124" width="100" height="64" rx="6" fill="#fff" stroke="rgba(24,50,74,.26)"/><rect x="268" y="132" width="20" height="12" rx="2" fill="rgba(24,50,74,.10)"/><text x="278" y="141" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6" font-weight="600" text-anchor="middle">EVT</text><text x="310" y="152" fill="#18324a" font-family="'Geist',sans-serif" font-size="9" font-weight="600" text-anchor="middle">成长事件</text><text x="310" y="164" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">登录 · 首次交易</text><text x="310" y="176" fill="#74889c" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">交易完成</text><rect x="264" y="178" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="272" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">LS</text><rect x="340" y="178" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="348" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">LS</text></g>
+
+        <!-- node 3 -->
+        <g><rect x="372" y="204" width="100" height="64" rx="6" fill="#fff" stroke="rgba(24,50,74,.26)"/><rect x="380" y="212" width="20" height="12" rx="2" fill="rgba(24,50,74,.10)"/><text x="390" y="221" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6" font-weight="600" text-anchor="middle">ENG</text><text x="422" y="232" fill="#18324a" font-family="'Geist',sans-serif" font-size="9" font-weight="600" text-anchor="middle">成长值计算</text><text x="422" y="244" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">实时计算</text><text x="422" y="256" fill="#74889c" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">成长值流水</text><rect x="376" y="258" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="384" y="264" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">LS</text><rect x="452" y="258" width="16" height="8" rx="2" fill="#5e7a9b"/><text x="460" y="264" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">DB</text></g>
+
+        <!-- node 4 / focal -->
+        <g><rect x="484" y="124" width="100" height="64" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/><rect x="492" y="132" width="20" height="12" rx="2" fill="rgba(27,94,166,.18)"/><text x="502" y="141" fill="#1b5ea6" font-family="'Geist Mono',monospace" font-size="6" font-weight="600" text-anchor="middle">ENG</text><text x="534" y="152" fill="#18324a" font-family="'Geist',sans-serif" font-size="9" font-weight="600" text-anchor="middle">等级更新</text><text x="534" y="164" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">实时：仅达升级门槛</text><text x="534" y="176" fill="#74889c" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">月度：每月 1 日完整评估</text><rect x="488" y="178" width="16" height="8" rx="2" fill="#5e7a9b"/><text x="496" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">DB</text><rect x="564" y="178" width="16" height="8" rx="2" fill="#5e7a9b"/><text x="572" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">DB</text></g>
+
+        <!-- node 5 -->
+        <g><rect x="596" y="124" width="100" height="64" rx="6" fill="#fff" stroke="rgba(24,50,74,.26)"/><rect x="604" y="132" width="20" height="12" rx="2" fill="rgba(24,50,74,.10)"/><text x="614" y="141" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6" font-weight="600" text-anchor="middle">ENG</text><text x="646" y="152" fill="#18324a" font-family="'Geist',sans-serif" font-size="9" font-weight="600" text-anchor="middle">权益和通知</text><text x="646" y="164" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">会员溢价 · 升级券包</text><text x="646" y="176" fill="#74889c" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">等级更新提醒 · 降级预警提醒</text><rect x="600" y="178" width="16" height="8" rx="2" fill="#5e7a9b"/><text x="608" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">DB</text><rect x="676" y="178" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="684" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">LS</text></g>
+
+        <!-- node 6 -->
+        <g><rect x="708" y="124" width="100" height="64" rx="6" fill="#fff" stroke="rgba(24,50,74,.26)"/><rect x="716" y="132" width="20" height="12" rx="2" fill="rgba(24,50,74,.10)"/><text x="726" y="141" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6" font-weight="600" text-anchor="middle">APP</text><text x="758" y="152" fill="#18324a" font-family="'Geist',sans-serif" font-size="9" font-weight="600" text-anchor="middle">业务应用</text><text x="758" y="164" fill="#526a82" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">用户端 · 服务商端</text><text x="758" y="176" fill="#74889c" font-family="'Geist Mono',monospace" font-size="6.5" text-anchor="middle">客服端 · 管理后台</text><rect x="712" y="178" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="720" y="184" fill="#fff" font-family="'Geist Mono',monospace" font-size="5" font-weight="700" text-anchor="middle">LS</text></g>
+
+        <!-- legend -->
+        <g font-family="'Geist Mono',monospace">
+          <text x="144" y="296" fill="#74889c" font-size="7" font-weight="500" letter-spacing=".14em">STEPS</text>
+          <text x="204" y="296" fill="#526a82" font-size="7">1 配置 · 2 事件 · 3 计算 · 4 更新 · 5 权益通知 · 6 业务应用</text>
+          <text x="144" y="320" fill="#74889c" font-size="7" font-weight="500" letter-spacing=".14em">DATA</text>
+          <rect x="204" y="312" width="16" height="8" rx="2" fill="#7c8f6f"/><text x="212" y="318" fill="#fff" font-size="5" font-weight="700" text-anchor="middle">LS</text><text x="228" y="320" fill="#526a82" font-size="7">规则 / 任务</text>
+          <rect x="304" y="312" width="16" height="8" rx="2" fill="#5e7a9b"/><text x="312" y="318" fill="#fff" font-size="5" font-weight="700" text-anchor="middle">DB</text><text x="328" y="320" fill="#526a82" font-size="7">会员状态 / 流水</text>
+          <text x="144" y="344" fill="#74889c" font-size="7" font-weight="500" letter-spacing=".14em">FLOW</text>
+          <line x1="204" y1="340" x2="244" y2="340" stroke="#526a82" stroke-width="1" marker-end="url(#membership-arrow)"/><text x="256" y="344" fill="#526a82" font-size="7">标准处理</text>
+          <line x1="336" y1="340" x2="376" y2="340" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#membership-arrow-accent)"/><text x="388" y="344" fill="#526a82" font-size="7">等级更新主链</text>
+        </g>
+      </svg>
+    </div>
+
+    <h2 class="impact-title">模块关联与影响</h2>
+    <section class="impacts" aria-label="会员等级对各端模块的影响">
+      <article class="impact"><span class="impact-tag">USER EXPERIENCE</span><h2>用户端</h2><ul><li>关键路径展示会员等级标识</li><li>会员中心展示等级、成长值、任务与权益</li><li>广告汇率展示等级溢价加成</li><li>下单详情计算金额，订单详情展示并更新</li><li>会员流水合并至原礼品卡流水</li><li>接收等级更新及降级预警提醒</li></ul></article>
+      <article class="impact"><span class="impact-tag">SERVICE PROVIDER</span><h2>服务商端</h2><ul><li>用户聊天展示会员等级</li><li>订单详情展示等级及溢价金额</li><li>面额不符协商同步会员金额口径</li><li>订单管理展示等级标识与溢价信息</li></ul></article>
+      <article class="impact"><span class="impact-tag">CUSTOMER SERVICE</span><h2>客服端</h2><ul><li>用户聊天展示会员等级</li><li>订单详情展示等级、成长与溢价信息</li><li>辅助核对等级权益及订单金额</li></ul></article>
+      <article class="impact"><span class="impact-tag">ADMIN & DATA</span><h2>管理后台</h2><ul><li>用户管理展示当前等级与成长值</li><li>订单管理展示等级溢价及等级标识</li><li>会员流水支持查询与核对</li><li>等级、权益及任务配置驱动全链路规则</li></ul></article>
+    </section>
+    <div class="rules-heading">
+      <p class="eyebrow">MEMBERSHIP · KEY RULE FLOWS</p>
+      <h2>关键规则流程</h2>
+      <p>补充成长值入账与等级更新的核心判断；技术重试、字段校验和权益发放子流程继续在 PRD 正文说明。</p>
+    </div>
+
+    <section class="rule-section" id="growth-calculation">
+      <div class="section-head"><h2>01 · 成长值计算</h2><p class="section-note">EVENT → LEDGER → LEVEL EVALUATION</p></div>
+      <figure>
+        <svg viewBox="0 0 800 736" role="img" aria-labelledby="growth-calculation-title growth-calculation-desc">
+          <title id="growth-calculation-title">成长值计算流程</title>
+          <desc id="growth-calculation-desc">成长事件经过任务与幂等校验、奖励计算、流水写入和实时升级成长值计算；仅达到更高等级门槛时触发实时等级更新。</desc>
+          <defs>
+            <marker id="growth-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker>
+            <marker id="growth-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker>
+            <marker id="growth-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker>
+          </defs>
+          <rect width="800" height="736" fill="#f4f7fa"/>
+          <!-- connectors first -->
+          <path d="M400 64 V88" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#growth-arrow)"/>
+          <path d="M400 144 V160" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#growth-arrow)"/>
+          <path d="M324 196 H240" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#growth-arrow)"/>
+          <rect x="248" y="176" width="48" height="12" rx="2" fill="#f4f7fa"/><text x="272" y="184" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">未通过</text>
+          <path d="M400 232 V264" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#growth-arrow-accent)"/>
+          <rect x="412" y="236" width="48" height="12" rx="2" fill="#f4f7fa"/><text x="436" y="244" fill="#1b5ea6" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">通过</text>
+          <path d="M400 320 V352" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#growth-arrow-accent)"/>
+          <path d="M400 408 V440" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#growth-arrow)"/>
+          <path d="M400 496 V528" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#growth-arrow-accent)"/>
+          <!-- nodes -->
+          <rect x="300" y="24" width="200" height="40" rx="20" fill="#eaf1f8" stroke="#74889c" stroke-width="1"/>
+          <text x="400" y="48" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">接收成长事件</text>
+          <rect x="280" y="88" width="240" height="56" rx="6" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <rect x="292" y="96" width="40" height="12" rx="2" fill="none" stroke="rgba(24,50,74,.4)" stroke-width=".8"/><text x="312" y="104" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">CHECK</text>
+          <text x="400" y="120" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">校验任务、条件与事件幂等</text><text x="400" y="136" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站点配置 · 次数/门槛 · event_id</text>
+          <polygon points="400,160 476,196 400,232 324,196" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="400" y="192" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">是否符合入账条件？</text><text x="400" y="208" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">VALID &amp; UNIQUE</text>
+          <rect x="40" y="168" width="200" height="56" rx="6" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="140" y="192" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">不写入成长值</text><text x="140" y="208" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">记录原因 · 流程结束</text>
+          <rect x="280" y="264" width="240" height="56" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <rect x="292" y="272" width="40" height="12" rx="2" fill="none" stroke="rgba(27,94,166,.5)" stroke-width=".8"/><text x="312" y="280" fill="#1b5ea6" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">CALC</text>
+          <text x="400" y="296" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">按配置计算本次成长值</text><text x="400" y="312" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">固定值 / 交易 Points 比例</text>
+          <rect x="280" y="352" width="240" height="56" rx="6" fill="rgba(24,50,74,.05)" stroke="#526a82" stroke-width="1"/>
+          <rect x="292" y="360" width="32" height="12" rx="2" fill="none" stroke="rgba(82,106,130,.5)" stroke-width=".8"/><text x="308" y="368" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">DB</text>
+          <text x="400" y="384" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">写入流水并更新月度汇总</text><text x="400" y="400" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不可覆盖 · 失败可幂等重试</text>
+          <rect x="280" y="440" width="240" height="56" rx="6" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="400" y="464" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">计算实时升级成长值</text><text x="400" y="480" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">当前月 + 前 2 个完整自然月</text>
+          <rect x="280" y="528" width="240" height="56" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <text x="400" y="552" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">判断是否达到升级门槛</text><text x="400" y="568" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">仅更高等级触发实时更新</text>
+          <line x1="32" y1="696" x2="768" y2="696" stroke="rgba(24,50,74,.14)" stroke-width=".8"/>
+          <text x="32" y="716" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" letter-spacing=".12em">LEGEND</text>
+          <rect x="120" y="706" width="12" height="12" rx="2" fill="#fff" stroke="#18324a"/><text x="140" y="716" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">处理</text>
+          <polygon points="220,706 232,712 220,718 208,712" fill="#fff" stroke="#18324a"/><text x="240" y="716" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">判断</text>
+          <rect x="320" y="706" width="12" height="12" rx="2" fill="rgba(27,94,166,.08)" stroke="#1b5ea6"/><text x="340" y="716" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">关键计算 / 等级判断</text>
+        </svg>
+        <figcaption>交易类任务只在订单最终完结后进入本流程；成长值入账后计算实时升级成长值，仅达到更高等级门槛时进入“实时等级更新”。</figcaption>
+      </figure>
+    </section>
+
+    <section class="rule-section" id="realtime-level-update">
+      <div class="section-head"><h2>02 · 实时等级更新</h2><p class="section-note">GROWTH POSTED → THRESHOLD CHECK → UPGRADE ONLY</p></div>
+      <figure>
+        <svg viewBox="0 0 800 520" role="img" aria-labelledby="realtime-level-update-title realtime-level-update-desc">
+          <title id="realtime-level-update-title">实时等级更新流程</title>
+          <desc id="realtime-level-update-desc">成长值入账后计算当前月与前两个完整自然月的成长值，只有匹配等级高于当前等级时才触发升级；未达到更高等级门槛则结束，不刷新保护期且不发送通知。</desc>
+          <defs>
+            <marker id="realtime-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker>
+            <marker id="realtime-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker>
+            <marker id="realtime-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker>
+          </defs>
+          <rect width="800" height="520" fill="#f4f7fa"/>
+          <!-- connectors first -->
+          <path d="M400 64 V96" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#realtime-arrow)"/>
+          <path d="M400 152 V176" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#realtime-arrow)"/>
+          <path d="M480 216 H520" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#realtime-arrow-accent)"/>
+          <rect x="484" y="196" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="500" y="204" fill="#1b5ea6" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">是</text>
+          <path d="M400 256 V304" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#realtime-arrow)"/>
+          <rect x="412" y="268" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="428" y="276" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">否</text>
+          <!-- nodes -->
+          <rect x="288" y="24" width="224" height="40" rx="20" fill="#eaf1f8" stroke="#74889c" stroke-width="1"/><text x="400" y="48" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">成长值成功入账</text>
+          <rect x="280" y="96" width="240" height="56" rx="6" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="400" y="120" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">计算实时升级成长值</text><text x="400" y="136" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">当前月 + 前 2 个完整自然月</text>
+          <polygon points="400,176 480,216 400,256 320,216" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="400" y="212" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">达到更高等级门槛？</text><text x="400" y="228" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">TARGET LEVEL &gt; CURRENT</text>
+          <rect x="520" y="184" width="232" height="72" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <text x="636" y="208" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">触发实时更新并升级</text><text x="636" y="224" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">刷新保护期 · 发最终等级券包</text><text x="636" y="240" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
+          <rect x="288" y="304" width="224" height="64" rx="6" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="400" y="328" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">不触发等级更新</text><text x="400" y="344" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">保持当前等级 · 不刷新保护期</text><text x="400" y="356" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不发送等级通知</text>
+          <line x1="32" y1="448" x2="768" y2="448" stroke="rgba(24,50,74,.14)" stroke-width=".8"/>
+          <text x="32" y="468" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" letter-spacing=".12em">LEGEND</text>
+          <rect x="120" y="458" width="12" height="12" rx="2" fill="#fff" stroke="#18324a"/><text x="140" y="468" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">门槛判断</text>
+          <rect x="232" y="458" width="12" height="12" rx="2" fill="rgba(27,94,166,.08)" stroke="#1b5ea6"/><text x="252" y="468" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">实时升级</text>
+          <rect x="336" y="458" width="12" height="12" rx="2" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-dasharray="4,3"/><text x="356" y="468" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">未触发</text>
+        </svg>
+        <figcaption>实时更新不是完整定级流程：仅当本次成长值入账使目标等级高于当前等级时触发；同级或更低结果直接结束。</figcaption>
+      </figure>
+    </section>
+
+    <section class="rule-section" id="monthly-level-update">
+      <div class="section-head"><h2>03 · 每月 1 日等级更新</h2><p class="section-note">MONTHLY REVIEW · RETAIN · HOLD · DOWNGRADE</p></div>
+      <figure>
+        <svg viewBox="0 0 800 632" role="img" aria-labelledby="monthly-level-update-title monthly-level-update-desc">
+          <title id="monthly-level-update-title">每月 1 日等级更新流程</title>
+          <desc id="monthly-level-update-desc">系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期，更低时依据保护期决定保持或降级。</desc>
+          <defs>
+            <marker id="level-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker>
+            <marker id="level-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker>
+            <marker id="level-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker>
+          </defs>
+          <rect width="800" height="632" fill="#f4f7fa"/>
+          <!-- connectors first -->
+          <path d="M400 64 V96" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#level-arrow)"/>
+          <path d="M400 160 V184" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#level-arrow)"/>
+          <path d="M480 224 H520" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#level-arrow-accent)"/>
+          <rect x="484" y="204" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="500" y="212" fill="#1b5ea6" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">更高</text>
+          <path d="M400 264 V304" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#level-arrow)"/>
+          <rect x="412" y="272" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="428" y="280" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">相同</text>
+          <path d="M320 224 H240" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#level-arrow)"/>
+          <rect x="264" y="204" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="280" y="212" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">更低</text>
+          <path d="M160 264 V304" fill="none" stroke="#1b5ea6" stroke-width="1.2" marker-end="url(#level-arrow-accent)"/>
+          <rect x="172" y="272" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="188" y="280" fill="#1b5ea6" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">是</text>
+          <path d="M80 224 H24 Q16 224 16 232 V428 Q16 436 24 436 H48" fill="none" stroke="#526a82" stroke-width="1.2" marker-end="url(#level-arrow)"/>
+          <rect x="28" y="244" width="32" height="12" rx="2" fill="#f4f7fa"/><text x="44" y="252" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">否</text>
+          <!-- nodes -->
+          <rect x="288" y="24" width="224" height="40" rx="20" fill="#eaf1f8" stroke="#74889c" stroke-width="1"/><text x="400" y="48" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">每月 1 日触发等级评估</text>
+          <rect x="256" y="96" width="288" height="64" rx="6" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="400" y="120" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">计算月度定级成长值并匹配等级</text><text x="400" y="140" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">前 3 个完整自然月</text>
+          <polygon points="400,184 480,224 400,264 320,224" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="400" y="220" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">目标等级与当前等级？</text><text x="400" y="236" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">COMPARE LEVEL</text>
+          <rect x="520" y="192" width="232" height="64" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <text x="636" y="216" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">立即升级至目标等级</text><text x="636" y="232" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">刷新保护期 · 发最终等级券包</text><text x="636" y="244" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
+          <polygon points="160,184 240,224 160,264 80,224" fill="#fff" stroke="#18324a" stroke-width="1"/>
+          <text x="160" y="216" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保护期已结束？</text><text x="160" y="232" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">按评估生效时间判断</text>
+          <rect x="48" y="304" width="224" height="64" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <text x="160" y="328" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">降级至目标等级</text><text x="160" y="344" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不发券包 · 更新权益</text><text x="160" y="356" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
+          <rect x="288" y="304" width="224" height="64" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <text x="400" y="328" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保持等级</text><text x="400" y="344" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">刷新 3 个月保护期</text><text x="400" y="356" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
+          <rect x="48" y="408" width="224" height="56" rx="6" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="160" y="432" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保持当前等级</text><text x="160" y="448" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不降级 / 仍在保护期</text>
+          <line x1="32" y1="568" x2="768" y2="568" stroke="rgba(24,50,74,.14)" stroke-width=".8"/>
+          <text x="32" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" letter-spacing=".12em">LEGEND</text>
+          <rect x="120" y="578" width="12" height="12" rx="2" fill="#fff" stroke="#18324a"/><text x="140" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">规则判断</text>
+          <rect x="232" y="578" width="12" height="12" rx="2" fill="rgba(27,94,166,.08)" stroke="#1b5ea6"/><text x="252" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">等级 / 保护期更新</text>
+          <rect x="376" y="578" width="12" height="12" rx="2" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-dasharray="4,3"/><text x="396" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">不发生降级</text>
+        </svg>
+        <figcaption>每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，仅保护期结束才降级。</figcaption>
+      </figure>
+    </section>
+
+    <footer>范围说明：端到端业务流程与关键规则 · 订单异常、详细字段校验和权益发放子流程见 PRD</footer>
+  </main>
+  <script>
+    const translations={
+      'MEMBERSHIP · END-TO-END PROCESS':['会员体系 · 端到端流程','MEMBERSHIP · END-TO-END PROCESS'],
+      '会员等级业务流程与关键规则':['会员等级业务流程与关键规则','Membership Business Flow & Key Rules'],
+      '会员等级业务流程':['会员等级业务流程','Membership Level Business Flow'],
+      '从等级配置、成长事件和成长值计算，到等级更新、权益通知与各业务端应用，并补充关键判断规则。':['从等级配置、成长事件和成长值计算，到等级更新、权益通知与各业务端应用，并补充关键判断规则。','From configuration and growth events to level updates, benefits, notifications, channel applications, and the key decision rules.'],
+      '展示等级配置、成长事件、成长值计算、等级更新、权益通知以及各业务端应用的端到端流程。':['展示等级配置、成长事件、成长值计算、等级更新、权益通知以及各业务端应用的端到端流程。','An end-to-end flow from level configuration and growth events to calculation, level updates, benefits, notices, and channel applications.'],
+      '配置':['配置','CONFIG'],
+      '成长事件':['成长事件','GROWTH EVENTS'],
+      '成长计算':['成长计算','CALCULATION'],
+      '等级更新':['等级更新','LEVEL UPDATE'],
+      '权益通知':['权益通知','BENEFITS'],
+      '业务应用':['业务应用','APPLICATIONS'],
+      '后台运营':['后台运营','ADMIN OPS'],
+      '会员业务系统':['会员业务系统','MEMBERSHIP SYSTEM'],
+      '事件与计算':['事件与计算','EVENTS & CALC'],
+      '等级配置':['等级配置','LEVEL SETUP'],
+      '等级定义 · 权益管理':['等级定义 · 权益管理','LEVEL · BENEFIT SETUP'],
+      '任务管理':['任务管理','TASK SETUP'],
+      '登录 · 首次交易':['登录 · 首次交易','LOGIN · FIRST TRADE'],
+      '交易完成':['交易完成','TRADE COMPLETED'],
+      '成长值计算':['成长值计算','GROWTH CALCULATION'],
+      '实时计算':['实时计算','REAL-TIME CALCULATION'],
+      '成长值流水':['成长值流水','GROWTH LEDGER'],
+      '达门槛立即升级':['达门槛立即升级','UPGRADE AT THRESHOLD'],
+      '每月 1 日重算 · 保级 3 月':['每月 1 日重算 · 保级 3 月','MONTHLY REVIEW · HOLD 3M'],
+      '实时：仅达升级门槛':['实时：仅达升级门槛','REAL-TIME: UPGRADE THRESHOLD ONLY'],
+      '月度：每月 1 日完整评估':['月度：每月 1 日完整评估','MONTHLY: FULL REVIEW ON DAY 1'],
+      '权益和通知':['权益和通知','BENEFITS & NOTICES'],
+      '会员溢价 · 升级券包':['会员溢价 · 升级券包','RATE BONUS · COUPON PACK'],
+      '等级更新提醒 · 降级预警提醒':['等级更新提醒 · 降级预警提醒','UPDATE · DOWNGRADE ALERT'],
+      '用户端 · 服务商端':['用户端 · 服务商端','USER · PROVIDER'],
+      '客服端 · 管理后台':['客服端 · 管理后台','SUPPORT · ADMIN'],
+      'STEPS':['步骤','STEPS'],
+      '1 配置 · 2 事件 · 3 计算 · 4 更新 · 5 权益通知 · 6 业务应用':['1 配置 · 2 事件 · 3 计算 · 4 更新 · 5 权益通知 · 6 业务应用','1 CONFIG · 2 EVENTS · 3 CALC · 4 UPDATE · 5 BENEFITS · 6 APPS'],
+      'DATA':['数据','DATA'],
+      '规则 / 任务':['规则 / 任务','RULES / TASKS'],
+      '会员状态 / 流水':['会员状态 / 流水','MEMBER STATE / LEDGER'],
+      'FLOW':['流程','FLOW'],
+      '标准处理':['标准处理','STANDARD FLOW'],
+      '等级更新主链':['等级更新主链','LEVEL UPDATE PATH'],
+      '模块关联与影响':['模块关联与影响','Module Connections & Impact'],
+      'USER EXPERIENCE':['用户体验','USER EXPERIENCE'],
+      '用户端':['用户端','User App'],
+      '关键路径展示会员等级标识':['关键路径展示会员等级标识','Show the membership badge on key paths'],
+      '会员中心展示等级、成长值、任务与权益':['会员中心展示等级、成长值、任务与权益','Member Center shows level, Growth Points, tasks, and benefits'],
+      '广告汇率展示等级溢价加成':['广告汇率展示等级溢价加成','Advertised rates include the level bonus'],
+      '下单详情计算金额，订单详情展示并更新':['下单详情计算金额，订单详情展示并更新','Calculate order amounts and update the order detail'],
+      '会员流水合并至原礼品卡流水':['会员流水合并至原礼品卡流水','Merge member entries into the gift card ledger'],
+      '接收等级更新及降级预警提醒':['接收等级更新及降级预警提醒','Receive level update and downgrade alerts'],
+      'SERVICE PROVIDER':['服务商运营','SERVICE PROVIDER'],
+      '服务商端':['服务商端','Provider App'],
+      '用户聊天展示会员等级':['用户聊天展示会员等级','Show membership level in user chat'],
+      '订单详情展示等级及溢价金额':['订单详情展示等级及溢价金额','Show level and bonus amount in order details'],
+      '面额不符协商同步会员金额口径':['面额不符协商同步会员金额口径','Use the member amount basis in mismatch negotiations'],
+      '订单管理展示等级标识与溢价信息':['订单管理展示等级标识与溢价信息','Show level badge and bonus in order management'],
+      'CUSTOMER SERVICE':['客户支持','CUSTOMER SERVICE'],
+      '客服端':['客服端','Support Console'],
+      '订单详情展示等级、成长与溢价信息':['订单详情展示等级、成长与溢价信息','Show level, Growth Points, and bonus in order details'],
+      '辅助核对等级权益及订单金额':['辅助核对等级权益及订单金额','Verify benefits and order amounts'],
+      'ADMIN & DATA':['后台与数据','ADMIN & DATA'],
+      '管理后台':['管理后台','Admin Console'],
+      '用户管理展示当前等级与成长值':['用户管理展示当前等级与成长值','Show current level and Growth Points in user management'],
+      '订单管理展示等级溢价及等级标识':['订单管理展示等级溢价及等级标识','Show level bonus and badge in order management'],
+      '会员流水支持查询与核对':['会员流水支持查询与核对','Support member-ledger lookup and reconciliation'],
+      '等级、权益及任务配置驱动全链路规则':['等级、权益及任务配置驱动全链路规则','Level, benefit, and task setup drives end-to-end rules'],
+      'MEMBERSHIP · KEY RULE FLOWS':['会员体系 · 关键规则流程','MEMBERSHIP · KEY RULE FLOWS'],
+      '关键规则流程':['关键规则流程','Key Rule Flows'],
+      '补充成长值入账与等级更新的核心判断；技术重试、字段校验和权益发放子流程继续在 PRD 正文说明。':['补充成长值入账与等级更新的核心判断；技术重试、字段校验和权益发放子流程继续在 PRD 正文说明。','Core decisions for Growth Point posting and level updates; technical retries, field validation, and benefit issuance remain in the PRD.'],
+      '01 · 成长值计算':['01 · 成长值计算','01 · GROWTH POINT CALCULATION'],
+      'EVENT → LEDGER → LEVEL EVALUATION':['事件 → 流水 → 等级判断','EVENT → LEDGER → LEVEL EVALUATION'],
+      '成长值计算流程':['成长值计算流程','Growth Point Calculation Flow'],
+      '成长事件依次经过任务和幂等校验、奖励计算、成长值流水写入与滚动三个月成长值计算，随后进入统一的等级更新判断。':['成长事件依次经过任务和幂等校验、奖励计算、成长值流水写入与滚动三个月成长值计算，随后进入统一的等级更新判断。','Growth events pass task and idempotency checks, reward calculation, ledger posting, and rolling three-month calculation before level evaluation.'],
+      '未通过':['未通过','FAIL'],
+      '通过':['通过','PASS'],
+      '接收成长事件':['接收成长事件','Receive growth event'],
+      '校验任务、条件与事件幂等':['校验任务、条件与事件幂等','Validate task, rules & idempotency'],
+      '站点配置 · 次数/门槛 · event_id':['站点配置 · 次数/门槛 · event_id','SITE · LIMIT/THRESHOLD · EVENT_ID'],
+      '是否符合入账条件？':['是否符合入账条件？','Eligible for posting?'],
+      '不写入成长值':['不写入成长值','Do not post Growth Points'],
+      '记录原因 · 流程结束':['记录原因 · 流程结束','LOG REASON · END'],
+      '按配置计算本次成长值':['按配置计算本次成长值','Calculate Growth Points by rule'],
+      '固定值 / 交易 Points 比例':['固定值 / 交易 Points 比例','FIXED / TRADE POINTS RATIO'],
+      '写入流水并更新月度汇总':['写入流水并更新月度汇总','Post ledger & update monthly total'],
+      '不可覆盖 · 失败可幂等重试':['不可覆盖 · 失败可幂等重试','IMMUTABLE · IDEMPOTENT RETRY'],
+      '计算实时升级成长值':['计算实时升级成长值','Calculate real-time level value'],
+      '当前月 + 前 2 个完整自然月':['当前月 + 前 2 个完整自然月','CURRENT + PREVIOUS 2 FULL MONTHS'],
+      '触发等级更新判断':['触发等级更新判断','Trigger level evaluation'],
+      '升级 / 同级保持 / 不降级':['升级 / 同级保持 / 不降级','UPGRADE / RETAIN / NO DOWNGRADE'],
+      'LEGEND':['图例','LEGEND'],
+      '处理':['处理','PROCESS'],
+      '判断':['判断','DECISION'],
+      '关键计算 / 等级判断':['关键计算 / 等级判断','KEY CALC / LEVEL EVALUATION'],
+      '交易类任务只在订单最终完结后进入本流程；成长值入账完成即触发统一等级判断，具体结果由下方“等级更新”流程处理。':['交易类任务只在订单最终完结后进入本流程；成长值入账完成即触发统一等级判断，具体结果由下方“等级更新”流程处理。','Trade tasks enter this flow only after order completion. Posting then triggers the level-update flow below.'],
+      '02 · 等级更新':['02 · 等级更新','02 · LEVEL UPDATE'],
+      'REAL-TIME UPGRADE · MONTHLY REVIEW · 3-MONTH HOLD':['实时升级 · 月度评估 · 3 个月保护','REAL-TIME UPGRADE · MONTHLY REVIEW · 3-MONTH HOLD'],
+      '等级更新流程':['等级更新流程','Level Update Flow'],
+      '系统按实时或月度统计窗口匹配目标等级，高于当前等级时立即升级，相同时保持等级并刷新保护期，低于当前等级时仅在月度评估且保护期结束后降级。':['系统按实时或月度统计窗口匹配目标等级，高于当前等级时立即升级，相同时保持等级并刷新保护期，低于当前等级时仅在月度评估且保护期结束后降级。','The system matches a target level by real-time or monthly windows: higher upgrades, equal retains and renews protection, and lower downgrades only after protection ends at monthly review.'],
+      '更高':['更高','HIGHER'],
+      '相同':['相同','EQUAL'],
+      '更低':['更低','LOWER'],
+      '是':['是','YES'],
+      '否':['否','NO'],
+      '触发等级评估':['触发等级评估','Trigger level evaluation'],
+      '按触发类型计算并匹配最高等级':['按触发类型计算并匹配最高等级','Calculate and match highest level'],
+      '实时：当前月 + 前 2 月':['实时：当前月 + 前 2 月','REAL-TIME: CURRENT + PREVIOUS 2'],
+      '月度：前 3 个完整自然月':['月度：前 3 个完整自然月','MONTHLY: PREVIOUS 3 FULL MONTHS'],
+      '目标等级与当前等级？':['目标等级与当前等级？','Target level vs current level?'],
+      '立即升级至目标等级':['立即升级至目标等级','Upgrade to target level now'],
+      '刷新保护期 · 发最终等级券包':['刷新保护期 · 发最终等级券包','RENEW HOLD · FINAL COUPON PACK'],
+      '站内消息 + Push':['站内消息 + Push','IN-APP MESSAGE + PUSH'],
+      '允许降级？':['允许降级？','Downgrade allowed?'],
+      '月度评估且保护期已结束':['月度评估且保护期已结束','MONTHLY & HOLD EXPIRED'],
+      '降级至目标等级':['降级至目标等级','Downgrade to target level'],
+      '不发券包 · 更新权益':['不发券包 · 更新权益','NO COUPON · UPDATE BENEFITS'],
+      '保持等级':['保持等级','Retain level'],
+      '刷新 3 个月保护期':['刷新 3 个月保护期','RENEW 3-MONTH HOLD'],
+      '保持当前等级':['保持当前等级','Keep current level'],
+      '不降级 / 仍在保护期':['不降级 / 仍在保护期','NO DOWNGRADE / HOLD ACTIVE'],
+      '规则判断':['规则判断','RULE DECISION'],
+      '等级 / 保护期更新':['等级 / 保护期更新','LEVEL / HOLD UPDATE'],
+      '不发生降级':['不发生降级','NO DOWNGRADE'],
+      '目标等级高于或等于当前等级时都会刷新 3 个月保护期；只有月度评估且保护期结束后才允许降级。':['目标等级高于或等于当前等级时都会刷新 3 个月保护期；只有月度评估且保护期结束后才允许降级。','A higher or equal target renews the three-month hold. Downgrade is allowed only at monthly review after the hold expires.'],
+      '成长事件经过任务与幂等校验、奖励计算、流水写入和实时升级成长值计算；仅达到更高等级门槛时触发实时等级更新。':['成长事件经过任务与幂等校验、奖励计算、流水写入和实时升级成长值计算；仅达到更高等级门槛时触发实时等级更新。','Growth events pass task and idempotency checks, reward calculation, ledger posting, and real-time growth calculation; a real-time level update starts only when a higher threshold is reached.'],
+      '判断是否达到升级门槛':['判断是否达到升级门槛','Check higher-level threshold'],
+      '仅更高等级触发实时更新':['仅更高等级触发实时更新','ONLY A HIGHER LEVEL TRIGGERS'],
+      '交易类任务只在订单最终完结后进入本流程；成长值入账后计算实时升级成长值，仅达到更高等级门槛时进入“实时等级更新”。':['交易类任务只在订单最终完结后进入本流程；成长值入账后计算实时升级成长值，仅达到更高等级门槛时进入“实时等级更新”。','Trade tasks enter only after order completion. After posting, the system calculates the real-time growth value and enters real-time level update only when a higher threshold is reached.'],
+      '02 · 实时等级更新':['02 · 实时等级更新','02 · REAL-TIME LEVEL UPDATE'],
+      'GROWTH POSTED → THRESHOLD CHECK → UPGRADE ONLY':['成长值入账 → 门槛判断 → 仅升级','GROWTH POSTED → THRESHOLD CHECK → UPGRADE ONLY'],
+      '实时等级更新流程':['实时等级更新流程','Real-time Level Update Flow'],
+      '成长值入账后计算当前月与前两个完整自然月的成长值，只有匹配等级高于当前等级时才触发升级；未达到更高等级门槛则结束，不刷新保护期且不发送通知。':['成长值入账后计算当前月与前两个完整自然月的成长值，只有匹配等级高于当前等级时才触发升级；未达到更高等级门槛则结束，不刷新保护期且不发送通知。','After posting, the system uses the current month plus two previous full months. It upgrades only when the matched level is higher; otherwise it ends without renewing protection or sending a notice.'],
+      '成长值成功入账':['成长值成功入账','Growth Points posted'],
+      '达到更高等级门槛？':['达到更高等级门槛？','Higher threshold reached?'],
+      'TARGET LEVEL > CURRENT':['目标等级 > 当前等级','TARGET LEVEL > CURRENT'],
+      '触发实时更新并升级':['触发实时更新并升级','Trigger update and upgrade'],
+      '不触发等级更新':['不触发等级更新','Do not trigger level update'],
+      '保持当前等级 · 不刷新保护期':['保持当前等级 · 不刷新保护期','KEEP LEVEL · DO NOT RENEW HOLD'],
+      '不发送等级通知':['不发送等级通知','NO LEVEL NOTICE'],
+      '门槛判断':['门槛判断','THRESHOLD CHECK'],
+      '实时升级':['实时升级','REAL-TIME UPGRADE'],
+      '未触发':['未触发','NOT TRIGGERED'],
+      '实时更新不是完整定级流程：仅当本次成长值入账使目标等级高于当前等级时触发；同级或更低结果直接结束。':['实时更新不是完整定级流程：仅当本次成长值入账使目标等级高于当前等级时触发；同级或更低结果直接结束。','Real-time update is not a full review. It runs only when the new posting raises the target above the current level; equal or lower results end immediately.'],
+      '03 · 每月 1 日等级更新':['03 · 每月 1 日等级更新','03 · MONTHLY LEVEL UPDATE'],
+      'MONTHLY REVIEW · RETAIN · HOLD · DOWNGRADE':['月度重算 · 同级保持 · 保护 · 降级','MONTHLY REVIEW · RETAIN · HOLD · DOWNGRADE'],
+      '每月 1 日等级更新流程':['每月 1 日等级更新流程','Monthly Level Update Flow'],
+      '系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期，更低时依据保护期决定保持或降级。':['系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期，更低时依据保护期决定保持或降级。','On the first day of each month, the system matches a target level using the previous three full months: higher upgrades, equal retains and renews protection, and lower retains or downgrades based on protection.'],
+      '每月 1 日触发等级评估':['每月 1 日触发等级评估','Monthly review starts on day 1'],
+      '计算月度定级成长值并匹配等级':['计算月度定级成长值并匹配等级','Calculate monthly value and match level'],
+      '前 3 个完整自然月':['前 3 个完整自然月','PREVIOUS 3 FULL MONTHS'],
+      '保护期已结束？':['保护期已结束？','Protection period ended?'],
+      '按评估生效时间判断':['按评估生效时间判断','CHECK AT REVIEW EFFECTIVE TIME'],
+      '每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，仅保护期结束才降级。':['每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，仅保护期结束才降级。','A full review runs on the first of each month: higher upgrades, equal retains and renews the three-month hold, and lower downgrades only after protection ends.'],
+      '范围说明：端到端业务流程与关键规则 · 订单异常、详细字段校验和权益发放子流程见 PRD':['范围说明：端到端业务流程与关键规则 · 订单异常、详细字段校验和权益发放子流程见 PRD','Scope: end-to-end flow and key rules · see the PRD for order exceptions, field validation, and benefit issuance']
+    };
+    const targets=[...document.querySelectorAll('.eyebrow,h1,.lede,.impact-title,.impact-tag,.impact h2,.impact li,.rules-heading h2,.rules-heading p:last-child,.rule-section h2,.section-note,figcaption,footer,svg title,svg desc,svg text')];
+    targets.forEach(element=>{const pair=translations[element.textContent.trim()];if(pair){element.dataset.zh=pair[0];element.dataset.en=pair[1]}});
+    const langZh=document.getElementById('langZh'),langEn=document.getElementById('langEn');
+    function setLanguage(language){document.documentElement.lang=language==='zh'?'zh-CN':'en';targets.forEach(element=>{if(element.dataset[language])element.textContent=element.dataset[language]});document.title=language==='zh'?'会员等级业务流程与关键规则':'Membership Business Flow & Key Rules';document.querySelector('.impacts').setAttribute('aria-label',language==='zh'?'会员等级对各端模块的影响':'Membership impact by channel');langZh.classList.toggle('active',language==='zh');langEn.classList.toggle('active',language==='en');langZh.setAttribute('aria-pressed',String(language==='zh'));langEn.setAttribute('aria-pressed',String(language==='en'))}
+    langZh.addEventListener('click',()=>setLanguage('zh'));langEn.addEventListener('click',()=>setLanguage('en'));setLanguage('zh');
+  </script>
+</body>
+</html>

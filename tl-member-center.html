@@ -745,6 +745,8 @@
     .order-output { margin-top:var(--space-3); padding:var(--space-4) var(--space-3); border-radius:var(--radius-lg); background:var(--brand-soft); color:var(--brand-dark); }
     .order-output > span { display:block; font-size:13px; }
     .order-output strong { display:block; margin-top:13px; text-align:center; font-size:22px; }
+    .order-output-amount, .trade-output-amount { display:flex; justify-content:center; align-items:baseline; gap:6px; margin-top:13px; white-space:nowrap; }
+    .order-output-amount strong, .trade-output-amount strong { margin-top:0; }
     .order-output small { display:block; margin-top:5px; text-align:center; font-size:17px; font-weight:750; }
     .order-submit-bar { position:fixed; left:0; right:0; bottom:0; z-index:24; padding:var(--space-3) var(--space-4) var(--safe-bottom); display:grid; grid-template-columns:.8fr 1.2fr; gap:var(--space-3); border-top:1px solid var(--divider); background:rgba(255,255,255,.97); backdrop-filter:blur(14px); }
     .order-submit-bar button { height:48px; border:1px solid transparent; border-radius:var(--radius-md); font-size:16px; font-weight:800; cursor:pointer; }
@@ -947,7 +949,7 @@
 
         <section class="trade-summary" aria-label="Trade summary">
           <div class="trade-terms"><strong>!</strong><span>Trade Terms: lilizichong</span></div>
-          <div class="trade-output"><span>You get</span><strong id="tradePoints">157.2327 Points</strong><small id="tradeNaira">≈ 235849.05 ₦</small></div>
+          <div class="trade-output"><span>You get</span><div class="trade-output-amount"><strong id="tradePoints">157.2327 Points</strong><span class="home-level-bonus" id="tradeMemberBonus" aria-label="Membership bonus +1.87">+1.87</span></div><small id="tradeNaira">≈ 235849.05 ₦</small></div>
           <button class="trade-coupon" type="button" id="tradeCoupon">Coupon <span>no available coupons</span></button>
         </section>
       </main>
@@ -988,7 +990,7 @@
 
         <section class="order-summary" aria-label="Order preview">
           <div class="order-terms"><strong>!</strong><span>Trade Terms: This is a card, you know? Please confirm the card details before selling.</span></div>
-          <div class="order-output"><span>You get</span><strong id="orderPoints">3.0821 Points</strong><small id="orderNaira">≈ 4627.15 ₦</small></div>
+          <div class="order-output"><span>You get</span><div class="order-output-amount"><strong id="orderPoints">3.0821 Points</strong><span class="home-level-bonus" id="orderMemberBonus" aria-label="Membership bonus +1.58">+1.58</span></div><small id="orderNaira">≈ 4627.15 ₦</small></div>
         </section>
       </main>
 
@@ -1110,13 +1112,6 @@
             </div>
             <div class="task-copy"><strong>First Fast Trade</strong><p>Complete your first Fast Trade <span class="reward">+100</span></p></div>
             <button class="task-action" id="firstFastTrade" type="button">Trade Now</button>
-          </article>
-          <article class="task">
-            <div class="task-icon rose">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v8M7 11l5-7c1 0 2 .8 2 2v3h4.6a2 2 0 0 1 2 2.4l-1.2 6A2 2 0 0 1 17.5 19H7M3 11h4v8H3z"/></svg>
-            </div>
-            <div class="task-copy"><strong>Follow Social Media</strong><p>Follow our social media account <span class="reward">+20</span></p></div>
-            <button class="task-action" id="followSocial" type="button">Follow</button>
           </article>
           <article class="task">
             <div class="task-icon blue">
@@ -1259,7 +1254,6 @@
             <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div class="rules-task-copy"><strong>Daily Sign-in</strong><span>First valid sign-in each day</span></div><span class="rules-task-points">+1</span></article>
             <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5"/><path d="m15 15 1.5 1.5L20 13"/></svg></span><div class="rules-task-copy"><strong>Complete a Sale</strong><span>Earn 1 Growth Point per 1 Point</span></div><span class="rules-task-points">1:1</span></article>
             <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-7 11h6l-1 9 7-12h-6z"/></svg></span><div class="rules-task-copy"><strong>First Fast Trade</strong><span>Complete your first Fast Trade</span></div><span class="rules-task-points">+100</span></article>
-            <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v8M7 11l5-7c1 0 2 .8 2 2v3h4.6a2 2 0 0 1 2 2.4l-1.2 6A2 2 0 0 1 17.5 19H7M3 11h4v8H3z"/></svg></span><div class="rules-task-copy"><strong>Follow Social Media</strong><span>Follow our social media account</span></div><span class="rules-task-points">+20</span></article>
             <article class="rules-task-card"><span class="rules-task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.6-3.4 2.4-5 5.5-5s4.9 1.6 5.5 5M16 8h5M18.5 5.5v5"/></svg></span><div class="rules-task-copy"><strong>Successful Referral</strong><span>Successfully invite a new user</span></div><span class="rules-task-points">+100</span></article>
           </div>
           <p class="rules-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><span>Transaction Growth Points are credited after the order is completed and passes validation.</span></p>
@@ -1619,7 +1613,6 @@
     document.getElementById('normalOrderSubmit').addEventListener('click', () => showToast('Sell order submitted'));
     document.getElementById('sellNow').addEventListener('click', () => showToast('Opening Sell Gift Cards'));
     document.getElementById('firstFastTrade').addEventListener('click', () => showFastTradeView('member'));
-    document.getElementById('followSocial').addEventListener('click', () => showToast('Opening social media accounts'));
     document.getElementById('inviteUser').addEventListener('click', () => showToast('Opening referral invitation'));
     document.querySelectorAll('.nav-item:not(.active):not(#memberHomeButton)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));
     document.querySelectorAll('.home-nav-button:not(.active):not(#homeMemberButton):not(#profileHomeButton):not(#homeFastTradeButton):not(#profileFastTradeButton)').forEach(item => item.addEventListener('click', () => showToast(`Switching to ${item.textContent.trim()}`)));

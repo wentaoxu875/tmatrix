@@ -222,7 +222,7 @@
       <figure>
         <svg viewBox="0 0 800 632" role="img" aria-labelledby="monthly-level-update-title monthly-level-update-desc">
           <title id="monthly-level-update-title">每月 1 日等级更新流程</title>
-          <desc id="monthly-level-update-desc">系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期，更低时依据保护期决定保持或降级。</desc>
+          <desc id="monthly-level-update-desc">系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期；更低时，保护期结束则降至目标等级并刷新 3 个月保护期，否则保持当前等级且不刷新保护期。</desc>
           <defs>
             <marker id="level-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker>
             <marker id="level-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker>
@@ -252,19 +252,19 @@
           <text x="636" y="216" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">立即升级至目标等级</text><text x="636" y="232" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">刷新保护期 · 发最终等级券包</text><text x="636" y="244" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
           <polygon points="160,184 240,224 160,264 80,224" fill="#fff" stroke="#18324a" stroke-width="1"/>
           <text x="160" y="216" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保护期已结束？</text><text x="160" y="232" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">按评估生效时间判断</text>
-          <rect x="48" y="304" width="224" height="64" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
-          <text x="160" y="328" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">降级至目标等级</text><text x="160" y="344" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不发券包 · 更新权益</text><text x="160" y="356" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
+          <rect x="48" y="304" width="224" height="80" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
+          <text x="160" y="328" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">降级至目标等级</text><text x="160" y="344" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">刷新 3 个月保护期</text><text x="160" y="360" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不发券包 · 更新权益</text><text x="160" y="372" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
           <rect x="288" y="304" width="224" height="64" rx="6" fill="rgba(27,94,166,.08)" stroke="#1b5ea6" stroke-width="1.2"/>
           <text x="400" y="328" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保持等级</text><text x="400" y="344" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">刷新 3 个月保护期</text><text x="400" y="356" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">站内消息 + Push</text>
           <rect x="48" y="408" width="224" height="56" rx="6" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-width="1" stroke-dasharray="4,3"/>
-          <text x="160" y="432" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保持当前等级</text><text x="160" y="448" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">不降级 / 仍在保护期</text>
+          <text x="160" y="432" fill="#18324a" font-family="Geist,sans-serif" font-size="12" font-weight="600" text-anchor="middle">保持当前等级</text><text x="160" y="448" fill="#74889c" font-family="'Geist Mono',monospace" font-size="8" text-anchor="middle">仍在保护期 · 不刷新保护期</text>
           <line x1="32" y1="568" x2="768" y2="568" stroke="rgba(24,50,74,.14)" stroke-width=".8"/>
           <text x="32" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8" letter-spacing=".12em">LEGEND</text>
           <rect x="120" y="578" width="12" height="12" rx="2" fill="#fff" stroke="#18324a"/><text x="140" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">规则判断</text>
           <rect x="232" y="578" width="12" height="12" rx="2" fill="rgba(27,94,166,.08)" stroke="#1b5ea6"/><text x="252" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">等级 / 保护期更新</text>
           <rect x="376" y="578" width="12" height="12" rx="2" fill="rgba(24,50,74,.03)" stroke="rgba(24,50,74,.30)" stroke-dasharray="4,3"/><text x="396" y="588" fill="#526a82" font-family="'Geist Mono',monospace" font-size="8">不发生降级</text>
         </svg>
-        <figcaption>每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，仅保护期结束才降级。</figcaption>
+        <figcaption>每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，保护期结束则降至目标等级并刷新 3 个月保护期，仍在保护期则保持当前等级、不刷新保护期。</figcaption>
       </figure>
     </section>
 
@@ -388,7 +388,7 @@
       '保持等级':['保持等级','Retain level'],
       '刷新 3 个月保护期':['刷新 3 个月保护期','RENEW 3-MONTH HOLD'],
       '保持当前等级':['保持当前等级','Keep current level'],
-      '不降级 / 仍在保护期':['不降级 / 仍在保护期','NO DOWNGRADE / HOLD ACTIVE'],
+      '仍在保护期 · 不刷新保护期':['仍在保护期 · 不刷新保护期','HOLD ACTIVE · DO NOT RENEW HOLD'],
       '规则判断':['规则判断','RULE DECISION'],
       '等级 / 保护期更新':['等级 / 保护期更新','LEVEL / HOLD UPDATE'],
       '不发生降级':['不发生降级','NO DOWNGRADE'],
@@ -415,13 +415,13 @@
       '03 · 每月 1 日等级更新':['03 · 每月 1 日等级更新','03 · MONTHLY LEVEL UPDATE'],
       'MONTHLY REVIEW · RETAIN · HOLD · DOWNGRADE':['月度重算 · 同级保持 · 保护 · 降级','MONTHLY REVIEW · RETAIN · HOLD · DOWNGRADE'],
       '每月 1 日等级更新流程':['每月 1 日等级更新流程','Monthly Level Update Flow'],
-      '系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期，更低时依据保护期决定保持或降级。':['系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期，更低时依据保护期决定保持或降级。','On the first day of each month, the system matches a target level using the previous three full months: higher upgrades, equal retains and renews protection, and lower retains or downgrades based on protection.'],
+      '系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期；更低时，保护期结束则降至目标等级并刷新 3 个月保护期，否则保持当前等级且不刷新保护期。':['系统每月一日按前三个完整自然月成长值匹配目标等级；更高则升级，相同则保持并刷新保护期；更低时，保护期结束则降至目标等级并刷新 3 个月保护期，否则保持当前等级且不刷新保护期。','On the first of each month, match the target using the previous three full months: higher upgrades; equal retains and renews protection; lower downgrades and renews a three-month hold if protection has ended, otherwise keeps the current level without renewing protection.'],
       '每月 1 日触发等级评估':['每月 1 日触发等级评估','Monthly review starts on day 1'],
       '计算月度定级成长值并匹配等级':['计算月度定级成长值并匹配等级','Calculate monthly value and match level'],
       '前 3 个完整自然月':['前 3 个完整自然月','PREVIOUS 3 FULL MONTHS'],
       '保护期已结束？':['保护期已结束？','Protection period ended?'],
       '按评估生效时间判断':['按评估生效时间判断','CHECK AT REVIEW EFFECTIVE TIME'],
-      '每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，仅保护期结束才降级。':['每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，仅保护期结束才降级。','A full review runs on the first of each month: higher upgrades, equal retains and renews the three-month hold, and lower downgrades only after protection ends.'],
+      '每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，保护期结束则降至目标等级并刷新 3 个月保护期，仍在保护期则保持当前等级、不刷新保护期。':['每月 1 日执行完整定级：目标等级更高则升级，相同则保持并刷新 3 个月保护期；目标等级更低时，保护期结束则降至目标等级并刷新 3 个月保护期，仍在保护期则保持当前等级、不刷新保护期。','A full review runs on the first of each month: higher upgrades; equal retains and renews the three-month hold. For a lower target, expired protection triggers a downgrade and a new three-month hold; active protection keeps the current level without renewal.'],
       '范围说明：端到端业务流程与关键规则 · 订单异常、详细字段校验和权益发放子流程见 PRD':['范围说明：端到端业务流程与关键规则 · 订单异常、详细字段校验和权益发放子流程见 PRD','Scope: end-to-end flow and key rules · see the PRD for order exceptions, field validation, and benefit issuance']
     };
     const targets=[...document.querySelectorAll('.eyebrow,h1,.lede,.impact-title,.impact-tag,.impact h2,.impact li,.rules-heading h2,.rules-heading p:last-child,.rule-section h2,.section-note,figcaption,footer,svg title,svg desc,svg text')];

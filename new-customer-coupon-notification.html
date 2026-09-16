@@ -43,5 +43,7 @@ $('filters').onsubmit=e=>{e.preventDefault();query=Object.fromEntries(['site','t
 ['manual','auto'].forEach(k=>$(k+'-tab').onclick=()=>{['manual','auto'].forEach(x=>{$(x+'-tab').classList.toggle('active',k===x);$(x+'-tab').setAttribute('aria-selected',k===x);$(x+'-panel').hidden=k!==x;});});
 function language(){document.documentElement.lang=lang;document.body.classList.toggle('lang-en',lang==='en');document.querySelectorAll('[data-t]').forEach(el=>{el.dataset.source=el.dataset.source||el.textContent;el.textContent=t(el.dataset.source);});document.querySelectorAll('[placeholder]').forEach(el=>{el.dataset.placeholder=el.dataset.placeholder||el.placeholder;el.placeholder=t(el.dataset.placeholder);});const current=$('trigger').value,filter=$('filter-trigger').value;options($('trigger'),'请选择触发场景',current);options($('filter-trigger'),'全部',filter);$('timezone').textContent=lang==='en'?TIMEZONE_EN:TIMEZONE_ZH;$('language-switch').value=lang;[...$('size').options].forEach(o=>o.textContent=lang==='en'?o.value+' / page':o.value+' 条/页');render();}
 $('language-switch').onchange=e=>{lang=e.target.value;try{localStorage.setItem(KEY+'-language',lang);}catch{}language();};
-const TIMEZONE='Asia/Shanghai',TIMEZONE_ZH='北京时间（UTC+8）',TIMEZONE_EN='Beijing Time (UTC+8)';language();
+const TIMEZONE='Africa/Lagos',TIMEZONE_ZH='尼日时间（UTC+1）',TIMEZONE_EN='Nigeria Time (UTC+1)';
+if(items.some(n=>n.trigger===triggers[6]&&n.timezone!==TIMEZONE)){const next=items.map(n=>n.trigger===triggers[6]?{...n,timezone:TIMEZONE}:n);if(!persist(next))items=next;}
+language();
 </script></body></html>

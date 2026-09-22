@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>现金发放 · T-matrix 管理后台</title>
+<style>
+:root{--primary:#3cbafb;--teal:#00c1ba;--bg:#f3f5f9;--border:#d9d9d9;--text:rgba(0,0,0,.88);--muted:#939191;--success:#52c41a;--warning:#d48806;--error:#ff4d4f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}button,input,select,textarea{outline:none}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--primary);outline-offset:3px}button{transition:background .15s,border-color .15s}input,select,textarea{border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--text)}input,select{height:32px;padding:4px 11px;font-size:13px}input:hover,select:hover,textarea:hover{border-color:var(--primary)}input::placeholder,textarea::placeholder{color:#bfbfbf}input[aria-invalid=true],select[aria-invalid=true]{border-color:var(--error)}
+.header{height:60px;background:#021529;color:#fff;display:flex;align-items:center;position:fixed;inset:0 0 auto;z-index:10;box-shadow:0 2px 5px #0000001a}.brand{width:190px;flex-shrink:0;padding-left:24px;display:flex;align-items:center;gap:8px;font-size:29px;font-style:italic;font-weight:650;letter-spacing:-1px}.brand svg{width:29px;height:32px}.top-nav{height:100%;display:flex}.nav-item{display:grid;place-items:center;min-width:88px;padding:0 16px;color:#ffffffa6}.nav-item.active{background:var(--teal);color:white}.account{margin-left:auto;display:flex;gap:15px;align-items:center;padding:0 24px}.language{background:white;border-radius:6px;color:#444;padding:3px 11px;font-size:13px}.avatar{width:28px;height:28px;border-radius:50%;background:#84bae1;display:grid;place-items:center;border:2px solid #cbdbe9}.account-name{font-size:13px}.sidebar{position:fixed;top:60px;bottom:0;width:190px;background:#000c17;color:#ffffffa6;overflow:auto}.side-group{height:55px;display:flex;align-items:center;justify-content:space-between;padding:0 21px 0 48px;color:#2fecff;background:#001529}.side-item{height:55px;display:flex;align-items:center;padding-left:48px}.side-item.selected{background:var(--teal);color:#fff}.main{margin:60px 0 0 190px;padding:10px 20px 20px}.breadcrumb{color:var(--muted);font-size:13px;margin-bottom:10px;height:21px}.card{background:#fff;padding:20px;min-height:calc(100vh - 121px)}.filter{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.filter-field{display:flex;gap:8px;align-items:center}.filter-field label{color:#666}.filter input,.filter select{width:200px}.button{height:31px;border-radius:4px;padding:4px 16px;border:1px solid var(--border);background:#fff;color:#444;font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}.button:hover{color:var(--primary);border-color:var(--primary)}.primary{background:var(--primary);color:white;border-color:var(--primary)}.primary:hover{background:#64c8fc;color:white;border-color:#64c8fc}.secondary{color:var(--primary);background:#3cbafb1a;border-color:var(--primary)}.filter-buttons{display:flex;gap:10px}.toolbar{margin:20px 0;display:flex;align-items:center;justify-content:space-between;gap:15px}.demo-label{font-size:12px;color:#999;display:flex;align-items:center;gap:6px}.demo-label:before{content:"";width:6px;height:6px;background:#bfbfbf;border-radius:50%}.table-wrap{overflow:auto;border-radius:8px 8px 0 0}table{width:100%;min-width:1230px;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:12px}th{height:40px;background:#fafafa;font-weight:600;position:relative}th:not(:last-child):after{position:absolute;right:0;top:12px;bottom:12px;width:1px;background:#f0f0f0;content:""}td,th{text-align:center;padding:10px;border-bottom:1px solid #f0f0f0;line-height:19px}td{height:60px;background:#fff}tr:hover td{background:#fafcff}.ellipsis{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sub{font-size:12px;color:var(--muted);line-height:18px;margin-top:2px}.temporary{color:var(--text)}.status{white-space:nowrap}.success{color:var(--success)}.partial{color:var(--warning)}.failed{color:var(--error)}.sending{color:#1677ff}.operation{position:sticky;right:0;box-shadow:-5px 0 8px -7px #0005}.link{padding:0;border:0;background:none;color:#1677ff;font-size:12px}.link:hover{color:var(--primary)}.pagination{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:20px;font-size:12px}.page-button{height:28px;min-width:28px;padding:0 7px;border:1px solid transparent;background:white;color:#666;border-radius:6px}.page-button.current{border-color:#1677ff;color:#1677ff}.pagination select{font-size:12px;width:95px;height:29px}.page-note{margin:22px 0 0;color:#999;font-size:12px}.empty{padding:60px;color:#999}.empty svg{display:block;margin:0 auto 12px;color:#bbb}
+dialog{width:800px;max-width:calc(100vw - 40px);max-height:calc(100dvh - 48px);padding:0;border:0;border-radius:8px;box-shadow:0 12px 36px #0003;color:var(--text);overflow:hidden}dialog::backdrop{background:rgba(0,0,0,.45)}.dialog-shell{display:flex;flex-direction:column;max-height:calc(100dvh - 48px)}.dialog-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px 16px;flex-shrink:0}.dialog-header h2{margin:0;font-size:17px;font-weight:600}.close{background:none;border:0;color:#999;font-size:26px;line-height:24px;padding:0 2px}.form-body{overflow:auto;padding:10px 28px 12px}.form-row{display:grid;grid-template-columns:115px minmax(0,1fr);gap:16px;margin-bottom:20px}.form-label{padding-top:4px;text-align:right;font-size:14px}.required:before{content:"*";color:var(--error);margin-right:5px}.field input[type=text],.field select,.field textarea{width:100%}.field textarea{height:84px;padding:7px 11px;font-size:13px;resize:vertical;min-height:60px}.radios{display:flex;gap:28px;height:32px;align-items:center}.radio-option{display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer}.radio-option input{width:15px;height:15px;margin:0;accent-color:var(--primary)}.expiry-input{display:flex;align-items:center;gap:10px}.type-controls{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap}.type-controls .radios{flex-shrink:0}.expiry-input{min-height:32px;font-size:13px;gap:8px}.expiry-input label{white-space:nowrap}.field .expiry-input input{width:120px}.hint{font-size:12px;color:#999;margin-top:5px}.import-info{padding:12px;background:#fffdf5;border:1px solid #f0eee7;font-size:13px;line-height:25px;margin-bottom:12px}.import-info p{margin:0}.import-info strong{font-weight:500}.upload-actions{display:flex;align-items:center;gap:14px}.file-result{border:1px solid #d9eaff;background:#f7fbff;border-radius:4px;margin-top:10px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px}.file-name{word-break:break-all}.error{color:var(--error);font-size:12px;margin-top:4px;line-height:18px}.error:empty{display:none}.counter{text-align:right;color:#bfbfbf;font-size:12px;margin-top:2px}.dialog-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px 22px;background:white;flex-shrink:0}.toast{position:fixed;z-index:40;top:77px;left:50%;transform:translateX(-50%);padding:10px 18px;background:white;border-radius:6px;box-shadow:0 4px 20px #0002;font-size:13px;max-width:90vw}.toast[hidden],[hidden]{display:none!important}.inline-icon{width:15px;height:15px}.key-hint{font-size:12px;color:#999;margin-right:auto;align-self:center}
+@media(min-width:1600px){.filter{gap:24px}.filter input,.filter select{width:210px}dialog{width:820px}}@media(max-width:1000px){.sidebar{width:160px}.brand{width:160px;padding-left:18px;font-size:25px}.main{margin-left:160px}.side-group,.side-item{padding-left:30px}.account{padding:0 14px;gap:8px}.nav-item{min-width:76px;padding:0 10px}.filter{gap:12px}}@media(max-width:700px){.sidebar{display:none}.main{margin-left:0;padding:10px}.brand{width:148px}.top-nav .nav-item:not(.active){display:none}.account .language,.account-name{display:none}.card{padding:15px}.filter-field{width:100%}.filter-field label{width:70px}.filter input,.filter select{flex:1;width:auto}.toolbar{align-items:flex-start}.form-row{grid-template-columns:85px minmax(0,1fr);gap:10px}.form-body{padding:8px 16px}.demo-label{font-size:11px}.dialog-header{padding:18px}.radios{gap:15px}.upload-actions{flex-wrap:wrap}.key-hint{display:none}}
+</style>
+</head>
+<body>
+<header class="header"><div class="brand" aria-label="T-matrix"><svg viewBox="0 0 32 36" fill="none" aria-hidden="true"><path d="M3 3H29V10H15L10 15H3V3Z M10 17H21V32H15V22H10V17Z" stroke="white" stroke-width="3"/></svg><span>- matrix</span></div><nav class="top-nav" aria-label="主导航"><span class="nav-item">系统管理</span><span class="nav-item">业务管理</span><span class="nav-item active" aria-current="page">营销管理</span><span class="nav-item">数据统计</span></nav><div class="account"><span class="language">简体中文⌄</span><span class="avatar" aria-hidden="true">👤</span><span class="account-name">xiabing</span></div></header>
+<aside class="sidebar" aria-label="营销管理导航"><div class="side-group">内容管理 <span>⌃</span></div><div class="side-item">Banner管理</div><div class="side-group">活动管理 <span>⌃</span></div><div class="side-item">邀请裂变</div><div class="side-item">签到管理</div><div class="side-item">新手任务</div><div class="side-item">成长激励</div><div class="side-item">优惠券管理</div><div class="side-item">券活动管理</div><div class="side-item selected" aria-current="page">现金发放</div><div class="side-item">消息通知管理</div><div class="side-item">弹框管理</div></aside>
+<main class="main"><div class="breadcrumb">营销管理 / 活动管理 / 现金发放</div><section class="card" aria-label="现金发放管理"><form class="filter" id="filter-form"><div class="filter-field"><label for="filter-site">站点:</label><select id="filter-site"><option value="">全部</option><option>TroveLoop</option><option>TrustCard</option></select></div><div class="filter-field"><label for="filter-name">活动名称:</label><input id="filter-name" autocomplete="off"></div><div class="filter-buttons"><button class="button primary" type="submit">查询</button><button class="button secondary" id="reset-filter" type="button">重置</button></div></form><div class="toolbar"><button class="button primary" id="create-button" type="button">新增</button><span class="demo-label">交互原型 · 演示数据，不产生真实发放</span></div><div class="table-wrap"><table aria-label="积分发放记录"><colgroup><col style="width:100px"><col style="width:160px"><col style="width:110px"><col style="width:80px"><col style="width:110px"><col style="width:110px"><col style="width:130px"><col style="width:130px"><col style="width:160px"><col style="width:130px"></colgroup><thead><tr><th>站点</th><th>活动名称</th><th>积分类型</th><th>发放人数</th><th>发放金额</th><th>实际发放金额</th><th>备注</th><th>状态</th><th>发放时间</th><th class="operation">操作</th></tr></thead><tbody id="records"></tbody></table></div><div class="pagination"><span id="total-count"></span><button class="page-button" id="previous-page" aria-label="上一页">‹</button><button class="page-button current" id="current-page" aria-label="当前页" aria-current="page">1</button><button class="page-button" id="next-page" aria-label="下一页">›</button><select id="page-size" aria-label="每页条数"><option value="10">10 条/页</option><option value="5">5 条/页</option><option value="20">20 条/页</option></select></div><p class="page-note">临时积分按到账时间计算有效期。发放结果以结果文件为准，部分成功时可查看各用户的失败原因。</p></section></main>
+<dialog id="create-dialog" aria-labelledby="dialog-title"><form id="grant-form" class="dialog-shell" novalidate><header class="dialog-header"><h2 id="dialog-title">新增</h2><button type="button" class="close" id="close-dialog" aria-label="关闭新增弹框">×</button></header><div class="form-body"><div class="form-row"><label class="form-label required" for="site">选择站点:</label><div class="field"><select id="site" required aria-describedby="site-error"><option value="">请选择</option><option>TroveLoop</option><option>TrustCard</option></select><div class="error" id="site-error"></div></div></div><div class="form-row"><label class="form-label required" for="activity">活动名称:</label><div class="field"><input id="activity" type="text" maxlength="100" placeholder="最多100个字符" required aria-describedby="activity-error"><div class="error" id="activity-error"></div></div></div><div class="form-row"><div class="form-label required" id="type-label">积分类型:</div><div class="field"><div class="type-controls"><div class="radios" role="radiogroup" aria-labelledby="type-label"><label class="radio-option"><input type="radio" name="point-type" value="permanent" checked>永久积分</label><label class="radio-option"><input type="radio" name="point-type" value="temporary">临时积分</label></div><div id="expiry-row" hidden><div class="expiry-input"><label class="required" for="expiry">有效期:</label><input id="expiry" type="text" inputmode="numeric" placeholder="1～999整数" aria-describedby="expiry-error"><span>天</span></div><div class="error" id="expiry-error"></div></div></div></div></div><div class="form-row"><label class="form-label required" for="upload-file">发放用户:</label><div class="field"><div class="import-info"><strong>提醒:</strong><p>1. 导入前请先 <button class="link" type="button" id="download-template">下载模板</button>，按模板内容填写要发送的用户。</p><p>2. 系统只有在表格内容全部校验通过后，才会发放现金。</p><p id="temporary-notice">3. 发放后总临时积分须小于提现门槛 5 Points，否则该用户发放失败。</p></div><div class="upload-actions"><button class="button" type="button" id="upload-button"><svg class="inline-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 13V2m-4 4 4-4 4 4M3 12v5h14v-5"/></svg>选择文件</button><input id="upload-file" type="file" accept=".csv,text/csv" hidden></div><div class="file-result" id="file-result" hidden><div><span class="file-name" id="file-name"></span><div class="sub" id="file-summary"></div></div><button class="link" type="button" id="remove-file">移除</button></div><div class="error" id="file-error" role="alert"></div></div></div><div class="form-row"><label class="form-label" for="remark">备注:</label><div class="field"><textarea id="remark" maxlength="200" placeholder="最多200个字符"></textarea><div class="counter"><span id="remark-count">0</span> / 200</div></div></div></div><footer class="dialog-footer"><span class="key-hint">仅模拟发放，不连接真实账户</span><button class="button" type="button" id="cancel-dialog">取消</button><button class="button primary" type="submit" id="submit-grant">提交</button></footer></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+const byId = identifier => document.getElementById(identifier);
+const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+const formatAmount = amount => Number(amount.toFixed(4)).toLocaleString('en-US', {maximumFractionDigits:4});
+const statuses = {success:{label:'发送成功',className:'success'},partial:{label:'部分成功',className:'partial'},failed:{label:'发送失败',className:'failed'},sending:{label:'发送中',className:'sending'}};
+const demoWithdrawalThreshold = 5;
+const demoNickname = userId => `演示用户${userId}`;
+const actualGrantedAmount = record => record.results.reduce((total,result) => total + (result.success ? result.amount : 0),0);
+const demoAccounts = new Map(['TroveLoop','TrustCard'].map(site => [site,new Map([['10001',1],['10002',4.75],['10003',0]])]));
+const sampleResults = (count, amount, failedCount = 0) => Array.from({length:count}, (_,index) => ({userId:String(10001 + index),nickname:demoNickname(String(10001 + index)),amount: index === count - 1 ? Number((amount - Math.floor(amount / count * 10000) / 10000 * (count - 1)).toFixed(4)) : Math.floor(amount / count * 10000) / 10000,success:index >= failedCount,reason:index < failedCount ? '发放后总临时积分达到或超过提现门槛' : ''}));
+let records = [
+ {id:1,site:'TroveLoop',name:'新客限时成交激励',type:'temporary',days:7,count:3,total:3,remark:'新客首单活动',status:'partial',time:'2026-09-20 10:49:31',results:sampleResults(3,3,1)},
+ {id:2,site:'TroveLoop',name:'沉默用户召回',type:'temporary',days:15,count:5,total:5,remark:'限时奖励',status:'success',time:'2026-09-19 17:20:16',results:sampleResults(5,5)},
+ {id:3,site:'TrustCard',name:'周末交易奖励',type:'temporary',days:3,count:2,total:10,remark:'临时积分超限',status:'failed',time:'2026-09-19 16:05:42',results:sampleResults(2,10,2)},
+ {id:4,site:'TroveLoop',name:'发钱了',type:'permanent',count:4,total:32,remark:'',status:'success',time:'2026-04-24 10:49:31',results:sampleResults(4,32)},
+ {id:5,site:'TroveLoop',name:'当天大金额发放',type:'permanent',count:27,total:270,remark:'dddd',status:'success',time:'2026-04-22 17:20:16',results:sampleResults(27,270)},
+ {id:6,site:'TroveLoop',name:'我是活动名称',type:'permanent',count:2,total:5.3,remark:'我是备注名称',status:'success',time:'2026-04-22 17:00:21',results:sampleResults(2,5.3)},
+ {id:7,site:'TroveLoop',name:'测试',type:'permanent',count:5,total:11.7,remark:'',status:'success',time:'2026-04-22 15:48:54',results:sampleResults(5,11.7)},
+ {id:8,site:'TroveLoop',name:'test',type:'permanent',count:5,total:11.7,remark:'测试一下',status:'success',time:'2026-04-22 15:22:10',results:sampleResults(5,11.7)}
+];
+let currentPage = 1;
+let filters = {site:'',name:''};
+let importedUsers = [];
+let uploadVersion = 0;
+let toastTimer;
+function notify(message) { clearTimeout(toastTimer); byId('toast').textContent = message; byId('toast').hidden = false; toastTimer = setTimeout(() => byId('toast').hidden = true,4000); }
+function renderRecords() {
+ const filtered = records.filter(record => (!filters.site || record.site === filters.site) && record.name.toLowerCase().includes(filters.name.toLowerCase()));
+ const pageSize = Number(byId('page-size').value);
+ const pages = Math.max(1,Math.ceil(filtered.length / pageSize));
+ currentPage = Math.min(currentPage,pages);
+ byId('records').innerHTML = filtered.slice((currentPage-1)*pageSize,currentPage*pageSize).map(record => {
+  const status = statuses[record.status];
+  return `<tr><td>${escapeHtml(record.site)}</td><td><span class="ellipsis" title="${escapeHtml(record.name)}">${escapeHtml(record.name)}</span></td><td>${record.type === 'temporary' ? `<span class="temporary">临时积分</span><div class="sub">有效期 ${record.days} 天</div>` : '永久积分'}</td><td>${record.count}</td><td>${formatAmount(record.total)} Points</td><td>${formatAmount(actualGrantedAmount(record))} Points</td><td><span class="ellipsis" title="${escapeHtml(record.remark || '-')}">${escapeHtml(record.remark || '-')}</span></td><td><span class="status ${status.className}">${status.label}</span></td><td>${record.time}</td><td class="operation"><button class="link" data-download="${record.id}" ${record.status === 'sending' ? 'disabled title="发放处理中，完成后可下载"' : ''}>下载结果文件</button></td></tr>`;
+ }).join('') || '<tr><td colspan="10" class="empty">暂无匹配的发放记录，请调整查询条件</td></tr>';
+ byId('total-count').textContent = `共 ${filtered.length} 条`;
+ byId('current-page').textContent = currentPage;
+ byId('previous-page').disabled = currentPage === 1;
+ byId('next-page').disabled = currentPage === pages;
+}
+function createExcelBlob(rows) {
+ const encoder = new TextEncoder();
+ const xmlText = value => escapeHtml(value).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/g,'');
+ const worksheetRows = rows.map((row,rowIndex) => `<row r="${rowIndex+1}">${row.map((value,columnIndex) => {
+  const reference = `${String.fromCharCode(65+columnIndex)}${rowIndex+1}`;
+  return typeof value === 'number' && Number.isFinite(value) ? `<c r="${reference}"><v>${value}</v></c>` : `<c r="${reference}" t="inlineStr"><is><t xml:space="preserve">${xmlText(value ?? '')}</t></is></c>`;
+ }).join('')}</row>`).join('');
+ const files = [
+  ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>'],
+  ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+  ['xl/workbook.xml','<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="发放结果" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+  ['xl/_rels/workbook.xml.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>'],
+  ['xl/worksheets/sheet1.xml',`<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols><col min="1" max="1" width="24" customWidth="1"/><col min="2" max="3" width="18" customWidth="1"/><col min="4" max="4" width="64" customWidth="1"/></cols><sheetData>${worksheetRows}</sheetData></worksheet>`]
+ ];
+ const crcTable = Array.from({length:256},(_,value) => {
+  let checksum = value;
+  for(let bit=0;bit<8;bit++) checksum = checksum & 1 ? 0xedb88320 ^ (checksum >>> 1) : checksum >>> 1;
+  return checksum >>> 0;
+ });
+ const localParts = [];
+ const centralParts = [];
+ let offset = 0;
+ let centralSize = 0;
+ for(const [filename,contents] of files) {
+  const name = encoder.encode(filename);
+  const data = encoder.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+contents);
+  let checksum = 0xffffffff;
+  for(const byte of data) checksum = crcTable[(checksum ^ byte) & 255] ^ (checksum >>> 8);
+  checksum = (checksum ^ 0xffffffff) >>> 0;
+  const local = new Uint8Array(30+name.length);
+  const localView = new DataView(local.buffer);
+  localView.setUint32(0,0x04034b50,true);
+  localView.setUint16(4,20,true);
+  localView.setUint16(6,0x0800,true);
+  localView.setUint16(12,33,true);
+  localView.setUint32(14,checksum,true);
+  localView.setUint32(18,data.length,true);
+  localView.setUint32(22,data.length,true);
+  localView.setUint16(26,name.length,true);
+  local.set(name,30);
+  const central = new Uint8Array(46+name.length);
+  const centralView = new DataView(central.buffer);
+  centralView.setUint32(0,0x02014b50,true);
+  centralView.setUint16(4,20,true);
+  centralView.setUint16(6,20,true);
+  centralView.setUint16(8,0x0800,true);
+  centralView.setUint16(14,33,true);
+  centralView.setUint32(16,checksum,true);
+  centralView.setUint32(20,data.length,true);
+  centralView.setUint32(24,data.length,true);
+  centralView.setUint16(28,name.length,true);
+  centralView.setUint32(42,offset,true);
+  central.set(name,46);
+  localParts.push(local,data);
+  centralParts.push(central);
+  offset += local.length+data.length;
+  centralSize += central.length;
+ }
+ const footer = new Uint8Array(22);
+ const footerView = new DataView(footer.buffer);
+ footerView.setUint32(0,0x06054b50,true);
+ footerView.setUint16(8,files.length,true);
+ footerView.setUint16(10,files.length,true);
+ footerView.setUint32(12,centralSize,true);
+ footerView.setUint32(16,offset,true);
+ return new Blob([...localParts,...centralParts,footer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+function downloadExcel(filename,rows) {
+ const url = URL.createObjectURL(createExcelBlob(rows));
+ const anchor = document.createElement('a');
+ anchor.href = url;
+ anchor.download = filename;
+ document.body.append(anchor);
+ anchor.click();
+ anchor.remove();
+ setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+function downloadCsv(filename, rows) {
+ const contents = '\ufeff' + rows.map(row => row.map(value => {const text = String(value ?? '');return '"' + (/^[=+\-@\t\r]/.test(text) ? "'" + text : text).replace(/"/g,'""') + '"';}).join(',')).join('\r\n');
+ const url = URL.createObjectURL(new Blob([contents],{type:'text/csv;charset=utf-8;'}));
+ const anchor = document.createElement('a'); anchor.href = url; anchor.download = filename; document.body.append(anchor); anchor.click(); anchor.remove(); setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+byId('records').addEventListener('click', event => {
+ const button = event.target.closest('[data-download]'); if (!button) return;
+ const record = records.find(item => item.id === Number(button.dataset.download)); if (!record || record.status === 'sending') return;
+ downloadExcel(`${record.name.replace(/[\\/:*?"<>|]/g,'_')}_发放结果.xlsx`,[['用户昵称','发放金额','发送状态','说明'],...record.results.map(result => [result.nickname || '—',result.amount,result.success ? '发送成功' : '发送失败',result.reason || '-'])]);
+ notify('结果文件已下载，包含逐用户发放结果及失败原因');
+});
+byId('filter-form').addEventListener('submit',event => {event.preventDefault();filters = {site:byId('filter-site').value,name:byId('filter-name').value.trim()};currentPage=1;renderRecords();});
+byId('reset-filter').addEventListener('click',() => {byId('filter-form').reset();filters={site:'',name:''};currentPage=1;renderRecords();});
+byId('previous-page').addEventListener('click',() => {currentPage--;renderRecords();});
+byId('next-page').addEventListener('click',() => {currentPage++;renderRecords();});
+byId('page-size').addEventListener('change',() => {currentPage=1;renderRecords();});
+function fieldError(identifier,message) {byId(`${identifier}-error`).textContent=message;byId(identifier).setAttribute('aria-invalid',String(Boolean(message)));}
+function clearImport() {uploadVersion++;importedUsers=[];byId('upload-file').value='';byId('file-result').hidden=true;byId('file-error').textContent='';}
+function updatePointType() {const temporary = document.querySelector('[name="point-type"]:checked').value === 'temporary';byId('expiry-row').hidden=!temporary;byId('expiry').required=temporary;byId('expiry').disabled=!temporary;if(!temporary){byId('expiry').value='';fieldError('expiry','');}}
+function closeDialog() {uploadVersion++;byId('create-dialog').close();byId('create-button').focus();}
+byId('create-button').addEventListener('click',() => {byId('grant-form').reset();clearImport();['site','activity','expiry'].forEach(identifier => fieldError(identifier,''));byId('remark-count').textContent='0';updatePointType();byId('create-dialog').showModal();byId('site').focus();});
+byId('close-dialog').addEventListener('click',closeDialog);byId('cancel-dialog').addEventListener('click',closeDialog);
+byId('create-dialog').addEventListener('cancel',event => {event.preventDefault();closeDialog();});
+document.querySelectorAll('[name="point-type"]').forEach(radio => radio.addEventListener('change',updatePointType));
+byId('remark').addEventListener('input',() => byId('remark-count').textContent=byId('remark').value.length);
+['site','activity','expiry'].forEach(identifier => byId(identifier).addEventListener('input',() => fieldError(identifier,'')));
+byId('download-template').addEventListener('click',() => downloadCsv('积分发放模板.csv',[['用户ID','发放积分'],['10001','1'],['10002','1'],['10003','1']]));
+byId('upload-button').addEventListener('click',() => byId('upload-file').click());
+function acceptUsers(users,filename) {importedUsers=users;byId('file-name').textContent=filename;byId('file-summary').textContent=`校验通过 · ${users.length} 位用户 · 合计 ${formatAmount(users.reduce((sum,user) => sum+user.amount,0))} Points`;byId('file-result').hidden=false;byId('file-error').textContent='';}
+byId('remove-file').addEventListener('click',clearImport);
+function parseCsv(text) {
+ const rows=[];let row=[];let cell='';let quoted=false;
+ for(let index=0;index<text.length;index++){const character=text[index];if(character==='"'){if(quoted && text[index+1]==='"'){cell+='"';index++;}else{quoted=!quoted;}}else if(character===',' && !quoted){row.push(cell);cell='';}else if((character==='\n'||character==='\r')&&!quoted){row.push(cell);if(row.some(value => value.trim()))rows.push(row);row=[];cell='';if(character==='\r'&&text[index+1]==='\n')index++;}else{cell+=character;}}
+ if(quoted)throw new Error('CSV 引号未闭合，请检查文件格式');row.push(cell);if(row.some(value => value.trim()))rows.push(row);return rows;
+}
+byId('upload-file').addEventListener('change',async event => {
+ const file=event.target.files[0];if(!file)return;clearImport();const version=uploadVersion;
+ try{if(!file.name.toLowerCase().endsWith('.csv'))throw new Error('本交互原型仅支持 CSV 文件，请使用下载模板');if(file.size>2*1024*1024)throw new Error('演示文件请控制在 2 MB 以内');const text=await file.text();if(version!==uploadVersion)return;const rows=parseCsv(text.replace(/^\ufeff/,''));if(!rows.length||rows[0].length!==2||rows[0][0].trim()!=='用户ID'||rows[0][1].trim()!=='发放积分')throw new Error('模板列不正确，应为「用户ID」「发放积分」');if(rows.length<2)throw new Error('文件中没有发放用户');const seen=new Set();const users=rows.slice(1).map((cells,index) => {const userId=(cells[0]||'').trim();const rawAmount=(cells[1]||'').trim();const amount=Number(rawAmount);if(cells.length!==2||!userId||!/^\d+(\.\d+)?$/.test(rawAmount)||!Number.isFinite(amount)||amount<=0)throw new Error(`第 ${index+2} 行数据无效：请填写用户ID及大于0的发放积分`);if(seen.has(userId))throw new Error(`第 ${index+2} 行用户ID重复，请检查名单`);seen.add(userId);return {userId,amount};});acceptUsers(users,file.name);}catch(error){if(version===uploadVersion)byId('file-error').textContent=error.message;}
+});
+byId('grant-form').addEventListener('submit',event => {
+ event.preventDefault();const type=document.querySelector('[name="point-type"]:checked').value;const rawDays=byId('expiry').value.trim();const days=Number(rawDays);let valid=true;
+ if(!byId('site').value){fieldError('site','请选择站点');valid=false;}if(!byId('activity').value.trim()){fieldError('activity','请输入活动名称');valid=false;}if(type==='temporary'&&(!/^\d+$/.test(rawDays)||days<1||days>999)){fieldError('expiry','请输入1～999之间的整数天数');valid=false;}if(!importedUsers.length){byId('file-error').textContent='请上传有效用户名单';valid=false;}if(!valid){const invalid=document.querySelector('[aria-invalid="true"]');if(invalid)invalid.focus();return;}
+ const now=new Date();const time=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-')+' '+[now.getHours(),now.getMinutes(),now.getSeconds()].map(value => String(value).padStart(2,'0')).join(':');
+ const record={id:Date.now(),site:byId('site').value,name:byId('activity').value.trim(),type,days:type==='temporary'?days:null,count:importedUsers.length,total:importedUsers.reduce((sum,user)=>sum+user.amount,0),remark:byId('remark').value.trim(),status:'sending',time,results:[]};
+ const users=importedUsers.map(user=>({...user}));records.unshift(record);byId('filter-form').reset();filters={site:'',name:''};currentPage=1;closeDialog();renderRecords();notify('演示任务已提交，正在模拟逐用户发放…');
+ setTimeout(() => {const accounts=demoAccounts.get(record.site);record.results=users.map(user => {let reason='';if(!accounts.has(user.userId))reason='演示用户不存在（未接入真实账户服务）';else if(record.type==='temporary' && accounts.get(user.userId)+user.amount>=demoWithdrawalThreshold)reason='发放后总临时积分达到或超过提现门槛';if(!reason&&record.type==='temporary')accounts.set(user.userId,accounts.get(user.userId)+user.amount);return {...user,nickname:accounts.has(user.userId) ? demoNickname(user.userId) : '—',success:!reason,reason};});const succeeded=record.results.filter(result=>result.success).length;record.status=succeeded===record.count?'success':succeeded===0?'failed':'partial';renderRecords();notify(`模拟发放完成：成功 ${succeeded} 人，失败 ${record.count-succeeded} 人。可下载结果文件。`);},1200);
+});
+renderRecords();
+</script>
+</body>
+</html>

@@ -289,6 +289,36 @@
 .mine-membership-rights svg{width:12px;height:12px;fill:currentColor;stroke:none}
 .mine-membership-copy p{font-size:10px;line-height:15px;margin-top:2px;color:#344d48}
 .mine-membership-copy time{white-space:nowrap}
+
+/* Searchable card selector with independent favorite actions. */
+.sheet.card-picker{padding:12px 12px 20px;border-radius:16px 16px 0 0;overflow:hidden}
+.card-picker>.handle{display:none}
+.card-picker #sheet-body{display:flex;flex-direction:column;gap:12px;min-height:0}
+.card-picker-search{display:flex;align-items:center;gap:8px;flex-shrink:0;border:1px solid var(--brand);border-radius:12px;padding:0 12px;height:56px;background:white}
+.card-picker-search svg{width:22px;height:22px;color:var(--brand)}
+.card-picker .card-picker-search input{border:0;margin:0;padding:0;background:transparent;height:52px;min-width:0;font-size:15px;color:var(--brand);outline:none}
+.card-picker-search:focus-within{box-shadow:0 0 0 2px #73b6a64d}
+.card-picker-search input::placeholder{color:#a8b4b7}
+.card-picker-list{display:grid;gap:10px;overflow-y:auto;max-height:min(350px,calc(100dvh - 260px));scrollbar-width:thin}
+.card-picker-row{display:flex;align-items:center;border-radius:14px;background:#f1f5f4;min-height:54px;padding:0 8px 0 10px}
+.card-picker-select{display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:54px;padding:8px 0;text-align:left;color:var(--brand)}
+.card-picker-select img{width:26px;height:26px;border-radius:6px;object-fit:contain;flex-shrink:0}
+.card-picker-select span{font-size:15px;font-weight:550;line-height:21px}
+.card-picker-star{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;color:white;padding:0}
+.card-picker-star svg{width:28px;height:28px;fill:currentColor;stroke:none}
+.card-picker-star[aria-pressed="true"]{color:#ffb000}
+.card-picker-empty{text-align:center;padding:24px 10px;color:var(--secondary);font-size:14px}
+
+.sheet.provider-currency-picker{height:390px;max-height:90%}
+.provider-currency-picker #sheet-body{height:100%}
+.provider-currency-list{display:grid;gap:10px;overflow-y:auto;min-height:0;align-content:start}
+.provider-currency-option{display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 12px;border-radius:14px;background:#f1f5f4;color:var(--brand);text-align:left;width:100%}
+.provider-currency-option .flag{display:grid;place-items:center;width:26px;height:26px;flex-shrink:0;border-radius:6px;background:white;font-size:22px;overflow:hidden}
+.provider-currency-option strong{font-size:15px;font-weight:550;line-height:22px}
+
+.provider-merchant-select:disabled{opacity:.55;cursor:default}
+.provider-footer-actions button:disabled{opacity:.45;cursor:default}
+.provider-order-body.awaiting-currency .provider-amount-label{margin-top:0}
 </style>
 </head>
 <body>
@@ -348,9 +378,9 @@
 <div class="provider-summary-row"><button type="button" class="provider-product provider-currency-select" data-action="provider-currency" aria-label="Change currency" aria-haspopup="dialog"><span class="flag" id="provider-currency-flag"></span><strong id="provider-currency"></strong><span class="provider-select-arrow"><svg aria-hidden="true"><use href="#i-down"/></svg></span></button><button type="button" class="provider-person provider-merchant-select" data-action="provider-merchant" aria-label="Change service provider" aria-haspopup="dialog"><span class="provider-avatar"><img id="provider-avatar" alt=""><i aria-label="Online"></i></span><span class="provider-person-copy"><strong id="provider-name"></strong></span><span class="provider-select-arrow"><svg aria-hidden="true"><use href="#i-down"/></svg></span></button></div>
 </section>
 <div class="provider-type-options" role="group" aria-label="Card type"><button type="button" data-provider-type="physical" aria-pressed="true">Physical Card</button><button type="button" data-provider-type="ecode" aria-pressed="false">E-Code</button></div>
-<section class="provider-block"><div class="provider-rates" id="provider-rates" aria-label="Rate by gift card amount"></div><label class="order-field-title provider-amount-label" for="provider-amount"><span><span class="order-required">*</span>Gift Card Amount</span></label><div class="provider-amount-wrap"><input id="provider-amount" type="number" min="1" max="5000" step="0.01" value="20" inputmode="decimal" required aria-describedby="provider-amount-error"><span>Points</span></div><p class="order-error" id="provider-amount-error" hidden></p></section>
-<section class="provider-block"><p class="order-terms"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><path d="M12 7v6m0 4h.01" stroke="white" stroke-width="2"/></svg><span>Trade Terms: We guarantee that we always have sufficient balance</span></p><div class="provider-quote"><span>You get</span><div class="order-points">0 Points</div><p class="order-equivalent">≈ 0 ₦</p></div></section>
-<section class="provider-block"><div class="order-field-title upload-title-with-example"><span><span class="order-required" id="provider-images-required">*</span>Upload Gift Card Image(s) <span id="provider-image-count">(0/12)</span></span><button type="button" class="image-example-link" data-action="provider-image-example" aria-haspopup="dialog">Image Example</button></div><div class="order-uploads" id="provider-uploads"><button type="button" class="order-add-image" id="provider-add-image" data-action="provider-add-image" aria-label="Add images for the service provider"><span>+</span></button></div><input type="file" id="provider-file-input" accept="image/jpeg,image/png,image/webp" multiple hidden><p class="order-error" id="provider-images-error" hidden></p><label class="order-code-label" for="provider-code"><span class="order-required" id="provider-code-required" hidden>*</span>Enter Gift Card Code</label><textarea class="order-code" id="provider-code" rows="2" placeholder="Enter gift card code" autocomplete="off" spellcheck="false" aria-describedby="provider-code-error"></textarea><p class="order-error" id="provider-code-error" hidden></p></section>
+<section class="provider-block"><div class="provider-rates" id="provider-rates" aria-label="Rate by gift card amount"></div><label class="order-field-title provider-amount-label" for="provider-amount"><span><span class="order-required">*</span>Gift Card Amount</span></label><div class="provider-amount-wrap"><input id="provider-amount" placeholder="Enter amount" type="number" min="1" max="5000" step="0.01" value="20" inputmode="decimal" required aria-describedby="provider-amount-error"><span>Points</span></div><p class="order-error" id="provider-amount-error" hidden></p></section>
+<section class="provider-block" id="provider-trade-details"><p class="order-terms"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" stroke="none"/><path d="M12 7v6m0 4h.01" stroke="white" stroke-width="2"/></svg><span>Trade Terms: We guarantee that we always have sufficient balance</span></p><div class="provider-quote"><span>You get</span><div class="order-points">0 Points</div><p class="order-equivalent">≈ 0 ₦</p></div></section>
+<section class="provider-block" id="provider-proof-details"><div class="order-field-title upload-title-with-example"><span><span class="order-required" id="provider-images-required">*</span>Upload Gift Card Image(s) <span id="provider-image-count">(0/12)</span></span><button type="button" class="image-example-link" data-action="provider-image-example" aria-haspopup="dialog">Image Example</button></div><div class="order-uploads" id="provider-uploads"><button type="button" class="order-add-image" id="provider-add-image" data-action="provider-add-image" aria-label="Add images for the service provider"><span>+</span></button></div><input type="file" id="provider-file-input" accept="image/jpeg,image/png,image/webp" multiple hidden><p class="order-error" id="provider-images-error" hidden></p><label class="order-code-label" for="provider-code"><span class="order-required" id="provider-code-required" hidden>*</span>Enter Gift Card Code</label><textarea class="order-code" id="provider-code" rows="2" placeholder="Enter gift card code" autocomplete="off" spellcheck="false" aria-describedby="provider-code-error"></textarea><p class="order-error" id="provider-code-error" hidden></p></section>
 </form></section>
 <section id="wallet-page" hidden aria-label="Wallet"><div class="wallet-content">
 <div class="wallet-balance" aria-label="Available balance">
@@ -404,12 +434,12 @@ function navigate(page){
  $$('[data-page]').forEach(b=>{if(b.dataset.page===page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});$('#screen').scrollTop=0;
 }
 function openSheet(title,body,variant=''){
- const sheet=$('.sheet'),isCurrencyPicker=variant==='currency-picker';
- sheet.classList.toggle('image-guide',variant==='image-guide');sheet.classList.toggle('currency-picker',isCurrencyPicker);$('.sheet-heading').hidden=isCurrencyPicker;$('#close-sheet').hidden=isCurrencyPicker;
- if(isCurrencyPicker){sheet.setAttribute('aria-label',title);sheet.removeAttribute('aria-labelledby');sheet.tabIndex=-1}else{sheet.removeAttribute('aria-label');sheet.setAttribute('aria-labelledby','sheet-title');sheet.removeAttribute('tabindex')}
+ const sheet=$('.sheet'),isCurrencyPicker=variant==='currency-picker',isCardPicker=variant==='card-picker'||variant==='provider-currency-picker',isHeaderless=isCurrencyPicker||isCardPicker;
+ sheet.classList.toggle('image-guide',variant==='image-guide');sheet.classList.toggle('currency-picker',isCurrencyPicker);sheet.classList.toggle('card-picker',isCardPicker);sheet.classList.toggle('provider-currency-picker',variant==='provider-currency-picker');$('.sheet-heading').hidden=isHeaderless;$('#close-sheet').hidden=isHeaderless;
+ if(isHeaderless){sheet.setAttribute('aria-label',title);sheet.removeAttribute('aria-labelledby');sheet.tabIndex=-1}else{sheet.removeAttribute('aria-label');sheet.setAttribute('aria-labelledby','sheet-title');sheet.removeAttribute('tabindex')}
  if($('#sheet-layer').hidden)previousFocus=document.activeElement;
  $('#sheet-title').textContent=title;$('#sheet-body').innerHTML=body;$('#sheet-layer').hidden=false;$('#screen').inert=true;$('.bottom').inert=true;$('#order-footer').inert=true;$('#provider-footer').inert=true;
- (isCurrencyPicker?sheet:$('#close-sheet')).focus();
+ (isHeaderless?sheet:$('#close-sheet')).focus();
 }
 function closeSheet(){ $('#sheet-layer').hidden=true;$('#screen').inert=false;$('.bottom').inert=false;$('#order-footer').inert=false;$('#provider-footer').inert=false;if(previousFocus?.isConnected)previousFocus.focus() }
 function info(title,copy,button='Got it'){openSheet(title,`<p class="sheet-copy">${copy}</p><button class="primary" data-close>${button}</button>`)}
@@ -604,7 +634,7 @@ function saveGuideSeen(){try{localStorage.setItem(guideStorageKey,'done')}catch{
 function releaseGuideLocks(){guide.locks.forEach(({node,value})=>node.inert=value);guide.locks=[];guide.rows.forEach(({node,tabIndex})=>{if(tabIndex===null)node.removeAttribute('tabindex');else node.setAttribute('tabindex',tabIndex);node.removeAttribute('aria-describedby')});guide.rows=[]}
 function lockGuideNode(node){if(!node)return;guide.locks.push({node,value:node.inert});node.inert=true}
 function setGuideStep(step){
- releaseGuideLocks();guide.step=step;$('#guide-title').textContent=step===1?'Welcome to Troveloop!':'Getting started';$('#guide-card').classList.toggle('is-welcome',step===1);$('#guide-next').hidden=false;$('#guide-next').textContent=step===3?'Done':'Next';$('#guide-step').textContent=step+' of 3';$('#guide-copy').textContent=guideCopy[step];
+ releaseGuideLocks();guide.step=step;$('#guide-title').textContent=step===1?'Welcome to Troveloop!':'Getting started';$('#guide-card').classList.toggle('is-welcome',step===1);$('#guide-skip').hidden=step===3;$('#guide-next').hidden=false;$('#guide-next').textContent=step===3?'Done':'Next';$('#guide-step').textContent=step+' of 3';$('#guide-copy').textContent=guideCopy[step];
  $$('.guide-dots i').forEach((dot,index)=>dot.classList.toggle('active',index===step-1));
  lockGuideNode($('.bottom'));lockGuideNode($('#order-footer'));
  if(step<3){
@@ -673,7 +703,7 @@ document.addEventListener('keydown',e=>{
  if(guide.step===1&&(e.key==='Enter'||e.key===' ')&&e.target.matches('#fast-panel .offer')){e.preventDefault();e.stopImmediatePropagation();pickGuideCard(e.target);return}
  if(e.key==='Tab'){
   const targets=guide.step===1?$$('#fast-panel .offer'):guide.step>=2?[guide.target]:[];
-  const controls=[$('#first-visit-toggle'),...targets,$('#guide-skip'),$('#guide-next')];
+  const controls=[$('#first-visit-toggle'),...targets,...(!$('#guide-skip').hidden?[$('#guide-skip')]:[]),$('#guide-next')];
   const current=controls.indexOf(document.activeElement),next=e.shiftKey?(current<=0?controls.length-1:current-1):(current+1)%controls.length;
   e.preventDefault();e.stopImmediatePropagation();controls[next].focus({preventScroll:true});
  }
@@ -779,42 +809,95 @@ if(window.visualViewport)window.visualViewport.addEventListener('resize',schedul
 if(typeof ResizeObserver!=='undefined')new ResizeObserver(scheduleOrderGuidePosition).observe($('.app'));
 
 const providerCardOptions=[{name:'Razer',image:$('#brand-filter img').src},...orderCards];
+const providerCardFavorites=new Set(['Razer']);
+try{const saved=JSON.parse(localStorage.getItem('troveloop:favorite-cards'));if(Array.isArray(saved)){providerCardFavorites.clear();saved.filter(name=>providerCardOptions.some(card=>card.name===name)).forEach(name=>providerCardFavorites.add(name))}}catch{}
+function openProviderCardPicker(){
+ const star='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.09 6.26 6.91 1.01-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>';
+ openSheet('Select Card',`<div class="card-picker-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg><input id="provider-card-search" type="search" placeholder="Search" aria-label="Search gift cards" autocomplete="off"></div><div class="card-picker-list" aria-label="Gift cards">${providerCardOptions.map(card=>`<div class="card-picker-row" data-card-search-name="${card.name.toLowerCase()} gift card"><button type="button" class="card-picker-select" data-provider-select-card="${card.name}" aria-label="Select ${card.name} Gift Card${card.name===providerDraft.card?', currently selected':''}"><img src="${card.image}" alt=""><span>${card.name} Gift Card</span></button><button type="button" class="card-picker-star" data-favorite-card="${card.name}" aria-label="Favorite ${card.name} Gift Card" aria-pressed="${providerCardFavorites.has(card.name)}">${star}</button></div>`).join('')}<p class="card-picker-empty" id="provider-card-empty" role="status" hidden>No gift cards found. Try another name.</p></div>`,'card-picker');
+ $('#provider-card-search').addEventListener('input',e=>{
+  const query=e.target.value.trim().toLowerCase();let count=0;
+  $$('.card-picker-row').forEach(row=>{row.hidden=!row.dataset.cardSearchName.includes(query);if(!row.hidden)count++});
+  $('#provider-card-empty').hidden=count>0;
+ });
+ $$('.card-picker-star').forEach(button=>button.addEventListener('click',()=>{
+  const name=button.dataset.favoriteCard;
+  if(providerCardFavorites.has(name))providerCardFavorites.delete(name);else providerCardFavorites.add(name);
+  button.setAttribute('aria-pressed',String(providerCardFavorites.has(name)));
+  try{localStorage.setItem('troveloop:favorite-cards',JSON.stringify([...providerCardFavorites]))}catch{}
+ }));
+}
 const serviceProviders={
  'David Okafor':{trades:12,types:['ecode']},
  'Michael Bello':{trades:89,types:['physical','ecode']}
 };
 // Demo tiers from the reference screen. These are not live provider quotes.
 const providerRateTiers=[{min:1,max:1000,rate:'710.38'},{min:10,max:2000,rate:'722.12'},{min:100,max:5000,rate:'728.12'}];
+// Illustrative quote fixtures for dependent-selector previews only, not a pricing formula.
+const providerAdSamples={
+ USD:{'David Okafor':['710.38','722.12','728.12'],'Michael Bello':['715.20','726.80','733.40']},
+ GBP:{'David Okafor':['895.10','906.80','914.20'],'Michael Bello':['902.30','915.60','922.40']},
+ EUR:{'David Okafor':['768.50','779.60','786.20'],'Michael Bello':['774.30','787.10','795.40']}
+};
+function availableProviderNames(){return Object.keys(providerAdSamples[providerDraft.currency]||{}).filter(name=>serviceProviders[name]).sort((a,b)=>serviceProviders[b].trades-serviceProviders[a].trades)}
+function providerSelectionReady(){return Boolean(providerDraft.card&&currencies[providerDraft.currency]&&availableProviderNames().includes(providerDraft.merchant))}
+function resetProviderAmount(){providerDraft.amount=null;$('#provider-amount').value='';clearProviderErrors()}
+function refreshProviderSelection(){
+ const provider=serviceProviders[providerDraft.merchant];
+ if(!provider){providerDraft.type=null;return}
+ providerDraft.type=provider.types.includes('physical')?'physical':provider.types[0]||null;
+}
+
 let providerDraft={merchant:'David Okafor',card:'Razer',currency:'USD',type:'ecode',amount:20,images:[]};
 let providerReturnScroll=0,providerOrigin=null;
 function openProviderOrder(card,merchant){
  const provider=serviceProviders[merchant];if(!provider)return;
  providerOrigin=document.activeElement;providerReturnScroll=$('#screen').scrollTop;providerDraft.images.forEach(image=>URL.revokeObjectURL(image.url));
- providerDraft={merchant,card,currency:state.currency,type:provider.types[0],amount:20,images:[]};
+ providerDraft={merchant,card,currency:state.currency,type:null,amount:20,images:[]};refreshProviderSelection();
  $('#provider-amount').value='20';$('#provider-code').value='';clearProviderErrors();renderProviderOrder();navigate('provider-order');$('#provider-order-page .order-back').focus({preventScroll:true});
+}
+function openProviderCurrencyPicker(){
+ const countries={USD:'USA',GBP:'UK',EUR:'Europe'};
+ openSheet('Select Currency',`<div class="card-picker-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg><input id="provider-currency-search" type="search" placeholder="Search" aria-label="Search country or currency" autocomplete="off"></div><div class="provider-currency-list" aria-label="Currencies">${Object.entries(currencies).map(([code,currency])=>`<button type="button" class="provider-currency-option" data-provider-select-currency="${code}" data-currency-search="${countries[code]} ${code} ${currency.name}" aria-label="Select ${countries[code]} / ${code}${code===providerDraft.currency?', currently selected':''}"><span class="flag" aria-hidden="true">${currency.flag}</span><strong>${countries[code]} / ${code}</strong></button>`).join('')}<p class="card-picker-empty" id="provider-currency-empty" role="status" hidden>No currencies found. Try another country or currency.</p></div>`,'provider-currency-picker');
+ $('#provider-currency-search').addEventListener('input',e=>{
+  const query=e.target.value.trim().toLowerCase();let count=0;
+  $$('.provider-currency-option').forEach(button=>{button.hidden=!button.dataset.currencySearch.toLowerCase().includes(query);if(!button.hidden)count++});
+  $('#provider-currency-empty').hidden=count>0;
+ });
 }
 function providerAvatarSource(name){return $('[data-merchant="'+name+'"]').closest('.merchant').querySelector('.merchant-top img').src}
 function renderProviderSummary(){
- const provider=serviceProviders[providerDraft.merchant],card=providerCardOptions.find(item=>item.name===providerDraft.card);
- $('#provider-avatar').src=providerAvatarSource(providerDraft.merchant);$('#provider-avatar').alt=providerDraft.merchant;
- $('#provider-name').textContent=providerDraft.merchant;$('#provider-name').title=providerDraft.merchant;
+ const provider=serviceProviders[providerDraft.merchant],card=providerCardOptions.find(item=>item.name===providerDraft.card),currency=currencies[providerDraft.currency];
+ const avatar=$('#provider-avatar');avatar.closest('.provider-avatar').hidden=!provider;
+ if(provider){avatar.src=providerAvatarSource(providerDraft.merchant);avatar.alt=providerDraft.merchant}else{avatar.removeAttribute('src');avatar.alt=''}
+ $('#provider-name').textContent=provider?providerDraft.merchant:'Select provider';$('#provider-name').title=provider?providerDraft.merchant:'';
  $('#provider-card-image').src=card.image;$('#provider-card-name').textContent=card.name+' Gift Card';
- $('#provider-currency-flag').textContent=currencies[providerDraft.currency].flag;$('#provider-currency').textContent=({USD:'USA',GBP:'UK',EUR:'Europe'}[providerDraft.currency])+'('+providerDraft.currency+')';
+ $('#provider-currency-flag').hidden=!currency;$('#provider-currency-flag').textContent=currency?currency.flag:'';
+ $('#provider-currency').textContent=currency?({USD:'USA',GBP:'UK',EUR:'Europe'}[providerDraft.currency])+'('+providerDraft.currency+')':'Select currency';
  $('[data-action="provider-card"]').setAttribute('aria-label','Change gift card, '+card.name);
- $('[data-action="provider-currency"]').setAttribute('aria-label','Change currency, '+providerDraft.currency);
- $('[data-action="provider-merchant"]').setAttribute('aria-label','Change service provider, '+providerDraft.merchant+', '+provider.trades+' Trades');
+ $('[data-action="provider-currency"]').setAttribute('aria-label',currency?'Change currency, '+providerDraft.currency:'Select currency');
+ const merchantButton=$('[data-action="provider-merchant"]');merchantButton.disabled=!currency;
+ merchantButton.setAttribute('aria-label',provider?'Change service provider, '+providerDraft.merchant+', '+provider.trades+' Trades':'Select service provider');
 }
 function clearProviderErrors(){['amount','images','code'].forEach(key=>$('#provider-'+key+'-error').hidden=true);['#provider-amount','#provider-add-image','#provider-code'].forEach(selector=>$(selector).removeAttribute('aria-invalid'))}
 function providerAmountValid(value){return Number.isFinite(value)&&value>=1&&value<=5000&&Math.abs(value*100-Math.round(value*100))<1e-8}
 function renderProviderRates(){
- const amount=Number($('#provider-amount').value);providerDraft.amount=amount;
- const eligible=providerAmountValid(amount)?providerRateTiers.filter(tier=>amount>=tier.min&&amount<=tier.max):[],selected=eligible.at(-1);
- $('#provider-rates').innerHTML=providerRateTiers.map(tier=>`<div class="provider-rate${tier===selected?' active':''}"${tier===selected?' aria-label="Current amount rate"':''}><span>Rate: ₦${tier.rate}</span><span>Limits: ${tier.min}~${tier.max}</span></div>`).join('');
+ const raw=$('#provider-amount').value,amount=raw.trim()===''?null:Number(raw);providerDraft.amount=amount;
+ const ready=providerSelectionReady(),rates=$('#provider-rates');rates.hidden=!ready;
+ if(!ready){rates.innerHTML='';return}
+ const sample=providerAdSamples[providerDraft.currency][providerDraft.merchant];
+ const tiers=providerRateTiers.map((tier,index)=>({...tier,rate:sample[index]}));
+ const eligible=providerAmountValid(amount)?tiers.filter(tier=>amount>=tier.min&&amount<=tier.max):[],selected=eligible.at(-1);
+ rates.setAttribute('aria-label',providerDraft.card+' · '+providerDraft.currency+' · '+providerDraft.merchant+' rates');
+ rates.innerHTML=tiers.map(tier=>`<div class="provider-rate${tier===selected?' active':''}"${tier===selected?' aria-label="Current amount rate"':''}><span>Rate: ₦${tier.rate}</span><span>Limits: ${tier.min}~${tier.max}</span></div>`).join('');
 }
 function renderProviderOrder(){
- renderProviderSummary();const provider=serviceProviders[providerDraft.merchant];
- $$('[data-provider-type]').forEach(button=>{button.disabled=!provider.types.includes(button.dataset.providerType);button.setAttribute('aria-pressed',String(button.dataset.providerType===providerDraft.type))});
- $('#provider-images-required').hidden=providerDraft.type!=='physical';$('#provider-code-required').hidden=providerDraft.type!=='ecode';$('#provider-code').required=providerDraft.type==='ecode';
+ renderProviderSummary();const provider=serviceProviders[providerDraft.merchant],ready=providerSelectionReady();
+ $('#provider-order-form').classList.toggle('awaiting-currency',!ready);
+ $('.provider-type-options').hidden=!ready;
+ $('#provider-trade-details').hidden=false;$('#provider-proof-details').hidden=false;
+ $$('#provider-footer button').forEach(button=>button.disabled=!ready);
+ $$('[data-provider-type]').forEach(button=>{button.disabled=!ready||!provider.types.includes(button.dataset.providerType);button.setAttribute('aria-pressed',String(ready&&button.dataset.providerType===providerDraft.type))});
+ $('#provider-images-required').hidden=providerDraft.type!=='physical';$('#provider-code-required').hidden=providerDraft.type!=='ecode';$('#provider-code').required=ready&&providerDraft.type==='ecode';
  renderProviderRates();renderProviderImages();
 }
 function renderProviderImages(){
@@ -843,18 +926,18 @@ function openImageExample(){
 function providerError(key,copy){$('#provider-'+key+'-error').textContent=copy;$('#provider-'+key+'-error').hidden=false}
 Object.assign(actions,{
  'provider-back':()=>{navigate('home');setMode('sell');$('#screen').scrollTop=providerReturnScroll;if(providerOrigin?.isConnected)providerOrigin.focus({preventScroll:true})},
- 'provider-card':()=>openSheet('Select Card',providerCardOptions.map(card=>`<button type="button" class="choice" data-provider-select-card="${card.name}"><img src="${card.image}" width="28" height="28" style="border-radius:7px" alt=""><strong>${card.name} Gift Card</strong>${card.name===providerDraft.card?'<span class="chosen">'+icons('check')+'</span>':''}</button>`).join('')),
- 'provider-currency':()=>openSheet('Select Currency',Object.entries(currencies).map(([code,currency])=>`<button type="button" class="choice" data-provider-select-currency="${code}"><span class="flag">${currency.flag}</span><strong>${code}</strong><small>${currency.name}</small>${code===providerDraft.currency?'<span class="chosen">'+icons('check')+'</span>':''}</button>`).join('')),
- 'provider-merchant':()=>openSheet('Select Service Provider',Object.entries(serviceProviders).map(([name,provider])=>`<button type="button" class="choice" data-provider-select-merchant="${name}"><img class="provider-picker-avatar" src="${providerAvatarSource(name)}" alt=""><span class="provider-picker-copy"><strong>${name}</strong><small>${provider.trades} Trades · ${provider.types.map(type=>type==='physical'?'Physical':'E-Code').join(' / ')}</small></span>${name===providerDraft.merchant?'<span class="chosen">'+icons('check')+'</span>':''}</button>`).join('')),
+ 'provider-card':()=>openProviderCardPicker(),
+ 'provider-currency':()=>openProviderCurrencyPicker(),
+ 'provider-merchant':()=>{if(!providerDraft.currency)return;openSheet('Select Service Provider',availableProviderNames().map(name=>{const provider=serviceProviders[name];return `<button type="button" class="choice" data-provider-select-merchant="${name}"><img class="provider-picker-avatar" src="${providerAvatarSource(name)}" alt=""><span class="provider-picker-copy"><strong>${name}</strong><small>${provider.trades} Trades · ${provider.types.map(type=>type==='physical'?'Physical':'E-Code').join(' / ')}</small></span>${name===providerDraft.merchant?'<span class="chosen">'+icons('check')+'</span>':''}</button>`}).join(''))},
  'provider-image-example':openImageExample,
  'provider-add-image':()=>$('#provider-file-input').click(),
- 'provider-chat':()=>info('Live Chat','Chat with '+providerDraft.merchant+'. Your conversation with this service provider will appear here. This prototype does not send messages.')
+ 'provider-chat':()=>providerSelectionReady()&&info('Live Chat','Chat with '+providerDraft.merchant+'. Your conversation with this service provider will appear here. This prototype does not send messages.')
 });
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
- if(b.dataset.providerSelectCard&&providerCardOptions.some(card=>card.name===b.dataset.providerSelectCard)){providerDraft.card=b.dataset.providerSelectCard;renderProviderOrder();closeSheet()}
- if(b.dataset.providerSelectCurrency&&currencies[b.dataset.providerSelectCurrency]){providerDraft.currency=b.dataset.providerSelectCurrency;renderProviderOrder();closeSheet()}
- if(b.dataset.providerSelectMerchant&&serviceProviders[b.dataset.providerSelectMerchant]){providerDraft.merchant=b.dataset.providerSelectMerchant;const types=serviceProviders[providerDraft.merchant].types;if(!types.includes(providerDraft.type))providerDraft.type=types[0];clearProviderErrors();renderProviderOrder();closeSheet()}
+ if(b.dataset.providerSelectCard&&providerCardOptions.some(card=>card.name===b.dataset.providerSelectCard)){if(providerDraft.card!==b.dataset.providerSelectCard){providerDraft.card=b.dataset.providerSelectCard;providerDraft.currency=null;providerDraft.merchant=null;providerDraft.type=null;resetProviderAmount();renderProviderOrder()}closeSheet()}
+ if(b.dataset.providerSelectCurrency&&currencies[b.dataset.providerSelectCurrency]){if(providerDraft.currency!==b.dataset.providerSelectCurrency){providerDraft.currency=b.dataset.providerSelectCurrency;providerDraft.merchant=availableProviderNames()[0]||null;refreshProviderSelection();resetProviderAmount();renderProviderOrder()}closeSheet()}
+ if(b.dataset.providerSelectMerchant&&availableProviderNames().includes(b.dataset.providerSelectMerchant)){if(providerDraft.merchant!==b.dataset.providerSelectMerchant){providerDraft.merchant=b.dataset.providerSelectMerchant;refreshProviderSelection();resetProviderAmount();renderProviderOrder()}closeSheet()}
  if(b.dataset.providerType&&!b.disabled){providerDraft.type=b.dataset.providerType;clearProviderErrors();renderProviderOrder()}
  if(b.hasAttribute('data-remove-provider-image')){const index=Number(b.dataset.removeProviderImage);URL.revokeObjectURL(providerDraft.images[index].url);providerDraft.images.splice(index,1);renderProviderImages()}
 });
@@ -867,7 +950,7 @@ $('#provider-file-input').addEventListener('change',e=>{
  files.forEach(file=>providerDraft.images.push({url:URL.createObjectURL(file),name:file.name}));renderProviderImages();$('#provider-add-image').removeAttribute('aria-invalid');e.target.value='';
 });
 $('#provider-order-form').addEventListener('submit',e=>{
- e.preventDefault();clearProviderErrors();renderProviderRates();
+ e.preventDefault();if(!providerSelectionReady()){$('[data-action="provider-currency"]').focus();return}clearProviderErrors();renderProviderRates();
  if(!providerAmountValid(providerDraft.amount)){providerError('amount','Enter an amount between 1 and 5000, with up to 2 decimal places.');$('#provider-amount').setAttribute('aria-invalid','true');$('#provider-amount').focus();return}
  if(providerDraft.type==='physical'&&!providerDraft.images.length){providerError('images','Upload at least one image of your physical gift card.');$('#provider-add-image').setAttribute('aria-invalid','true');$('#provider-add-image').focus();return}
  if(providerDraft.type==='ecode'&&!$('#provider-code').value.trim()){providerError('code','Enter your gift card code.');$('#provider-code').setAttribute('aria-invalid','true');$('#provider-code').focus();return}

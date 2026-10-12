@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#10cfc8"><meta name="description" content="TrustCard会员中心交互原型；基于TL会员等级PRD与TrustCard设计规范。"><title>TrustCard · Membership Center</title><style>
+:root{--brand:#10cfc8;--brand-dark:#00aaa8;--brand-soft:#e6faf9;--page:#f6f8f8;--surface:#fff;--text:#1f2933;--muted:#667085;--faint:#98a2b3;--border:#dde7e7;--gold:#f5b544;--danger:#f05a5a;--radius:12px;--shadow:0 4px 16px rgba(16,207,200,.08)}
+*{box-sizing:border-box}body{margin:0;color:var(--text);background:#edf2f2;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5}button,input,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{cursor:default}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #087a79;outline-offset:3px}button,a{touch-action:manipulation}button{color:inherit}svg{vertical-align:middle;flex-shrink:0}.icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}h1,h2,h3,p{margin:0}h1{font-size:18px;line-height:24px;font-weight:650}h2{font-size:18px;line-height:24px;font-weight:650}h3{font-size:15px;line-height:22px;font-weight:650}button{border:0;background:none}.workbench{max-width:1160px;margin:0 auto;padding:40px;display:grid;grid-template-columns:1fr 395px;gap:80px;align-items:start}.studio{position:sticky;top:54px;padding:24px 0}.brand{display:flex;align-items:center;gap:10px;font-size:23px;letter-spacing:-.7px;font-weight:750}.brandmark{width:34px;height:38px;display:grid;place-items:center;background:var(--brand);clip-path:polygon(0 0,100% 0,100% 64%,50% 100%,0 64%);color:#fff}.eyebrow{color:var(--brand-dark);font-size:12px;font-weight:700;letter-spacing:2px}.studio h2{font-size:48px;letter-spacing:-2px;line-height:1.16;margin:48px 0 22px;font-weight:650}.studio .lead{color:var(--muted);font-size:15px;line-height:1.9;max-width:340px}.review-panel{border-top:1px solid var(--border);margin-top:32px;padding-top:24px;max-width:340px}.review-label{font-size:12px;color:var(--muted);display:block;margin-bottom:12px}.scenarios{display:flex;gap:8px;flex-wrap:wrap}.scenario{min-height:44px;padding:0 14px;border:1px solid #d6e2e1;border-radius:8px;background:#fff;font-size:12px}.scenario[aria-pressed=true]{background:var(--brand-soft);border-color:var(--brand-dark);color:#087a79;font-weight:650}.review-note{font-size:12px;color:var(--muted);line-height:1.8;margin-top:20px}.source-links{display:flex;gap:20px;margin-top:28px}.source-links a{color:var(--muted);font-size:12px;text-underline-offset:4px}.phone{position:relative;width:100%;height:850px;max-height:calc(100dvh - 80px);min-height:620px;background:var(--page);border-radius:32px;box-shadow:0 20px 70px #20444016,0 0 0 1px #fff;overflow:hidden;display:flex;flex-direction:column}.statusbar{height:44px;padding:12px 24px 6px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:650;background:white;flex-shrink:0}.status-icons{display:flex;align-items:center;gap:5px}.navbar{height:48px;background:#fff;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:0 10px;flex-shrink:0}.navbar h1{text-align:center}.icon-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:50%}.icon-btn:hover{background:var(--brand-soft)}.scroll-area{overflow:auto;flex:1;min-height:0;scrollbar-width:none;padding:16px 16px 24px;overscroll-behavior:contain}.scroll-area::-webkit-scrollbar{display:none}.section{margin-top:24px}.section-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;min-height:28px;gap:8px}.text-btn{min-height:44px;color:var(--brand-dark);font-size:12px;padding:0 0 0 8px;display:inline-flex;align-items:center;gap:2px}.text-btn .icon{width:14px;height:14px}.card{background:#fff;border-radius:12px;border:1px solid #e9eeee}.member-card{position:relative;overflow:hidden;padding:20px 20px 16px;background:linear-gradient(135deg,#18d7d0 0%,#08bdbb 100%);border-radius:12px;color:#fff;box-shadow:var(--shadow)}.member-card:before{content:"";position:absolute;width:220px;height:220px;right:-90px;top:-120px;border:1px solid #ffffff38;border-radius:50%;box-shadow:0 0 0 28px #ffffff0c,0 0 0 60px #ffffff0c;pointer-events:none}.member-top{display:flex;align-items:center;justify-content:space-between;position:relative}.member-label{font-size:12px;color:#fff}.member-level{font-size:30px;line-height:38px;font-weight:700;letter-spacing:-.7px;margin-top:2px}.badge{width:68px;height:76px;position:relative;display:grid;place-items:center;background:linear-gradient(145deg,#fff5ce,#f5b544);clip-path:polygon(50% 0,96% 22%,88% 74%,50% 100%,12% 74%,4% 22%);color:#99712b;filter:drop-shadow(0 5px 10px #008e8d35)}.badge:before{content:"";position:absolute;inset:5px;background:linear-gradient(140deg,#fff8dd,#f8ce7b);clip-path:inherit}.badge .icon{position:relative;width:34px;height:34px;stroke-width:1.6}.member-footer{border-top:1px solid #ffffff4d;margin-top:20px;padding-top:12px;display:flex;align-items:center;justify-content:space-between;font-size:12px}.pill{background:#ffffff26;border:1px solid #ffffff6b;border-radius:20px;padding:3px 9px;font-size:10px}.growth-card{padding:16px;margin-top:12px}.growth-heading{display:flex;justify-content:space-between;align-items:center;gap:8px}.growth-value{font-size:25px;line-height:32px;font-weight:650;letter-spacing:-.6px;font-variant-numeric:tabular-nums}.growth-value small{font-size:12px;font-weight:400;letter-spacing:0;color:var(--muted);margin-left:4px}.muted{color:var(--muted)}.meta{font-size:12px;line-height:18px}.progress{height:6px;background:#e8f3f2;border-radius:6px;margin-top:12px;overflow:hidden}.progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#10cfc8,#00aaa8);transition:width .4s}.progress-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--muted)}.growth-hint{margin-top:12px;font-size:12px;color:var(--muted);line-height:19px}.growth-hint strong{color:var(--brand-dark);font-weight:650}.level-tabs{display:flex;gap:4px;padding:4px;background:#e8f5f4;border-radius:24px;margin-bottom:12px}.level-tab{flex:1;min-width:0;min-height:44px;border-radius:22px;color:var(--muted);font-size:12px;padding:0 4px}.level-tab[aria-selected=true]{background:var(--brand);color:#fff;font-weight:650;box-shadow:0 3px 8px #10cfc823}.benefit-intro{display:flex;justify-content:space-between;align-items:center;margin:12px 0;font-size:12px;color:var(--muted)}.inline-tag{font-size:10px;line-height:18px;padding:0 6px;border-radius:4px;background:var(--brand-soft);color:#008b89}.benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.benefit{position:relative;text-align:left;background:white;border:1px solid #e6eeee;border-radius:12px;padding:16px 12px;min-height:136px;display:flex;flex-direction:column;align-items:flex-start}.benefit:hover{border-color:var(--brand)}.benefit-icon{width:36px;height:36px;background:var(--brand-soft);border-radius:10px;color:var(--brand-dark);display:grid;place-items:center;margin-bottom:10px}.benefit-icon.gold{background:#fff6e4;color:#c79029}.benefit-title{font-size:14px;font-weight:650;line-height:20px}.benefit-sub{font-size:11px;line-height:17px;color:var(--muted);margin-top:4px}.benefit-arrow{position:absolute;right:10px;top:20px;color:#a2b4b3}.benefit-arrow .icon{width:14px;height:14px}.action-row{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid #eef2f2;text-align:left;width:100%;min-height:78px}.action-row:last-child{border-bottom:0}.row-icon{width:40px;height:40px;border-radius:12px;background:var(--brand-soft);color:var(--brand-dark);display:grid;place-items:center;flex-shrink:0}.row-copy{flex:1;min-width:0}.row-copy .meta{margin-top:3px}.row-action{font-size:12px;color:var(--brand-dark);white-space:nowrap}.notice{display:flex;align-items:flex-start;gap:7px;padding:12px;background:#fff7e7;border-radius:8px;color:#8b681f;font-size:12px;line-height:19px;margin-top:12px}.notice .icon{width:16px;height:16px;margin-top:2px}.footer{padding:10px 16px max(18px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid #e8eeee;flex-shrink:0}.primary{height:48px;width:100%;border-radius:24px;background:var(--brand);color:white;font-size:15px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:8px}.primary:hover{background:var(--brand-dark)}.primary:disabled{background:#e6ebeb;color:#98a2b3}.home-indicator{height:5px;width:120px;border-radius:8px;background:#202a30;margin:12px auto 0}.sheet-overlay{position:absolute;inset:0;background:#102b3866;z-index:10;display:flex;align-items:center;justify-content:center;padding:16px 12px;backdrop-filter:blur(2px)}.sheet-overlay[hidden]{display:none}.sheet{width:100%;max-height:90%;background:var(--page);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 40px #1f293330}.sheet-handle{width:32px;height:4px;border-radius:4px;background:#dce5e5;margin:10px auto 0;flex-shrink:0}.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;gap:8px;flex-shrink:0}.sheet-header h2{font-size:18px}.sheet-body{overflow:auto;padding:0 16px 24px;min-height:0;overscroll-behavior:contain}.sheet-body p{font-size:13px;color:var(--muted);line-height:1.8;margin:10px 0}.sheet-body h3{margin:20px 0 8px}.rule-list{padding:16px;background:white;border:1px solid #e8eeee;border-radius:12px}.rule-list p:first-child{margin-top:0}.rule-list p:last-child{margin-bottom:0}.record{padding:14px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;font-size:13px}.record:last-child{border-bottom:0}.record span{font-size:11px;color:var(--muted);display:block;margin-top:4px}.record strong{color:var(--brand-dark);white-space:nowrap}.empty{text-align:center;padding:40px 20px}.empty .row-icon{margin:0 auto 16px}.toast{position:absolute;z-index:30;left:24px;right:24px;bottom:110px;background:#1f2933ed;color:white;text-align:center;font-size:13px;border-radius:12px;padding:12px 16px;box-shadow:0 8px 25px #102a3326;pointer-events:none}.toast[hidden]{display:none}.sheet table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}.sheet th,.sheet td{padding:12px 7px;text-align:left;border-bottom:1px solid #e9eeee}.sheet th{background:var(--brand-soft);font-weight:600}.sheet select{width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:white;color:var(--text)}.demo-label{color:var(--muted);font-size:11px;text-align:center;margin-top:12px}.sheet .primary{margin-top:20px}.sheet-body ul{font-size:13px;color:var(--muted);line-height:1.8;padding-left:20px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+@media(max-width:800px){.workbench{display:block;padding:0;max-width:430px}.studio{display:none}.phone{border-radius:0;max-height:none;min-height:0;height:100dvh;box-shadow:none}.statusbar{height:calc(44px + env(safe-area-inset-top));padding-top:calc(12px + env(safe-area-inset-top))}.home-indicator{display:none}.footer{padding-bottom:max(16px,env(safe-area-inset-bottom))}}
+@media(min-width:801px) and (max-height:760px){.workbench{padding-top:20px;padding-bottom:20px}.phone{max-height:calc(100dvh - 40px);min-height:560px}.studio{top:20px}.studio h2{margin-top:30px;font-size:40px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+.studio h2 em{font-style:normal;color:var(--brand-dark)}.studio .eyebrow{margin-top:48px}.studio h2{margin-top:14px}.studio-index{display:flex;gap:12px;align-items:center;color:#8ca09f;font-size:11px;letter-spacing:1px;margin-top:40px}.studio-index:before{content:"";width:36px;height:1px;background:#a5bfbd}.mini-brand{font-size:10px;letter-spacing:1.6px;font-weight:650;color:#ffffffd9;margin-bottom:18px}.member-label{font-size:10px;letter-spacing:1px}.member-card .member-level{display:flex;align-items:baseline;gap:8px}.level-code{font-size:12px;font-weight:500;letter-spacing:0;background:#fff3;padding:2px 7px;border-radius:6px}.member-card .badge{width:72px;height:84px}.member-card .badge .icon{width:37px;height:37px}.level-track{display:flex;justify-content:space-between;position:relative;margin:18px 0 12px;padding:0 2px}.level-track:before{position:absolute;top:17px;left:28px;right:28px;height:1px;background:#d6e6e4;content:""}.level-node{position:relative;z-index:1;min-width:52px;min-height:64px;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;font-size:10px;color:var(--muted)}.node-circle{display:grid;place-items:center;border-radius:50%;width:34px;height:34px;background:#edf3f3;border:3px solid var(--page);color:#92a5a4;font-size:11px;font-weight:700}.level-node.unlocked .node-circle{background:#d4f5f0;color:#009d98}.level-node[aria-selected=true] .node-circle{background:var(--brand);color:#fff;box-shadow:0 0 0 1px var(--brand)}.level-node[aria-selected=true]{font-weight:650;color:var(--text)}.level-node small{font-size:9px;line-height:12px}.current-mini{font-size:9px;color:#007d7b;line-height:12px}.member-level-wrap{flex:1}.member-card.locked{background:linear-gradient(135deg,#58c9c4,#25aaa7)}.progress-block{padding:16px;border:1px solid #e8eeee;background:#fff;border-radius:12px}.section{margin-top:20px}.benefit{min-height:143px;padding:14px}.benefit-title strong{font-size:22px;line-height:28px;letter-spacing:-.6px;display:block;margin-bottom:4px;color:var(--text)}.benefit-icon{width:32px;height:32px;margin-bottom:8px}.benefit-icon .icon{width:20px;height:20px}.task-row{display:flex;align-items:center;gap:10px;padding:16px 12px;border-bottom:1px solid #edf1f1}.task-row:last-child{border:0}.task-row .row-icon{width:36px;height:36px;border-radius:10px}.task-row h3{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.task-row .row-copy{min-width:0}.task-sub{font-size:11px;color:var(--muted);line-height:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:3px}.task-reward{font-size:11px;color:#008b86;font-weight:600;display:block;margin-top:4px}.task-btn{min-height:44px;min-width:48px;font-size:12px;background:var(--brand-soft);color:#008b86;border-radius:22px;padding:0 12px;font-weight:650}.task-btn:disabled{background:#f0f3f3;color:#84918f}.task-row.done .row-icon{background:#f0f3f3;color:#98a2a1}.preview-chip{display:inline-block;font-size:10px;padding:3px 7px;border-radius:5px;background:#fff4;color:white}.section-heading .meta{font-size:11px}.growth-heading .text-btn{padding:0}.growth-heading{align-items:center}.growth-kicker{font-size:11px;color:var(--muted);margin-bottom:3px}.growth-heading .icon{width:17px;height:17px}.sheet-hero{background:linear-gradient(135deg,#e6faf9,#f7fffd);padding:24px 16px;text-align:center;border-radius:12px}.sheet-hero .row-icon{margin:0 auto 12px}.sheet-hero strong{font-size:30px;display:block;line-height:38px}.sheet-hero p{margin:4px 0 0}.rules-block{margin-bottom:12px}.rules-block h3{margin:0 0 6px}.rules-block p{margin:0}.record-total{background:var(--brand-soft);border-radius:12px;padding:16px;margin:12px 0}.record-total strong{font-size:26px;display:block;margin-top:4px;color:#008b86}.notice-btn{width:100%;text-align:left}.phone .review-mobile{display:none}.row-actions{display:flex;align-items:center;gap:5px}.screen-state{padding:44px 16px;text-align:center}.screen-state .row-icon{margin:0 auto 16px;width:52px;height:52px}.screen-state p{margin:8px 0 24px;color:var(--muted)}.mini-spacer{margin-top:16px}.coupon{margin-top:10px;background:#fffaf0;padding:16px;border:1px solid #f0dfbd;border-radius:12px}.coupon strong{font-size:22px;color:#ac7621}.coupon p{margin:3px 0;font-size:12px}.coupon-tag{display:inline-block;background:#f6e7c4;font-size:10px;color:#896c29;border-radius:4px;padding:2px 6px}.key-value{display:flex;justify-content:space-between;font-size:12px;padding:10px 0;border-bottom:1px solid var(--border);gap:12px}.key-value:last-child{border:0}.key-value span{color:var(--muted)}.view-note{font-size:11px;color:var(--muted);padding:12px 0 0;text-align:center}.scenario-select{width:100%;height:44px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);padding:0 10px;margin-top:12px}.list-link{display:flex;width:100%;align-items:center;justify-content:space-between;padding:14px 16px;background:white;border-radius:12px;border:1px solid #e8eeee;min-height:52px;font-size:13px}.list-link .icon{color:#8ea5a3;width:16px;height:16px}.list-link .row-actions{gap:10px}.review-disclosure{font-size:12px;margin-top:16px;line-height:1.8;color:var(--muted)}.review-disclosure summary{cursor:pointer;min-height:32px}.review-disclosure ul{padding-left:18px}.modal-note{padding:12px;border:1px solid #e4e9e9;border-radius:8px;font-size:12px;color:var(--muted);margin-top:16px}.sheet-body .row-copy h3{margin:0}.footer .primary{font-weight:600}.footer .primary .icon{width:18px}.progress-note{display:flex;justify-content:space-between;gap:4px;font-size:11px;margin-top:10px}.progress-note strong{color:var(--brand-dark);font-weight:650}.loading-line{height:14px;border-radius:6px;background:#e3eceb;margin:14px 0}.loading-line.big{height:160px}.sheet-footer-btn{margin-top:16px}.danger{color:var(--danger)}
+@media(max-width:800px){.phone .review-mobile{display:block;position:absolute;right:12px;bottom:81px;font-size:10px;color:#536d69;background:#fff;border:1px solid #dce7e5;border-radius:14px;padding:0 10px;min-height:30px;z-index:2;box-shadow:0 2px 10px #0001}.phone .review-mobile:hover{background:var(--brand-soft)}}
+
+.member-card{padding:16px}.mini-brand{margin-bottom:8px;font-size:10px}.member-card .badge{width:52px;height:60px}.member-card .badge .icon{width:29px;height:29px}.member-card .member-top{min-height:60px}.member-footer{margin-top:12px;padding-top:10px;font-size:11px}.member-footer .icon{width:18px;height:18px}.level-code{line-height:18px;font-size:11px}.member-level{font-size:28px;line-height:34px}.level-track{margin-top:14px;margin-bottom:8px}.level-node{min-height:60px;font-size:11px}.current-mini{font-size:10px}.growth-hint{margin-top:8px}.progress-block{padding:14px 16px}.progress{margin-top:8px}.growth-kicker{font-size:12px}.benefit-sub{font-size:12px;line-height:18px}.benefit-title{font-size:13px}.benefit-title strong{font-size:22px}.phone .review-mobile{display:none!important}.task-row h3{font-size:14px}.task-sub{font-size:12px;line-height:18px}.section-heading .meta{white-space:nowrap;font-size:12px}.section-heading h2{font-size:17px}.text-btn{font-size:12px}.member-label{font-size:10px}.progress-note{font-size:12px}.level-node small{font-size:10px}
+
+
+/* Seven-level membership: one compact identity / growth card. */
+.member-summary{padding:16px;touch-action:pan-y}
+.member-summary .member-top{gap:12px;min-height:66px}
+.member-summary .member-level-wrap{min-width:0}
+.member-summary .member-level{display:block;font-size:26px;line-height:32px;margin:2px 0 0;letter-spacing:-.6px;overflow-wrap:break-word}
+.member-summary .member-label{font-size:12px;line-height:18px;letter-spacing:0;color:#fff}
+.member-summary .member-validity{font-size:12px;line-height:18px;margin-top:4px;color:#fff}
+.member-summary .badge{width:48px;height:56px;flex-shrink:0}
+.member-growth{border-top:1px solid #ffffff4d;padding-top:12px;margin-top:14px;position:relative}
+.member-growth .growth-kicker{color:#fff;font-size:12px;line-height:18px;margin:0}
+.member-growth .growth-value{color:#fff;font-size:28px;line-height:34px}
+.member-growth .growth-value small{color:#fff;font-size:12px}
+.member-growth .text-btn{color:#fff;min-width:65px;align-self:center}
+.member-growth .progress{margin-top:8px;background:#ffffff4d;height:5px}
+.member-growth .progress-fill{background:#fff}
+.member-growth .progress-note{display:block;font-size:12px;line-height:18px;margin-top:8px;color:#fff}
+.member-growth .progress-note strong{color:#fff;font-weight:650}
+.member-summary .level-track{display:flex;gap:0;margin:12px -4px -4px;padding:0;overflow-x:auto;scrollbar-width:none;position:relative;overscroll-behavior-x:contain}
+.member-summary .level-track::-webkit-scrollbar{display:none}
+.member-summary .level-track:before{display:none}
+.member-summary .level-node{display:grid;place-items:center;flex:1 0 44px;min-width:44px;min-height:44px;height:44px;font-size:12px;line-height:18px;border-radius:8px;color:#fff;opacity:.7;border:1px solid transparent;padding:0}
+.member-summary .level-node.unlocked{opacity:1}
+.member-summary .level-node[aria-selected=true]{background:#fff;color:#008b89;opacity:1;font-weight:700;box-shadow:0 2px 6px #007e7c16}
+.member-summary .level-node:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+.benefit-grid{gap:10px}
+.benefit{min-height:104px;padding:12px;gap:0}
+.benefit .benefit-icon{width:28px;height:28px;border-radius:8px;margin-bottom:6px}
+.benefit .benefit-icon .icon{width:18px;height:18px}
+.benefit .benefit-arrow{right:10px;top:18px}
+.benefit-title{font-size:12px;line-height:18px}
+.benefit-title strong{font-size:20px;line-height:24px;margin-bottom:2px}
+.benefit-summary{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--brand-soft);border-radius:12px}
+.benefit-summary .benefit-icon{width:40px;height:40px;margin:0;background:#fff}
+.benefit-summary .benefit-icon.gold{background:#fff6e4}
+.benefit-summary strong{display:block;font-size:26px;line-height:32px}
+.benefit-summary span:not(.benefit-icon){display:block;color:var(--muted);font-size:12px}
+.sheet-body p.benefit-detail{font-size:14px;line-height:22px;margin:16px 0 8px}
+.sheet-body p.benefit-eligibility{font-size:12px;line-height:18px;margin:0}
+
+/* The content ends with the tasks; only the system safe area remains. */
+.system-bottom{flex-shrink:0;padding:8px 0 14px;background:var(--page)}
+.system-bottom .home-indicator{margin:0 auto}
+@media(max-width:800px){.system-bottom{padding:0 0 env(safe-area-inset-bottom)}}
+
+/* Connected level milestones; actual membership is independent of the preview. */
+.member-summary .level-track{margin-top:16px;margin-bottom:-4px;padding-top:2px}
+.member-summary .level-node{display:grid;grid-template-rows:12px 18px 14px;justify-items:center;align-content:start;gap:3px;height:64px;min-height:64px;padding:6px 0 0;border:0;background:transparent!important;color:#fff;opacity:1;box-shadow:none!important;position:relative}
+.member-summary .level-node::after{content:"";position:absolute;left:50%;width:100%;top:11px;height:1px;background:#ffffff55;z-index:0;pointer-events:none}
+.member-summary .level-node:last-child::after{display:none}
+.member-summary .level-node.unlocked::after{background:#ffffffae}
+.level-dot{display:block;position:relative;z-index:1;width:10px;height:10px;border-radius:50%;background:#38bebb;border:2px solid #b5efec}
+.level-node.unlocked .level-dot{background:#fff;border-color:#fff}
+.member-summary .level-node[aria-selected=true]{color:#fff;font-weight:700}
+.level-node[aria-selected=true] .level-dot{box-shadow:0 0 0 3px #18c6c1,0 0 0 4px #fff}
+.member-summary .level-node.is-current::after{background:#ffffff55}
+.level-node.is-current .level-dot{background:#ffe1a0;border-color:#ffe1a0}
+.level-number{font-size:12px;line-height:18px}
+.level-node[aria-selected=true] .level-number{text-decoration:underline;text-underline-offset:3px}
+.level-current{font-size:10px;line-height:14px;color:#fff0c9;font-weight:650;min-height:14px;letter-spacing:-.15px}
+.benefit{display:grid;grid-template-columns:24px 1fr;grid-template-rows:24px auto;gap:4px 8px;align-content:center;align-items:center;min-height:74px;padding:10px 12px}
+.benefit .benefit-icon{width:24px;height:24px;margin:0;grid-column:1;grid-row:1;border-radius:7px}
+.benefit .benefit-icon .icon{width:16px;height:16px}
+.benefit-value{grid-column:2;grid-row:1;font-size:19px;line-height:24px;letter-spacing:-.45px;white-space:nowrap}
+.benefit-name{grid-column:1/-1;grid-row:2;font-size:12px;font-weight:600;line-height:18px}
+.task-row{padding:16px 12px;gap:10px}
+.task-row .task-sub{font-size:12px;line-height:18px;-webkit-line-clamp:3}
+.task-sub strong{font-weight:650;color:#176962;white-space:nowrap}
+.task-btn{min-height:44px;padding:0 10px;font-size:12px;white-space:nowrap}
+.task-btn:disabled{color:#5c8982;background:#edf6f2}
+@media(max-width:350px){.benefit{padding:10px;column-gap:6px}.benefit-value{font-size:17px}.task-row{gap:8px;padding:14px 10px}.task-row .row-icon{width:30px;height:32px}.task-row h3{font-size:13px}.task-btn{padding:0 8px;font-size:11px}}
+
+
+/* Tier identity: distinct metallic / gemstone palettes and rank emblems. */
+.member-summary[data-tier="L1"]{--tier-start:#a77b5a;--tier-end:#7a513c;--badge-light:#ffe2bf;--badge-deep:#cb9466;--badge-ink:#815035}
+.member-summary[data-tier="L2"]{--tier-start:#7c91a4;--tier-end:#536b80;--badge-light:#f4f8ff;--badge-deep:#aebfd0;--badge-ink:#526c84}
+.member-summary[data-tier="L3"]{--tier-start:#b18b3e;--tier-end:#866122;--badge-light:#fff2bd;--badge-deep:#edc668;--badge-ink:#916817}
+.member-summary[data-tier="L4"]{--tier-start:#59949e;--tier-end:#346470;--badge-light:#eaffff;--badge-deep:#a5d9dc;--badge-ink:#397782}
+.member-summary[data-tier="L5"]{--tier-start:#4778bd;--tier-end:#254786;--badge-light:#e4edff;--badge-deep:#91b4f3;--badge-ink:#325dae}
+.member-summary[data-tier="L6"]{--tier-start:#248d70;--tier-end:#105c4b;--badge-light:#d9ffed;--badge-deep:#86dbb5;--badge-ink:#197758}
+.member-summary[data-tier="L7"]{--tier-start:#55506e;--tier-end:#28253b;--badge-light:#fff0c9;--badge-deep:#d6b26b;--badge-ink:#7c5b28}
+.member-card.member-summary[data-tier]{background:linear-gradient(135deg,var(--tier-start),var(--tier-end))}
+.member-summary .badge{background:linear-gradient(145deg,var(--badge-light),var(--badge-deep));color:var(--badge-ink);filter:drop-shadow(0 4px 8px #17202b20)}
+.member-summary .badge:before{background:linear-gradient(145deg,var(--badge-light),var(--badge-deep));inset:4px;box-shadow:inset 0 0 0 1px #fff5}
+.member-summary .badge .icon{width:29px;height:29px;stroke-width:1.5}
+.member-summary .level-node{grid-template-rows:12px 18px;height:48px;min-height:48px}
+.member-summary .level-node .level-dot{background:var(--tier-end);border-color:#ffffffaa}
+.member-summary .level-node.unlocked .level-dot{background:#fff;border-color:#fff}
+.member-summary .level-node.is-current .level-dot{background:#ffe1a0;border-color:#ffe1a0}
+.member-summary .level-node[aria-selected=true] .level-dot{box-shadow:0 0 0 3px var(--tier-end),0 0 0 4px #fff}
+
+/* Sell Rate Bonus copy follows the supplied reference. */
+.sheet-body p.rate-bonus-intro{font-size:14px;line-height:22px;margin:0 0 16px}
+.rate-calculation{padding:14px 16px;border-radius:12px;background:var(--brand-soft);color:#155451}
+.rate-calculation span{display:block;font-size:10px;line-height:16px;letter-spacing:.5px;color:#567c78;margin-bottom:3px}
+.rate-calculation strong{display:block;font-size:18px;line-height:24px;font-weight:650}
+
+/* Individually claimable coupons in a level-up pack. */
+.sheet-body p.coupon-pack-intro{font-size:14px;line-height:22px;margin:0 0 20px}
+.coupon-pack-label{font-size:10px;font-weight:650;letter-spacing:1px;color:var(--muted);margin-bottom:10px}
+.coupon-pack-list{display:grid;gap:10px}
+.pack-coupon{background:#fff;border:1px solid #dcebea;border-radius:12px;overflow:hidden}
+.pack-coupon-main{display:flex;gap:10px;align-items:center;padding:16px 12px}
+.pack-coupon-value{flex:0 0 70px;color:#087a79}
+.pack-coupon-value strong{display:block;font-size:28px;line-height:34px;letter-spacing:-1px}
+.pack-coupon-value span{font-size:10px;white-space:nowrap}
+.pack-coupon-copy{min-width:0;flex:1}
+.sheet-body .pack-coupon-copy h3{font-size:13px;line-height:18px;margin:0 0 4px}
+.sheet-body .pack-coupon-copy p{font-size:11px;line-height:17px;margin:0}
+.pack-coupon-expiry{display:block;font-size:10px;line-height:15px;color:var(--muted);margin-top:5px}
+.coupon-claim{flex-shrink:0;min-height:44px;min-width:68px;border-radius:22px;padding:0 12px;background:var(--brand);color:#fff;font-size:12px;font-weight:650}
+.coupon-claim:hover{background:var(--brand-dark)}
+.coupon-claim:disabled{background:#eaf0ef;color:#798a87}
+.pack-coupon.is-claimed .coupon-claim{background:#e1f5ee;color:#27755e}
+.sheet-body p.coupon-pack-eligibility{font-size:12px;line-height:18px;margin:12px 0 0}
+
+/* Full-page rules route shares the membership navigation and safe area. */
+.rules-content[hidden],#main-content[hidden]{display:none}
+.rules-content{padding:20px 16px 28px}
+.rules-content p{font-size:13px;color:var(--muted);line-height:1.8;margin:10px 0}
+.rules-content h3{font-size:15px;line-height:22px;margin:24px 0 10px}
+.rules-content .rules-block h3{margin:0 0 8px}
+.rules-content .rules-block p{margin:0}
+.rules-content table{width:100%;border-collapse:collapse;background:#fff;font-size:12px;margin-bottom:24px}
+.rules-content th,.rules-content td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--border)}
+.rules-content th{background:var(--brand-soft);font-weight:600}
+#rules-entry[hidden]{display:block;visibility:hidden;pointer-events:none}
+#page-title:focus{outline:none}
+
+/* Compact growth history with a consistent leading icon. */
+.record-total{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 12px}
+.record-total .meta{font-size:11px;white-space:nowrap}
+.record-total strong{display:inline;font-size:22px;line-height:28px;margin:0;white-space:nowrap}
+.record{align-items:center;gap:10px}
+.record-icon{width:32px;height:32px;flex:0 0 32px;border-radius:9px;background:var(--brand-soft);color:var(--brand-dark);display:grid;place-items:center}
+.record-icon .icon{width:18px;height:18px}
+.record-copy{flex:1;min-width:0}
+@media(max-width:360px){.record-total .meta{font-size:10px}.record-total strong{font-size:20px}}
+</style></head><body><svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs><symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="back" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></symbol><symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol><symbol id="chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol><symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol><symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol><symbol id="crown" viewBox="0 0 24 24"><path d="m3 6 4 5 5-8 5 8 4-5-2 12H5Z"/><path d="M6 21h12"/></symbol><symbol id="trend" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-10M15 5h6v6"/></symbol><symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13"/><path d="M12 8H8a3 3 0 1 1 3-3l1 3Zm0 0h4a3 3 0 1 0-3-3l-1 3Z"/></symbol><symbol id="card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/></symbol><symbol id="bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-8Z"/></symbol><symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6M21 21v-3a6 6 0 0 0-3-5"/></symbol><symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-14 4h3m4 0h3"/></symbol><symbol id="history" viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 2 7M3 5v6h6M12 7v6l4 2"/></symbol><symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol><symbol id="wifi" viewBox="0 0 24 24"><path d="M2 8a16 16 0 0 1 20 0M5 12a11 11 0 0 1 14 0m-11 4a6 6 0 0 1 8 0M12 20h.01"/></symbol><symbol id="empty" viewBox="0 0 24 24"><path d="m3 8 9-5 9 5v10l-9 4-9-4ZM3 8l9 5 9-5m-9 5v9"/></symbol><symbol id="refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14-6L3 8m0-5v5h5M4 13a8 8 0 0 0 14 6l3-3m0 5v-5h-5"/></symbol><symbol id="ticket" viewBox="0 0 24 24"><path d="M3 5h18v5a2 2 0 0 0 0 4v5H3v-5a2 2 0 0 0 0-4Z"/><path d="M9 5v3m0 3v2m0 3v3"/></symbol><symbol id="rank-l1" viewBox="0 0 24 24"><path d="m8 3 4 5 4-5M5 3h4m6 0h4"/><circle cx="12" cy="14" r="7"/><circle cx="12" cy="14" r="3"/></symbol><symbol id="rank-l2" viewBox="0 0 24 24"><path d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z"/><path d="m10 10 2-4 2 4"/></symbol><symbol id="rank-l3" viewBox="0 0 24 24"><path d="M7 3h10v6a5 5 0 0 1-10 0ZM7 5H3v3a5 5 0 0 0 5 5m9-8h4v3a5 5 0 0 1-5 5M12 14v5M8 22h8M9 19h6"/></symbol><symbol id="rank-l4" viewBox="0 0 24 24"><path d="m12 2 9 10-9 10L3 12ZM3 12h18M12 2 8 12l4 10 4-10Z"/></symbol><symbol id="rank-l5" viewBox="0 0 24 24"><path d="m7 3-5 7 10 12 10-12-5-7ZM2 10h20M7 3l1 7 4 12 4-12 1-7M7 3l5 7 5-7"/></symbol><symbol id="rank-l6" viewBox="0 0 24 24"><path d="m7 2-4 5v10l4 5h10l4-5V7l-4-5ZM8 6h8v12H8ZM3 7l5-1m8 0 5 1M3 17l5 1m8 0 5-1M7 2l1 4m8 0 1-4M7 22l1-4m8 0 1 4"/></symbol><symbol id="rank-l7" viewBox="0 0 24 24"><path d="m3 7 4 4 5-7 5 7 4-4-2 12H5ZM7 22h10"/><circle cx="3" cy="5" r="1"/><circle cx="12" cy="2" r="1"/><circle cx="21" cy="5" r="1"/><path d="m12 12 2 3-2 2-2-2Z"/></symbol><symbol id="rules" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></symbol></defs></svg>
+<div class="workbench">
+<aside class="studio" lang="zh-CN">
+ <div class="brand"><span class="brandmark"><svg class="icon"><use href="#shield"/></svg></span>TrustCard</div>
+ <p class="eyebrow">MEMBERSHIP CENTER</p><h2>每一次交易，<br>都有新的<em>收获。</em></h2>
+ <p class="lead">把身份、成长与权益放在一起。<br>让用户看清当前价值，也知道如何更进一步。</p>
+ <div class="review-panel"><span class="review-label">交互预览 · 切换用户状态</span>
+ <div class="scenarios"><button class="scenario" data-scenario="regular" aria-pressed="true">当前会员</button><button class="scenario" data-scenario="new" aria-pressed="false">新会员</button><button class="scenario" data-scenario="highest" aria-pressed="false">最高等级</button></div>
+ <label for="state-select" class="sr-only">更多预览状态</label><select id="state-select" class="scenario-select"><option value="regular">更多状态 · 正常展示</option><option value="guest">未登录</option><option value="empty">权益 / 任务为空</option><option value="error">加载失败</option><option value="loading">加载中</option></select>
+ <p class="review-note">可点击等级、权益、任务、成长明细与规则。<br>移动端自适应；桌面保留手机视图。</p>
+ <details class="review-disclosure"><summary>数据与规则说明</summary><ul><li>依据 TL 会员等级 PRD F-02、F-03、F-06；采用 TrustCard 设计规范。</li><li>7 个等级名称按本次要求更新；门槛、溢价比例及账户记录为演示配置；任务文案与奖励按用户提供截图修订。</li><li>进度统一向下取整；当前等级按下一等级门槛计算，其他等级预览按该等级门槛计算，已解锁预览为 100%。PRD 此处存在表述差异，交付采用上述口径。</li><li>保护期按 PRD 2026-09-29 示例：升级当月加后两个自然月，到月末结束。新会员按本次确认同样享有 3 个月保护期，示例有效期至 2026-12-31。</li><li>优惠券礼包按截图文案展示，张数沿用各等级配置；券面 +3%、上限 50 Points、订单门槛为演示配置；有效期统一为打开页面时所在自然月的月底。当前会员与最高等级场景各有一份本月已发放礼包，可逐张领取；Claimed 在本次页面会话内保留，刷新重置，未接入真实券账户。</li><li>成长任务按钮不弹出说明框；本原型仅展示操作入口，正式业务跳转待接入。</li></ul></details>
+ <div class="source-links"><a href="https://qjpnf3v5rihc.jp.larksuite.com/wiki/DMyUwWSttiIQjykENZQjMExlpBh" target="_blank" rel="noopener">TL 会员等级 PRD ↗</a><a href="../Trustcard-design.md" target="_blank">TrustCard 设计规范 ↗</a></div>
+ </div><div class="studio-index">TRUSTCARD / PRODUCT DESIGN / 2026</div>
+</aside>
+<main class="phone" aria-label="TrustCard membership prototype">
+ <div id="app-shell" style="display:contents">
+ <div class="statusbar" aria-hidden="true"><span>9:41</span><span class="status-icons"><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx=".7"/><rect x="4" y="5" width="3" height="7" rx=".7"/><rect x="8" y="2" width="3" height="10" rx=".7"/><rect x="12" width="3" height="12" rx=".7"/></svg><svg class="icon" style="width:17px;height:16px"><use href="#wifi"/></svg><svg width="24" height="12" viewBox="0 0 26 13" fill="none"><rect x=".7" y=".7" width="21" height="11" rx="3" stroke="currentColor"/><rect x="3" y="3" width="16.5" height="6.5" rx="1" fill="currentColor"/><path d="M24 4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+ <nav class="navbar" aria-label="Membership navigation"><button class="icon-btn" id="nav-back" data-action="account" aria-label="Back to account"><svg class="icon"><use href="#back"/></svg></button><h1 id="page-title" tabindex="-1">Membership</h1><button class="icon-btn" id="rules-entry" data-action="rules" aria-label="Membership rules"><svg class="icon" aria-hidden="true"><use href="#rules"/></svg></button></nav>
+ <div class="scroll-area" id="main-content"></div>
+ <section class="scroll-area rules-content" id="rules-page" aria-labelledby="page-title" hidden></section>
+ <div class="system-bottom" aria-hidden="true"><div class="home-indicator"></div></div>
+ <button class="review-mobile" data-action="settings" lang="zh-CN">示例 · 场景</button>
+ </div>
+ <div class="sheet-overlay" id="overlay" hidden><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1"><div class="sheet-header"><h2 id="sheet-title"></h2><button class="icon-btn" id="close-sheet" aria-label="Close dialog"><svg class="icon"><use href="#close"/></svg></button></div><div class="sheet-body" id="sheet-body"></div></section></div>
+ <div class="toast" id="toast" role="status" hidden></div>
+</main></div>
+<script>
+'use strict';
+// Local-only prototype. Values below are illustrative site configuration, not production data.
+// PRD: TL Membership F-02/F-03/F-06, read 2026-10-12. Protection example follows 2026-09-29 revision.
+const LEVELS=[
+ {code:'L1',name:'Bronze',threshold:0,rate:null,pack:null},
+ {code:'L2',name:'Silver',threshold:1000,rate:0.5,pack:1},
+ {code:'L3',name:'Gold',threshold:3000,rate:1,pack:2},
+ {code:'L4',name:'Platinum',threshold:5000,rate:1.5,pack:3},
+ {code:'L5',name:'Sapphire VIP',threshold:10000,rate:2,pack:4},
+ {code:'L6',name:'Emerald VIP',threshold:15000,rate:2.5,pack:5},
+ {code:'L7',name:'Crown Elite',threshold:25000,rate:3,pack:6}
+];
+const SCENARIOS={
+ regular:{level:2,growth:3650,valid:'Dec 31, 2026',firstDone:false},
+ new:{level:0,growth:0,valid:'Dec 31, 2026',firstDone:false},
+ highest:{level:6,growth:26000,valid:'Dec 31, 2026',firstDone:true},
+ guest:{level:null,growth:null,valid:null,firstDone:false},
+ empty:{level:2,growth:3650,valid:'Dec 31, 2026',firstDone:false},
+ error:{level:2,growth:3650,valid:'Dec 31, 2026',firstDone:false},
+ loading:{level:2,growth:3650,valid:'Dec 31, 2026',firstDone:false}
+};
+const TASKS=[
+ {id:'sale',icon:'card',title:'Complete a Sale',sub:'Earn',reward:'+1 per 1 Point',cta:'Sell Now'},
+ {id:'fast',icon:'bolt',title:'First Fast Trade',sub:'Complete your first Fast Trade',reward:'+100',cta:'Trade Now'},
+ {id:'invite',icon:'users',title:'Successful Referral',sub:'Successfully invite a new user',reward:'+100',cta:'Invite'},
+ {id:'login',icon:'calendar',title:'Daily Sign-in',sub:'Sign in once a day',reward:'+1',cta:'View'}
+];
+const REGULAR_RECORDS=[
+ {month:'2026-10',date:'Oct 12, 2026 · 09:41',title:'Daily Sign-in',value:1},
+ {month:'2026-10',date:'Oct 11, 2026 · 14:32',title:'Completed Sale',value:49},
+ {month:'2026-10',date:'Oct 10, 2026 · 11:26',title:'Completed Sale',value:700},
+ {month:'2026-10',date:'Oct 06, 2026 · 16:08',title:'Completed Sale',value:500},
+ {month:'2026-09',date:'Sep 23, 2026 · 10:15',title:'Completed Sale',value:1300},
+ {month:'2026-09',date:'Sep 08, 2026 · 18:42',title:'Successful Referral',value:100},
+ {month:'2026-08',date:'Aug 20, 2026 · 09:21',title:'Completed Sale',value:1000}
+];
+let scenario='regular',selectedLevel=2,month='2026-10',opener=null,toastTimer=null,loadTimer=null;
+const $=id=>document.getElementById(id),fmt=n=>n.toLocaleString('en-US'),icon=(name,cls='')=>`<svg class="icon ${cls}" aria-hidden="true"><use href="#${name}"/></svg>`;
+const user=()=>SCENARIOS[scenario];
+// Sample issued packs; expiry and claim state follow the current calendar month.
+const ISSUED_PACKS={regular:2,highest:6};
+const claimedCoupons=new Set();
+function couponPeriod(){
+ const now=new Date();
+ const end=new Date(now.getFullYear(),now.getMonth()+1,0);
+ return {key:`${now.getFullYear()}-${now.getMonth()+1}`,expiry:end.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
+}
+const couponKey=index=>`${scenario}:${couponPeriod().key}:${selectedLevel}:${index}`;
+const canClaimPack=()=>ISSUED_PACKS[scenario]===selectedLevel;
+
+function setScenario(key){
+ if(!SCENARIOS[key])return;
+ clearTimeout(loadTimer);closeSheet();scenario=key;selectedLevel=user().level??(LEVELS.length-1);month='2026-10';
+ document.querySelectorAll('[data-scenario]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scenario===key)));
+ $('state-select').value=['guest','empty','error','loading'].includes(key)?key:'regular';
+ render();$('main-content').scrollTop=0;
+ if(key==='loading')loadTimer=setTimeout(()=>setScenario('regular'),1000);
+}
+function render(){
+ const u=user(),l=LEVELS[selectedLevel],guest=scenario==='guest';
+ if(scenario==='loading'){$('main-content').innerHTML='<div aria-busy="true" role="status" aria-label="Loading membership"><div class="loading-line big"></div><div class="loading-line"></div><div class="loading-line" style="width:60%"></div><div class="loading-line big"></div><p class="view-note">Loading your membership…</p></div>';return;}
+ if(scenario==='error'){$('main-content').innerHTML=`<div class="screen-state"><div class="row-icon">${icon('refresh')}</div><h2>Unable to load membership</h2><p>Your membership details are temporarily unavailable. Please try again.</p><button class="primary" data-action="retry">Try again</button></div>`;return;}
+ const locked=guest||selectedLevel>u.level,preview=!guest&&selectedLevel!==u.level;
+ const status=guest?'Membership preview':locked?'Locked':preview?'Level preview':'Current level';
+ let denominator,percent,hint;
+ if(guest){denominator=l.threshold;percent=0;hint='Sign in to view your growth XP.';}
+ else if(selectedLevel===u.level){denominator=LEVELS[Math.min(u.level+1,LEVELS.length-1)].threshold;percent=Math.min(100,Math.floor(u.growth/Math.max(1,denominator)*100));hint=u.level===LEVELS.length-1?'Highest level reached':`<strong>${fmt(Math.max(0,denominator-u.growth))} XP</strong> to ${LEVELS[u.level+1].name}`;}
+ else{denominator=l.threshold;percent=locked?Math.min(100,Math.floor(u.growth/Math.max(1,denominator)*100)):100;hint=locked?`<strong>${fmt(Math.max(0,l.threshold-u.growth))} XP</strong> to unlock`:'Unlocked';}
+ const benefitList=scenario==='empty'?[]:[...(l.rate===null?[]:[{id:'rate',icon:'trend',value:`+${l.rate} pp`,title:'Sell Rate Bonus',gold:false}]),...(l.pack===null?[]:[{id:'pack',icon:'gift',value:`${l.pack} coupons`,title:'Level-up reward',gold:true}])];
+ const expiry=!guest&&selectedLevel===u.level&&u.valid?`Valid until ${u.valid}`:'';
+ $('main-content').innerHTML=`
+ <section aria-label="Membership level">
+ <article class="member-card member-summary ${locked?'locked':''}" id="level-card" data-tier="${l.code}" aria-live="polite">
+  <div class="member-top"><div class="member-level-wrap"><p class="member-label">${status}</p><h2 class="member-level">${l.name}</h2>${expiry?`<p class="member-validity">${expiry}</p>`:''}</div><div class="badge" aria-hidden="true">${icon('rank-'+l.code.toLowerCase())}</div></div>
+  <div class="member-growth"><div class="growth-heading"><div><p class="growth-kicker">Growth XP</p><div class="growth-value">${guest?'—':fmt(u.growth)}<small>${denominator===0?'No minimum':'/ '+fmt(denominator)}</small></div></div><button class="text-btn" data-action="history" aria-label="Growth XP history">History ${icon('chevron')}</button></div><div class="progress" role="progressbar" aria-label="Membership growth progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="progress-fill" style="width:${percent}%"></div></div><p class="progress-note">${hint}</p></div>
+  <div class="level-track" role="tablist" aria-label="Membership levels">${LEVELS.map((x,i)=>`<button class="level-node ${!guest&&i<=u.level?'unlocked':''} ${!guest&&i===u.level?'is-current':''}" role="tab" aria-selected="${i===selectedLevel}" tabindex="${i===selectedLevel?0:-1}" data-level="${i}" title="Level ${i+1} · ${x.name}${!guest&&i===u.level?' · Current':''}" aria-label="${x.name} ${x.code}${!guest&&i===u.level?', current level':''}" ${!guest&&i===u.level?'aria-current="step"':''}><span class="level-dot" aria-hidden="true"></span><span class="level-number">${x.code}</span></button>`).join('')}</div>
+ </article>
+ </section>
+ <section class="section" aria-labelledby="benefits-title"><div class="section-heading"><h2 id="benefits-title">${guest?'Explore benefits':selectedLevel===u.level?'Your benefits':'Level benefits'}</h2></div>${benefitList.length?`<div class="benefit-grid">${benefitList.map(b=>`<button class="benefit" data-benefit="${b.id}" aria-label="${b.title}, ${b.value}"><span class="benefit-icon ${b.gold?'gold':''}">${icon(b.icon)}</span><strong class="benefit-value">${b.value}</strong><span class="benefit-name">${b.title}</span></button>`).join('')}</div>`:`<div class="card empty" style="padding:22px 16px"><div class="row-icon">${icon('gift')}</div><h3>More benefits ahead</h3><p class="meta muted" style="margin-top:6px">${scenario==='empty'?'New member benefits are on the way.':'Explore higher levels to discover more rewards.'}</p></div>`}</section>
+ <section class="section" id="tasks-section" aria-labelledby="tasks-title"><div class="section-heading"><h2 id="tasks-title">Growth Tasks</h2><span class="meta muted">${scenario==='empty'?'':'4 tasks'}</span></div><div class="card">${scenario==='empty'?`<div class="empty"><div class="row-icon">${icon('calendar')}</div><h3>No tasks available</h3><p class="meta muted">Check back for new ways to grow.</p></div>`:renderTasks()}</div></section>
+ `;
+ setupSwipe();
+ const activeTab=document.querySelector('[data-level="'+selectedLevel+'"]');
+ const track=activeTab?.parentElement;
+ if(track)track.scrollLeft=Math.max(0,activeTab.offsetLeft-track.offsetLeft-(track.clientWidth-activeTab.offsetWidth)/2);
+}
+function renderTasks(){
+ const isDone=t=>scenario!=='guest'&&scenario!=='new'&&(t.id==='login'||t.id==='fast'&&user().firstDone);
+ return TASKS.map((t,i)=>({...t,done:isDone(t),i})).sort((a,b)=>Number(a.done)-Number(b.done)||a.i-b.i).map(t=>`<div class="task-row ${t.done?'done':''}"><div class="row-icon">${icon(t.done?'check':t.icon)}</div><div class="row-copy"><h3 title="${t.title}">${t.title}</h3><p class="task-sub">${t.id==='sale'?'Earn <strong>+1</strong> per 1 Point':t.sub+' <strong>'+t.reward+'</strong>'}</p></div><button class="task-btn" data-task="${t.id}" ${t.done?'disabled':''} aria-label="${t.done?'Completed: ':''}${t.title}">${t.done?'Completed':t.cta}</button></div>`).join('');
+}
+function selectLevel(i,focus=false){selectedLevel=Math.max(0,Math.min(LEVELS.length-1,i));const y=$('main-content').scrollTop;render();$('main-content').scrollTop=y;if(focus)document.querySelector(`[data-level="${selectedLevel}"]`).focus();}
+function setupSwipe(){const card=$('level-card');if(!card)return;let point;card.addEventListener('touchstart',e=>{point={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});card.addEventListener('touchend',e=>{if(!point)return;const dx=e.changedTouches[0].clientX-point.x,dy=e.changedTouches[0].clientY-point.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.4)selectLevel(selectedLevel+(dx<0?1:-1));point=null;},{passive:true});}
+function openSheet(title,html){if($('overlay').hidden)opener=document.activeElement;$('sheet-title').textContent=title;$('sheet-body').innerHTML=html;$('sheet-body').scrollTop=0;$('overlay').hidden=false;$('app-shell').inert=true;document.querySelector('.studio').inert=true;$('close-sheet').focus();}
+function closeSheet(){if($('overlay').hidden)return;$('overlay').hidden=true;$('app-shell').inert=false;document.querySelector('.studio').inert=false;if(opener&&opener.isConnected)opener.focus();}
+function toast(text){clearTimeout(toastTimer);$('toast').textContent=text;$('toast').hidden=false;toastTimer=setTimeout(()=>{$('toast').hidden=true;},2800);}
+function recordsForScenario(){if(['new','guest'].includes(scenario))return[];if(scenario==='highest')return[{month:'2026-10',date:'Oct 12, 2026 · 09:41',title:'Daily Sign-in',value:1},{month:'2026-10',date:'Oct 10, 2026 · 11:26',title:'Completed Sale',value:19999},{month:'2026-09',date:'Sep 22, 2026 · 16:30',title:'Completed Sale',value:4000},{month:'2026-08',date:'Aug 28, 2026 · 11:20',title:'Completed Sale',value:2000}];return REGULAR_RECORDS;}
+function historySheet(){if(scenario==='guest')return signInSheet();const rs=recordsForScenario().filter(r=>r.month===month);openSheet('Growth XP history',`<select id="history-month" aria-label="Month">${[['2026-10','October 2026'],['2026-09','September 2026'],['2026-08','August 2026'],['2026-07','July 2026']].map(([value,label])=>`<option value="${value}" ${month===value?'selected':''}>${label}</option>`).join('')}</select><div class="record-total"><span class="meta muted">Growth XP earned this month</span><strong>+${fmt(rs.reduce((sum,r)=>sum+r.value,0))}</strong></div><div class="rule-list">${rs.length?rs.map(r=>`<div class="record"><div class="record-icon" aria-hidden="true">${icon('trend')}</div><div class="record-copy">${r.title}<span>${r.date}</span></div><strong>+${fmt(r.value)}</strong></div>`).join(''):`<div class="empty"><div class="row-icon">${icon('history')}</div><h3>No growth XP yet</h3><p>Completed tasks will appear here.</p></div>`}</div>`);}
+function rulesContent(){return `
+ <div class="rules-block rule-list"><h3>01 · Grow with TrustCard</h3><p>Complete eligible tasks to earn growth XP. Growth XP determines your membership level; it is separate from your spendable Points balance.</p></div>
+ <div class="rules-block rule-list"><h3>02 · Level up as you grow</h3><p>After growth XP is credited, the total for the current month and the previous 2 full calendar months is checked. Reach a higher threshold and your level upgrades immediately.</p></div>
+ <h3>Levels & Sell Rate Bonus</h3><table><thead><tr><th>Level</th><th>Growth XP</th><th>Bonus (pp)</th></tr></thead><tbody>${LEVELS.map(l=>`<tr><td>${l.code} · ${l.name}</td><td>${fmt(l.threshold)}</td><td>${l.rate===null?'—':'+'+l.rate+' pp'}</td></tr>`).join('')}</tbody></table>
+ <h3>How to earn growth XP</h3><div class="rule-list">${TASKS.map(t=>`<div class="key-value"><span>${t.title}</span><strong>${t.id==='sale'?'1 Point = +1 Growth XP':t.reward+' Growth XP'}</strong></div>`).join('')}</div>
+ <h3>03 · Monthly review & protection</h3><div class="rule-list"><p>New members receive 3 months of level protection: the joining month plus the next 2 calendar months. Join in October 2026 → valid until Dec 31, 2026.</p><p>Your level is reviewed on the 1st of every month using the previous 3 full calendar months, in your site's time zone.</p><p>An upgrade or a same-level monthly review refreshes your protection through the end of the second following month. During protection, your level cannot drop, and you can still upgrade.</p><p>Example: upgrade on Oct 12 → protected through Dec 31. A lower growth XP total can reduce your level only at a monthly review after protection ends.</p><p>Daily growth updates that keep the same level do not extend the protection period.</p></div>
+ <h3>04 · Rewards that count</h3><div class="rule-list"><p><strong>Daily sign-in:</strong> automatically earned once per day when you visit the app while signed in.</p><p><strong>Completed sale:</strong> only a final completed order counts. Pending, failed or cancelled orders do not earn growth XP.</p><p><strong>First Fast Trade:</strong> once per member per site, after the first Fast Trade is completed. A regular trade does not use this opportunity.</p><p><strong>Referral:</strong> your friend must register through a valid invitation and meet the configured completed-trade target. Invalid or duplicate accounts do not qualify.</p></div>
+ <h3>05 · Member benefits</h3><div class="rule-list"><p>Your membership bonus is added to the base Sell Rate when you request a quote.</p><p>Level-up coupon packs are issued when the monthly level update moves you to a higher level. Claim each coupon individually from your issued pack. If you skip levels, only the final level's pack is issued. Initial membership assignment and downgrades do not issue a pack.</p><p>Benefits and tasks are specific to your site. Coupons are valid only during the current calendar month and expire at month-end.</p></div>`;}
+function syncPage(){
+ const rules=location.hash==='#membership-rules';
+ closeSheet();
+ $('main-content').hidden=rules;$('rules-page').hidden=!rules;
+ $('page-title').textContent=rules?'Membership rules':'Membership';
+ $('nav-back').dataset.action=rules?'membership':'account';
+ $('nav-back').setAttribute('aria-label',rules?'Back to membership':'Back to account');
+ $('rules-entry').hidden=rules;
+ document.querySelector('.navbar').setAttribute('aria-label',rules?'Membership rules navigation':'Membership navigation');
+ if(rules){$('rules-page').innerHTML=rulesContent();$('rules-page').scrollTop=0;$('page-title').focus();}
+ else $('rules-entry').focus({preventScroll:true});
+}
+function openRulesPage(){
+ if(location.hash!=='#membership-rules')history.pushState({membershipRules:true},'', '#membership-rules');
+ syncPage();
+}
+function backToMembership(){
+ if(history.state?.membershipRules){history.back();return;}
+ history.replaceState(null,'',location.pathname+location.search);syncPage();
+}
+window.addEventListener('popstate',syncPage);
+window.addEventListener('hashchange',syncPage);
+function benefitSheet(kind){
+ const l=LEVELS[selectedLevel],locked=scenario==='guest'||selectedLevel>user().level;
+ if(kind==='rate'){
+  openSheet('Sell Rate Bonus',`<p class="rate-bonus-intro">Your membership bonus is added to the base Sell Rate when you request a quote.</p><div class="rate-calculation"><span>RATE CALCULATION</span><strong>Base Sell Rate +${l.rate} pp</strong></div><button class="primary" data-action="close">Got It</button>`);
+  return;
+ }
+ const claimable=canClaimPack();
+ const eligibility=claimable?'':locked?`Unlock at ${fmt(l.threshold)} growth XP.`:'This pack has not been issued to your account.';
+ openSheet(`${l.name} Coupon Pack`,`<p class="coupon-pack-intro">Claim your membership level coupons. Valid this month only.</p><div class="coupon-pack-label">COUPONS IN THIS PACK</div><div class="coupon-pack-list">${Array.from({length:l.pack||0},(_,i)=>{
+  const claimed=claimedCoupons.has(couponKey(i));
+  return `<article class="pack-coupon ${claimed?'is-claimed':''}" aria-label="Coupon ${i+1}"><div class="pack-coupon-main"><div class="pack-coupon-value"><strong>+3%</strong><span>Max 50 Points</span></div><div class="pack-coupon-copy"><h3>Compensation Coupon</h3><p>Order over 2 Points</p><span class="pack-coupon-expiry">Valid until ${couponPeriod().expiry}</span></div><button class="coupon-claim" data-claim="${i}" aria-label="${claimed?'Claimed':'Claim'} coupon ${i+1}" ${claimed||!claimable?'disabled':''}>${claimed?'Claimed':'Claim'}</button></div></article>`;
+ }).join('')}</div>${eligibility?`<p class="coupon-pack-eligibility">${eligibility}</p>`:''}<span class="sr-only" id="coupon-claim-status" role="status"></span><button class="primary" data-action="close">Got It</button>`);
+}
+function claimCoupon(button){
+ const index=Number(button.dataset.claim);
+ if(!canClaimPack()||!Number.isInteger(index)||index<0||index>=LEVELS[selectedLevel].pack||claimedCoupons.has(couponKey(index)))return;
+ claimedCoupons.add(couponKey(index));
+ button.textContent='Claimed';button.disabled=true;button.setAttribute('aria-label',`Claimed coupon ${index+1}`);
+ button.closest('.pack-coupon').classList.add('is-claimed');
+ $('coupon-claim-status').textContent=`Coupon ${index+1} claimed.`;
+ toast('Coupon claimed successfully.');
+ const next=$('sheet-body').querySelector('[data-claim]:not(:disabled)')||$('sheet-body').querySelector('[data-action="close"]');
+ next.focus({preventScroll:true});
+}
+
+function signInSheet(){openSheet('Welcome to TrustCard',`<div class="sheet-hero"><div class="row-icon">${icon('shield')}</div><h2>Your next reward starts here</h2><p>Sign in to view your level, growth XP and benefits.</p></div><div class="modal-note">登录承接页示意。本 HTML 不收集账号或密码；可切换到已登录示例查看会员中心。</div><button class="primary" data-action="demo-login">Preview signed-in membership</button>`);}
+function settingsSheet(){openSheet('Prototype settings',`<p lang="zh-CN">7 个等级名称采用本次指定名称。任务文案与奖励按提供截图修订；门槛、溢价与账户数据为演示配置。</p><div class="scenarios">${[['regular','当前会员'],['new','新会员'],['highest','最高等级'],['guest','未登录'],['empty','权益 / 任务为空'],['error','加载失败'],['loading','加载中']].map(([k,v])=>`<button class="scenario" data-scenario="${k}" aria-pressed="${scenario===k}">${v}</button>`).join('')}</div>`);}
+function handleAction(action){switch(action){case'close':closeSheet();break;case'rules':openRulesPage();break;case'membership':backToMembership();break;case'history':historySheet();break;case'earn':if(scenario==='guest'){signInSheet();break;}closeSheet();$('tasks-section')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});break;case'retry':setScenario('loading');break;case'settings':settingsSheet();break;case'demo-login':setScenario('regular');toast('Showing a sample signed-in membership.');break;case'sale':closeSheet();break;case'account':openSheet('My account',`<div class="sheet-hero"><div class="row-icon">${icon('shield')}</div><h2>TrustCard</h2><p>${scenario==='guest'?'Welcome to your account':LEVELS[user().level].name+' member'}</p></div><button class="list-link mini-spacer" data-action="close"><span>Membership center</span>${icon('chevron')}</button><button class="list-link mini-spacer" data-action="settings"><span>Prototype settings / 示例场景</span>${icon('chevron')}</button><p class="demo-label">Account entry preview</p>`);break;}}
+document.addEventListener('click',e=>{const target=e.target.closest('button');if(!target||target.disabled)return;if(target.dataset.scenario){setScenario(target.dataset.scenario);return;}if(target.dataset.level!==undefined){selectLevel(Number(target.dataset.level));return;}if(target.dataset.benefit){benefitSheet(target.dataset.benefit);return;}if(target.dataset.claim!==undefined){claimCoupon(target);return;}if(target.dataset.task)return;if(target.dataset.action)handleAction(target.dataset.action);});
+$('state-select').addEventListener('change',e=>setScenario(e.target.value));
+$('sheet-body').addEventListener('change',e=>{if(e.target.id==='history-month'){month=e.target.value;historySheet();$('history-month').focus();}});
+$('close-sheet').addEventListener('click',closeSheet);
+$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeSheet();});
+document.addEventListener('keydown',e=>{if(!$('overlay').hidden){if(e.key==='Escape'){closeSheet();return;}if(e.key==='Tab'){const focusable=Array.from($('overlay').querySelectorAll('button:not(:disabled),select,a[href],[tabindex="0"]')).filter(x=>x.getClientRects().length);const first=focusable[0],last=focusable[focusable.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}return;}if(e.target.matches('[data-level]')){if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();selectLevel(e.key==='Home'?0:e.key==='End'?LEVELS.length-1:selectedLevel+(e.key==='ArrowRight'?1:-1),true);}}});
+render();
+if(location.hash==='#membership-rules')syncPage();
+
+</script></body></html>

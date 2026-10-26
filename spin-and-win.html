@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffbd9d">
+  <title>Spin &amp; Win · Tbay</title>
+  <style>
+    @font-face{font-family:Poppins;src:url("daily-reward-assets/poppins-regular.ttf") format("truetype");font-weight:400;font-display:swap}
+    @font-face{font-family:Poppins;src:url("daily-reward-assets/poppins-semibold.ttf") format("truetype");font-weight:600;font-display:swap}
+    :root{font-family:Poppins,Arial,sans-serif;color:#272727;background:#ffbd9d;font-synthesis:none}
+    *{box-sizing:border-box}
+    body{min-width:320px;margin:0;-webkit-font-smoothing:antialiased}
+    button,select{font:inherit}button{cursor:pointer}
+    button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #704100;outline-offset:3px}
+    [hidden]{display:none!important}
+    .app{width:min(100%,415px);min-height:100dvh;margin:auto;background:linear-gradient(#ffbd9d 0 72%,#ffdbb7 100%);overflow:hidden;padding-bottom:30px}
+    .closed-view{width:min(100%,415px);min-height:100dvh;margin:auto;display:grid;grid-template-rows:54px 1fr;background:#ffbd9d;color:#fff;text-align:center}
+    .closed-message{display:grid;place-items:center;padding:24px;font-size:17px}
+    .topbar{height:54px;display:flex;align-items:center;justify-content:center;position:relative;color:#fff}
+    .topbar h1{font-size:21px;font-weight:600;margin:0;line-height:1}
+    .back{position:absolute;left:12px;top:12px;width:34px;height:34px;display:grid;place-items:center;color:#fff}
+    .back svg{width:24px;height:24px;stroke-width:2.5}
+    .activity-actions{height:40px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+    .rules-tab{height:32px;width:69px;padding:0 10px 0 12px;border:0;border-radius:0 22px 22px 0;background:#ff9142;color:#fff;text-align:left;font-size:13px;text-decoration:none;display:flex;align-items:center}
+    .reminder-wrap{display:flex;align-items:center;gap:9px;margin-right:14px;font-size:11px}
+    .switch{width:42px;height:27px;border:0;border-radius:20px;background:#b9a89f;padding:3px;display:flex;align-items:center;transition:background .2s}
+    .switch[aria-checked="true"]{background:#ff943e}
+    .switch::after{content:"";width:21px;height:21px;background:white;border-radius:50%;box-shadow:0 1px 2px #b9561633;transition:transform .2s}
+    .switch[aria-checked="true"]::after{transform:translateX(15px)}
+    .game-shell{position:relative;margin:14px 14px 0;padding:14px 16px 27px;border-radius:37px;background:#ffdaac;box-shadow:0 8px 11px #d8743c59;isolation:isolate}
+    .game-shell::before{content:"";position:absolute;z-index:-1;left:10px;right:10px;top:-13px;height:44px;border-radius:42px 42px 0 0;background:#fac466}
+    .game-meta{height:37px;display:flex;align-items:center;gap:13px}
+    .sound{width:37px;height:37px;border:0;background:none;padding:0;color:#ff9200;font-size:26px;display:grid;place-items:center;line-height:1}
+    .sound.muted{filter:grayscale(1);opacity:.55}
+    .balance-bar{flex:1;min-width:0;height:32px;border:1px solid #fff;border-radius:18px;background:linear-gradient(#ffcc91,#ff9f44);box-shadow:inset 0 1px 3px #b85c2770;display:flex;align-items:center;justify-content:space-between;color:white;padding:0 14px 0 17px}
+    .balance{font-size:15px;white-space:nowrap}
+    .balance strong{font-size:20px;line-height:1}
+    .records-link{border:0;background:none;color:white;font-size:14px;padding:0;white-space:nowrap;text-decoration:none}
+    .records-link span{font-size:24px;line-height:0;vertical-align:-2px}
+    .board{margin-top:10px;padding:14px;background:#ffbd74;border:1px solid #eaa246;border-radius:14px;box-shadow:inset 0 1px 6px #d87822a8;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(4,75px);gap:8px}
+    .prize{min-width:0;height:75px;border:2px solid transparent;border-radius:9px;background:#fff;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;overflow:hidden;color:#272727;position:relative;transition:box-shadow .15s}
+    .prize.active{border-color:#ff4a26;box-shadow:0 0 0 3px #fff9,0 0 12px #fc5b22;z-index:1}
+    .prize.winner{border-color:#2288ef;box-shadow:0 0 0 3px #fff,0 0 13px #258cf2;z-index:1}
+    .prize-icon,.cube{background-image:url("spin-and-win-assets/reference-prizes.png");background-size:415px 902px;background-repeat:no-repeat;flex:none}
+    .prize-icon{width:48px;height:38px;display:block}
+    .icon-bonus{background-position:-58px -190px}
+    .icon-rate-three{background-position:-141px -190px}
+    .icon-again{background-position:-229px -190px}
+    .icon-coins{background-position:-62px -272px}
+    .icon-coins-hundred{background-position:-312px -272px}
+    .icon-point{background-position:-58px -360px}
+    .icon-rate-one{background-position:-308px -359px}
+    .icon-coins-ten{background-position:-62px -435px}
+    .icon-thanks{background-position:-144px -434px}
+    .icon-coins-three{background-position:-229px -435px}
+    .icon-double{background-position:-308px -435px}
+    .icon-bonus-small{background-image:none;display:grid;place-items:center;width:42px;height:32px;margin:4px 0 2px;border:3px solid #fff;outline:2px solid #30c78e;border-radius:3px;background:#30c78e;color:#fff;font:700 15px/1 Arial,sans-serif}
+    .prize-label{width:100%;font-family:Arial,Helvetica,sans-serif;font-size:10.3px;line-height:1.08;overflow-wrap:anywhere;margin-top:2px}
+    .center-piece{grid-column:2/4;grid-row:2/4;background:#fff0d4;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;min-width:0}
+    .cube{width:91px;height:87px;background-position:-162px -285px;display:block}
+    .prize-count{color:#ffc34e;white-space:nowrap;line-height:1.1;margin-top:5px;text-shadow:1px 2px 0 #ffdb81}
+    .prize-count strong{font-size:36px;font-weight:600}
+    .prize-count span{font-size:25px;font-weight:600}
+    .play{display:flex;align-items:center;justify-content:center;position:relative;flex-direction:column;width:250px;max-width:calc(100% - 28px);height:59px;margin:28px auto 0;border:2px solid #fff6ba;border-radius:40px;background:linear-gradient(#fff1a3,#ffe465);box-shadow:0 3px 6px #b8662b8a,inset 0 1px 2px #fff;color:#fa484a;line-height:1}
+    .play:hover:not(:disabled){filter:brightness(1.04)}
+    .play:disabled{opacity:.7;cursor:wait}
+    .play strong{font-size:27px;font-weight:600}
+    .play small{font-size:12px;margin-top:5px}
+    .play .hand{position:absolute;right:23px;top:17px;font-size:40px;transform:rotate(-22deg);filter:drop-shadow(1px 2px 2px #81481670)}
+    .ticker{height:42px;margin:21px 0 26px;overflow:hidden;display:flex;align-items:center}
+    .ticker-track{display:flex;width:max-content;animation:ticker-scroll 22s linear infinite}
+    .ticker:hover .ticker-track{animation-play-state:paused}
+    .ticker-group{display:flex;gap:10px;padding-right:10px}
+    .ticker-pill{height:40px;width:205px;flex:none;display:flex;gap:7px;align-items:center;border-radius:22px;background:#bc875d67;color:#fff;padding:4px 12px;font-size:12px;line-height:1.25}
+    @keyframes ticker-scroll{to{transform:translateX(-50%)}}
+    .avatar{width:32px;height:32px;flex:none;border-radius:50%;background:#ffcf84;display:grid;place-items:center;font-size:19px}
+    .ticker-copy{min-width:0;white-space:nowrap}
+    .ticker-copy strong{font-weight:400}
+    .ticker-copy time{font-size:10px;opacity:.9;margin-left:9px}
+    .earned{margin:0 14px;background:#fff9f4;min-height:178px}
+    .earned-heading{height:36px;position:relative;display:flex;align-items:center;background:linear-gradient(95deg,#ff6a0b,#ffaf11 70%,#ffd21b);color:#fff;padding:0 20px;overflow:hidden;border-radius:9px 9px 0 0}
+    .earned-heading h2{font-size:18px;font-weight:600;margin:0;line-height:1.1}
+    .earned-heading .ticket{position:absolute;right:23px;top:-9px;font-size:33px;transform:rotate(-23deg)}
+    .earned-body{padding:23px 13px 16px}
+    .gift-shelf{min-height:109px;padding:11px 9px;border-radius:19px;background:linear-gradient(105deg,#ff934e,#ff3625);display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+    .gift-shelf::-webkit-scrollbar{display:none}
+    .gift-card{height:84px;min-width:0;flex:0 0 calc((100% - 20px)/3);border:0;border-radius:9px;background:linear-gradient(#fff,#ffe7e8);color:#ff474d;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;padding:6px}
+    .gift-card::before,.gift-card::after{content:"";position:absolute;left:calc(50% - 5px);width:10px;height:10px;border-radius:50%;background:#ff7545}
+    .gift-card::before{top:-5px}.gift-card::after{bottom:-5px}
+    .gift-card strong{font-size:18px;line-height:1.1}
+    .gift-card span{font-size:12px;line-height:1.2;text-align:center}
+    .gift-card.coupon-card strong{font-size:21px;font-weight:600}
+    .gift-card.coupon-card .gift-name{min-height:23px;display:grid;place-items:center;font-size:11px;line-height:1.1}
+    .gift-card.coupon-card .gift-use{width:82%;height:20px;flex:none;display:grid;place-items:center;margin-top:1px;border-radius:20px;background:#fff;color:#ff474d;font-size:11px;font-weight:600}
+    .empty-gifts{color:#fff;align-self:center;padding:0 10px;font-size:13px}
+    .overlay{position:fixed;z-index:10;inset:0;background:#24180fc9;display:flex;justify-content:center;align-items:center;padding:16px}
+    .dialog-stack{width:min(100%,360px);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;align-items:center;gap:12px}
+    .dialog{width:100%;max-height:calc(100dvh - 32px);overflow:auto;background:#fff9f1;border:2px solid #ffd18d;border-radius:16px;box-shadow:0 18px 40px #742b1a50;color:#472923;padding:20px}
+    .dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .dialog h2{font-size:19px;margin:0 0 14px;color:#ff6535;line-height:1.3}
+    .dialog p,.dialog li{font-size:13px;line-height:1.55;margin:0 0 10px}
+    .dialog ul{padding-left:20px;margin:0}
+    .close{width:28px;height:28px;border:0;background:none;font-size:25px;color:#8c6048;line-height:1;padding:0}
+    .dialog-primary{width:100%;height:40px;margin-top:15px;background:#ff853b;color:white;border:0;border-radius:22px;font-size:14px;font-weight:600}
+    .dialog-secondary{display:none}
+    .result-close{display:none;width:44px;height:44px;flex:none;border:4px solid #fff;border-radius:50%;background:none;color:#fff;font:35px/1 Arial,sans-serif;place-items:center;padding:0}
+    .overlay[data-variant]:not([data-variant=""]) .result-close{display:grid}
+    .overlay[data-variant]:not([data-variant=""]) .dialog{max-height:calc(100dvh - 104px);min-height:360px;padding:22px 24px 28px;background:#fff;border:0;border-radius:20px;color:#191919;text-align:center}
+    .overlay[data-variant]:not([data-variant=""]) .dialog-head{justify-content:center}
+    .overlay[data-variant]:not([data-variant=""]) .dialog h2{font:600 22px/1.25 Poppins,Arial,sans-serif;color:#ff772e;margin:0 0 14px;text-transform:uppercase}
+    .overlay[data-variant]:not([data-variant=""]) .dialog-head .close{display:none}
+    .overlay[data-variant]:not([data-variant=""]) .dialog-primary{display:block;width:min(100%,235px);height:44px;margin:18px auto 0;border-radius:25px;background:#09bdc0;color:#fff;font-size:18px}
+    .overlay[data-variant="double"] .dialog{background:#ffdaa5}
+    .overlay[data-variant="double"] .dialog-primary{background:linear-gradient(#fff29d,#ffe15d);border:2px solid #fff7c7;color:#fa484a;font-size:24px;box-shadow:0 3px 5px #b7763580}
+    .overlay[data-variant="confirm"]:not([hidden]) .result-close{display:none}
+    .overlay[data-variant="confirm"]:not([hidden]) .dialog{min-height:0;padding:27px 24px 24px;border-radius:12px}
+    .overlay[data-variant="confirm"]:not([hidden]) .dialog h2{margin:0 0 27px;color:#242424;font-size:19px;font-weight:600;text-transform:none}
+    .overlay[data-variant="confirm"]:not([hidden]) .dialog-actions{display:flex;gap:12px}
+    .overlay[data-variant="confirm"]:not([hidden]) .dialog-secondary,.overlay[data-variant="confirm"]:not([hidden]) .dialog-primary{display:block;flex:1;width:auto;height:42px;margin:0;border-radius:22px;font-size:15px}
+    .overlay[data-variant="confirm"]:not([hidden]) .dialog-secondary{border:1px solid #d7d7d7;background:#fff;color:#555}
+    .overlay[data-variant="confirm"]:not([hidden]) .dialog-primary{background:#09bdc0;color:#fff}
+    .result-content{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:245px;gap:10px}
+    .result-content p{margin:0!important;font-size:16px!important;line-height:1.35!important;color:#191919}
+    .result-art{height:120px;width:140px;display:grid;place-items:center;position:relative;overflow:hidden;margin:2px auto}
+    .result-art img{width:125px;height:110px;object-fit:contain}
+    .result-art .prize-icon{transform:scale(2.45)}
+    .result-art .icon-bonus-small{transform:scale(2);margin:0}
+    .result-art .double-mark{position:absolute;right:2px;bottom:5px;color:#fff;font:700 37px/1 Arial,sans-serif;text-shadow:-2px -2px 0 #965c2c,2px -2px 0 #965c2c,-2px 2px 0 #965c2c,2px 2px 0 #965c2c}
+    .result-art .warning-mark{width:98px;height:98px;display:grid;place-items:center;border:8px solid #ffe877;border-radius:50%;background:linear-gradient(#ffdb55,#ffa90f);color:#fff;font:700 70px/1 Arial,sans-serif;box-shadow:0 5px 0 #f27e08}
+    .result-content .reward-amount{font-size:26px!important}
+    .reward-amount strong{font-size:38px;color:#ffc600;font-weight:600}
+    .result-content .reward-balance{font-size:20px!important;margin-top:8px!important}
+    .result-content .result-subtitle{font-size:16px!important;margin:6px 0 10px!important}
+    .result-content .double-gain{font-size:32px!important;color:#ff6338;background:linear-gradient(110deg,#ffad5b,#ff3d26);border-radius:10px;padding:3px 21px}
+    .result-content .double-gain strong{color:#fff;font-weight:400}
+    .result-content .double-description{font-size:15px!important}
+    .result-content .result-prize-name{font-size:20px!important;color:#ff6535}
+    .overlay[data-variant="double"] .result-art{margin-top:0}
+    .subpage{width:min(100%,415px);min-height:100dvh;margin:auto;background:#fff;box-shadow:0 0 35px #70351b24;color:#222}
+    .subpage-header{height:62px;display:flex;align-items:center;justify-content:center;position:relative}
+    .subpage-header h1{font-size:22px;font-weight:400;margin:0}
+    .subpage-back{position:absolute;left:18px;top:13px;width:38px;height:38px;display:grid;place-items:center;color:#111}
+    .subpage-back svg{width:24px;height:24px;stroke-width:2.8}
+    .rules-content{padding:13px 26px 56px;color:#929eb3;font-size:14px;line-height:1.46}
+    .rules-content .event-name{color:#4d6384;font-size:16px;margin:0 0 24px}
+    .rule-section{margin:0 0 24px}
+    .rule-section h2{font-size:14px;line-height:1.45;font-weight:400;margin:0;color:#929eb3}
+    .rule-section p{margin:0}
+    .rule-section a{color:#00bfc1;text-decoration:none}
+    .rule-section a:hover{text-decoration:underline}
+    .record-tabs{height:40px;margin:0 22px;display:flex;border-radius:24px;background:#effafa;overflow:hidden}
+    .record-tab{flex:1;min-width:0;border:0;border-radius:24px;background:transparent;color:#151515;font-size:15px}
+    .record-tab[aria-selected="true"]{background:#00bfc3;color:#fff;font-weight:400}
+    .record-list{padding:22px 20px 0}
+    .record{min-height:81px;padding:14px 0;display:flex;align-items:center;gap:11px;border-bottom:1px dashed #e2e6e9}
+    .record-art{width:48px;height:48px;flex:none;border-radius:8px;background:#fff7ec;display:grid;place-items:center;overflow:hidden}
+    .record-used-art{border-radius:50%;background:#ff9961}
+    .record-used-art svg{width:35px;height:35px;display:block}
+    .record-rewarded .record-art{border-radius:50%;background:#fff2e9}
+    .record-coupon{position:relative;min-width:27px;height:19px;padding:0 3px;border-radius:2px;background:#ff7938;color:#fff;text-align:center;font:600 11px/19px Poppins,Arial,sans-serif}
+    .record-coupon::before,.record-coupon::after{content:"";position:absolute;top:7px;width:5px;height:5px;border-radius:50%;background:#fff2e9}
+    .record-coupon::before{left:-2px}.record-coupon::after{right:-2px}
+    .record-copy{flex:1;min-width:0}
+    .record-name{display:block;color:#111;font-size:15px;line-height:1.35;overflow-wrap:anywhere}
+    .record-meta{flex:none;text-align:right;white-space:nowrap}
+    .record-time{display:block;color:#a2aab7;font-size:11px}
+    .record-cost{display:block;color:#ff793c;font-size:14px}
+    .record-used .record-time{margin-top:7px}
+    .record-end-note{padding:17px 0 34px;text-align:center;color:#999;font-size:14px}
+    .record-empty{padding:72px 20px 30px;text-align:center;color:#a2aab7;font-size:13px}
+    .scenario-panel{width:min(415px,100%);margin:0 auto;padding:18px 20px 22px;background:#fff;color:#303030;font-family:Arial,Helvetica,sans-serif;border-top:1px solid #eee}
+    .scenario-panel h2{font-size:16px;line-height:1.3;margin:0 0 15px;font-weight:600}
+    .scenario-panel label{display:block;font-size:13px;margin-bottom:7px}
+    .scenario-panel select{width:100%;height:38px;padding:0 10px;border:1px solid #c9c9c9;border-radius:4px;background:#fff;color:#303030;font-size:13px}
+    .scenario-panel select:disabled{background:#f5f5f5;color:#888}
+    .scenario-panel .scenario-balance-label{margin-top:16px}
+    .scenario-balance{display:flex;gap:8px}
+    .scenario-balance input{width:0;min-width:0;flex:1;height:38px;padding:0 10px;border:1px solid #c9c9c9;border-radius:4px;font:inherit;font-size:13px}
+    .scenario-apply{width:100%;height:38px;margin-top:12px;border:1px solid #ff9142;border-radius:4px;background:#ff9142;color:#fff;font-size:13px}
+    @media(max-width:370px){.game-shell{margin-left:8px;margin-right:8px;padding-left:10px;padding-right:10px}.board{padding:8px;gap:5px;grid-template-rows:repeat(4,69px)}.board .prize-icon{transform:scale(.9);transform-origin:top center;height:34px}.prize-label{font-size:9.3px}.prize-count strong{font-size:30px}.prize-count span{font-size:20px}.cube{transform:scale(.85);height:75px}.center-piece{justify-content:center}.overlay[data-variant]:not([data-variant=""]):not([data-variant="confirm"]) .dialog{padding:18px 16px;min-height:330px}.rules-content{padding-left:20px;padding-right:20px}}
+    @media(min-width:600px){body{background:#f7e5d5}.app,.closed-view{box-shadow:0 0 35px #70351b24}}
+    @media(min-width:1100px){.scenario-panel{position:fixed;top:110px;left:max(24px,calc(50% - 600px));width:300px;margin:0;padding:20px;border:1px solid #e5d5c7;border-radius:6px;box-shadow:0 7px 24px #70351b14}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}.ticker-track{animation:none}}
+  </style>
+</head>
+<body>
+  <main class="app" id="activity-view">
+    <header class="topbar">
+      <a class="back" href="tbay-home.html" aria-label="Back to home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 3-9 9 9 9"/></svg></a>
+      <h1>Spin &amp; Win</h1>
+    </header>
+    <div class="activity-actions">
+      <a class="rules-tab" href="#rules" id="rules-button">RULES</a>
+      <div class="reminder-wrap"><span>Reminder</span><button class="switch" type="button" id="reminder" role="switch" aria-label="Activity reminder" aria-checked="true"></button></div>
+    </div>
+
+    <section class="game-shell" aria-label="Spin and Win game">
+      <div class="game-meta">
+        <button class="sound" type="button" id="sound" aria-label="Mute game sound" aria-pressed="true">🔊</button>
+        <div class="balance-bar"><span class="balance">Coins:<strong id="balance">718</strong></span><a class="records-link" href="#records" id="records-button">Records<span aria-hidden="true">›</span></a></div>
+      </div>
+      <div class="board" id="board" aria-label="12 available prizes">
+        <div class="prize" data-prize="bonus" style="grid-area:1/1" role="img" aria-label="1 Bonus Point"><span class="prize-icon icon-bonus"></span><span class="prize-label">1 Bonus Point</span></div>
+        <div class="prize" data-prize="rate3" style="grid-area:1/2" role="img" aria-label="3% Rate-up Coupon"><span class="prize-icon icon-rate-three"></span><span class="prize-label">3% Rate-up<br>Coupon</span></div>
+        <div class="prize" data-prize="again" style="grid-area:1/3" role="img" aria-label="One More Chance"><span class="prize-icon icon-again"></span><span class="prize-label">One More<br>Chance</span></div>
+        <div class="prize" data-prize="bonus01" style="grid-area:1/4" role="img" aria-label="0.1 Bonus Point"><span class="prize-icon icon-bonus-small">0.1</span><span class="prize-label">0.1 Bonus<br>Point</span></div>
+        <div class="prize" data-prize="coins10000" style="grid-area:2/1" role="img" aria-label="10,000 Coins"><span class="prize-icon icon-coins"></span><span class="prize-label">10,000 Coins</span></div>
+        <div class="prize" data-prize="coins100" style="grid-area:2/4" role="img" aria-label="100 Coins"><span class="prize-icon icon-coins-hundred"></span><span class="prize-label">100 Coins</span></div>
+        <div class="prize" data-prize="point" style="grid-area:3/1" role="img" aria-label="1 Point Coupon"><span class="prize-icon icon-point"></span><span class="prize-label">1 Point<br>Coupon</span></div>
+        <div class="prize" data-prize="rate1" style="grid-area:3/4" role="img" aria-label="1% Rate-up Coupon"><span class="prize-icon icon-rate-one"></span><span class="prize-label">1% Rate-up<br>Coupon</span></div>
+        <div class="prize" data-prize="coins10" style="grid-area:4/1" role="img" aria-label="10 Coins"><span class="prize-icon icon-coins-ten"></span><span class="prize-label">10 Coins</span></div>
+        <div class="prize" data-prize="thanks" style="grid-area:4/2" role="img" aria-label="Thanks for Participating"><span class="prize-icon icon-thanks"></span><span class="prize-label">Thanks for<br>Participating</span></div>
+        <div class="prize" data-prize="coins3" style="grid-area:4/3" role="img" aria-label="3 Coins"><span class="prize-icon icon-coins-three"></span><span class="prize-label">3 Coins</span></div>
+        <div class="prize" data-prize="double" style="grid-area:4/4" role="img" aria-label="Double Coins"><span class="prize-icon icon-double"></span><span class="prize-label">Double Coins</span></div>
+        <div class="center-piece" aria-hidden="true"><span class="cube"></span><span class="prize-count"><strong>12</strong> <span>PRIZES</span></span></div>
+      </div>
+      <button class="play" id="play" type="button"><strong>PLAY</strong><small>Use 10 coins</small><span class="hand" aria-hidden="true">👆🏽</span></button>
+    </section>
+
+    <div class="ticker" aria-label="Recent winners"><div class="ticker-track" id="ticker-track"></div></div>
+
+    <section class="earned" aria-labelledby="earned-title">
+      <div class="earned-heading"><h2 id="earned-title">GIFTS YOU EARNED</h2><span class="ticket" aria-hidden="true">🎟️</span></div>
+      <div class="earned-body"><div class="gift-shelf" id="gift-shelf" aria-live="polite"></div></div>
+    </section>
+  </main>
+  <main class="closed-view" id="closed-view" hidden>
+    <header class="topbar">
+      <a class="back" href="tbay-home.html" aria-label="Back to home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 3-9 9 9 9"/></svg></a>
+      <h1>Spin &amp; Win</h1>
+    </header>
+    <div class="closed-message">Activity is temporarily unavailable</div>
+  </main>
+
+  <main class="subpage" id="rules-view" hidden>
+    <header class="subpage-header"><a class="subpage-back" href="#home" aria-label="Back to Spin &amp; Win"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 3-9 9 9 9"/></svg></a><h1>Rules</h1></header>
+    <div class="rules-content">
+      <p class="event-name">Event name: Spin &amp; Win</p>
+      <section class="rule-section"><h2>Lucky draw rules:</h2><p>This is a probabilistic reward event, and times of participation don&rsquo;t affect the possibility of winning.<br>Every 10 coins can be exchanged for 1 lucky draw chance.<br>There is no limit on how many times each user may join the lucky draw per day.</p></section>
+      <section class="rule-section"><h2>How to get coins:</h2><p>Each user receives 10 coins when first accessing the lucky draw page each day.<br>You can complete daily tasks to earn extra coins on the <a href="daily-reward.html">Daily Reward</a> event page.</p></section>
+      <section class="rule-section"><h2>Prize rules:</h2><p>One More Chance: An additional draw starts immediately without another coin deduction.<br>Double Coins Card: After receiving this prize, your coins balance is doubled directly.</p></section>
+      <section class="rule-section"><h2>Note:</h2><p>Terms &amp; Conditions: Apple Inc. and Google Play are not sponsors of or involved in this activity.</p></section>
+    </div>
+  </main>
+
+  <main class="subpage" id="records-view" hidden>
+    <header class="subpage-header"><a class="subpage-back" href="#home" aria-label="Back to Spin &amp; Win"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 3-9 9 9 9"/></svg></a><h1>Records</h1></header>
+    <div class="record-tabs" role="tablist" aria-label="Record type">
+      <button class="record-tab" type="button" role="tab" id="rewarded-tab" aria-controls="rewarded-panel" aria-selected="true">Rewarded</button>
+      <button class="record-tab" type="button" role="tab" id="used-tab" aria-controls="used-panel" aria-selected="false">Used coins</button>
+    </div>
+    <section id="rewarded-panel" role="tabpanel" aria-labelledby="rewarded-tab"><div class="record-list" id="rewarded-list"></div><p class="record-end-note" id="rewarded-end">No more data</p></section>
+    <section id="used-panel" role="tabpanel" aria-labelledby="used-tab" hidden><div class="record-list" id="used-list"></div><p class="record-end-note" id="used-end">No more data</p></section>
+  </main>
+
+  <aside class="scenario-panel" id="scenario-panel" aria-labelledby="scenario-title">
+    <h2 id="scenario-title">原型场景配置</h2>
+    <label for="scenario-status">活动状态</label>
+    <select id="scenario-status"><option value="open">开启</option><option value="closed">关闭</option></select>
+    <div id="scenario-open-controls">
+      <label for="scenario-prize" class="scenario-balance-label">中奖奖品</label>
+      <select id="scenario-prize"><option value="">随机</option></select>
+      <label for="scenario-balance" class="scenario-balance-label">Coins余额</label>
+      <div class="scenario-balance"><input id="scenario-balance" type="number" min="0" step="1" inputmode="numeric"></div>
+      <button class="scenario-apply" id="apply-balance" type="button">应用</button>
+      <button class="scenario-apply" id="preview-daily-reward" type="button">预览每日奖励弹框</button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay" hidden><div class="dialog-stack"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title"></h2><button class="close" type="button" id="close-dialog" aria-label="Close">×</button></div><div id="dialog-body"></div><div class="dialog-actions"><button class="dialog-secondary" type="button" id="dialog-secondary">No</button><button class="dialog-primary" type="button" id="dialog-primary">OK</button></div></div><button class="result-close" type="button" id="result-close" aria-label="Close">×</button></div></div>
+
+  <script>
+    const prizes = [
+      {id:'bonus',name:'1 Bonus Point',kind:'point'},
+      {id:'rate3',name:'3% Rate-up Coupon',kind:'coupon'},
+      {id:'again',name:'One More Chance',kind:'chance'},
+      {id:'bonus01',name:'0.1 Bonus Point',kind:'point'},
+      {id:'coins100',name:'100 Coins',kind:'coins',amount:100},
+      {id:'rate1',name:'1% Rate-up Coupon',kind:'coupon'},
+      {id:'double',name:'Double Coins',kind:'double'},
+      {id:'coins3',name:'3 Coins',kind:'coins',amount:3},
+      {id:'thanks',name:'Thanks for Participating',kind:'none'},
+      {id:'coins10',name:'10 Coins',kind:'coins',amount:10},
+      {id:'point',name:'1 Point Coupon',kind:'coupon'},
+      {id:'coins10000',name:'10,000 Coins',kind:'coins',amount:10000}
+    ];
+    const byId = Object.fromEntries(prizes.map(prize => [prize.id, prize]));
+    const $ = id => document.getElementById(id);
+    $('scenario-prize').append(...prizes.map(prize=>new Option(prize.name,prize.id)));
+    const key = 'tbay-spin-and-win-demo-v1';
+    const managementKey = 't-matrix-spin-and-win-management-v1';
+    const starter = {balance:718,lastDailyGrant:null,reminder:true,sound:true,records:[{id:'coins3',at:'2026-10-25T08:04:00',cost:10}]};
+    let state;
+    try {
+      const saved = JSON.parse(localStorage.getItem(key));
+      state = saved && Number.isFinite(saved.balance) && Array.isArray(saved.records)
+        ? {balance:Math.max(0,saved.balance),lastDailyGrant:typeof saved.lastDailyGrant==='string'?saved.lastDailyGrant:null,reminder:!!saved.reminder,sound:!!saved.sound,records:saved.records.filter(row => row && byId[row.id] && typeof row.at === 'string' && !Number.isNaN(Date.parse(row.at))).slice(0,50)}
+        : structuredClone(starter);
+    } catch { state = structuredClone(starter); }
+    let spinning = false, priorFocus = null, audioContext = null, primaryAction = null, activityOverride = null, currentView = 'home';
+    const slots = prizes.map(prize => document.querySelector(`[data-prize="${prize.id}"]`));
+    const dateText = value => new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(value)).replace(',','');
+    function persist(){try{localStorage.setItem(key,JSON.stringify(state))}catch{}}
+    function backendActivityOpen(){
+      try {
+        const sites=JSON.parse(localStorage.getItem(managementKey))?.sites;
+        const tbay=Array.isArray(sites)?sites.find(site=>site.id==='tbay'):null;
+        return tbay?.enabled!==false;
+      } catch { return true }
+    }
+    const activityOpen = () => activityOverride ?? backendActivityOpen();
+    const requestedView = () => ['rules','records'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+    function grantDailyCoins(){
+      const now=new Date();
+      const today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+      if(state.lastDailyGrant===today)return false;
+      state.balance+=10;state.lastDailyGrant=today;persist();
+      return true;
+    }
+    function showDailyReward(){openDialog('DAILY REWARD',resultContent({kind:'coins'},10),{variant:'daily',button:'OK'})}
+    function syncActivity(){
+      const open=activityOpen();
+      if(!open && requestedView()!=='home'){
+        try{history.replaceState(null,'','#home')}catch{location.hash='home'}
+      }
+      const view=open?requestedView():'home';
+      const enteringRecords=view==='records'&&currentView!=='records';
+      currentView=view;
+      $('activity-view').hidden=!open||view!=='home';$('closed-view').hidden=open;
+      $('rules-view').hidden=!open||view!=='rules';$('records-view').hidden=!open||view!=='records';
+      $('scenario-panel').hidden=view!=='home';
+      document.title=`${view==='home'?'Spin & Win':view==='rules'?'Rules':'Records'} · Tbay`;
+      if(enteringRecords)selectRecordsTab('rewarded');
+      $('scenario-status').value=open?'open':'closed';$('scenario-open-controls').hidden=!open;
+      if((!open||view!=='home')&&!$('overlay').hidden)closeDialog();
+      const awarded=open && backendActivityOpen() && grantDailyCoins();
+      render();
+      if(awarded)showDailyReward();
+    }
+    function render(){
+      $('balance').textContent = state.balance.toLocaleString('en-US');
+      $('play').querySelector('small').textContent = 'Use 10 coins';
+      $('reminder').setAttribute('aria-checked',String(state.reminder));
+      $('sound').setAttribute('aria-pressed',String(state.sound));
+      $('sound').setAttribute('aria-label',state.sound?'Mute game sound':'Unmute game sound');
+      $('sound').textContent = state.sound?'🔊':'🔇';
+      $('sound').classList.toggle('muted',!state.sound);
+      $('scenario-balance').value=state.balance;
+      const shelf = $('gift-shelf');
+      shelf.replaceChildren();
+      const earned = state.records.filter(row => byId[row.id].kind !== 'none');
+      if (!earned.length) { const empty = document.createElement('span'); empty.className='empty-gifts'; empty.textContent='No gifts yet'; shelf.append(empty); }
+      for (const row of earned.slice(0,3)) {
+        const card = document.createElement('div'); card.className='gift-card';
+        const prize = byId[row.id];
+        if(prize.kind==='coupon')card.classList.add('coupon-card');
+        const words = prize.name.match(/^([\d,.%]+)\s+(.+)$/);
+        const number = document.createElement('strong'); number.textContent=words?words[1]:'🎁';
+        const label = document.createElement('span'); label.className='gift-name'; label.textContent=words?words[2]:prize.name;
+        card.append(number,label);
+        if(prize.kind==='coupon'){const use=document.createElement('span');use.className='gift-use';use.textContent='To use';card.append(use)}
+        card.setAttribute('role','img');card.setAttribute('aria-label',`${prize.name}, ${dateText(row.at)}`);
+        shelf.append(card);
+      }
+      renderRecords();
+    }
+    const recordDateText = value => {
+      const date=new Date(value),pad=number=>String(number).padStart(2,'0');
+      return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    };
+    function appendRecord(list,row,used){
+      const prize=byId[row.id];
+      const item=document.createElement('article');item.className=used?'record record-used':'record record-rewarded';
+      const art=document.createElement('div');art.className=used?'record-art record-used-art':'record-art';
+      if(used){art.innerHTML='<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M9 13c0-3.2 6.4-5.8 14.3-5.8 7.9 0 14.3 2.6 14.3 5.8s-6.4 5.8-14.3 5.8C15.4 18.8 9 16.2 9 13Z" fill="white"/><path d="M9 14v7c0 3.4 6.4 6.2 14.3 6.2M9 22v7c0 3.5 6.4 6.3 14.3 6.3M9 30v3c0 3.5 6.4 6.3 14.3 6.3" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M31 24h10v4H31zM31 32h10v4H31z" fill="white"/></svg>'}
+      else if(prize.kind==='coupon'){const icon=document.createElement('span');icon.className='record-coupon';icon.textContent=row.id==='rate3'?'3%':row.id==='rate1'?'1%':'1P';art.append(icon)}
+      else art.append(slots[prizes.indexOf(prize)].querySelector('.prize-icon').cloneNode(true));
+      const copy=document.createElement('div');copy.className='record-copy';
+      const name=document.createElement('span');name.className='record-name';name.textContent=used?'Used for Spin & Win':prize.name;copy.append(name);
+      const time=document.createElement('time');time.className='record-time';time.dateTime=row.at;time.textContent=recordDateText(row.at);
+      const meta=document.createElement('div');meta.className='record-meta';
+      if(used){const cost=document.createElement('span');cost.className='record-cost';cost.textContent=`-${row.cost.toLocaleString('en-US')} Coins`;meta.append(cost)}
+      meta.append(time);item.append(art,copy,meta);list.append(item);
+    }
+    function renderRecordList(id,rows,used){
+      const list=$(id);list.replaceChildren();
+      $(used?'used-end':'rewarded-end').hidden=!rows.length;
+      if(!rows.length){const empty=document.createElement('p');empty.className='record-empty';empty.textContent=used?'No coins used yet':'No rewards yet';list.append(empty);return}
+      rows.forEach(row=>appendRecord(list,row,used));
+    }
+    function renderRecords(){
+      renderRecordList('rewarded-list',state.records.filter(row=>row.id!=='thanks'),false);
+      renderRecordList('used-list',state.records.filter(row=>Number.isFinite(row.cost)&&row.cost>0),true);
+    }
+    function selectRecordsTab(tab){
+      const rewarded=tab==='rewarded';
+      $('rewarded-tab').setAttribute('aria-selected',String(rewarded));$('used-tab').setAttribute('aria-selected',String(!rewarded));
+      $('rewarded-panel').hidden=!rewarded;$('used-panel').hidden=rewarded;
+    }
+    function openDialog(title,content,options={}){
+      priorFocus=document.activeElement; $('dialog-title').textContent=title; $('dialog-body').replaceChildren(content);
+      $('overlay').dataset.variant=options.variant||'';$('dialog-primary').textContent=options.button||'OK';primaryAction=options.action||null;
+      $('overlay').hidden=false;(options.variant==='confirm' ? $('dialog-secondary') : options.variant ? $('result-close') : $('close-dialog')).focus();
+    }
+    function closeDialog(){ $('overlay').hidden=true;$('overlay').dataset.variant='';primaryAction=null;priorFocus?.focus(); }
+    function paragraph(text, className=''){const p=document.createElement('p');p.textContent=text;p.className=className;return p}
+    function tone(){
+      if(!state.sound)return;
+      try{audioContext ??= new (window.AudioContext||window.webkitAudioContext)();const oscillator=audioContext.createOscillator();const gain=audioContext.createGain();oscillator.type='sine';oscillator.frequency.value=660;gain.gain.value=.025;oscillator.connect(gain).connect(audioContext.destination);oscillator.start();oscillator.stop(audioContext.currentTime+.045)}catch{}
+    }
+    function resultArt(prize){
+      const art=document.createElement('div');art.className='result-art';
+      if(prize==='insufficient'){
+        const warning=document.createElement('span');warning.className='warning-mark';warning.textContent='!';art.append(warning);
+      }else if(prize.kind==='coins'||prize.kind==='double'){
+        const coin=document.createElement('img');coin.src='daily-reward-assets/success-coin.png';coin.alt='';art.append(coin);
+        if(prize.kind==='double'){const mark=document.createElement('span');mark.className='double-mark';mark.textContent='2X';art.append(mark)}
+      }else{
+        art.append(slots[prizes.indexOf(prize)].querySelector('.prize-icon').cloneNode(true));
+      }
+      return art;
+    }
+    function resultContent(prize,awardedCoins){
+      const content=document.createElement('div');content.className='result-content';
+      if(prize.kind==='chance')content.append(paragraph('Your next spin starts automatically.','result-subtitle'));
+      if(prize.kind==='none')content.append(paragraph("Oops! There's Nothing Here!",'result-subtitle'));
+      if(prize.kind==='coupon')content.append(paragraph('You have won','result-subtitle'));
+      content.append(resultArt(prize));
+      if(prize.kind==='coins'){
+        const amount=paragraph('','reward-amount');const number=document.createElement('strong');number.textContent=`+${awardedCoins.toLocaleString('en-US')}`;const unit=document.createElement('span');unit.textContent=' Coins';amount.append(number,unit);
+        content.append(amount,paragraph(`Balance: ${state.balance.toLocaleString('en-US')} coins`,'reward-balance'));
+      }else if(prize.kind==='double'){
+        content.append(paragraph(`Obtain double rewards: ${awardedCoins.toLocaleString('en-US')} coins X2`,'double-description'));
+        const gain=paragraph('','double-gain');const number=document.createElement('strong');number.textContent=`+${awardedCoins.toLocaleString('en-US')}`;gain.append(number);
+        content.append(gain,paragraph(`Balance: ${state.balance.toLocaleString('en-US')} coins`,'reward-balance'));
+      }else if(prize.kind!=='chance'&&prize.kind!=='none'){
+        content.append(paragraph(prize.name,'result-prize-name'));
+      }
+      return content;
+    }
+    function showInsufficient(){
+      const content=document.createElement('div');content.className='result-content';content.append(resultArt('insufficient'));
+      openDialog('NOT ENOUGH COINS',content,{variant:'insufficient',button:'Get More Coins',action:()=>{window.location.href='daily-reward.html'}});
+    }
+    function finish(prize,cost){
+      slots.forEach(slot=>slot.classList.remove('active'));
+      slots[prizes.indexOf(prize)].classList.add('winner');
+      let awardedCoins=0;
+      if(prize.kind==='coins')awardedCoins=prize.amount;
+      if(prize.kind==='double')awardedCoins=state.balance;
+      state.balance+=awardedCoins;
+      const at=new Date().toISOString();state.records.unshift({id:prize.id,at,cost});
+      state.records=state.records.slice(0,50);persist();render();
+      if(prize.kind!=='none'){winners.unshift(['You',`Won ${prize.name}`,dateText(at)]);winners.length=Math.min(winners.length,6);renderTicker()}
+      const title=prize.kind==='chance'?'ONE MORE CHANCE':prize.kind==='none'?'THANKS FOR PARTICIPATING.':prize.kind==='coins'?'RECEIVED TASK REWARD':prize.kind==='double'?'DOUBLE COINS':'CONGRATULATIONS';
+      const options={variant:prize.kind,button:'OK'};
+      openDialog(title,resultContent(prize,awardedCoins),options);
+      $('play').disabled=false;$('scenario-prize').disabled=false;$('scenario-status').disabled=false;spinning=false;
+      if(prize.kind==='chance')setTimeout(()=>{if(!activityOpen())return;if(!$('overlay').hidden)closeDialog();$('scenario-prize').value='';spin(false)},1500);
+    }
+    function spin(paid=true){
+      if(spinning||!activityOpen())return;
+      if(paid && state.balance<10){showInsufficient();return}
+      slots.forEach(slot=>slot.classList.remove('winner'));
+      spinning=true;$('play').disabled=true;$('scenario-prize').disabled=true;$('scenario-status').disabled=true;
+      const cost=paid?10:0;
+      if(cost)state.balance-=cost;
+      persist();render();
+      const selected=$('scenario-prize').value;
+      const target=selected?prizes.findIndex(prize=>prize.id===selected):Math.floor(Math.random()*prizes.length);
+      const total=36+target;let step=0;
+      function advance(){
+        slots.forEach(slot=>slot.classList.remove('active'));
+        slots[step%slots.length].classList.add('active');tone();
+        if(step===total){setTimeout(()=>finish(prizes[target],cost),450);return}
+        step++;
+        const progress=step/total;
+        setTimeout(advance,progress<.6?65:65+Math.pow((progress-.6)/.4,2)*260);
+      }
+      advance();
+    }
+    function requestSpin(){
+      if(spinning||!activityOpen())return;
+      if(state.balance<10){showInsufficient();return}
+      openDialog('Use 10 coins to play?',document.createDocumentFragment(),{variant:'confirm',button:'Yes',action:()=>spin(true)});
+    }
+    $('play').addEventListener('click',requestSpin);
+    $('scenario-status').addEventListener('change',event=>{activityOverride=event.target.value==='open';syncActivity()});
+    $('scenario-balance').addEventListener('input',()=>$('scenario-balance').setCustomValidity(''));
+    $('apply-balance').addEventListener('click',()=>{
+      const input=$('scenario-balance'),raw=input.value.trim(),value=Number(raw);
+      if(!/^\d+$/.test(raw)||!Number.isSafeInteger(value)){input.setCustomValidity('请输入非负整数');input.reportValidity();return}
+      state.balance=value;persist();render();
+    });
+    $('preview-daily-reward').addEventListener('click',showDailyReward);
+    $('reminder').addEventListener('click',()=>{state.reminder=!state.reminder;persist();render()});
+    $('sound').addEventListener('click',()=>{state.sound=!state.sound;persist();render()});
+    for(const id of ['rules-button','records-button'])$(id).addEventListener('click',event=>{if(spinning)event.preventDefault()});
+    $('rewarded-tab').addEventListener('click',()=>selectRecordsTab('rewarded'));
+    $('used-tab').addEventListener('click',()=>selectRecordsTab('used'));
+    document.querySelector('.record-tabs').addEventListener('keydown',event=>{
+      if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+      event.preventDefault();const next=$('rewarded-panel').hidden?'rewarded':'used';selectRecordsTab(next);$(next==='rewarded'?'rewarded-tab':'used-tab').focus();
+    });
+    $('close-dialog').addEventListener('click',closeDialog);
+    $('dialog-secondary').addEventListener('click',closeDialog);
+    $('result-close').addEventListener('click',closeDialog);
+    $('dialog-primary').addEventListener('click',()=>{const action=primaryAction;closeDialog();action?.()});
+    $('overlay').addEventListener('click',event=>{if(event.target===$('overlay'))closeDialog()});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('overlay').hidden)closeDialog()});
+    const winners=[['Emxxxx','Won 3 Coins','25/10/2026 08:04'],['D-xxxx','Won Double Coins','25/10/2026 08:15'],['Anxxxx','Won 100 Coins','25/10/2026 08:22']];
+    function renderTicker(){
+      const track=$('ticker-track');track.replaceChildren();
+      for(let copy=0;copy<2;copy++){
+        const group=document.createElement('div');group.className='ticker-group';
+        if(copy)group.setAttribute('aria-hidden','true');
+        for(const [name,prize,time] of winners){
+          const pill=document.createElement('div');pill.className='ticker-pill';
+          const avatar=document.createElement('span');avatar.className='avatar';avatar.setAttribute('aria-hidden','true');avatar.textContent='🎉';
+          const content=document.createElement('span');content.className='ticker-copy';
+          const winner=document.createElement('strong');winner.textContent=name;
+          const date=document.createElement('time');date.textContent=time;
+          const result=document.createElement('span');result.textContent=prize;
+          content.append(winner,date,document.createElement('br'),result);pill.append(avatar,content);group.append(pill);
+        }
+        track.append(group);
+      }
+    }
+    renderTicker();
+    syncActivity();
+    window.addEventListener('hashchange',()=>{syncActivity();window.scrollTo(0,0)});
+    window.addEventListener('pageshow',syncActivity);
+    window.addEventListener('storage',event=>{if(event.key===managementKey&&activityOverride===null)syncActivity()});
+  </script>
+</body>
+</html>

@@ -8,6 +8,7 @@
 .drawer{visibility:hidden;transition:transform .2s,visibility 0s .2s}.drawer.show{visibility:visible;transition:transform .2s}.level-modal{visibility:hidden;transition:transform .18s,opacity .18s,visibility 0s .18s}.level-modal.show{visibility:visible;transition:transform .18s,opacity .18s}.confirm-modal{width:420px}.confirm-body{padding:24px 24px 8px}.confirm-title{font-size:16px;font-weight:600;margin-bottom:9px}.confirm-desc{color:#666;font-size:13px;line-height:1.7}.btn.danger{background:var(--red);border-color:var(--red);color:#fff}.ratio-input{height:32px;display:flex;align-items:center;gap:8px}.ratio-input .field{width:120px}.ratio-input span{white-space:nowrap;color:#555}.rate-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.rate-field{display:flex}.rate-field .field{min-width:0;border-radius:6px 0 0 6px}.rate-suffix{height:32px;min-width:30px;border:1px solid var(--border);border-left:0;border-radius:0 6px 6px 0;background:#fafafa;display:grid;place-items:center;color:#666}.readonly-field{background:#f5f5f5;color:#666;cursor:not-allowed}.coupon-levels{display:grid;gap:8px}.coupon-row{display:grid;grid-template-columns:42px 1fr;align-items:start;gap:10px}.coupon-row>span{padding-top:6px;font-weight:600}.coupon-multi{position:relative}.coupon-multi summary{height:32px;padding:5px 32px 5px 10px;border:1px solid var(--border);border-radius:6px;list-style:none;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#555;background:#fff}.coupon-multi summary::-webkit-details-marker{display:none}.coupon-multi summary:after{content:'⌄';position:absolute;right:11px;top:5px;color:#999}.coupon-multi[open] summary{border-color:var(--blue);box-shadow:0 0 0 2px #3cbafb1f}.coupon-options{position:absolute;z-index:5;left:0;right:0;top:36px;padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;box-shadow:0 4px 12px #0002}.coupon-options label{display:flex;align-items:center;gap:8px;height:29px;margin:0}.coupon-options input{accent-color:var(--blue)}
 .task-table{min-width:1510px}.icon-box img{width:100%;height:100%;object-fit:contain;border-radius:7px}.task-icon-upload{align-items:center}.upload-name{max-width:260px;color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.level-modal.task-modal{width:760px}.task-modal .drawer-body{padding:16px 20px;background:#f6f8fb}.task-form-section{padding:14px 16px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;background:#fff}.task-form-section:last-child{margin-bottom:0}.task-form-section-title{margin-bottom:12px;font-size:14px;font-weight:600;color:var(--text)}.task-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.task-form-grid+.form-item{margin-top:12px}.task-action-grid{display:grid;grid-template-columns:minmax(140px,1fr) minmax(260px,2fr) minmax(90px,.65fr);gap:12px;align-items:start}.task-form-section .form-item{margin-bottom:12px}.task-form-section .form-item:last-child{margin-bottom:0}.task-form-section .form-item.compact{margin-bottom:0}.field-meta{min-height:18px;margin-top:4px;display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:11px}.field-error{color:var(--red)}.char-count{margin-left:auto;white-space:nowrap}.task-modal .field[aria-invalid="true"],#fGrowth[aria-invalid="true"]{border-color:var(--red);box-shadow:0 0 0 2px #ff4d4f14}@media(max-width:900px){.level-modal.task-modal{width:calc(100vw - 40px)}.task-action-grid{grid-template-columns:1fr}}
 .lang{display:block;min-width:112px;padding:0 30px 0 12px;border:0;outline:none;cursor:pointer}
+.premium-card-select{position:relative}.premium-card-control{width:100%;height:32px;padding:4px 32px 4px 11px;border:1px solid var(--border);border-radius:6px;background:#fff;text-align:left;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.premium-card-control:after{content:'⌄';position:absolute;right:12px;top:4px;color:#888}.premium-card-control[aria-expanded="true"]{border-color:var(--blue);box-shadow:0 0 0 2px #3cbafb1f}.premium-card-options{position:absolute;z-index:8;top:calc(100% + 4px);left:0;right:0;padding:5px 10px;overflow:auto;border:1px solid var(--border);border-radius:6px;background:#fff;box-shadow:0 6px 16px #0002}.premium-card-options[hidden]{display:none}.premium-card-option{display:flex!important;align-items:center;gap:9px;min-height:32px;margin:0!important;cursor:pointer}.premium-card-option input{accent-color:var(--blue)}
 </style>
 <style>
 .level-modal.task-modal{width:800px;max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);border-radius:12px;overflow:hidden}
@@ -23,6 +24,55 @@
 .task-modal .task-jump-options input{margin:0;accent-color:var(--blue);width:16px;height:16px}
 .task-modal .ratio-input{height:36px;gap:8px}.task-modal .ratio-input .field{min-width:60px;width:100px}
 @media(max-width:600px){.task-modal .task-form-grid,.task-modal .task-action-grid{grid-template-columns:1fr}.task-modal .drawer-body{padding:12px}.task-modal .task-form-section{padding:12px}.task-modal .upload-name{max-width:150px}}
+</style>
+<style>
+.level-modal.coupon-pack-modal{width:780px;max-width:calc(100vw - 40px);max-height:calc(100dvh - 48px);border-radius:12px;overflow:hidden}
+.coupon-pack-modal .drawer-head,.coupon-pack-modal .drawer-foot{flex-shrink:0;min-height:58px}
+.coupon-pack-modal .drawer-body{min-height:0;background:#fff;padding:20px 24px}
+.level-modal.coupon-pack-modal{width:1000px;border-radius:8px}
+.coupon-pack-modal .drawer-head{border-bottom:0;padding:0 24px}
+.coupon-pack-modal .drawer-foot{border-top:0;padding:16px 24px;min-height:72px}
+.coupon-pack-modal .form-item{margin-bottom:22px}
+.coupon-pack-modal .field:disabled{color:#aaa;background:#f5f5f5}
+.pack-icon-upload{width:102px;height:102px;background:white;border:1px solid var(--border);border-radius:8px;display:grid;place-items:center;cursor:pointer}
+.pack-icon-upload:hover{border-color:var(--link)}
+.pack-icon-upload img,.pack-icon-upload svg{width:64px;height:64px;object-fit:contain}
+.pack-icon-error{color:var(--red);font-size:12px;margin-top:6px}
+.pack-select-row{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:start;gap:10px;margin-bottom:12px}
+.pack-select-row>span{padding-top:6px}
+.pack-select{position:relative;min-width:0}
+.pack-select .pack-control{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-height:34px;padding:4px 28px 4px 6px;border:1px solid var(--border);border-radius:6px;cursor:pointer;list-style:none}
+.pack-select .pack-control::-webkit-details-marker{display:none}
+.pack-select .pack-control:after{content:'⌄';position:absolute;right:10px;top:6px;color:#aaa}
+.pack-select[open] summary{border-color:var(--link)}
+.pack-tag{display:inline-flex;gap:4px;align-items:center;max-width:100%;padding:1px 6px;border-radius:3px;background:#f3f3f3;font-size:12px;line-height:22px}
+.pack-tag>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pack-tag button{border:0;background:none;color:#888;padding:0 2px;font-size:15px}
+.pack-select .pack-options{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 4px);padding:4px 12px;border:1px solid var(--border);border-radius:6px;background:white;max-height:230px;overflow:auto;box-shadow:0 6px 20px #0002}.pack-options[hidden]{display:none}.pack-select.is-open{z-index:20}.pack-control:focus-visible{outline:2px solid var(--link);outline-offset:1px}
+.pack-select .pack-option{padding:8px 0}.pack-select .pack-option label{margin:0;font-size:13px}
+.pack-placeholder{color:#aaa;padding-left:4px;font-size:13px}
+.coupon-pack-modal .textarea{min-height:86px;max-height:180px;border-radius:6px}
+.pack-policy{background:#e8f8f7;border:1px solid #c4eae6;border-radius:8px;padding:12px 14px;margin-bottom:18px;color:#205e59}
+.pack-policy p{font-size:12px;margin:5px 0 0;line-height:1.7}
+.pack-section-title{font-weight:600;margin:2px 0 12px;display:flex;justify-content:space-between;gap:10px}
+.pack-section-title span,.pack-help{font-size:12px;font-weight:400;color:#777}
+.trust-pack-level{background:#fff;border:1px solid #e3e8ef;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.trust-pack-level summary{display:flex;align-items:center;gap:10px;list-style:none;cursor:pointer;padding:12px 14px}
+.trust-pack-level summary::-webkit-details-marker{display:none}
+.pack-rank{background:#eaf4ff;border-radius:5px;padding:3px 8px;font-weight:600;color:#2674b9}
+.pack-count{margin-left:auto;background:#f2f5f8;color:#64748b;padding:2px 8px;border-radius:12px;font-size:12px}
+.pack-options{padding:0 14px 8px;border-top:1px solid #eef1f5}
+.pack-option{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0f2f5}
+.pack-option:last-child{border-bottom:0}
+.pack-option label{display:flex;align-items:center;gap:10px;flex:1;cursor:pointer;min-width:0}
+.pack-option input[type=checkbox]{accent-color:#00b8b1;width:16px;height:16px}
+.coupon-mini-value{color:#078983;background:#eafaf8;font-size:18px;font-weight:700;padding:10px 8px;border-radius:6px;min-width:58px;text-align:center}
+.coupon-option-copy b{display:block;font-size:13px;font-weight:600}
+.coupon-option-copy small{display:block;color:#81909f;font-size:11px;margin-top:3px}
+.pack-help{line-height:1.8;margin:12px 0 0}
+.rate-grid{grid-template-columns:repeat(auto-fit,minmax(90px,1fr))}
+.btn:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media(max-width:650px){.pack-section-title{display:block}.pack-section-title span{display:block;margin-top:4px}.site-strip .right{display:none}}
 </style>
 </head>
 <body>
@@ -48,7 +98,7 @@
 <script>
 const I18N={
  zh:{pageTitle:'T-matrix · 会员等级管理',systemManagement:'系统管理',businessManagement:'业务管理',marketingManagement:'营销管理',dataStatistics:'数据统计',memberManagement:'会员管理',memberLevelManagement:'会员等级管理',campaignManagement:'活动管理',couponManagement:'优惠券管理',contentManagement:'内容管理',site:'站点',levelCount:'等级数量',lastUpdated:'最近更新时间',actions:'操作',tenPerPage:'10 条/页',back:'‹ 返回',levelConfiguration:'等级配置',benefitConfiguration:'权益配置',growthTasks:'成长任务',levelCode:'等级编号',englishName:'英文名称',levelIcon:'等级图标',growthPoints:'成长值',linkedBenefits:'关联权益（多选）',addBenefit:'新增权益',benefitName:'权益名称',benefitType:'权益类型',displayTitle:'展示标题',benefitIcon:'权益图标',description:'描述说明',taskName:'任务名称',taskType:'任务类型',icon:'图标',title:'标题',subtitle:'副标题',sortOrder:'排序',calculationMethod:'计算方式',status:'状态',edit:'编辑',cancel:'取消',save:'保存',editLevel:'编辑等级',confirmDeleteBenefit:'确认删除权益？',confirmDelete:'确认删除',saved:'保存成功',none:'无',items:n=>`共 ${n} 条`,levels:n=>`${n} 个`,breadcrumb:name=>`营销管理 / 会员管理 / 会员等级管理${name?' / '+name:''}`},
- en:{pageTitle:'T-matrix · Membership Level Management',systemManagement:'System',businessManagement:'Business',marketingManagement:'Marketing',dataStatistics:'Analytics',memberManagement:'Membership',memberLevelManagement:'Membership Levels',campaignManagement:'Campaigns',couponManagement:'Coupons',contentManagement:'Content',site:'Site',levelCount:'Levels',lastUpdated:'Last Updated',actions:'Actions',tenPerPage:'10 / page',back:'‹ Back',levelConfiguration:'Level Settings',benefitConfiguration:'Benefit Settings',growthTasks:'Growth Tasks',levelCode:'Level Code',englishName:'English Name',levelIcon:'Level Icon',growthPoints:'Growth Points',linkedBenefits:'Linked Benefits (Multi-select)',addBenefit:'Add Benefit',benefitName:'Benefit Name',benefitType:'Benefit Type',displayTitle:'Display Title',benefitIcon:'Benefit Icon',description:'Description',taskName:'Task Name',taskType:'Task Type',icon:'Icon',title:'Title',subtitle:'Subtitle',sortOrder:'Sort',calculationMethod:'Calculation',status:'Status',edit:'Edit',cancel:'Cancel',save:'Save',editLevel:'Edit Level',confirmDeleteBenefit:'Delete this benefit?',confirmDelete:'Delete',saved:'Saved successfully',none:'None',items:n=>`${n} items`,levels:n=>`${n}`,breadcrumb:name=>`Marketing / Membership / Membership Levels${name?' / '+name:''}`}
+ en:{pageTitle:'T-matrix · Membership Level Management',systemManagement:'System',businessManagement:'Business',marketingManagement:'Marketing',dataStatistics:'Analytics',memberManagement:'Membership',memberLevelManagement:'Membership Levels',campaignManagement:'Campaigns',couponManagement:'Coupons',contentManagement:'Content',site:'Site',levelCount:'Levels',lastUpdated:'Last Updated',actions:'Actions',tenPerPage:'10 / page',back:'‹ Back',levelConfiguration:'Level Settings',benefitConfiguration:'Benefit Settings',growthTasks:'Growth Tasks',levelCode:'Level Code',englishName:'English Name',levelIcon:'Level Icon',growthPoints:'Growth XP',linkedBenefits:'Linked Benefits (Multi-select)',addBenefit:'Add Benefit',benefitName:'Benefit Name',benefitType:'Benefit Type',displayTitle:'Display Title',benefitIcon:'Benefit Icon',description:'Description',taskName:'Task Name',taskType:'Task Type',icon:'Icon',title:'Title',subtitle:'Subtitle',sortOrder:'Sort',calculationMethod:'Calculation',status:'Status',edit:'Edit',cancel:'Cancel',save:'Save',editLevel:'Edit Level',confirmDeleteBenefit:'Delete this benefit?',confirmDelete:'Delete',saved:'Saved successfully',none:'None',items:n=>`${n} items`,levels:n=>`${n}`,breadcrumb:name=>`Marketing / Membership / Membership Levels${name?' / '+name:''}`}
 };
 const EN_TEXT={'已生效':'Active','草稿':'Draft','会员溢价':'Member Rate Bonus','会员专享溢价':'Member Rate Bonus','系统预设':'Preset','卖卡报价时按会员等级增加 Rate 百分点':'Add rate percentage points by membership level when selling gift cards','升级券包':'Upgrade Coupon Pack','等级升级券包':'Level Upgrade Coupon Pack','用户月度定级升级时发放对应等级券包':'Issue the matching coupon pack when the user upgrades','专属服务标识':'Priority Service Badge','专属会员服务':'Priority Member Service','自定义':'Custom','在服务商工作台展示高等级会员身份标识':'Show a high-level member badge in the provider workspace','满100减5券':'₦5 off ₦100','满200减10券':'₦10 off ₦200','满300减20券':'₦20 off ₦300','交易手续费减免券':'Transaction Fee Waiver','优先处理券':'Priority Processing Coupon','登录':'Sign-in','每日登录':'Daily Sign-in','完成交易':'Complete a Sale','首笔快速交易':'First Fast Trade','关注社媒账号':'Follow Social Media','成功邀请用户':'Successful Referral','事件类':'Event','交易类':'Transaction','固定':'Fixed','比例':'Proportional','删除':'Delete'};
 const ZH_TEXT=Object.fromEntries(Object.entries(EN_TEXT).map(([zh,en])=>[en,zh]));
@@ -61,48 +111,48 @@ const sites=[
  {name:'TrustCard',version:'V1.0',state:'草稿',updated:'2026-08-23 11:20:06'},
  {name:'LuckCard',version:'V2.0',state:'已生效',updated:'2026-08-20 09:16:32'}
 ];
-const benefits=[
+let benefits=[
  {id:'premium',icon:'%',name:'会员溢价',displayTitle:'会员专享溢价',type:'系统预设',desc:'卖卡报价时按会员等级增加 Rate 百分点',rates:{L0:0,L1:.2,L2:.5,L3:1,L4:1.5},on:true},
  {id:'coupon',icon:'券',name:'升级券包',displayTitle:'等级升级券包',type:'系统预设',desc:'用户月度定级升级时发放对应等级券包',coupons:{L0:[],L1:['coupon_5'],L2:['coupon_5','coupon_fee'],L3:['coupon_10','coupon_fee'],L4:['coupon_20','coupon_fee','coupon_priority']},on:true},
  {id:'service',icon:'★',name:'专属服务标识',displayTitle:'专属会员服务',type:'自定义',desc:'在服务商工作台展示高等级会员身份标识',on:true}
 ];
 const couponOptions=[{id:'coupon_5',name:'满100减5券'},{id:'coupon_10',name:'满200减10券'},{id:'coupon_20',name:'满300减20券'},{id:'coupon_fee',name:'交易手续费减免券'},{id:'coupon_priority',name:'优先处理券'}];
-const levels=[
+let levels=[
  {no:'L0',name:'Member',icon:'L0',growth:0,benefits:[]},
  {no:'L1',name:'Bronze',icon:'L1',growth:100,benefits:['premium','coupon']},
  {no:'L2',name:'Silver',icon:'L2',growth:500,benefits:['premium','coupon']},
  {no:'L3',name:'Gold',icon:'L3',growth:1500,benefits:['premium','coupon','service']},
  {no:'L4',name:'Platinum',icon:'L4',growth:5000,benefits:['premium','coupon','service']}
 ];
-const tasks=[
- {key:'login',preset:'登录',name:'每日登录',icon:'✓',iconName:'sign-in.svg',title:'Daily Sign-in',subtitle:'Sign in once a day to earn Growth Points',buttonText:'Check In',jumpUrl:'#member',sort:1,type:'事件类',calc:'固定',growth:'1',on:true},
- {key:'trade',preset:'完成交易',name:'完成交易',icon:'$',iconName:'sale.svg',title:'Complete a Sale',subtitle:'Earn Growth Points after an order is completed',buttonText:'Sell Now',jumpUrl:'#order',sort:2,type:'交易类',calc:'比例',growth:'1 Points = 1.0% 成长值',on:true},
- {key:'first_fast_trade',preset:'首笔快速交易',name:'首笔快速交易',icon:'⚡',iconName:'first-fast-trade.svg',title:'First Fast Trade',subtitle:'Complete your first Fast Trade to earn Growth Points',buttonText:'Trade Now',jumpUrl:'#fast-trade',sort:3,type:'交易类',calc:'固定',growth:'100',on:true},
- {key:'invite_user',preset:'成功邀请用户',name:'成功邀请用户',icon:'↗',iconName:'invite-user.svg',title:'Successful Referral',subtitle:'Successfully invite a new user to earn Growth Points',buttonText:'Invite',jumpUrl:'#invite',sort:5,type:'事件类',calc:'固定',growth:'100',on:true}
+let tasks=[
+ {key:'login',preset:'登录',name:'每日登录',icon:'✓',iconName:'sign-in.svg',title:'Daily Sign-in',subtitle:'Sign in once a day to earn Growth XP',buttonText:'Check In',jumpUrl:'#member',sort:1,type:'事件类',calc:'固定',growth:'1',on:true},
+ {key:'trade',preset:'完成交易',name:'完成交易',icon:'$',iconName:'sale.svg',title:'Complete a Sale',subtitle:'Earn Growth XP after an order is completed',buttonText:'Sell Now',jumpUrl:'#order',sort:2,type:'交易类',calc:'比例',growth:'1 Points = 1.0% 成长值',on:true},
+ {key:'first_fast_trade',preset:'首笔快速交易',name:'首笔快速交易',icon:'⚡',iconName:'first-fast-trade.svg',title:'First Fast Trade',subtitle:'Complete your first Fast Trade to earn Growth XP',buttonText:'Trade Now',jumpUrl:'#fast-trade',sort:3,type:'交易类',calc:'固定',growth:'100',on:true},
+ {key:'invite_user',preset:'成功邀请用户',name:'成功邀请用户',icon:'↗',iconName:'invite-user.svg',title:'Successful Referral',subtitle:'Successfully invite a new user to earn Growth XP',buttonText:'Invite',jumpUrl:'#invite',sort:5,type:'事件类',calc:'固定',growth:'100',on:true}
 ];
 let currentSite=null,drawerType='',modalType='',editIndex=-1,deleteBenefitIndex=-1;
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 function applyLanguage(refresh=true){document.documentElement.lang=currentLang==='zh'?'zh-CN':'en';document.title=t('pageTitle');$$('[data-i18n]').forEach(node=>node.textContent=t(node.dataset.i18n));$('#langSelect').value=currentLang;$('#crumb').textContent=t('breadcrumb',currentSite?.name||'');if(refresh){renderSites();if(currentSite)renderAll()}const openModal=$('#levelModal').classList.contains('show');if(openModal){if(modalType==='level'&&editIndex>=0)openLevel(editIndex);else if(modalType==='benefit')openBenefit(editIndex);else if(modalType==='task'&&editIndex>=0)openTask(editIndex)}if($('#deleteConfirmModal').classList.contains('show')&&deleteBenefitIndex>=0)openDeleteBenefitConfirm(deleteBenefitIndex)}
-function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t.timer);t.timer=setTimeout(()=>t.classList.remove('show'),2100)}
+function toast(msg){if(currentSite&&/已更新|已删除|configuration updated|task updated|Benefit deleted/i.test(msg))persistConfig();const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t.timer);t.timer=setTimeout(()=>t.classList.remove('show'),2100)}
 function statusClass(s){return s==='已生效'?'live':s==='草稿'?'draft':'off'}
-function renderSites(list=sites){$('#siteRows').innerHTML=list.map(s=>`<tr><td><b>${s.name}</b></td><td>${t('levels',5)}</td><td>${s.updated}</td><td><span class="action edit-site" data-name="${s.name}">${t('edit')}</span></td></tr>`).join('');$('#siteTotal').textContent=t('items',list.length);$$('.edit-site').forEach(e=>e.onclick=()=>enterSite(e.dataset.name))}
-function enterSite(name){currentSite=sites.find(s=>s.name===name);$('#sitePage').classList.add('hidden');$('#managePage').classList.remove('hidden');$('#crumb').textContent=t('breadcrumb',name);renderAll()}
-function renderAll(){renderLevels();renderBenefits();renderTasks()}
+function renderSites(list=sites){$('#siteRows').innerHTML=list.map(s=>`<tr><td><b>${s.name}</b></td><td>${t('levels',siteConfigs[s.name].levels.length)}</td><td>${s.updated}</td><td><span class="action edit-site" data-name="${s.name}">${t('edit')}</span></td></tr>`).join('');$('#siteTotal').textContent=t('items',list.length);$$('.edit-site').forEach(e=>e.onclick=()=>enterSite(e.dataset.name))}
+function enterSite(name){currentSite=sites.find(s=>s.name===name);({levels,benefits,tasks}=siteConfigs[name]);$('#sitePage').classList.add('hidden');$('#managePage').classList.remove('hidden');$('#crumb').textContent=t('breadcrumb',name);renderAll()}
+function renderAll(){renderLevels();renderBenefits();renderTasks();renderSiteContext()}
 function renderLevels(){$('#levelRows').innerHTML=levels.map((l,i)=>`<tr><td><b>${l.no}</b></td><td>${l.name}</td><td><span class="level-icon l${i}">${l.icon}</span></td><td>${l.growth.toLocaleString()}</td><td><div class="chips">${l.benefits.length?l.benefits.map(id=>`<span class="chip">${tx(benefits.find(b=>b.id===id)?.name||id)}</span>`).join(''):`<span class="muted">${t('none')}</span>`}</div></td><td><span class="action edit-level" data-i="${i}">${t('edit')}</span></td></tr>`).join('');$$('.edit-level').forEach(e=>e.onclick=()=>openLevel(+e.dataset.i))}
-function renderBenefits(){$('#benefitRows').innerHTML=benefits.map((b,i)=>`<tr><td><b>${tx(b.name)}</b></td><td>${tx(b.type)}</td><td title="${tx(b.displayTitle||'')}">${tx(b.displayTitle)||'—'}</td><td><span class="icon-box">${b.icon}</span></td><td title="${tx(b.desc)}">${tx(b.desc)}</td><td><span class="action edit-benefit" data-i="${i}">${t('edit')}</span>${b.type==='自定义'?`<span class="action delete-benefit" data-i="${i}">${tx('删除')}</span>`:''}</td></tr>`).join('');$$('.edit-benefit').forEach(e=>e.onclick=()=>openBenefit(+e.dataset.i));$$('.delete-benefit').forEach(e=>e.onclick=()=>openDeleteBenefitConfirm(+e.dataset.i))}
+function renderBenefits(){$('#benefitRows').innerHTML=benefits.map((b,i)=>`<tr><td><b>${tx(b.name)}</b></td><td>${tx(b.type)}</td><td title="${tx(b.displayTitle||'')}">${tx(b.displayTitle)||'—'}</td><td><span class="icon-box">${b.iconImage?`<img src="${safeText(b.iconImage)}" alt="">`:b.icon}</span></td><td title="${tx(b.desc)}">${tx(b.desc)}</td><td><span class="action edit-benefit" data-i="${i}">${t('edit')}</span>${b.type==='自定义'?`<span class="action delete-benefit" data-i="${i}">${tx('删除')}</span>`:''}</td></tr>`).join('');$$('.edit-benefit').forEach(e=>e.onclick=()=>openBenefit(+e.dataset.i));$$('.delete-benefit').forEach(e=>e.onclick=()=>openDeleteBenefitConfirm(+e.dataset.i))}
 function taskIconHtml(icon){return String(icon).startsWith('data:image/')?`<img src="${icon}" alt="">`:icon}
-function renderTasks(){const rows=tasks.map((task,i)=>({task,i})).sort((a,b)=>(Number(a.task.sort)||1)-(Number(b.task.sort)||1)||a.i-b.i);$('#taskRows').innerHTML=rows.map(({task,i})=>{const growth=currentLang==='en'?task.growth.replace('% 成长值','% Growth Points'):task.growth;return `<tr><td><b>${tx(task.name)}</b></td><td>${tx(task.type)}</td><td><span class="icon-box">${taskIconHtml(task.icon)}</span></td><td title="${task.title}">${task.title}</td><td title="${task.subtitle}">${task.subtitle}</td><td>${Number(task.sort)||1}</td><td>${tx(task.calc)}</td><td>${growth}</td><td><button class="switch ${task.on?'on':''}" data-task="${i}" aria-label="${t('status')}"></button></td><td><span class="action edit-task" data-i="${i}">${t('edit')}</span></td></tr>`}).join('');$$('[data-task]').forEach(e=>e.onclick=()=>{tasks[+e.dataset.task].on=!tasks[+e.dataset.task].on;renderTasks()});$$('.edit-task').forEach(e=>e.onclick=()=>openTask(+e.dataset.i))}
+function renderTasks(){const rows=tasks.map((task,i)=>({task,i})).sort((a,b)=>(Number(a.task.sort)||1)-(Number(b.task.sort)||1)||a.i-b.i);$('#taskRows').innerHTML=rows.map(({task,i})=>{const growth=currentLang==='en'?task.growth.replace('% 成长值','% Growth XP'):task.growth;return `<tr><td><b>${tx(task.name)}</b></td><td>${tx(task.type)}</td><td><span class="icon-box">${taskIconHtml(task.icon)}</span></td><td title="${task.title}">${task.title}</td><td title="${task.subtitle}">${task.subtitle}</td><td>${Number(task.sort)||1}</td><td>${tx(task.calc)}</td><td>${growth}</td><td><button class="switch ${task.on?'on':''}" data-task="${i}" aria-label="${t('status')}"></button></td><td><span class="action edit-task" data-i="${i}">${t('edit')}</span></td></tr>`}).join('');$$('[data-task]').forEach(e=>e.onclick=()=>{tasks[+e.dataset.task].on=!tasks[+e.dataset.task].on;renderTasks();persistConfig()});$$('.edit-task').forEach(e=>e.onclick=()=>openTask(+e.dataset.i))}
 function showDrawer(title,html,type,index=-1){drawerType=type;editIndex=index;$('#drawerTitle').textContent=title;$('#drawerBody').innerHTML=html;$('#overlay').classList.add('show');$('#drawer').classList.add('show')}
 function closeDrawer(){$('#drawer').classList.remove('show');$('#overlay').classList.remove('show')}
-function closeLevelModal(){$('#levelModal').classList.remove('show','task-modal');$('#overlay').classList.remove('show')}
+function closeLevelModal(){$('#levelModal').classList.remove('show','task-modal','coupon-pack-modal');$('#overlay').classList.remove('show')}
 function openDeleteBenefitConfirm(i){deleteBenefitIndex=i;const b=benefits[i];$('#deleteConfirmTitle').textContent=t('confirmDeleteBenefit');$('#deleteConfirmDesc').textContent=bi(`删除“${b.name}”后，该权益将从已关联等级中同步移除，且无法恢复。`,`Deleting “${tx(b.name)}” removes it from all linked levels and cannot be undone.`);$('#overlay').classList.add('show');$('#deleteConfirmModal').classList.add('show')}
 function closeDeleteBenefitConfirm(){deleteBenefitIndex=-1;$('#deleteConfirmModal').classList.remove('show');$('#overlay').classList.remove('show')}
 function deleteBenefit(){if(deleteBenefitIndex<0)return;const deleted=benefits[deleteBenefitIndex];benefits.splice(deleteBenefitIndex,1);levels.forEach(level=>level.benefits=level.benefits.filter(id=>id!==deleted.id));closeDeleteBenefitConfirm();renderAll();toast(bi('权益已删除','Benefit deleted'))}
-function openLevel(i){const l=levels[i];modalType='level';editIndex=i;$('#levelModalTitle').textContent=`${bi('编辑等级','Edit Level')} · ${l.no}`;$('#levelModalBody').innerHTML=`<div class="grid2"><div class="form-item"><label>${t('levelCode')}</label><input class="field" id="fNo" value="${l.no}" disabled></div><div class="form-item"><label class="req">${t('englishName')}</label><input class="field" id="fName" value="${l.name}"></div></div><div class="form-item"><label class="req">${t('levelIcon')}</label><div class="icon-picker" id="iconPicker"><button class="btn secondary">${bi('上传图标','Upload Icon')}</button></div><div class="help">${bi('支持自定义图标，建议尺寸 64 × 64px，PNG 或 SVG。','Custom icons supported. Recommended size: 64 × 64 px; PNG or SVG.')}</div></div><div class="form-item"><label class="req">${t('growthPoints')}</label><input class="field readonly-field" id="fGrowth" type="number" value="${l.growth}" disabled><div class="help">${i===0?bi('L0 等级成长值固定为 0，不可编辑。','L0 Growth Points are fixed at 0 and cannot be edited.'):bi('统计口径为前 3 个完整自然月成长值总和，等级成长值不可编辑。','Calculated from the previous three complete calendar months. Level Growth Points cannot be edited.')}</div></div><div class="form-item"><label>${t('linkedBenefits')}</label><div class="multi">${benefits.map(b=>`<label class="check"><input type="checkbox" name="levelBenefit" value="${b.id}" ${l.benefits.includes(b.id)?'checked':''}>${tx(b.name)}</label>`).join('')}</div></div>`;$('#overlay').classList.add('show');$('#levelModal').classList.add('show')}
+function openLevel(i){const l=levels[i];modalType='level';editIndex=i;$('#levelModalTitle').textContent=`${bi('编辑等级','Edit Level')} · ${l.no}`;$('#levelModalBody').innerHTML=`<div class="grid2"><div class="form-item"><label>${t('levelCode')}</label><input class="field" id="fNo" value="${l.no}" disabled></div><div class="form-item"><label class="req">${t('englishName')}</label><input class="field" id="fName" value="${l.name}"></div></div><div class="form-item"><label class="req">${t('levelIcon')}</label><div class="icon-picker" id="iconPicker"><button class="btn secondary">${bi('上传图标','Upload Icon')}</button></div><div class="help">${bi('支持自定义图标，建议尺寸 64 × 64px，PNG 或 SVG。','Custom icons supported. Recommended size: 64 × 64 px; PNG or SVG.')}</div></div><div class="form-item"><label class="req">${t('growthPoints')}</label><input class="field readonly-field" id="fGrowth" type="number" value="${l.growth}" disabled><div class="help">${i===0?bi(`${l.no} 等级成长值固定为 0，不可编辑。`,`${l.no} Growth XP are fixed at 0 and cannot be edited.`):bi('统计口径为前 3 个完整自然月成长值总和，等级成长值不可编辑。','Calculated from the previous three complete calendar months. Level Growth XP cannot be edited.')}</div></div><div class="form-item"><label>${t('linkedBenefits')}</label><div class="multi">${benefits.map(b=>`<label class="check"><input type="checkbox" name="levelBenefit" value="${b.id}" ${l.benefits.includes(b.id)?'checked':''}>${tx(b.name)}</label>`).join('')}</div></div>`;$('#overlay').classList.add('show');$('#levelModal').classList.add('show')}
 function openBenefit(i=-1){const b=i>=0?benefits[i]:{icon:'☆',name:'',displayTitle:'',type:'自定义',desc:'',on:true};const isPreset=b.type==='系统预设';const rateHtml=b.id==='premium'?`<div class="form-item"><label class="req">${bi('各会员等级溢价比例','Rate Bonus by Level')}</label><div class="rate-grid">${levels.map(l=>`<div><label>${l.no}</label><div class="rate-field"><input class="field benefit-rate" data-level="${l.no}" type="number" min="0" step="0.01" value="${Number(b.rates?.[l.no]||0).toFixed(2)}"><span class="rate-suffix">%</span></div></div>`).join('')}</div></div>`:'';const couponHtml=b.id==='coupon'?`<div class="form-item"><label class="req">${bi('各会员等级券包配置','Coupon Packs by Level')}</label><div class="coupon-levels">${levels.map(l=>{const selected=b.coupons?.[l.no]||[];const selectedNames=couponOptions.filter(c=>selected.includes(c.id)).map(c=>tx(c.name));return `<div class="coupon-row"><span>${l.no}</span><details class="coupon-multi" data-level="${l.no}"><summary>${selectedNames.length?selectedNames.join(currentLang==='en'?', ':'、'):bi('请选择优惠券','Select coupons')}</summary><div class="coupon-options">${couponOptions.map(c=>`<label><input class="coupon-choice" type="checkbox" value="${c.id}" ${selected.includes(c.id)?'checked':''}>${tx(c.name)}</label>`).join('')}</div></details></div>`}).join('')}</div></div>`:'';modalType='benefit';editIndex=i;$('#levelModalTitle').textContent=i>=0?bi('编辑权益','Edit Benefit'):t('addBenefit');$('#levelModalBody').innerHTML=`<div class="form-item"><label class="req">${t('benefitName')}</label><input class="field ${isPreset?'readonly-field':''}" id="bName" value="${tx(b.name)}" placeholder="${bi('请输入权益名称','Enter benefit name')}" ${isPreset?'disabled':''}></div><div class="form-item"><label class="req">${t('displayTitle')}</label><input class="field" id="bDisplayTitle" value="${tx(b.displayTitle||'')}" placeholder="${bi('请输入前台展示标题','Enter display title')}"></div><div class="form-item"><label class="req">${t('benefitIcon')}</label><div class="icon-picker" id="benefitIcons"><button class="btn secondary">${bi('上传图标','Upload Icon')}</button></div><div class="help">${bi('图标尺寸要求：64 × 64px，支持 PNG 或 SVG。','Icon size: 64 × 64 px; PNG or SVG.')}</div></div>${rateHtml}${couponHtml}<div class="form-item"><label class="req">${t('description')}</label><textarea class="textarea" id="bDesc" placeholder="${bi('说明权益内容和使用规则','Describe the benefit and usage rules')}">${tx(b.desc)}</textarea></div>`;bindCouponSelectors();$('#overlay').classList.add('show');$('#levelModal').classList.add('show')}
 function bindCouponSelectors(){$$('.coupon-multi').forEach(select=>{select.ontoggle=()=>{if(select.open)$$('.coupon-multi').forEach(other=>{if(other!==select)other.open=false})};select.querySelectorAll('.coupon-choice').forEach(box=>box.onchange=()=>{const names=[...select.querySelectorAll('.coupon-choice:checked')].map(input=>couponOptions.find(c=>c.id===input.value)?.name).filter(Boolean).map(tx);select.querySelector('summary').textContent=names.length?names.join(currentLang==='en'?', ':'、'):bi('请选择优惠券','Select coupons')})})}
 function taskGrowthNumber(value){const numbers=String(value).match(/\d+(?:\.\d+)?/g);return Number(numbers?.at(-1)||0)}
-function taskGrowthInput(calc,value){return calc==='比例'?`<div class="ratio-input"><span>1 Points =</span><input class="field" id="tGrowth" type="number" min="0" max="100" step="0.1" value="${Math.min(100,Math.max(0,taskGrowthNumber(value))).toFixed(1)}"><span>${bi('% 成长值','% Growth Points')}</span></div>`:`<input class="field" id="tGrowth" type="number" min="0" step="1" value="${Math.max(0,taskGrowthNumber(value))}">`}
+function taskGrowthInput(calc,value){return calc==='比例'?`<div class="ratio-input"><span>1 Points =</span><input class="field" id="tGrowth" type="number" min="0" max="100" step="0.1" value="${Math.min(100,Math.max(0,taskGrowthNumber(value))).toFixed(1)}"><span>${bi('% 成长值','% Growth XP')}</span></div>`:`<input class="field" id="tGrowth" type="number" min="0" step="1" value="${Math.max(0,taskGrowthNumber(value))}">`}
 function openTask(i){const task=tasks[i],isEvent=task.type==='事件类',calc=isEvent?'固定':task.calc;modalType='task';editIndex=i;$('#levelModal').classList.add('task-modal');$('#levelModalTitle').textContent=`${bi('编辑成长任务','Edit Growth Task')} · ${tx(task.name)}`;$('#levelModalBody').innerHTML=`<div class="task-form-section"><div class="task-form-section-title">${bi('基础信息','Basic Information')}</div><div class="task-form-grid"><div class="form-item compact"><label class="req">${bi('预设任务','Preset Task')}</label><input class="field readonly-field" value="${tx(task.preset)}" disabled></div><div class="form-item compact"><label class="req">${t('taskType')}</label><input class="field readonly-field" id="tType" value="${tx(task.type)}" disabled></div></div></div><div class="task-form-section"><div class="task-form-section-title">${bi('前台展示','User-facing Display')}</div><div class="task-form-grid"><div class="form-item compact"><label class="req" for="tTitle">${t('title')}</label><input class="field" id="tTitle" value="${task.title||''}" placeholder="${bi('请输入标题','Enter title')}"></div><div class="form-item compact"><label class="req" for="tSubtitle">${t('subtitle')}</label><input class="field" id="tSubtitle" value="${task.subtitle||''}" placeholder="${bi('请输入副标题','Enter subtitle')}"></div></div><div class="form-item task-display-icon"><label class="req">${t('icon')}</label><div class="icon-picker task-icon-upload"><button class="btn secondary" type="button" id="tIconUpload">${bi('上传图标','Upload Icon')}</button><span class="upload-name" id="tIconName">${task.iconName||bi('已上传图标','Uploaded icon')}</span><input type="file" id="tIconFile" accept="image/png,image/svg+xml" hidden><input type="hidden" id="tIcon" value="${task.icon}"></div><div class="field-meta"><span>${bi('建议尺寸 64 × 64px，支持 PNG 或 SVG','Recommended size: 64 × 64 px; PNG or SVG')}</span></div></div><div class="task-action-grid"><div class="form-item compact"><label class="req" for="tButtonText">${bi('按钮文案','Button Label')}</label><input class="field" id="tButtonText" value="${task.buttonText||''}" maxlength="10" placeholder="${bi('最多10个字符','Up to 10 characters')}"></div></div><div class="task-navigation"><div class="form-item"><label class="req" id="tJumpTypeLabel">${bi('跳转方式','Navigation Type')}</label><div class="task-jump-options" role="radiogroup" aria-labelledby="tJumpTypeLabel">${[['native',bi('App原生页','Native App Page')],['h5',bi('H5页面','H5 Page')],['browser',bi('浏览器链接','Browser Link')]].map(([value,label])=>`<label><input type="radio" name="tJumpType" value="${value}" ${(task.jumpType||'native')===value?'checked':''} required>${label}</label>`).join('')}</div></div><div class="form-item compact"><label class="req" for="tJumpUrl">${bi('跳转地址','Destination URL')}</label><input class="field" id="tJumpUrl" value="${task.jumpUrl||''}" maxlength="100" placeholder="${bi('请输入站内路径或完整链接','Enter an in-app path or full URL')}"></div></div></div><div class="task-form-section"><div class="task-form-section-title">${bi('奖励规则','Reward Rules')}</div><div class="task-form-grid"><div class="form-item compact"><label class="req" for="tCalc">${t('calculationMethod')}</label><select class="field ${isEvent?'readonly-field':''}" id="tCalc" ${isEvent?'disabled':''}><option value="固定" ${calc==='固定'?'selected':''}>${tx('固定')}</option><option value="比例" ${calc==='比例'?'selected':''}>${tx('比例')}</option></select></div><div class="form-item compact"><label class="req">${t('growthPoints')}</label><div id="taskGrowthField">${taskGrowthInput(calc,task.growth)}</div></div></div></div>`;['#tTitle','#tSubtitle','#tButtonText','#tJumpUrl'].forEach(selector=>$(selector).oninput=event=>event.currentTarget.setAttribute('aria-invalid',String(!event.currentTarget.value.trim())));$('#tIconUpload').onclick=()=>$('#tIconFile').click();$('#tIconFile').onchange=event=>{const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{$('#tIcon').value=String(reader.result);$('#tIconName').textContent=file.name};reader.readAsDataURL(file)};if(!isEvent)$('#tCalc').onchange=()=>{$('#taskGrowthField').innerHTML=taskGrowthInput($('#tCalc').value,$('#tGrowth')?.value||0)};$('#overlay').classList.add('show');$('#levelModal').classList.add('show')}
 const openTaskWithoutSort=openTask;
 openTask=function(i){openTaskWithoutSort(i);const task=tasks[i],sort=Number.isInteger(Number(task.sort))&&Number(task.sort)>0?Number(task.sort):1;$('.task-action-grid').insertAdjacentHTML('beforeend',`<div class="form-item compact"><label class="req" for="tSort">${t('sortOrder')}</label><input class="field" id="tSort" type="number" min="1" step="1" value="${sort}" inputmode="numeric"></div>`);$('#tSort').oninput=event=>event.currentTarget.setAttribute('aria-invalid',String(!/^\d+$/.test(event.currentTarget.value)||Number(event.currentTarget.value)<1))}
@@ -112,9 +162,189 @@ $$('.tab').forEach(t=>t.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('a
 $('#addBenefit').onclick=()=>openBenefit();$('#drawerClose').onclick=$('#drawerCancel').onclick=closeDrawer;$('#drawerSave').onclick=saveDrawer;
 $('#levelModalSave').addEventListener('click',event=>{if(modalType!=='task')return;const input=$('#tSort'),raw=input?.value.trim()||'',valid=/^\d+$/.test(raw)&&Number(raw)>=1;if(!valid){event.preventDefault();event.stopImmediatePropagation();input?.setAttribute('aria-invalid','true');input?.focus();toast(bi('请输入大于等于1的整数排序值','Enter a whole-number sort value of 1 or greater'));return}input.dataset.validatedSort=raw},true);
 $('#levelModalClose').onclick=$('#levelModalCancel').onclick=closeLevelModal;$('#levelModalSave').onclick=()=>{if(modalType==='level'){const l=levels[editIndex];l.name=$('#fName').value.trim()||l.name;l.benefits=[...document.querySelectorAll('[name=levelBenefit]:checked')].map(x=>x.value);renderAll();closeLevelModal();toast(bi('等级配置已更新','Level configuration updated'));return}if(modalType==='task'){const task=tasks[editIndex],icon=$('#tIcon').value.trim(),title=$('#tTitle').value.trim(),subtitle=$('#tSubtitle').value.trim(),buttonText=$('#tButtonText').value.trim(),jumpUrl=$('#tJumpUrl').value.trim(),jumpType=$('[name=tJumpType]:checked')?.value,calc=task.type==='事件类'?'固定':$('#tCalc').value;[['#tTitle',title],['#tSubtitle',subtitle],['#tButtonText',buttonText],['#tJumpUrl',jumpUrl]].forEach(([selector,value])=>$(selector).setAttribute('aria-invalid',String(!value)));if(!icon||!title||!subtitle||!buttonText||!jumpUrl||!['native','h5','browser'].includes(jumpType)){toast(bi('请完整填写所有必填项','Complete all required fields'));return}if(buttonText.length>10){$('#tButtonText').setAttribute('aria-invalid','true');toast(bi('按钮文案不能超过10个字符','Button label cannot exceed 10 characters'));return}if(jumpUrl.length>100){$('#tJumpUrl').setAttribute('aria-invalid','true');toast(bi('跳转地址不能超过100个字符','Destination URL cannot exceed 100 characters'));return}let growth=Number($('#tGrowth').value)||0;if(calc==='比例'){growth=Math.min(100,Math.max(0,Math.round(growth*10)/10));task.growth=`1 Points = ${growth.toFixed(1)}% 成长值`}else{task.growth=String(Math.max(0,growth))}task.icon=icon;task.iconName=$('#tIconName').textContent;task.title=title;task.subtitle=subtitle;task.buttonText=buttonText;task.jumpUrl=jumpUrl;task.jumpType=jumpType;task.calc=calc;renderAll();closeLevelModal();toast(bi('成长任务已更新','Growth task updated'));return}if(modalType==='benefit'){const current=editIndex>=0?benefits[editIndex]:null;const name=$('#bName').value.trim(),displayTitle=$('#bDisplayTitle').value.trim(),desc=$('#bDesc').value.trim();if(!name||!displayTitle||!desc){toast(bi('请完整填写权益名称、展示标题和描述说明','Complete the benefit name, display title, and description'));return}if(current){if(current.type!=='系统预设')current.name=name;current.displayTitle=displayTitle;current.desc=desc;if(current.id==='premium'){current.rates={};$$('.benefit-rate').forEach(input=>current.rates[input.dataset.level]=Number(Math.max(0,Number(input.value)||0).toFixed(2)))}if(current.id==='coupon'){current.coupons={};$$('.coupon-multi').forEach(select=>{current.coupons[select.dataset.level]=[...select.querySelectorAll('.coupon-choice:checked')].map(input=>input.value)})}}else{benefits.push({id:'custom_'+Date.now(),icon:'☆',name,displayTitle,type:'自定义',desc,on:true})}renderAll();closeLevelModal();toast(bi('权益配置已更新','Benefit configuration updated'))}};$('#deleteConfirmCancel').onclick=closeDeleteBenefitConfirm;$('#deleteConfirmSubmit').onclick=deleteBenefit;$('#overlay').onclick=()=>{closeDrawer();closeLevelModal();closeDeleteBenefitConfirm()};
-$('#levelModalSave').addEventListener('click',()=>{if(modalType!=='task'||$('#levelModal').classList.contains('show'))return;const input=$('#tSort'),sort=Number(input?.dataset.validatedSort);if(Number.isInteger(sort)&&sort>=1){tasks[editIndex].sort=sort;renderTasks()}});
+$('#levelModalSave').addEventListener('click',()=>{if(modalType!=='task'||$('#levelModal').classList.contains('show'))return;const input=$('#tSort'),sort=Number(input?.dataset.validatedSort);if(Number.isInteger(sort)&&sort>=1){tasks[editIndex].sort=sort;renderTasks();persistConfig()}});
 $$('.item:not(.active),.plain').forEach(x=>x.onclick=()=>toast(bi(`${x.textContent.trim()}页面已纳入后台导航`,`${x.textContent.trim()} is included in the admin navigation`)));
 $('#langSelect').onchange=event=>{currentLang=event.target.value;try{localStorage.setItem('tmatrix-admin-language',currentLang)}catch(e){}applyLanguage()};
+
+// Site-scoped configuration: existing sites retain their original five-level model.
+const cloneConfig=value=>JSON.parse(JSON.stringify(value));
+const baseConfig={levels:cloneConfig(levels),benefits:cloneConfig(benefits),tasks:cloneConfig(tasks)};
+const siteConfigs=Object.fromEntries(sites.map(site=>[site.name,cloneConfig(baseConfig)]));
+const trustConfig=siteConfigs.TrustCard;
+const trustLevelNames=['Bronze','Silver','Gold','Platinum','Sapphire VIP','Emerald VIP','Crown Elite'];
+const trustThresholds=[0,1000,3000,5000,10000,15000,25000];
+const trustIcons=['◉','✦','♜','◇','◆','▣','♛'];
+trustConfig.levels=trustLevelNames.map((name,i)=>({no:`L${i+1}`,name,icon:trustIcons[i],growth:trustThresholds[i],benefits:i?['premium','coupon']:[]}));
+trustConfig.benefits=[
+ {id:'premium',icon:'%',name:'会员溢价',displayTitle:'Sell Rate Bonus',type:'系统预设',desc:'Your membership bonus is added to the base Sell Rate when you request a quote.',rates:Object.fromEntries(trustConfig.levels.map((l,i)=>[l.no,i*.5])),excludedCards:[],on:true},
+ {id:'coupon',icon:'券',name:'等级券包',displayTitle:'Upgrade Reward',type:'系统预设',desc:'This coupon pack is issued when your membership level is upgraded.',coupons:Object.fromEntries(trustConfig.levels.map((l,i)=>[l.no,Array(i).fill('tc_compensation_3')])),expiry:'coupon-template',issuance:'level-upgrade',on:true}
+];
+trustConfig.tasks.forEach(task=>{
+ if(task.key==='trade'){task.growth='1 Points = 100.0% 成长值';task.subtitle='Earn +1 per 1 Point';}
+ if(task.key==='login'){task.subtitle='Sign in once a day +1';task.buttonText='View';}
+ if(task.key==='first_fast_trade')task.subtitle='Complete your first Fast Trade +100';
+ if(task.key==='invite_user')task.subtitle='Successfully invite a new user +100';
+});
+const trustCoupons=[
+ {id:'tc_compensation_3',name:'Compensation Coupon',rate:3,cap:50,min:2},
+ {id:'tc_compensation_5',name:'Compensation Coupon',rate:5,cap:100,min:10},
+ {id:'tc_compensation_8',name:'Compensation Coupon',rate:8,cap:200,min:20}
+];
+const premiumCardOptions=[{id:'steam',name:'Steam Gift Card'},{id:'amex',name:'American Express'},{id:'razer',name:'Razer Gift Card'},{id:'apple',name:'Apple & iTunes'}];
+EN_TEXT['等级优惠券包']='Level Coupon Pack';
+EN_TEXT['等级券包']='Level Coupon Pack';
+const CONFIG_STORAGE='trustcard-member-admin-config-v1';
+try{
+ const saved=JSON.parse(localStorage.getItem(CONFIG_STORAGE)||'null');
+ if(saved&&[1,2,3].includes(saved.version)){
+  for(const site of sites){const config=saved.sites?.[site.name];if(config&&Array.isArray(config.levels)&&Array.isArray(config.benefits)&&Array.isArray(config.tasks)){
+   if(site.name==='TrustCard'&&saved.version<3){
+    const seven=config.levels.length===7?config:config.previousSevenLevelConfig;
+    if(config.levels.length!==7)config.previousFiveLevelConfig=cloneConfig({levels:config.levels,benefits:config.benefits,tasks:config.tasks});
+    config.levels=cloneConfig(seven?.levels?.length===7?seven.levels:trustConfig.levels);
+    const pack=config.benefits.find(b=>b.id==='coupon'),premium=config.benefits.find(b=>b.id==='premium');
+    const previousPack=seven?.benefits?.find(b=>b.id==='coupon'),previousPremium=seven?.benefits?.find(b=>b.id==='premium');
+    if(pack){
+     pack.coupons=Object.fromEntries(config.levels.map((l,i)=>[l.no,cloneConfig(pack.coupons?.[l.no]??previousPack?.coupons?.[l.no]??trustConfig.benefits[1].coupons[l.no])]));
+     Object.assign(pack,{name:'等级券包',expiry:'coupon-template',issuance:'level-upgrade'});
+     if(saved.version===1)Object.assign(pack,{displayTitle:'Upgrade Reward',desc:'This coupon pack is issued when your membership level is upgraded.'});
+    }
+    if(premium)premium.rates=Object.fromEntries(config.levels.map(l=>[l.no,premium.rates?.[l.no]??previousPremium?.rates?.[l.no]??trustConfig.benefits[0].rates[l.no]]));
+    config.levels.forEach(l=>{l.benefits=l.benefits.filter(id=>id!=='coupon');if(pack?.coupons?.[l.no]?.length)l.benefits.push('coupon')});
+   }
+   siteConfigs[site.name]=config;
+  }}
+ }
+}catch(e){}
+const trustCouponBenefit=siteConfigs.TrustCard.benefits.find(benefit=>benefit.id==='coupon');
+if(trustCouponBenefit)trustCouponBenefit.name='等级券包';
+function persistConfig(){
+ try{localStorage.setItem(CONFIG_STORAGE,JSON.stringify({version:3,sites:siteConfigs}));}
+ catch(e){$('#toast').textContent=bi('当前浏览器无法保存配置，刷新后将重置','Browser storage is unavailable; changes will reset on reload');}
+}
+function renderSiteContext(){
+ if(!currentSite)return;
+ document.documentElement.dataset.site=currentSite.name;
+}
+const safeText=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const openBaseBenefit=openBenefit;
+openBenefit=function(i=-1){
+ $('#levelModal').classList.remove('task-modal','coupon-pack-modal');
+ if(currentSite?.name==='TrustCard'&&benefits[i]?.id==='coupon'){openTrustCoupon(i);return;}
+ openBaseBenefit(i);
+ if(currentSite?.name==='TrustCard')$$('.rate-suffix').forEach(node=>node.textContent='%');
+ if(currentSite?.name==='TrustCard'&&benefits[i]?.id==='premium'){
+  const selected=new Set(benefits[i].excludedCards||[]);
+  $('#bDesc').closest('.form-item').insertAdjacentHTML('beforebegin',`<div class="form-item"><label for="premiumCardControl">${bi('排除卡种（可多选，非必填）','Excluded Card Types (optional)')}</label><div class="premium-card-select"><button class="premium-card-control" id="premiumCardControl" type="button" aria-expanded="false" aria-controls="premiumCardOptions"></button><div class="premium-card-options" id="premiumCardOptions" hidden>${premiumCardOptions.map(card=>`<label class="premium-card-option"><input type="checkbox" class="premium-card-choice" value="${card.id}" ${selected.has(card.id)?'checked':''}>${card.name}</label>`).join('')}</div></div><div class="help">${bi('所选卡种不享受会员溢价，前台会员溢价显示为 0。','Selected card types receive no membership bonus; the user-facing premium is 0.')}</div></div>`);
+  const control=$('#premiumCardControl'),panel=$('#premiumCardOptions');
+  const updateLabel=()=>{const ids=[...$$('.premium-card-choice:checked')].map(box=>box.value),names=premiumCardOptions.filter(card=>ids.includes(card.id)).map(card=>card.name);control.textContent=names.length?names.join(', '):bi('请选择卡种','Select card types')};
+  const setOpen=open=>{control.setAttribute('aria-expanded',String(open));panel.hidden=!open;if(open){const body=$('#levelModalBody').getBoundingClientRect(),rect=control.getBoundingClientRect();const below=body.bottom-rect.bottom-8,above=rect.top-body.top-8;const upwards=below<150&&above>below;panel.style.top=upwards?'auto':'calc(100% + 4px)';panel.style.bottom=upwards?'calc(100% + 4px)':'auto';panel.style.maxHeight=Math.max(80,Math.min(180,upwards?above:below))+'px'}};
+  control.onclick=()=>setOpen(panel.hidden);
+  panel.onchange=updateLabel;
+  panel.onkeydown=event=>{if(event.key==='Escape'){setOpen(false);control.focus()}};
+  updateLabel();
+ }
+};
+document.addEventListener('click',event=>{const panel=$('#premiumCardOptions');if(panel&&!panel.hidden&&!event.target.closest('.premium-card-select')){$('#premiumCardControl').setAttribute('aria-expanded','false');panel.hidden=true}});
+$('#levelModalBody').addEventListener('scroll',()=>{const panel=$('#premiumCardOptions');if(panel&&!panel.hidden){$('#premiumCardControl').setAttribute('aria-expanded','false');panel.hidden=true}});
+$('#levelModalSave').addEventListener('click',()=>{
+ if(modalType!=='benefit'||currentSite?.name!=='TrustCard'||benefits[editIndex]?.id!=='premium'||$('#levelModal').classList.contains('show'))return;
+ benefits[editIndex].excludedCards=[...$$('.premium-card-choice:checked')].map(box=>box.value);
+ persistConfig();
+});
+const packIconSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none"><g transform="rotate(-16 32 32)"><rect x="9" y="12" width="44" height="28" rx="5" fill="#123c38" opacity=".65"/><path d="M10 23h44v9a6 6 0 0 0 0 12v9H10v-9a6 6 0 0 0 0-12z" fill="#123c38" stroke="white" stroke-width="2"/><path d="m32 29 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="white"/></g></svg>';
+function packCouponLabel(c){return bi('会员等级','Member level ')+c.rate+'% · '+bi('上限','Max ')+c.cap+' Points · '+bi('订单大于','Order over ')+c.min+' Points'}
+function updatePackTags(section){
+ const summary=section.querySelector('.pack-control');
+ const selected=[...section.querySelectorAll('.trust-coupon-choice:checked')];
+ summary.innerHTML=selected.length?trustCoupons.filter(c=>selected.some(box=>box.value===c.id)).map(c=>{
+  return '<span class="pack-tag"><span>'+safeText(packCouponLabel(c))+'</span><button type="button" data-remove="'+safeText(c.id)+'" aria-label="'+safeText(bi('移除','Remove ')+packCouponLabel(c))+'">×</button></span>';
+ }).join(''):'<span class="pack-placeholder">'+bi('请选择优惠券','Select coupons')+'</span>';
+ summary.querySelectorAll('[data-remove]').forEach(button=>button.onclick=event=>{
+  event.preventDefault();event.stopPropagation();
+  const box=section.querySelector('.trust-coupon-choice[value="'+button.dataset.remove+'"]');
+  if(box)box.checked=false;
+  updatePackTags(section);
+ });
+}
+function setPackDropdown(section,open){
+ const control=section.querySelector('.pack-control'),panel=section.querySelector('.pack-options');
+ if(open)$$('.pack-select.is-open').forEach(other=>{if(other!==section)setPackDropdown(other,false)});
+ section.classList.toggle('is-open',open);control.setAttribute('aria-expanded',String(open));panel.hidden=!open;
+ if(!open)return;
+ positionPackDropdown(section);
+}
+function positionPackDropdown(section){
+ const control=section.querySelector('.pack-control'),panel=section.querySelector('.pack-options');
+ const rect=control.getBoundingClientRect(),body=$('#levelModalBody').getBoundingClientRect();
+ const below=Math.min(body.bottom,window.innerHeight)-rect.bottom-8;
+ const above=rect.top-Math.max(body.top,0)-8;
+ const upwards=below<180&&above>below;
+ panel.style.top=upwards?'auto':'calc(100% + 4px)';panel.style.bottom=upwards?'calc(100% + 4px)':'auto';
+ panel.style.maxHeight=Math.max(60,Math.min(230,upwards?above:below))+'px';
+}
+document.addEventListener('click',event=>{$$('.pack-select.is-open').forEach(section=>{if(!section.contains(event.target))setPackDropdown(section,false)})});
+$('#levelModalBody').addEventListener('scroll',()=>$$('.pack-select.is-open').forEach(positionPackDropdown));
+window.addEventListener('resize',()=>$$('.pack-select.is-open').forEach(positionPackDropdown));
+function openTrustCoupon(i,focusLevel){
+ const benefit=benefits[i];if(!benefit)return;
+ modalType='trust-coupon';editIndex=i;
+ $('#levelModal').classList.remove('task-modal');$('#levelModal').classList.add('coupon-pack-modal');
+ $('#levelModalTitle').textContent=bi('编辑权益','Edit Benefit');
+ $('#levelModalBody').innerHTML='<div class="form-item"><label class="req" for="packName">'+t('benefitName')+'</label><input class="field readonly-field" id="packName" value="'+bi('等级券包','Level Coupon Pack')+'" disabled></div>'+
+ '<div class="form-item"><label class="req" for="packTitle">'+t('displayTitle')+'</label><input class="field" id="packTitle" maxlength="60" value="'+safeText(benefit.displayTitle)+'"></div>'+
+ '<div class="form-item"><label class="req">'+t('benefitIcon')+'</label><button type="button" class="pack-icon-upload" id="packIconUpload" aria-label="'+bi('上传权益图标','Upload benefit icon')+'">'+(benefit.iconImage?'<img src="'+safeText(benefit.iconImage)+'" alt="">':packIconSvg)+'</button><input type="file" id="packIconFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden><input type="hidden" id="packIconValue" value="'+safeText(benefit.iconImage||'')+'"><div class="help">'+bi('支持PNG/JPG/SVG/WEBP，不超过2MB，建议64px*64px','PNG/JPG/SVG/WEBP, up to 2MB. Recommended: 64 × 64px.')+'</div><div class="pack-icon-error" id="packIconError" role="status"></div></div>'+
+ '<div class="form-item"><label class="req">'+bi('各会员等级券包配置','Coupon Packs by Level')+'</label>'+levels.map(l=>{
+  const selected=new Set(benefit.coupons?.[l.no]||[]);
+  return '<div class="pack-select-row"><span>'+safeText(l.no)+'</span><div class="pack-select" data-level="'+safeText(l.no)+'"><div class="pack-control" role="combobox" tabindex="0" aria-expanded="false" aria-haspopup="dialog" aria-label="'+safeText(l.no+' '+bi('券包配置','coupon pack'))+'"></div><div class="pack-options" role="dialog" aria-label="'+safeText(l.no+' '+bi('选择优惠券','Select coupons'))+'" hidden>'+trustCoupons.map(c=>{
+   return '<div class="pack-option"><label><input class="trust-coupon-choice" type="checkbox" value="'+safeText(c.id)+'" '+(selected.has(c.id)?'checked':'')+'>'+safeText(packCouponLabel(c))+'</label></div>';
+  }).join('')+'</div></div></div>';
+ }).join('')+'</div><div class="form-item"><label class="req" for="packDesc">'+t('description')+'</label><textarea class="textarea field" id="packDesc" maxlength="300">'+safeText(benefit.desc)+'</textarea></div>';
+ $$('.pack-select').forEach(section=>{
+  updatePackTags(section);
+  const control=section.querySelector('.pack-control'),panel=section.querySelector('.pack-options');
+  panel.id='pack-options-'+section.dataset.level;control.setAttribute('aria-controls',panel.id);
+  control.onclick=()=>setPackDropdown(section,!section.classList.contains('is-open'));
+  control.onkeydown=event=>{if(event.target!==control)return;if(['Enter',' ','ArrowDown'].includes(event.key)){event.preventDefault();setPackDropdown(section,true);if(event.key==='ArrowDown')panel.querySelector('input')?.focus();}};
+  section.onkeydown=event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();setPackDropdown(section,false);control.focus();}};
+  section.onfocusout=()=>setTimeout(()=>{if(!section.contains(document.activeElement))setPackDropdown(section,false)},0);
+  section.querySelectorAll('.trust-coupon-choice').forEach(box=>box.onchange=()=>updatePackTags(section));
+ });
+ $('#packIconUpload').onclick=()=>$('#packIconFile').click();
+ const iconValue=$('#packIconValue'),iconPreview=$('#packIconUpload'),iconError=$('#packIconError');
+ $('#packIconFile').onchange=event=>{
+  const file=event.target.files[0];if(!file)return;
+  if(!['image/png','image/jpeg','image/svg+xml','image/webp'].includes(file.type)||file.size>2*1024*1024){iconError.textContent=bi('请上传不超过2MB的PNG/JPG/SVG/WEBP图片','Upload a PNG/JPG/SVG/WEBP image no larger than 2MB');event.target.value='';return;}
+  const reader=new FileReader();
+  reader.onerror=()=>iconError.textContent=bi('图片读取失败，请重试','Unable to read the image. Please retry.');
+  reader.onload=()=>{const img=new Image();img.onload=()=>{iconValue.value=String(reader.result);iconPreview.innerHTML='<img src="'+safeText(reader.result)+'" alt="">';iconError.textContent=''};img.onerror=()=>iconError.textContent=bi('图片无效，请重新上传','Invalid image. Please upload another file.');img.src=String(reader.result)};
+  reader.readAsDataURL(file);
+ };
+ $('#overlay').classList.add('show');$('#levelModal').classList.add('show');
+ $('#levelModalBody').scrollTop=0;
+ if(focusLevel){const section=[...$$('.pack-select')].find(node=>node.dataset.level===focusLevel);if(section){section.scrollIntoView({block:'nearest'});setPackDropdown(section,true);}}
+}
+$('#levelModalSave').addEventListener('click',event=>{
+ if(modalType!=='trust-coupon')return;
+ event.preventDefault();event.stopImmediatePropagation();
+ const title=$('#packTitle').value.trim(),desc=$('#packDesc').value.trim();
+ if(!title||!desc){toast(bi('请填写展示标题和描述说明','Complete the display title and description'));(!title?$('#packTitle'):$('#packDesc')).focus();return;}
+ if(title.length>60||desc.length>300){toast(bi('展示标题最多60字符，描述说明最多300字符','Title: up to 60 characters; description: up to 300'));return;}
+ const next={};
+ $$('.pack-select').forEach(section=>{
+  next[section.dataset.level]=[...new Set([...section.querySelectorAll('.trust-coupon-choice:checked')].map(box=>box.value))];
+ });
+ Object.assign(benefits[editIndex],{name:'等级券包',displayTitle:title,desc,iconImage:$('#packIconValue').value,coupons:next,expiry:'coupon-template',issuance:'level-upgrade'});
+ levels.forEach(l=>{l.benefits=l.benefits.filter(id=>id!=='coupon');if(next[l.no]?.length)l.benefits.push('coupon')});
+ renderAll();persistConfig();closeLevelModal();toast(bi('升级券包已更新','Upgrade coupon packs updated'));
+},true);
+const applyBaseLanguage=applyLanguage;
+applyLanguage=function(refresh=true){
+ const couponOpen=modalType==='trust-coupon'&&$('#levelModal').classList.contains('show');
+ applyBaseLanguage(refresh);if(couponOpen)openTrustCoupon(editIndex);
+};
+
 applyLanguage();
+enterSite('TrustCard');
 </script>
 </body></html>

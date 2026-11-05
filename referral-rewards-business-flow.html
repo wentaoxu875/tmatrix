@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>邀请裂变 · 奖励业务流程图</title>
+<style>
+:root{--paper:#f4f7fa;--ink:#18324a;--muted:#526a82;--accent:#1b5ea6;--tint:#e6eef7;--rule:#afc0d0;--link:#2e7fd9}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Geist,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6}main{max-width:1200px;margin:auto;padding:48px 32px}header{border-bottom:1px solid var(--rule);padding-bottom:24px}.eyebrow{margin:0;color:var(--muted);font-size:12px;letter-spacing:2px}h1{font-family:"Instrument Serif","Songti SC",serif;font-size:32px;font-weight:400;margin:8px 0 12px}h2{font-size:24px;margin:0 0 8px}h3{font-size:20px;margin:24px 0 12px}p{margin:8px 0;color:var(--muted)}section{padding:32px 0;border-bottom:1px solid var(--rule)}.figure{overflow-x:auto}svg{display:block;width:100%;min-width:800px;height:auto}svg text{font-family:Geist,"PingFang SC","Microsoft YaHei",sans-serif;fill:var(--ink);text-anchor:middle;font-size:16px}svg .small{font-size:12px;fill:var(--muted)}svg .secondary{fill:var(--muted)}svg .node{fill:#fff;stroke:var(--ink);stroke-width:1.2}svg .input{fill:#eaf1f8;stroke:var(--rule);stroke-width:1.2}svg .focus{fill:var(--tint);stroke:var(--accent);stroke-width:1.5}svg .edge{fill:none;stroke:var(--muted);stroke-width:1.5;marker-end:url(#direct-arrow)}svg .label-bg{fill:var(--paper)}.note{border-left:4px solid var(--accent);padding:8px 16px;margin:20px 0;color:var(--ink)}table{width:100%;border-collapse:collapse;background:#fff;font-size:16px}th,td{padding:12px 16px;border-bottom:1px solid #dce4ed;text-align:center}th{background:#eaf1f8;font-weight:600}th:first-child,td:first-child{text-align:left}.chain{display:flex;align-items:center;gap:12px;min-width:800px;margin:24px 0}.person{flex:1;text-align:center;padding:12px 4px;border:1px solid var(--rule);border-radius:8px;background:#fff}.person b{display:block;font-size:24px}.person span{font-size:12px;color:var(--muted)}.person:first-child{border-color:var(--accent);background:var(--tint)}.arrow{color:var(--muted)}.examples{display:grid;grid-template-columns:1.2fr 1fr;gap:24px}.example{padding:16px;border:1px solid var(--rule);border-radius:8px;background:#fff}.example b{font-size:20px}li{margin:8px 0}footer{padding-top:24px;font-size:12px;color:var(--muted)}@media(max-width:720px){main{padding:24px 16px}h1{font-size:28px}.examples{grid-template-columns:1fr}th,td{padding:8px;font-size:12px}}@media print{main{padding:0;max-width:none}section{break-inside:avoid}.figure{overflow:visible}svg{min-width:0}.chain{min-width:0}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+.language-toolbar{position:sticky;top:12px;z-index:5;display:flex;justify-content:flex-end;margin:0 0 16px;pointer-events:none}.language-switch{display:flex;padding:4px;border:1px solid var(--rule);border-radius:8px;background:var(--paper);pointer-events:auto}.language-switch button{font:inherit;font-size:13px;padding:6px 16px;border:0;border-radius:4px;background:transparent;color:var(--muted);cursor:pointer}.language-switch button[aria-pressed="true"]{color:#fff;background:var(--accent)}.language-switch button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}html[lang="en"] h1{font-family:Geist,Arial,sans-serif;font-size:32px;font-weight:500}html[lang="en"] h2{font-size:22px}html[lang="en"] .person span{display:block;line-height:1.5;padding:0 4px}html[lang="en"] th{font-size:14px}@media(max-width:720px){.language-toolbar{top:8px}html[lang="en"] h1{font-size:28px}html[lang="en"] h2{font-size:20px}html[lang="en"] th{font-size:12px}}@media print{.language-toolbar{display:none}}
+</style>
+</head>
+<body><main>
+<div class="language-toolbar"><nav class="language-switch" aria-label="页面语言"><button type="button" lang="zh-CN" data-language="zh-CN" aria-pressed="true">中文</button><button type="button" lang="en" data-language="en" aria-pressed="false">English</button></nav></div>
+<header><p class="eyebrow">TBAY / REFERRAL REWARDS / BUSINESS FLOW</p><h1>邀请裂变奖励业务流程</h1><p>直邀奖励：注册后 30 天内首次累计达标，仅发放一次；裂变奖励：每笔订单完结均计算。两者可叠加，再按自然月计算额外奖励。</p><p>依据：2026-10-30 用户规则及会员比例截图，更新至 2026-11-02。按结算时等级、订单完结时间统计；奖励以 Points 结算，保留 4 位向下取整，即时到账。</p></header>
+
+<section><h2>00 · 共同风控与奖励分流</h2><p>同设备或同 IP 下，第一个完成邀请绑定的受邀账号有效，其他账号绑定均无效；按绑定顺序确定资格，不按交易或领奖顺序。每笔订单完结触发判断，未完结不统计，无退款场景。</p>
+<div class="figure"><svg viewBox="0 0 1120 592" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="eligibility-title eligibility-desc">
+<title id="eligibility-title">设备 IP 首绑资格与奖励分流</title><desc id="eligibility-desc">同设备或同 IP 下仅首个邀请绑定账号有效，其订单完结后分别判断一次性直邀奖励与逐笔裂变奖励，其他绑定账号不产生邀请奖励。</desc>
+<defs><marker id="eligibility-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker><marker id="eligibility-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker><marker id="eligibility-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker></defs>
+<g fill="none" stroke="#526a82" stroke-width="1.5" marker-end="url(#eligibility-arrow)"><path d="M352 88V128"/><path d="M352 216V272"/><path d="M560 328H720"/><path d="M352 384V448"/></g>
+<rect class="label-bg" x="616" y="292" width="48" height="24"/><text x="640" y="308">是</text><rect class="label-bg" x="368" y="404" width="48" height="24"/><text x="392" y="420">否</text>
+<rect class="input" x="128" y="24" width="448" height="64" rx="20"/><text x="352" y="64">受邀用户一笔订单完结</text>
+<rect class="node" x="128" y="128" width="448" height="88" rx="8"/><text x="352" y="160">读取设备 / IP 对应的邀请绑定顺序</text><text class="secondary" x="352" y="192">仅第一个完成邀请绑定的受邀账号有效</text>
+<polygon class="node" points="352,272 560,328 352,384 144,328"/><text x="352" y="324">同设备或同 IP 是否有</text><text x="352" y="348">其他更早绑定账号？</text>
+<rect class="input" x="720" y="296" width="320" height="80" rx="20"/><text x="880" y="328">该账号绑定无效，不发邀请奖励</text><text class="small" x="880" y="352">第一个绑定账号尚未获奖也不改变资格</text>
+<rect class="focus" x="128" y="448" width="448" height="80" rx="20"/><text x="352" y="480">分别进入 01 直邀与 02 裂变奖励判断</text><text class="small" x="352" y="504">直邀仅一次；裂变每笔成交分别计算</text>
+<text class="small" x="560" y="568">有效首绑账号后续订单继续计算裂变奖励；其他账号不能因更早成交或领奖取得资格。</text>
+</svg></div></section>
+
+<section><h2>01 · 直邀奖励 · 注册后 30 天内达标，仅一次</h2><p>达标截止时间 = 受邀用户注册时间 + 30 天。按订单完结时间累计该期限内成交量，须满足后台活动配置及门槛；达标且直邀未发放时，按邀请人结算时等级匹配固定 Points，向下保留 4 位，即时到账。</p>
+<p>截止前下单但截止后完结的订单不计入直邀达标累计；超过 30 天未达标，不发固定直邀奖励。该期限不限制逐笔裂变奖励。</p>
+<div class="figure"><svg viewBox="0 0 1120 656" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="direct-title direct-desc">
+<title id="direct-title">直邀固定奖励流程</title><desc id="direct-desc">按订单完结时间累计受邀用户注册后三十天内的成交量，首次达到后台门槛并通过活动和风控校验后，按邀请人结算时等级发放一次固定奖励。</desc>
+<defs><marker id="direct-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker><marker id="direct-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker><marker id="direct-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker></defs>
+<path class="edge" d="M352 88V128"/><path class="edge" d="M352 192V248"/><path class="edge" d="M352 360V424"/><path class="edge" d="M560 304H720"/><path class="edge" d="M352 496V536"/>
+<rect class="label-bg" x="368" y="380" width="48" height="24"/><text x="392" y="396">是</text><rect class="label-bg" x="616" y="268" width="48" height="24"/><text x="640" y="284">否</text>
+<rect class="input" x="128" y="24" width="448" height="64" rx="20"/><text x="352" y="64">受邀用户通过 00 设备 / IP 风控校验</text>
+<rect class="node" x="128" y="128" width="448" height="64" rx="8"/><text x="352" y="152">读取后台活动配置及累计门槛</text><text class="small" x="352" y="176">按完结时间累计注册后 30 天内的订单成交量</text>
+<polygon class="node" points="352,248 560,304 352,360 144,304"/><text x="352" y="288">注册后 30 天内累计达标</text><text x="352" y="312">满足活动配置</text><text x="352" y="336">且直邀未发放？</text>
+<rect class="input" x="720" y="272" width="320" height="80" rx="20"/><text x="880" y="304">本次不发放固定直邀奖励</text><text class="small" x="880" y="328">不影响该笔成交的裂变奖励判断</text>
+<rect class="node" x="128" y="424" width="448" height="72" rx="8"/><text x="352" y="452">按邀请人结算时等级匹配固定 Points</text><text class="secondary" x="352" y="476">奖励向下保留 4 位小数</text>
+<rect class="focus" x="128" y="536" width="448" height="72" rx="20"/><text x="352" y="564">一次性直邀 Points 奖励即时到账</text><text class="secondary" x="352" y="588">可叠加该邀请人的第 1 代比例佣金</text>
+<text class="small" x="560" y="640">达标以首次达到累计门槛的订单完结时间判断；直邀奖励归属邀请人。</text>
+</svg></div></section>
+
+<section><h2>02 · 裂变奖励 · 每笔订单完结</h2><p>有效首绑账号每笔订单完结后，以本笔订单成交 Points × 对应比例计算各上级奖励，向下保留 4 位并即时到账；使用各上级本笔结算时等级，不受直邀 30 天时限与一次性限制。</p>
+<div class="figure"><svg viewBox="0 0 1120 672" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="network-title network-desc">
+<title id="network-title">每笔订单完结逐级计算裂变佣金</title><desc id="network-desc">受邀用户每笔订单完结通过风控后，按各上级在奖励结算时的等级和代数匹配比例，以本笔成交金额计算佣金，并按订单完结时间统计。</desc>
+<defs><marker id="network-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker><marker id="network-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker><marker id="network-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker></defs>
+<g fill="none" stroke="#526a82" stroke-width="1.5" marker-end="url(#network-arrow)"><path d="M352 88V128"/><path d="M352 200V240"/><path d="M352 312V368"/><path d="M560 424H720"/><path d="M352 480V544"/></g>
+<rect class="label-bg" x="616" y="388" width="48" height="24"/><text x="640" y="404">是</text><rect class="label-bg" x="368" y="500" width="48" height="24"/><text x="392" y="516">否</text>
+<rect class="input" x="128" y="24" width="448" height="64" rx="20"/><text x="352" y="52">受邀用户每笔订单完结</text><text class="small" x="352" y="76">已通过 00 设备 / IP 风控校验</text>
+<rect class="node" x="128" y="128" width="448" height="72" rx="8"/><text x="352" y="156">沿邀请链向上查找用户</text><text class="secondary" x="352" y="180">依次识别第 1–5 代上级及其会员等级</text>
+<rect class="node" x="128" y="240" width="448" height="72" rx="8"/><text x="352" y="268">对每个上级分别匹配奖励比例 r</text><text class="secondary" x="352" y="292">匹配维度：奖励结算时等级 × 相隔代数</text>
+<polygon class="node" points="352,368 560,424 352,480 144,424"/><text x="352" y="420">该等级是否享有</text><text x="352" y="444">该代奖励比例？</text>
+<rect class="focus" x="720" y="384" width="320" height="80" rx="8"/><text x="880" y="408">本笔奖励 = R(成交 Points × r)</text><text class="small" x="880" y="432">R：向下保留 4 位小数</text><text x="880" y="452">向该上级即时入账</text>
+<rect class="input" x="128" y="544" width="448" height="64" rx="20"/><text x="352" y="584">不发放该上级的该代奖励</text>
+<text class="small" x="560" y="640">每笔成交均对第 1–5 代上级独立计算；下笔成交重新读取结算时等级，同笔不重复发放。</text>
+</svg></div>
+<h3>等级 × 相隔代数的奖励比例</h3>
+<table><thead><tr><th>会员等级</th><th>Direct · 第 1 代</th><th>2nd Gen</th><th>3rd Gen</th><th>4th Gen</th><th>5th Gen</th></tr></thead><tbody>
+<tr><td>Diamond</td><td>0.3%</td><td>0.25%</td><td>0.2%</td><td>0.15%</td><td>0.1%</td></tr>
+<tr><td>Platinum</td><td>0.25%</td><td>0.2%</td><td>0.15%</td><td>0.1%</td><td>—</td></tr>
+<tr><td>Gold</td><td>0.2%</td><td>0.15%</td><td>0.1%</td><td>—</td><td>—</td></tr>
+<tr><td>Silver</td><td>0.15%</td><td>0.1%</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>Bronze</td><td>0.1%</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+</tbody></table><p>“—”表示该等级无该代权益。Direct 为第 1 代比例佣金，可与一次性固定直邀奖励叠加；后续每笔有效成交继续产生裂变奖励。</p>
+<h3>链路示例 · Diamond 用户 A</h3>
+<div class="figure"><div class="chain" aria-label="A 邀请 B，B 邀请 C，C 邀请 D，D 邀请 E，E 邀请 F"><div class="person"><b>A</b><span>Diamond · 奖励接收人</span></div><span class="arrow">→</span><div class="person"><b>B</b><span>第 1 代 · 0.3%</span></div><span class="arrow">→</span><div class="person"><b>C</b><span>第 2 代 · 0.25%</span></div><span class="arrow">→</span><div class="person"><b>D</b><span>第 3 代 · 0.2%</span></div><span class="arrow">→</span><div class="person"><b>E</b><span>第 4 代 · 0.15%</span></div><span class="arrow">→</span><div class="person"><b>F</b><span>第 5 代 · 0.1%</span></div></div></div>
+<p>箭头表示“邀请”；各比例以 A 在本笔奖励结算时为 Diamond 为前提，每笔有效成交通过风控后独立计算。</p>
+<div class="examples"><div class="example"><b>C 每笔有效成交</b><p>C 位于 A 的第 2 代。</p><p>A 奖励 = C 本笔订单成交 Points × 0.25%，向下保留 4 位即时到账。</p></div><div class="example"><b>F 每笔有效成交</b><p>F 位于 A 的第 5 代。</p><p>A 奖励 = F 本笔订单成交 Points × 0.1%，向下保留 4 位即时到账。</p></div></div>
+<div class="note">D 每笔有效成交时，A、B、C 分别按“结算时自身等级 × 第 3 / 第 2 / 第 1 代”获得佣金。C 仅在 D 首次累计达标且直邀未发放时，再叠加固定直邀奖励。</div>
+</section>
+
+<section><h2>03 · 月度额外奖励</h2><p>按尼日利亚时间（Africa/Lagos，WAT，UTC+1），每月 1 日 00:00 统计上个自然月的直邀与裂变奖励。达到 100 Point（含）后，额外奖励 20%。</p>
+<p>按订单完结时间归属月份：直邀取使累计首次达标的订单，裂变取各笔订单。基数汇总实际入账的 Points；月度额外奖励向下保留 4 位，月度结算后即时到账。</p>
+<div class="figure"><svg viewBox="0 0 1120 688" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="monthly-title monthly-desc">
+<title id="monthly-title">月度额外奖励结算流程</title><desc id="monthly-desc">每月按尼日利亚自然月及订单完结时间汇总直邀和逐笔裂变奖励，满一百 Point 则额外奖励百分之二十。</desc>
+<defs><marker id="monthly-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#526a82"/></marker><marker id="monthly-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1b5ea6"/></marker><marker id="monthly-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e7fd9"/></marker></defs>
+<g fill="none" stroke="#526a82" stroke-width="1.5" marker-end="url(#monthly-arrow)"><path d="M352 88V128"/><path d="M352 216V272"/><path d="M560 328H720"/><path d="M352 384V448"/><path d="M352 536V576"/></g>
+<rect class="label-bg" x="616" y="292" width="48" height="24"/><text x="640" y="308">否</text><rect class="label-bg" x="368" y="404" width="48" height="24"/><text x="392" y="420">是</text>
+<rect class="input" x="128" y="24" width="448" height="64" rx="20"/><text x="352" y="52">尼日利亚时间每月 1 日 00:00</text><text class="small" x="352" y="76">Africa/Lagos · UTC+1</text>
+<rect class="node" x="128" y="128" width="448" height="88" rx="8"/><text x="352" y="156">按订单完结时间汇总上月奖励基数 S</text><text x="352" y="180">S = 上月直邀奖励 + 上月逐笔裂变奖励</text><text class="small" x="352" y="200">按实际入账 Points 求和，不含额外月奖</text>
+<polygon class="node" points="352,272 560,328 352,384 144,328"/><text x="352" y="332">S ≥ 100 Point？</text>
+<rect class="input" x="720" y="296" width="320" height="64" rx="20"/><text x="880" y="336">不发放月度额外奖励</text>
+<rect class="focus" x="128" y="448" width="448" height="88" rx="8"/><text x="352" y="480">M = R(S × 20%)</text><text x="352" y="512">Points 向下保留 4 位小数</text>
+<rect class="node" x="128" y="576" width="448" height="64" rx="20"/><text x="352" y="616">月度额外 Points 奖励即时到账</text>
+<text class="small" x="560" y="672">统计区间：尼日利亚时间上月 1 日 00:00（含）至本月 1 日 00:00（不含）。</text>
+</svg></div>
+<table><thead><tr><th>上月直邀 + 裂变奖励（Points）</th><th>是否达标</th><th>月度额外奖励</th><th>含额外奖励合计</th></tr></thead><tbody><tr><td>99.0000</td><td>否</td><td>0.0000</td><td>99.0000</td></tr><tr><td>100.0000</td><td>是</td><td>20.0000</td><td>120.0000</td></tr><tr><td>100.0004</td><td>是</td><td>20.0000</td><td>120.0004</td></tr></tbody></table>
+</section>
+
+<section><h2>04 · 已确认结算规则</h2><p>统一以 Points 结算。对非负原始奖励 x，R(x) = floor(x × 10000) ÷ 10000；保留 4 位小数向下取整，不四舍五入。每笔奖励分别取整后即时入账，月度基数再汇总实际入账值。</p><table><thead><tr><th>场景</th><th>原始 Points</th><th>入账 Points</th></tr></thead><tbody><tr><td>超过 4 位小数</td><td>1.23459</td><td>1.2345</td></tr><tr><td>正好 4 位小数</td><td>2.5000</td><td>2.5000</td></tr><tr><td>不足最小精度</td><td>0.00009</td><td>0.0000</td></tr></tbody></table><div class="note">同设备或同 IP 的资格归属取第一个邀请绑定账号。该账号尚未达标或尚未领奖，其他账号的绑定仍然无效；有效账号后续逐笔裂变奖励继续计算。</div></section>
+<footer>更新日期：2026-11-02 · 首个邀请绑定账号有效；Points 保留 4 位向下取整，即时到账；按订单完结时间归属尼日利亚自然月。</footer>
+</main>
+<script>
+(() => {
+  'use strict';
+  // Keep the original Chinese content as the no-JavaScript and fallback version.
+  const english = {
+    '邀请裂变 · 奖励业务流程图': 'Tbay Referral Rewards · Business Flow',
+    '邀请裂变奖励业务流程': 'Referral Rewards Business Flow',
+    '直邀奖励：注册后 30 天内首次累计达标，仅发放一次；裂变奖励：每笔订单完结均计算。两者可叠加，再按自然月计算额外奖励。': 'Direct invite bonus: paid once when an invitee first meets the cumulative trading threshold within 30 days of registration. Network commission: calculated on every completed order. Both rewards can be earned together, with an additional bonus calculated each calendar month.',
+    '依据：2026-10-30 用户规则及会员比例截图，更新至 2026-11-02。按结算时等级、订单完结时间统计；奖励以 Points 结算，保留 4 位向下取整，即时到账。': 'Source: business rules and membership-rate reference provided on 2026-10-30; updated through 2026-11-02. Use membership at settlement and order completion time. Rewards settle in Points, rounded down to 4 decimal places and credited immediately.',
+    '00 · 共同风控与奖励分流': '00 · Shared Eligibility & Reward Routing',
+    '同设备或同 IP 下，第一个完成邀请绑定的受邀账号有效，其他账号绑定均无效；按绑定顺序确定资格，不按交易或领奖顺序。每笔订单完结触发判断，未完结不统计，无退款场景。': 'For accounts sharing either a device or an IP address, only the first account to complete referral binding is eligible. All later bindings are invalid. Eligibility follows binding order, not trading or reward-claim order. Evaluate each completed order; incomplete orders do not count. Refunds are outside this business flow.',
+    '设备 IP 首绑资格与奖励分流': 'First-binding eligibility by device or IP and reward routing',
+    '同设备或同 IP 下仅首个邀请绑定账号有效，其订单完结后分别判断一次性直邀奖励与逐笔裂变奖励，其他绑定账号不产生邀请奖励。': 'Only the first referral-bound account on the same device or IP is eligible. On each completed order, evaluate the one-time direct invite bonus and recurring network commission independently. Later-bound accounts generate neither reward.',
+    '是': 'Yes',
+    '否': 'No',
+    '受邀用户一笔订单完结': 'An invitee completes an order',
+    '读取设备 / IP 对应的邀请绑定顺序': 'Read referral binding order by device / IP',
+    '仅第一个完成邀请绑定的受邀账号有效': 'Only the first referral-bound account is eligible',
+    '同设备或同 IP 是否有': 'On the same device or IP:',
+    '其他更早绑定账号？': 'another earlier binding?',
+    '该账号绑定无效，不发邀请奖励': 'Invalid binding: no referral rewards',
+    '第一个绑定账号尚未获奖也不改变资格': 'Still invalid if the first account has not earned rewards',
+    '分别进入 01 直邀与 02 裂变奖励判断': 'Evaluate 01 Direct and 02 Network separately',
+    '直邀仅一次；裂变每笔成交分别计算': 'Direct: once per invitee. Network: every completed order.',
+    '有效首绑账号后续订单继续计算裂变奖励；其他账号不能因更早成交或领奖取得资格。': 'The eligible first-bound account continues generating network commissions on later orders. Earlier trading or reward claims cannot make a later-bound account eligible.',
+    '01 · 直邀奖励 · 注册后 30 天内达标，仅一次': '01 · Direct Invite Bonus · Qualify Within 30 Days, Paid Once',
+    '达标截止时间 = 受邀用户注册时间 + 30 天。按订单完结时间累计该期限内成交量，须满足后台活动配置及门槛；达标且直邀未发放时，按邀请人结算时等级匹配固定 Points，向下保留 4 位，即时到账。': 'Qualification deadline = invitee registration time + 30 days. Accumulate trading volume by order completion time within this window and apply the configured campaign rules and threshold. Once qualified, if the bonus has not been paid, award the inviter the fixed Points amount for their membership at settlement, rounded down to 4 decimal places and credited immediately.',
+    '截止前下单但截止后完结的订单不计入直邀达标累计；超过 30 天未达标，不发固定直邀奖励。该期限不限制逐笔裂变奖励。': 'Orders placed before the deadline but completed after it do not count toward direct invite qualification. If the threshold is not reached within 30 days, no fixed direct invite bonus is paid. This deadline does not limit recurring network commissions.',
+    '直邀固定奖励流程': 'One-time fixed direct invite bonus flow',
+    '按订单完结时间累计受邀用户注册后三十天内的成交量，首次达到后台门槛并通过活动和风控校验后，按邀请人结算时等级发放一次固定奖励。': 'Accumulate completed-order trading volume within 30 days after invitee registration. At the first threshold crossing, after campaign and risk checks, pay the inviter a one-time fixed bonus based on their membership at settlement.',
+    '受邀用户通过 00 设备 / IP 风控校验': 'Invitee passes 00 Device / IP eligibility',
+    '读取后台活动配置及累计门槛': 'Read campaign rules and cumulative threshold',
+    '按完结时间累计注册后 30 天内的订单成交量': 'Count completed-order volume within 30 days of registration',
+    '注册后 30 天内累计达标': 'Threshold met in 30 days,',
+    '满足活动配置': 'campaign rules met,',
+    '且直邀未发放？': 'and bonus unpaid?',
+    '本次不发放固定直邀奖励': 'No fixed direct invite bonus this time',
+    '不影响该笔成交的裂变奖励判断': 'Evaluate this order for network commission separately',
+    '按邀请人结算时等级匹配固定 Points': "Match fixed Points to inviter's tier at settlement",
+    '奖励向下保留 4 位小数': 'Round the reward down to 4 decimal places',
+    '一次性直邀 Points 奖励即时到账': 'Credit the one-time direct bonus immediately',
+    '可叠加该邀请人的第 1 代比例佣金': "Can stack with the inviter's 1st-gen commission",
+    '达标以首次达到累计门槛的订单完结时间判断；直邀奖励归属邀请人。': 'Qualification uses the completion time of the order that first crosses the cumulative threshold. The direct invite bonus belongs to the inviter.',
+    '02 · 裂变奖励 · 每笔订单完结': '02 · Network Commission · Every Completed Order',
+    '有效首绑账号每笔订单完结后，以本笔订单成交 Points × 对应比例计算各上级奖励，向下保留 4 位并即时到账；使用各上级本笔结算时等级，不受直邀 30 天时限与一次性限制。': "For every completed order from an eligible first-bound account, each upstream referrer earns the order's trading Points × their applicable rate, rounded down to 4 decimal places and credited immediately. Use each referrer's membership at that settlement. The direct bonus's 30-day deadline and once-only limit do not apply.",
+    '每笔订单完结逐级计算裂变佣金': 'Calculate upstream network commissions on every completed order',
+    '受邀用户每笔订单完结通过风控后，按各上级在奖励结算时的等级和代数匹配比例，以本笔成交金额计算佣金，并按订单完结时间统计。': "After every completed order passes risk checks, match each upstream referrer's membership at settlement and generation to a rate. Calculate commissions on this order's trading Points and attribute them by order completion time.",
+    '受邀用户每笔订单完结': 'Each completed order from the invitee',
+    '已通过 00 设备 / IP 风控校验': 'Passed 00 Device / IP eligibility',
+    '沿邀请链向上查找用户': 'Trace upstream users along the referral chain',
+    '依次识别第 1–5 代上级及其会员等级': 'Identify 1st–5th generation referrers and their tiers',
+    '对每个上级分别匹配奖励比例 r': 'Match a commission rate r for each referrer',
+    '匹配维度：奖励结算时等级 × 相隔代数': 'Match: membership at settlement × generation',
+    '该等级是否享有': 'Does this tier cover',
+    '该代奖励比例？': 'this generation?',
+    '本笔奖励 = R(成交 Points × r)': 'Reward = R(order Points × r)',
+    'R：向下保留 4 位小数': 'R: round down to 4 decimal places',
+    '向该上级即时入账': 'Credit this referrer immediately',
+    '不发放该上级的该代奖励': 'No commission for this referrer / generation',
+    '每笔成交均对第 1–5 代上级独立计算；下笔成交重新读取结算时等级，同笔不重复发放。': 'Evaluate 1st–5th generation referrers independently on every order. Read membership again at the next settlement; never pay the same order reward twice.',
+    '等级 × 相隔代数的奖励比例': 'Commission Rates by Membership & Generation',
+    '会员等级': 'Membership',
+    'Direct · 第 1 代': 'Direct · 1st Gen',
+    '“—”表示该等级无该代权益。Direct 为第 1 代比例佣金，可与一次性固定直邀奖励叠加；后续每笔有效成交继续产生裂变奖励。': '“—” means the tier has no entitlement for that generation. Direct is the 1st-generation proportional commission and can stack with the one-time fixed direct invite bonus. Later eligible completed orders continue generating network commissions.',
+    '链路示例 · Diamond 用户 A': 'Referral Chain Example · Diamond Member A',
+    'A 邀请 B，B 邀请 C，C 邀请 D，D 邀请 E，E 邀请 F': 'A invites B; B invites C; C invites D; D invites E; E invites F',
+    'Diamond · 奖励接收人': 'Diamond · Reward recipient',
+    '第 1 代 · 0.3%': '1st Gen · 0.3%',
+    '第 2 代 · 0.25%': '2nd Gen · 0.25%',
+    '第 3 代 · 0.2%': '3rd Gen · 0.2%',
+    '第 4 代 · 0.15%': '4th Gen · 0.15%',
+    '第 5 代 · 0.1%': '5th Gen · 0.1%',
+    '箭头表示“邀请”；各比例以 A 在本笔奖励结算时为 Diamond 为前提，每笔有效成交通过风控后独立计算。': 'Arrows mean “invites.” These rates assume A is Diamond when the reward is settled. Calculate each eligible completed order independently after risk checks.',
+    'C 每笔有效成交': 'Every Eligible Order from C',
+    'C 位于 A 的第 2 代。': "C is A's 2nd-generation invitee.",
+    'A 奖励 = C 本笔订单成交 Points × 0.25%，向下保留 4 位即时到账。': "A earns C's order trading Points × 0.25%, rounded down to 4 decimal places and credited immediately.",
+    'F 每笔有效成交': 'Every Eligible Order from F',
+    'F 位于 A 的第 5 代。': "F is A's 5th-generation invitee.",
+    'A 奖励 = F 本笔订单成交 Points × 0.1%，向下保留 4 位即时到账。': "A earns F's order trading Points × 0.1%, rounded down to 4 decimal places and credited immediately.",
+    'D 每笔有效成交时，A、B、C 分别按“结算时自身等级 × 第 3 / 第 2 / 第 1 代”获得佣金。C 仅在 D 首次累计达标且直邀未发放时，再叠加固定直邀奖励。': "For every eligible order from D, A, B and C earn commissions based on their own membership at settlement and the 3rd, 2nd and 1st generation respectively. C also receives the fixed direct invite bonus only when D first meets the cumulative threshold and that bonus has not been paid.",
+    '03 · 月度额外奖励': '03 · Monthly Extra Bonus',
+    '按尼日利亚时间（Africa/Lagos，WAT，UTC+1），每月 1 日 00:00 统计上个自然月的直邀与裂变奖励。达到 100 Point（含）后，额外奖励 20%。': 'At 00:00 on the 1st of each month in Nigeria time (Africa/Lagos, WAT, UTC+1), total the previous calendar month\'s direct invite bonuses and network commissions. A total of at least 100 Points earns an extra 20%.',
+    '按订单完结时间归属月份：直邀取使累计首次达标的订单，裂变取各笔订单。基数汇总实际入账的 Points；月度额外奖励向下保留 4 位，月度结算后即时到账。': 'Attribute rewards to months by order completion time: the first threshold-crossing order for the direct bonus, and each order for network commissions. Sum the actual credited Points. Round the monthly extra bonus down to 4 decimal places and credit it immediately after monthly settlement.',
+    '月度额外奖励结算流程': 'Monthly extra bonus settlement flow',
+    '每月按尼日利亚自然月及订单完结时间汇总直邀和逐笔裂变奖励，满一百 Point 则额外奖励百分之二十。': 'Total direct invite bonuses and per-order network commissions for the previous Nigeria calendar month by order completion time. Award an extra 20% if the total is at least 100 Points.',
+    '尼日利亚时间每月 1 日 00:00': '00:00 on the 1st of each month, Nigeria time',
+    '按订单完结时间汇总上月奖励基数 S': "Sum last month's base S by order completion time",
+    'S = 上月直邀奖励 + 上月逐笔裂变奖励': 'S = last month\'s direct bonuses + network commissions',
+    '按实际入账 Points 求和，不含额外月奖': 'Sum actual credited Points; exclude the monthly bonus',
+    'S ≥ 100 Point？': 'S ≥ 100 Points?',
+    '不发放月度额外奖励': 'No monthly extra bonus',
+    'Points 向下保留 4 位小数': 'Round Points down to 4 decimal places',
+    '月度额外 Points 奖励即时到账': 'Credit the monthly extra Points immediately',
+    '统计区间：尼日利亚时间上月 1 日 00:00（含）至本月 1 日 00:00（不含）。': 'Period: previous month\'s 1st at 00:00 (inclusive) to this month\'s 1st at 00:00 (exclusive), Nigeria time.',
+    '上月直邀 + 裂变奖励（Points）': 'Previous Month: Direct + Network (Points)',
+    '是否达标': 'Qualified?',
+    '月度额外奖励': 'Monthly Extra Bonus',
+    '含额外奖励合计': 'Total Including Extra Bonus',
+    '04 · 已确认结算规则': '04 · Confirmed Settlement Rules',
+    '统一以 Points 结算。对非负原始奖励 x，R(x) = floor(x × 10000) ÷ 10000；保留 4 位小数向下取整，不四舍五入。每笔奖励分别取整后即时入账，月度基数再汇总实际入账值。': 'All rewards settle in Points. For a nonnegative raw reward x, R(x) = floor(x × 10000) ÷ 10000: round down to 4 decimal places, never round to nearest. Round each reward separately and credit it immediately, then sum the actual credited amounts for the monthly base.',
+    '场景': 'Scenario',
+    '原始 Points': 'Raw Points',
+    '入账 Points': 'Credited Points',
+    '超过 4 位小数': 'More than 4 decimal places',
+    '正好 4 位小数': 'Exactly 4 decimal places',
+    '不足最小精度': 'Below the minimum precision',
+    '同设备或同 IP 的资格归属取第一个邀请绑定账号。该账号尚未达标或尚未领奖，其他账号的绑定仍然无效；有效账号后续逐笔裂变奖励继续计算。': 'For accounts sharing either a device or an IP, eligibility belongs to the first referral-bound account. Later bindings remain invalid even if the first account has not qualified or claimed rewards. The eligible account continues generating commissions on subsequent completed orders.',
+    '更新日期：2026-11-02 · 首个邀请绑定账号有效；Points 保留 4 位向下取整，即时到账；按订单完结时间归属尼日利亚自然月。': 'Updated: 2026-11-02 · First referral binding wins eligibility. Points are rounded down to 4 decimal places and credited immediately. Attribute rewards to Nigeria calendar months by order completion time.'
+  };
+  const texts = [];
+  const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      return node.parentElement.closest('script,style,.language-toolbar') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    const source = node.nodeValue.trim();
+    if (Object.hasOwn(english, source)) texts.push({node, original: node.nodeValue, source});
+  }
+  const attributes = [...document.querySelectorAll('[aria-label]:not(.language-switch)')]
+    .filter(el => Object.hasOwn(english, el.getAttribute('aria-label')))
+    .map(el => ({el, original: el.getAttribute('aria-label')}));
+  const buttons = [...document.querySelectorAll('[data-language]')];
+  const preferenceKey = 'tbay-referral-flow-language';
+  function fitLabels() {
+    document.querySelectorAll('svg text').forEach(el => {
+      el.removeAttribute('textLength');
+      el.removeAttribute('lengthAdjust');
+      const x = Number(el.getAttribute('x'));
+      let maxWidth = x === 560 ? 1040 : x === 880 ? 288 : (x === 640 || x === 392) ? 40 : 416;
+      const y = Number(el.getAttribute('y'));
+      // A diamond narrows toward its top and bottom; fit each line to its actual band.
+      el.ownerSVGElement.querySelectorAll('polygon.node').forEach(diamond => {
+        const box = diamond.getBBox();
+        if (Math.abs(x - box.x - box.width / 2) > 1 || y <= box.y || y >= box.y + box.height) return;
+        const textBox = el.getBBox();
+        const centerY = box.y + box.height / 2;
+        const furthest = Math.max(Math.abs(textBox.y - centerY), Math.abs(textBox.y + textBox.height - centerY));
+        maxWidth = Math.min(maxWidth, Math.max(40, box.width * (1 - furthest / (box.height / 2)) - 16));
+      });
+      if (el.getComputedTextLength() > maxWidth) {
+        el.setAttribute('textLength', String(maxWidth));
+        el.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
+    });
+  }
+  function setLanguage(lang) {
+    const isEnglish = lang === 'en';
+    document.documentElement.lang = isEnglish ? 'en' : 'zh-CN';
+    texts.forEach(({node, original, source}) => { node.nodeValue = isEnglish ? original.replace(source, english[source]) : original; });
+    attributes.forEach(({el, original}) => el.setAttribute('aria-label', isEnglish ? english[original] : original));
+    document.querySelector('.language-switch').setAttribute('aria-label', isEnglish ? 'Page language' : '页面语言');
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === document.documentElement.lang)));
+    try { localStorage.setItem(preferenceKey, document.documentElement.lang); } catch {}
+    fitLabels();
+  }
+  buttons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+  let initial = 'zh-CN';
+  try { if (localStorage.getItem(preferenceKey) === 'en') initial = 'en'; } catch {}
+  setLanguage(initial);
+  document.fonts.ready.then(fitLabels);
+})();
+</script>
+</body></html>

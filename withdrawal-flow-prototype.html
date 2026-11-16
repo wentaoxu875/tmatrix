@@ -221,7 +221,11 @@
     .setup-step-title { margin: 20px 0 8px; color: var(--ink); font: 800 12px/1.2 var(--sans); }
     .setup-content p { margin: 0 0 12px; color: var(--muted); font-size: 11px; line-height: 1.45; }
     .qr-placeholder { width: 132px; height: 132px; margin: 14px auto; border: 8px solid #fff; outline: 1px solid #cbd7d5; background: repeating-linear-gradient(45deg, #123c38 0 6px, #fff 6px 12px), repeating-linear-gradient(-45deg, transparent 0 5px, rgba(18,60,56,.9) 5px 8px); }
-    .secret-key { border: 1px dashed #a8c3c1; border-radius: 9px; padding: 10px; text-align: center; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--ink); background: #f6faf9; }
+    .secret-key-row { display: flex; align-items: center; gap: 8px; border: 1px dashed #a8c3c1; border-radius: 8px; padding: 4px 4px 4px 12px; background: #f6faf9; }
+    .secret-key { flex: 1; min-width: 0; text-align: center; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--ink); user-select: text; }
+    .copy-secret-btn { flex: 0 0 auto; min-width: 56px; min-height: 44px; border: 0; border-radius: 6px; padding: 0 12px; background: var(--mint); color: var(--ink); font-size: 12px; font-weight: 600; }
+    .copy-secret-btn:hover { background: var(--mint-strong); }
+    .toast { z-index: 30; }
     .mfa-help { margin-top: 16px; padding: 12px; border-radius: 10px; background: #f6faf9; color: var(--muted); font-size: 11px; line-height: 1.45; }
     .mfa-help strong { display: block; color: var(--ink); margin-bottom: 4px; font-size: 12px; }
     .mfa-bound-status { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 10px; background: var(--mint); color: var(--ink); }
@@ -391,7 +395,7 @@
         <h3>Step 1: Bind your authenticator</h3>
         <p>Scan the QR code or enter the secret key in your authenticator app.</p>
         <div class="qr-placeholder" aria-label="MFA QR code placeholder"></div>
-        <div class="secret-key" id="mfaSecretKey">JBSW Y3DP EHPK 3PXP</div>
+        <div class="secret-key-row"><div class="secret-key" id="mfaSecretKey">JBSW Y3DP EHPK 3PXP</div><button class="copy-secret-btn" id="copyMfaSecret" type="button" aria-label="Copy MFA secret key">Copy</button></div>
         <div class="mfa-help"><strong>What is MFA?</strong>Use an authenticator app to generate a one-time security code. Download Google Authenticator or Microsoft Authenticator from your app store, scan the QR code or enter the secret key, then use the current 6-digit code below.</div>
         <h3>Step 2: Enter authenticator code</h3>
         <p>Enter the 6-digit code currently shown in your authenticator app.</p>
@@ -615,7 +619,7 @@
           verificationArea.append(guide);
           return;
         }
-        verificationArea.append(createCodeInput('mfaCodeInput', 'MFA verification code', true));
+        verificationArea.append(createCodeInput('mfaCodeInput', 'MFA verification code', false));
         const resetButton = document.createElement('button');
         resetButton.type = 'button';
         resetButton.className = 'reset-mfa-btn';
@@ -767,6 +771,37 @@
       document.getElementById('closeDialog').addEventListener('click', hideSecurity);
       document.getElementById('doneButton').addEventListener('click', hideSecurity);
       document.getElementById('backMfaSetup').addEventListener('click', () => closeMfaSetup(true));
+      document.getElementById('copyMfaSecret').addEventListener('click', async () => {
+        const secret = document.getElementById('mfaSecretKey').textContent.trim();
+        try {
+          let copied = false;
+          if (navigator.clipboard?.writeText) {
+            try {
+              await navigator.clipboard.writeText(secret);
+              copied = true;
+            } catch (_) { /* Local file previews may require the selection fallback. */ }
+          }
+          if (!copied) {
+            const previousFocus = document.activeElement;
+            const input = document.createElement('textarea');
+            input.value = secret;
+            input.readOnly = true;
+            input.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px';
+            document.querySelector('#mfaSetupOverlay .setup-sheet').append(input);
+            try {
+              input.select();
+              input.setSelectionRange(0, input.value.length);
+              copied = document.execCommand('copy');
+            } finally {
+              input.remove();
+              previousFocus?.focus({ preventScroll: true });
+            }
+          }
+          showToast(copied ? 'Secret key copied' : 'Unable to copy. Select the key and copy it manually.');
+        } catch (_) {
+          showToast('Unable to copy. Select the key and copy it manually.');
+        }
+      });
       document.getElementById('refreshPage').addEventListener('click', () => {
         mfaSetupError.textContent = '';
         mfaSetupCodeArea.replaceChildren(createCodeInput('mfaSetupCode', 'MFA setup code', false));

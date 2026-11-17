@@ -167,6 +167,15 @@
       transition: transform .22s ease;
     }
     .security-overlay.show .security-sheet { transform: translateY(0); }
+    .security-sheet [hidden] { display: none !important; }
+    .verification-steps { display: flex; list-style: none; padding: 0; margin: 16px 0 20px; gap: 12px; }
+    .verification-steps li { display: flex; align-items: center; gap: 7px; flex: 1; color: var(--tertiary); font-size: 12px; font-weight: 600; }
+    .step-number { display: grid; place-items: center; flex: 0 0 24px; height: 24px; border-radius: 50%; background: #f0f2f3; font-size: 12px; }
+    .verification-steps .current { color: var(--ink); }
+    .verification-steps .current .step-number { color: #fff; background: var(--ink); }
+    .verification-steps .complete { color: #16815a; }
+    .verification-steps .complete .step-number { background: var(--success-soft); }
+    .security-step-title { margin: 0 0 6px; font-size: 18px; line-height: 26px; color: var(--accent); font-weight: 600; }
     .grabber { width: 44px; height: 5px; border-radius: 5px; background: #d4dcdc; margin: 2px auto 18px; }
     .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
     .sheet-head h2 { margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--accent); }
@@ -353,18 +362,26 @@
   </div>
 
   <section class="security-overlay" id="securityOverlay" aria-hidden="true">
-    <div class="security-sheet" role="dialog" aria-modal="true" aria-labelledby="securityTitle">
+    <div class="security-sheet" role="dialog" aria-modal="true" aria-labelledby="securityTitle" aria-describedby="securityStepDescription">
       <div class="grabber" aria-hidden="true"></div>
       <header class="sheet-head"><h2 id="securityTitle">Transaction verification</h2><button class="close-btn" id="closeDialog" type="button" aria-label="Close">×</button></header>
 
       <form id="securityForm" novalidate>
-        <section class="security-section">
+        <ol class="verification-steps" aria-label="Withdrawal verification steps">
+          <li id="pinStepIndicator" class="current" aria-current="step"><span class="step-number">1</span>Transaction PIN</li>
+          <li id="codeStepIndicator"><span class="step-number">2</span>Verification code</li>
+        </ol>
+        <div id="securityStepHeading" aria-live="polite" aria-atomic="true">
+          <h3 class="security-step-title" id="securityStepTitle">Verify your PIN</h3>
+          <p class="sheet-copy" id="securityStepDescription">Enter your 6-digit transaction PIN to continue to verification code.</p>
+        </div>
+        <section class="security-section" id="pinStep">
           <div class="field-label"><span>Transaction PIN</span></div>
           <div id="pinInputArea"></div>
           <div class="field-error" id="pinError" role="alert" aria-live="polite"></div>
         </section>
 
-        <section class="security-section">
+        <section class="security-section" id="verificationStep" hidden>
           <div class="field-label verification-label"><span>Verification code</span></div>
           <div class="method-toggle" role="tablist" aria-label="Verification method">
             <button class="method-btn active" id="emailMethod" type="button" role="tab" aria-selected="true">Email code</button>
@@ -374,7 +391,7 @@
           <div class="field-error" id="codeError" role="alert" aria-live="polite"></div>
         </section>
 
-        <button class="verify-btn" type="submit">Confirm withdrawal</button>
+        <button class="verify-btn" id="securityContinue" type="submit">Verify PIN &amp; continue</button>
       </form>
 
       <section id="successState" class="success-state" hidden>
@@ -430,7 +447,7 @@
 
   <script>
     (() => {
-      const state = { pinConfigured: true, mfaConfigured: false, method: 'email', emailSent: false, emailCooldown: 0, mfaSecret: 'JBSW Y3DP EHPK 3PXP' };
+      const state = { pinConfigured: true, mfaConfigured: false, method: 'email', emailSent: false, emailCooldown: 0, mfaSecret: 'JBSW Y3DP EHPK 3PXP', securityStep: 'pin', pinVerified: false };
       const expected = { pin: '123456', email: '654321', mfa: '987654' };
       const amount = document.getElementById('amountInput');
       const amountError = document.getElementById('amountError');
@@ -442,6 +459,7 @@
       const verificationArea = document.getElementById('verificationArea');
       const pinError = document.getElementById('pinError');
       const codeError = document.getElementById('codeError');
+      const securityContinue = document.getElementById('securityContinue');
       const emailMethod = document.getElementById('emailMethod');
       const mfaMethod = document.getElementById('mfaMethod');
       const pinNotSet = document.getElementById('pinNotSet');
@@ -500,6 +518,13 @@
         group.setAttribute('role', 'group');
         group.setAttribute('aria-label', label);
         const digits = [];
+        const autoVerifyPin = () => {
+          if (id === 'pinInput' && state.securityStep === 'pin' && !state.pinVerified
+              && state.pinConfigured && securityOverlay.classList.contains('show')
+              && digits.length === 6 && digits.every((digit) => /^[0-9]$/.test(digit.value))) {
+            securityForm.requestSubmit();
+          }
+        };
         for (let index = 0; index < 6; index += 1) {
           const input = document.createElement('input');
           input.className = 'code-digit';
@@ -516,6 +541,7 @@
             mfaSetupError.textContent = '';
             input.classList.remove('error');
             if (input.value && digits[index + 1]) digits[index + 1].focus();
+            autoVerifyPin();
           });
           input.addEventListener('keydown', (event) => {
             if (event.key === 'Backspace' && !input.value && digits[index - 1]) digits[index - 1].focus();
@@ -525,8 +551,13 @@
           input.addEventListener('paste', (event) => {
             event.preventDefault();
             const pasted = (event.clipboardData?.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+            pinError.textContent = '';
+            codeError.textContent = '';
+            mfaSetupError.textContent = '';
+            digits.forEach((digit) => digit.classList.remove('error'));
             pasted.split('').forEach((value, offset) => { if (digits[index + offset]) digits[index + offset].value = value; });
             digits[Math.min(index + pasted.length, 5)]?.focus();
+            autoVerifyPin();
           });
           digits.push(input);
           group.append(input);
@@ -559,14 +590,14 @@
         if (!state.pinConfigured) {
           const guide = document.createElement('div');
           guide.className = 'guide-card';
-          guide.innerHTML = '<div><strong>PIN not set</strong><span>The PIN field is disabled until you finish setup.</span></div><button class="guide-btn" type="button">Set PIN</button>';
+          guide.innerHTML = '<div><strong>PIN not set</strong><span>Set a transaction PIN first, then verify it to continue.</span></div><button class="guide-btn" type="button">Set PIN</button>';
           const openPinSetup = () => {
             pinSet.checked = true;
             pinNotSet.checked = false;
             state.pinConfigured = true;
             syncScenarioState();
-            hideSecurity();
-            showToast('PIN setup completed for this prototype');
+            focusSecurityInput();
+            showToast('PIN setup completed. Enter your PIN to continue.');
           };
           guide.addEventListener('click', openPinSetup);
           pinArea.append(guide);
@@ -615,7 +646,7 @@
           const guide = document.createElement('div');
           guide.className = 'guide-card';
           guide.innerHTML = '<div><strong>MFA is not bound</strong><span>The MFA field is disabled until you bind an authenticator.</span></div><button class="guide-btn" type="button">Bind MFA</button>';
-          guide.addEventListener('click', openMfaSetup);
+          guide.addEventListener('click', () => openMfaSetup());
           verificationArea.append(guide);
           return;
         }
@@ -635,6 +666,42 @@
         emailMethod.setAttribute('aria-selected', method === 'email');
         mfaMethod.setAttribute('aria-selected', method === 'mfa');
         renderVerification();
+        renderSecurityStep();
+      };
+
+      const focusSecurityInput = () => {
+        requestAnimationFrame(() => {
+          const selector = state.securityStep === 'pin'
+            ? '[data-code-id="pinInput"] .code-digit, #pinInputArea .guide-btn'
+            : '#emailCodeInput, [data-code-id="mfaCodeInput"] .code-digit, #verificationArea .guide-btn';
+          document.querySelector(selector)?.focus();
+        });
+      };
+
+      const renderSecurityStep = () => {
+        const isPin = state.securityStep === 'pin' || !state.pinVerified;
+        document.getElementById('pinStep').hidden = !isPin;
+        document.getElementById('verificationStep').hidden = isPin;
+        const pinIndicator = document.getElementById('pinStepIndicator');
+        const codeIndicator = document.getElementById('codeStepIndicator');
+        pinIndicator.className = isPin ? 'current' : 'complete';
+        codeIndicator.className = isPin ? '' : 'current';
+        pinIndicator.querySelector('.step-number').textContent = isPin ? '1' : '✓';
+        if (isPin) {
+          pinIndicator.setAttribute('aria-current', 'step');
+          codeIndicator.removeAttribute('aria-current');
+        } else {
+          codeIndicator.setAttribute('aria-current', 'step');
+          pinIndicator.removeAttribute('aria-current');
+        }
+        document.getElementById('securityStepTitle').textContent = isPin
+          ? (state.pinConfigured ? 'Verify your PIN' : 'Set up your PIN first')
+          : 'Verify your withdrawal';
+        document.getElementById('securityStepDescription').textContent = isPin
+          ? (state.pinConfigured ? 'Enter your 6-digit transaction PIN. It will be verified automatically once all 6 digits are entered.' : 'You need a transaction PIN before withdrawing. Set it up, then enter it to complete step 1.')
+          : (state.method === 'email' ? 'Your PIN is verified. Tap Get Code and enter the 6-digit code sent to your email.' : (state.mfaConfigured ? 'Your PIN is verified. Enter the current 6-digit code from your authenticator app.' : 'Your PIN is verified. Bind an authenticator to use MFA, or choose Email code.'));
+        securityContinue.textContent = isPin ? (state.pinConfigured ? 'Verify PIN & continue' : 'Set your PIN first') : 'Confirm withdrawal';
+        securityContinue.disabled = isPin ? !state.pinConfigured : state.method === 'mfa' && !state.mfaConfigured;
       };
 
       const resetSecurityForm = () => {
@@ -646,6 +713,8 @@
         state.method = 'email';
         state.emailSent = false;
         state.emailCooldown = 0;
+        state.securityStep = 'pin';
+        state.pinVerified = false;
         setMethod('email');
         renderPin();
       };
@@ -674,19 +743,30 @@
         resetSecurityForm();
         securityOverlay.classList.add('show');
         securityOverlay.setAttribute('aria-hidden', 'false');
-        requestAnimationFrame(() => document.querySelector('[data-code-id="pinInput"] .code-digit')?.focus());
+        focusSecurityInput();
+      };
+
+      const resumeSecurity = () => {
+        securityForm.hidden = false;
+        document.getElementById('successState').hidden = true;
+        renderSecurityStep();
+        securityOverlay.classList.add('show');
+        securityOverlay.setAttribute('aria-hidden', 'false');
+        focusSecurityInput();
       };
 
       const hideSecurity = () => {
         securityOverlay.classList.remove('show');
         securityOverlay.setAttribute('aria-hidden', 'true');
-        setTimeout(resetSecurityForm, 220);
+        resetSecurityForm();
       };
 
       const openMfaSetup = (isReset = false) => {
         securityOverlay.classList.remove('show');
         securityOverlay.setAttribute('aria-hidden', 'true');
-        setTimeout(resetSecurityForm, 220);
+        clearCode('emailCodeInput');
+        clearCode('mfaCodeInput');
+        codeError.textContent = '';
         mfaSetupError.textContent = '';
         if (isReset) state.mfaSecret = 'KZ4L 8NQ2 R7MP 6VXD';
         renderMfaSetupView();
@@ -699,7 +779,12 @@
       const closeMfaSetup = (returnToSecurity = true) => {
         mfaSetupOverlay.classList.remove('show');
         mfaSetupOverlay.setAttribute('aria-hidden', 'true');
-        if (returnToSecurity) setTimeout(openSecurity, 220);
+        if (returnToSecurity) {
+          mfaResetOverlay.classList.remove('show');
+          mfaResetOverlay.setAttribute('aria-hidden', 'true');
+          clearInterval(resetEmailCooldownTimer);
+          resumeSecurity();
+        }
       };
 
       const renderMfaSetupView = () => {
@@ -732,10 +817,14 @@
         mfaResetOverlay.classList.remove('show');
         mfaResetOverlay.setAttribute('aria-hidden', 'true');
         clearInterval(resetEmailCooldownTimer);
-        if (returnToSecurity) setTimeout(openSecurity, 220);
+        if (returnToSecurity) {
+          closeMfaSetup(false);
+          resumeSecurity();
+        }
       };
 
       const syncScenarioState = () => {
+        const pinChanged = state.pinConfigured !== pinSet.checked;
         state.pinConfigured = pinSet.checked;
         state.mfaConfigured = mfaSet.checked;
         pinError.textContent = '';
@@ -743,6 +832,11 @@
         renderPin();
         renderVerification();
         renderMfaSetupView();
+        if (pinChanged) {
+          state.pinVerified = false;
+          state.securityStep = 'pin';
+        }
+        renderSecurityStep();
       };
 
       document.getElementById('withdrawForm').addEventListener('submit', (event) => {
@@ -841,7 +935,7 @@
         syncScenarioState();
         closeMfaReset(false);
         showToast('解绑成功');
-        setTimeout(() => openMfaSetup(true), 220);
+        openMfaSetup(true);
       });
       document.getElementById('mfaSetupVerify').addEventListener('click', () => {
         mfaSetupError.textContent = '';
@@ -858,7 +952,8 @@
         syncScenarioState();
         closeMfaSetup(false);
         showToast('MFA binding completed');
-        setTimeout(openSecurity, 220);
+        setMethod('mfa');
+        resumeSecurity();
       });
       document.getElementById('backButton').addEventListener('click', () => showToast('Back navigation is simulated in this prototype'));
       [pinNotSet, pinSet, mfaNotSet, mfaSet].forEach((control) => control.addEventListener('change', syncScenarioState));
@@ -887,6 +982,8 @@
         state.method = 'email';
         state.emailSent = false;
         state.emailCooldown = 0;
+        state.pinVerified = false;
+        state.securityStep = 'pin';
         clearInterval(emailCooldownTimer);
         syncScenarioState();
         if (securityOverlay.classList.contains('show')) hideSecurity();
@@ -905,46 +1002,60 @@
         section.addEventListener('click', (event) => event.stopPropagation());
       });
       document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && securityOverlay.classList.contains('show')) hideSecurity();
+        if (event.key !== 'Escape') return;
+        if (mfaResetOverlay.classList.contains('show')) closeMfaReset(true);
+        else if (mfaSetupOverlay.classList.contains('show')) closeMfaSetup(true);
+        else if (securityOverlay.classList.contains('show')) hideSecurity();
       });
 
       securityForm.addEventListener('submit', (event) => {
         event.preventDefault();
         pinError.textContent = '';
         codeError.textContent = '';
-        const pin = readCode('pinInput');
-        const code = readCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
-        let valid = true;
-        if (!state.pinConfigured || pin === null) {
-          pinError.textContent = 'Set your PIN before confirming the withdrawal.';
-          valid = false;
-        } else if (!pin || pin.length !== 6) {
-          pinError.textContent = 'Enter your 6-digit PIN.';
-          valid = false;
+        if (state.securityStep === 'pin' || !state.pinVerified) {
+          const pin = readCode('pinInput');
+          if (!state.pinConfigured || pin === null) {
+            pinError.textContent = 'Set your PIN before continuing.';
+            return;
+          }
+          if (!pin || pin.length !== 6) {
+            pinError.textContent = 'Enter your 6-digit PIN.';
+            focusSecurityInput();
+            return;
+          }
+          if (pin !== expected.pin) {
+            pinError.textContent = 'Incorrect PIN. Please try again.';
+            clearCode('pinInput');
+            markCodeError('pinInput');
+            focusSecurityInput();
+            return;
+          }
+          state.pinVerified = true;
+          state.securityStep = 'verification';
+          clearCode('pinInput');
+          renderVerification();
+          renderSecurityStep();
+          focusSecurityInput();
+          return;
         }
+        const code = readCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
         if (code === null) {
           codeError.textContent = state.method === 'mfa' ? 'Bind MFA before entering a code.' : 'Enter the email verification code.';
-          valid = false;
+          return;
         } else if (!code || code.length !== 6) {
           codeError.textContent = 'Enter the 6-digit verification code.';
-          valid = false;
-        }
-        if (!valid) return;
-
-        let codesValid = true;
-        if (pin !== expected.pin) {
-          pinError.textContent = 'Incorrect PIN. Please try again.';
-          clearCode('pinInput');
-          markCodeError('pinInput');
-          codesValid = false;
+          focusSecurityInput();
+          return;
         }
         if (code !== expected[state.method]) {
           codeError.textContent = state.method === 'email' ? 'Incorrect or expired email code.' : 'Incorrect or expired MFA code.';
           clearCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
           markCodeError(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
-          codesValid = false;
+          focusSecurityInput();
+          return;
         }
-        if (!codesValid) return;
+        state.pinVerified = false;
+        clearCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
         securityForm.hidden = true;
         document.getElementById('successState').hidden = false;
       });
@@ -952,6 +1063,7 @@
       updateAmount();
       renderPin();
       renderVerification();
+      renderSecurityStep();
     })();
   </script>
 </body>

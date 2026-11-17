@@ -167,6 +167,18 @@
       transition: transform .22s ease;
     }
     .security-overlay.show .security-sheet { transform: translateY(0); }
+    .verification-steps { display:flex; list-style:none; padding:0; margin:16px 0 20px; gap:12px; }
+    .verification-steps li { display:flex; align-items:center; gap:7px; flex:1; color:var(--tertiary, #82908f); font-size:12px; font-weight:600; }
+    .step-number { display:grid; place-items:center; flex:0 0 24px; height:24px; border-radius:50%; background:#f0f2f3; font-size:12px; }
+    .verification-steps .current { color:var(--ink); }
+    .verification-steps .current .step-number { color:#fff; background:var(--ink); }
+    .verification-steps .complete { color:#16815a; }
+    .verification-steps .complete .step-number { background:var(--success-soft); }
+    .security-step-title { margin:0 0 6px; font-size:18px; line-height:26px; color:var(--accent); font-weight:600; }
+    .security-step-title-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
+    .security-step-title-row .security-step-title { margin:0; min-width:0; }
+    .auth-switch-row { display:flex; flex-shrink:0; align-items:center; }
+    .verify-btn:disabled { opacity:.5; cursor:default; }
     .grabber { width: 44px; height: 5px; border-radius: 5px; background: #d4dcdc; margin: 2px auto 18px; }
     .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
     .sheet-head h2 { margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; color: var(--accent); }
@@ -360,7 +372,7 @@
           <code>MFA code: 987654</code>
         </div>
         <p class="scenario-foot">本地离线模拟，不连接指纹、PIN、邮件或 MFA 服务。开启状态仅用于当前浏览器的本地演示。演示金额与账号不是正式业务参数。</p>
-      <details class="review-notes"><summary>已确认规则</summary><p>iOS / Android 支持指纹和人脸；覆盖提现、修改邮箱、生活账单支付。生物识别替代整套身份验证，与 PIN＋邮箱 / MFA 共用弹框。修改邮箱仍单独验证新邮箱归属。</p><p>默认关闭，按账号＋设备开启；开启前检查可用性，再校验 PIN＋邮箱 / MFA。未设 PIN 时跳转现有 PIN 设置页；本原型仅以 Toast 说明跳转。关闭只需二次确认。</p><p>连续 5 次失败后不可选，系统解除锁定后恢复；更换操作或重新打开验证不能清除锁定。修改 PIN、修改邮箱、重置 MFA 后，关闭该账号所有设备的开启状态；系统生物信息更新关闭发生变化设备的生物识别。</p><p>最新验证基线以当前交互稿为准：提现与账单采用 PIN＋邮箱／MFA，修改邮箱先验证新邮箱，再复用完整 PIN＋邮箱／MFA 身份验证；成功后直接登出。提现验证成功的原型仅 Toast 说明跳转提现成功页。账单确认按钮为 Comfirm。MFA 重置成功后为 Pending binding，旧绑定失效并关闭账号全部设备的生物识别；取消新绑定不恢复。埋点：Security 中 MFA Binding 按钮点击、生物识别开关点击。来源：TM-017 用户确认及 Tbay APP 设计规范。</p></details>
+      <details class="review-notes"><summary>已确认规则</summary><p>iOS / Android 支持指纹和人脸；覆盖提现、修改邮箱、生活账单支付。生物识别替代整套身份验证，与 PIN＋邮箱 / MFA 共用弹框。修改邮箱仍单独验证新邮箱归属。</p><p>默认关闭，按账号＋设备开启；开启前检查可用性，再分两步校验：先 PIN，通过后再校验邮箱 / MFA 动态验证码。未设 PIN 时跳转现有 PIN 设置页；本原型仅以 Toast 说明跳转。关闭只需二次确认。</p><p>连续 5 次失败后不可选，系统解除锁定后恢复；更换操作或重新打开验证不能清除锁定。修改 PIN、修改邮箱、重置 MFA 后，关闭该账号所有设备的开启状态；系统生物信息更新关闭发生变化设备的生物识别。</p><p>最新验证基线以当前交互稿为准：提现与账单采用先 PIN、通过后再邮箱／MFA 的两步验证，修改邮箱先验证新邮箱，再复用完整 PIN＋邮箱／MFA 身份验证；成功后直接登出。提现验证成功的原型仅 Toast 说明跳转提现成功页。账单确认按钮为 Comfirm。MFA 重置成功后为 Pending binding，旧绑定失效并关闭账号全部设备的生物识别；取消新绑定不恢复。埋点：Security 中 MFA Binding 按钮点击、生物识别开关点击。来源：TM-017 用户确认及 Tbay APP 设计规范。</p></details>
       </div>
     </aside>
 
@@ -431,13 +443,24 @@
           <button type="button" id="transactionFallback" class="text-button">Use PIN + verification code</button>
         </section>
         <div id="pinVerificationFields">
-        <section class="security-section">
-          <div class="field-label"><span id="authLabel">Transaction PIN</span><button type="button" id="switchAuth" class="link-btn" hidden>Use PIN</button></div>
+        <ol class="verification-steps" aria-label="Identity verification steps">
+          <li id="pinStepIndicator" class="current" aria-current="step"><span class="step-number">1</span>Transaction PIN</li>
+          <li id="codeStepIndicator"><span class="step-number">2</span>Verification code</li>
+        </ol>
+        <div id="securityStepHeading" aria-live="polite" aria-atomic="true">
+          <div class="security-step-title-row">
+            <h3 class="security-step-title" id="securityStepTitle">Verify your PIN</h3>
+            <div id="authSwitchRow" class="auth-switch-row" hidden><button type="button" id="switchAuth" class="link-btn" hidden>Use biometrics</button></div>
+          </div>
+          <p class="sheet-copy" id="securityStepDescription">Enter your 6-digit transaction PIN to continue.</p>
+        </div>
+        <section class="security-section" id="pinStep">
+          <div class="field-label"><span id="authLabel">Transaction PIN</span></div>
           <div id="pinInputArea"></div>
           <div class="field-error" id="pinError" role="alert" aria-live="polite"></div>
         </section>
 
-        <section class="security-section">
+        <section class="security-section" id="verificationStep" hidden>
           <div class="field-label verification-label"><span>Verification code</span></div>
           <div class="method-toggle" role="tablist" aria-label="Verification method">
             <button class="method-btn active" id="emailMethod" type="button" role="tab" aria-selected="true">Email code</button>
@@ -447,7 +470,7 @@
           <div class="field-error" id="codeError" role="alert" aria-live="polite"></div>
         </section>
 
-        <button class="verify-btn" type="submit">Confirm withdrawal</button>
+        <button class="verify-btn" id="securityContinue" type="submit">Verify PIN &amp; continue</button>
         </div>
       </form>
 
@@ -531,7 +554,7 @@
 <section id="signedOut" class="business-page" hidden><header class="topbar"><span></span><h1>Log In</h1><span></span></header><div class="business-body"><h2>Email updated</h2><p id="signedOutMessage"></p><p>Please sign in again with your new email.</p></div></section>
   <script>
     (() => {
-      const state = { pinConfigured: true, mfaConfigured: false, mfaPendingBinding: false, method: 'email', emailSent: false, emailCooldown: 0, mfaSecret: 'JBSW Y3DP EHPK 3PXP' };
+      const state = { pinConfigured: true, mfaConfigured: false, mfaPendingBinding: false, method: 'email', emailSent: false, emailCooldown: 0, mfaSecret: 'JBSW Y3DP EHPK 3PXP', securityStep: 'pin', pinVerified: false };
       const storageKey = 'tbay-biometric-prototype-v2';
       let bindingStore = {}; try { bindingStore = JSON.parse(localStorage.getItem(storageKey)) || {}; } catch (_) {}
       let deviceLocks = {}; try {deviceLocks=JSON.parse(localStorage.getItem(storageKey+'-device-locks'))||{};}catch(_){}
@@ -626,6 +649,13 @@
         group.setAttribute('role', 'group');
         group.setAttribute('aria-label', label);
         const digits = [];
+        const autoVerifyPin = () => {
+          if (id === 'pinInput' && bio.mode === 'pin' && state.securityStep === 'pin' && !state.pinVerified
+              && state.pinConfigured && securityOverlay.classList.contains('show') && !securityForm.hidden
+              && digits.length === 6 && digits.every(digit => /^[0-9]$/.test(digit.value))) {
+            securityForm.requestSubmit();
+          }
+        };
         for (let index = 0; index < 6; index += 1) {
           const input = document.createElement('input');
           input.className = 'code-digit';
@@ -642,6 +672,7 @@
             mfaSetupError.textContent = '';
             input.classList.remove('error');
             if (input.value && digits[index + 1]) digits[index + 1].focus();
+            autoVerifyPin();
           });
           input.addEventListener('keydown', (event) => {
             if (event.key === 'Backspace' && !input.value && digits[index - 1]) digits[index - 1].focus();
@@ -652,7 +683,11 @@
             event.preventDefault();
             const pasted = (event.clipboardData?.getData('text') || '').replace(/\D/g, '').slice(0, 6);
             pasted.split('').forEach((value, offset) => { if (digits[index + offset]) digits[index + offset].value = value; });
+            pinError.textContent = '';
+            codeError.textContent = '';
+            digits.forEach(digit => digit.classList.remove('error'));
             digits[Math.min(index + pasted.length, 5)]?.focus();
+            autoVerifyPin();
           });
           digits.push(input);
           group.append(input);
@@ -680,7 +715,48 @@
         return input;
       };
 
+      const focusSecurityInput = (force = false) => {
+        const requestedStep = state.securityStep;
+        requestAnimationFrame(() => {
+          if (requestedStep !== state.securityStep) return;
+          if (!securityOverlay.classList.contains('show') || securityForm.hidden || bio.mode !== 'pin') return;
+          const activeArea = document.getElementById(state.securityStep === 'pin' ? 'pinInputArea' : 'verificationArea');
+          if (!force && activeArea.contains(document.activeElement)) return;
+          const selector = state.securityStep === 'pin'
+            ? '#pinInputArea .code-digit, #pinInputArea .guide-btn'
+            : '#emailCodeInput, #verificationArea .code-digit, #verificationArea .guide-btn';
+          document.querySelector(selector)?.focus();
+        });
+      };
+
+      const renderSecurityStep = () => {
+        const isPin = state.securityStep === 'pin' || !state.pinVerified;
+        document.getElementById('pinStep').hidden = !isPin;
+        document.getElementById('verificationStep').hidden = isPin;
+        const pinIndicator = document.getElementById('pinStepIndicator');
+        const codeIndicator = document.getElementById('codeStepIndicator');
+        pinIndicator.className = isPin ? 'current' : 'complete';
+        codeIndicator.className = isPin ? '' : 'current';
+        pinIndicator.querySelector('.step-number').textContent = isPin ? '1' : '✓';
+        pinIndicator.toggleAttribute('aria-current', isPin);
+        codeIndicator.toggleAttribute('aria-current', !isPin);
+        (isPin ? pinIndicator : codeIndicator).setAttribute('aria-current', 'step');
+        document.getElementById('securityStepTitle').textContent = isPin
+          ? (state.pinConfigured ? 'Verify your PIN' : 'Set up your PIN first')
+          : 'Verify your identity';
+        document.getElementById('securityStepDescription').textContent = isPin
+          ? (state.pinConfigured ? 'Enter your 6-digit transaction PIN. It will be verified automatically once all 6 digits are entered.' : 'Set up your transaction PIN, then enter it to complete step 1.')
+          : (state.method === 'email' ? 'Your PIN is verified. Tap Get Code and enter the 6-digit code sent to your email.' : (state.mfaConfigured ? 'Your PIN is verified. Enter the current 6-digit code from your authenticator app.' : 'Your PIN is verified. Bind an authenticator to use MFA, or choose Email code.'));
+        const button = document.getElementById('securityContinue');
+        button.textContent = isPin ? (state.pinConfigured ? 'Verify PIN & continue' : 'Set your PIN first')
+          : bio.pendingEnable ? 'Enable biometrics' : businessScenario === 'bill' ? 'Comfirm' : businessScenario === 'email' ? 'Confirm email change' : 'Confirm withdrawal';
+        button.disabled = isPin ? !state.pinConfigured : state.method === 'mfa' && !state.mfaConfigured;
+      };
+
       const renderPin = () => {
+        state.pinVerified = false;
+        state.securityStep = 'pin';
+        verificationArea.replaceChildren();
         pinArea.replaceChildren();
         const fingerprintMode = bio.mode === 'fingerprint' && !bio.pendingEnable;
         document.getElementById('transactionFingerprint').hidden = !fingerprintMode;
@@ -690,7 +766,8 @@
         document.getElementById('switchAuth').disabled = bio.locked || bio.device !== 'ready';
         document.getElementById('switchAuth').setAttribute('aria-disabled', String(bio.locked || bio.device !== 'ready'));
         document.getElementById('switchAuth').textContent = 'Use biometrics';
-        document.querySelector('#pinVerificationFields > .security-section:nth-child(2)').hidden = false;
+        document.getElementById('authSwitchRow').hidden = document.getElementById('switchAuth').hidden;
+        renderSecurityStep();
         if (fingerprintMode) return;
         if (!state.pinConfigured) {
           const guide = document.createElement('div');
@@ -706,6 +783,7 @@
       const renderVerification = () => {
         verificationArea.replaceChildren();
         codeError.textContent = '';
+        if (!state.pinVerified || state.securityStep !== 'verification') return;
         if (state.method === 'email') {
           const row = document.createElement('div');
           row.className = 'code-row';
@@ -763,13 +841,15 @@
         emailMethod.setAttribute('aria-selected', method === 'email');
         mfaMethod.setAttribute('aria-selected', method === 'mfa');
         renderVerification();
+        renderSecurityStep();
       };
 
       const resetSecurityForm = () => {
+        state.securityStep = 'pin';
+        state.pinVerified = false;
         bio.verified = false;
         bio.mode = !bio.pendingEnable && bio.enabled && !bio.locked && bio.device === 'ready' ? 'fingerprint' : 'pin';
         clearInterval(emailCooldownTimer);
-        document.querySelector('#securityForm .verify-btn').textContent = bio.pendingEnable ? 'Enable biometrics' : businessScenario==='bill' ? 'Comfirm' : businessScenario==='email' ? 'Confirm email change' : 'Confirm withdrawal';
         securityForm.hidden = false;
         document.getElementById('successState').hidden = true;
         pinError.textContent = '';
@@ -810,10 +890,15 @@
         securityOverlay.classList.add('show');
         securityOverlay.setAttribute('aria-hidden', 'false');
         if (bio.mode === 'fingerprint') startBiometric('transaction');
-        else requestAnimationFrame(() => document.querySelector('[data-code-id="pinInput"] .code-digit')?.focus());
+        else focusSecurityInput();
       };
 
       const hideSecurity = () => {
+        state.pinVerified = false;
+        state.securityStep = 'pin';
+        clearCode('pinInput');
+        clearCode('emailCodeInput');
+        clearCode('mfaCodeInput');
         const wasEnabling = bio.pendingEnable;
         bio.pendingEnable = false;
         closeBiometric();
@@ -1097,42 +1182,55 @@
       };
       securityForm.addEventListener('submit', (event) => {
         event.preventDefault();
+        if (!securityOverlay.classList.contains('show') || securityForm.hidden || bio.mode === 'fingerprint') return;
         pinError.textContent = '';
         codeError.textContent = '';
-        const pin = readCode('pinInput');
-        if (bio.mode === 'fingerprint') return;
-        const code = readCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
-        let valid = true;
-        if (!state.pinConfigured || (bio.mode === 'pin' && pin === null)) {
-          pinError.textContent = bio.pendingEnable ? 'Set your PIN before enabling biometric authentication.' : 'Set your PIN before continuing.';
-          valid = false;
-        } else if (!pin || pin.length !== 6) {
-          pinError.textContent = 'Enter your 6-digit PIN.';
-          valid = false;
+        if (state.securityStep === 'pin' || !state.pinVerified) {
+          const pin = readCode('pinInput');
+          if (!state.pinConfigured || pin === null) {
+            pinError.textContent = bio.pendingEnable ? 'Set your PIN before enabling biometric authentication.' : 'Set your PIN before continuing.';
+            return;
+          }
+          if (!pin || pin.length !== 6) {
+            pinError.textContent = 'Enter your 6-digit PIN.';
+            focusSecurityInput();
+            return;
+          }
+          if (pin !== expected.pin) {
+            pinError.textContent = 'Incorrect PIN. Please try again.';
+            clearCode('pinInput');
+            markCodeError('pinInput');
+            focusSecurityInput(true);
+            return;
+          }
+          state.pinVerified = true;
+          state.securityStep = 'verification';
+          clearCode('pinInput');
+          renderVerification();
+          renderSecurityStep();
+          focusSecurityInput();
+          return;
         }
+        const code = readCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
         if (code === null) {
           codeError.textContent = state.method === 'mfa' ? 'Bind MFA before entering a code.' : 'Enter the email verification code.';
-          valid = false;
-        } else if (!code || code.length !== 6) {
-          codeError.textContent = 'Enter the 6-digit verification code.';
-          valid = false;
+          return;
         }
-        if (!valid) return;
-
-        let codesValid = true;
-        if (pin !== expected.pin) {
-          pinError.textContent = 'Incorrect PIN. Please try again.';
-          clearCode('pinInput');
-          markCodeError('pinInput');
-          codesValid = false;
+        if (!code || code.length !== 6) {
+          codeError.textContent = 'Enter the 6-digit verification code.';
+          focusSecurityInput();
+          return;
         }
         if (code !== expected[state.method]) {
           codeError.textContent = state.method === 'email' ? 'Incorrect or expired email code.' : 'Incorrect or expired MFA code.';
           clearCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
           markCodeError(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
-          codesValid = false;
+          focusSecurityInput(true);
+          return;
         }
-        if (!codesValid) return;
+        state.pinVerified = false;
+        state.securityStep = 'pin';
+        clearCode(state.method === 'email' ? 'emailCodeInput' : 'mfaCodeInput');
         if (bio.pendingEnable) {
           if (!['ready','changed'].includes(bio.device) || bio.locked) {
             codeError.textContent = 'Biometric verification is unavailable. Check your device and try again.';
